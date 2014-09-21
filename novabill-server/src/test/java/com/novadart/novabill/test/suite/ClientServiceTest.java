@@ -135,6 +135,7 @@ public class ClientServiceTest extends ServiceTest {
 		assertEquals(OperationType.DELETE, rec.getOperationType());
 		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
 		assertEquals(name, details.get(DBLoggerAspect.CLIENT_NAME));
+		assertEquals(true, rec.isReferringToDeletedEntity());
 	}
 	
 	@Test
@@ -200,7 +201,8 @@ public class ClientServiceTest extends ServiceTest {
 		expectedClient.setId(clientID);
 		Client.entityManager().flush();
 		Client actualClient = Client.findClient(clientID);
-		assertTrue(EqualsBuilder.reflectionEquals(expectedClient, actualClient, "contact", "invoices", "estimations", "creditNotes", "transportDocuments", "business", "version", "defaultPriceList"));
+		assertTrue(EqualsBuilder.reflectionEquals(expectedClient, actualClient, "addresses", "contact", "invoices",
+				"estimations", "creditNotes", "transportDocuments", "business", "version", "defaultPriceList", "defaultPaymentType", "creationTime"));
 		LogRecord rec = LogRecord.fetchLastN(authenticatedPrincipal.getBusiness().getId(), 1).get(0);
 		assertEquals(EntityType.CLIENT, rec.getEntityType());
 		assertEquals(clientID, rec.getEntityID());

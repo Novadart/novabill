@@ -170,6 +170,7 @@ public class PaymentTypeServiceTest extends ServiceTest {
 		assertEquals(OperationType.DELETE, rec.getOperationType());
 		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
 		assertEquals(paymentType.getName(), details.get(DBLoggerAspect.PAYMENT_TYPE_NAME));
+		assertEquals(true, rec.isReferringToDeletedEntity());
 	}
 	
 	@Test(expected = DataAccessException.class)

@@ -31,6 +31,7 @@ import com.novadart.novabill.domain.AccountingDocument;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.dto.transformer.BusinessDTOTransformer;
 import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.service.validator.Groups.HeavyBusiness;
 import com.novadart.novabill.service.validator.SimpleValidator;
 import com.novadart.novabill.service.web.BusinessService;
 import com.novadart.novabill.shared.client.data.LayoutType;
@@ -369,7 +370,7 @@ public class BusinessServiceTest extends ServiceTest {
 		Business business = TestUtils.createBusiness();
 		business.setVatID(null);
 		business.setSsn(null);
-		validator.validate(business);
+		validator.validate(business, HeavyBusiness.class);
 	}
 	
 	@Test(expected = ValidationException.class)
@@ -377,7 +378,7 @@ public class BusinessServiceTest extends ServiceTest {
 		Business business = TestUtils.createBusiness();
 		business.setVatID("");
 		business.setSsn("    ");
-		validator.validate(business);
+		validator.validate(business, HeavyBusiness.class);
 	}
 
 	@Test

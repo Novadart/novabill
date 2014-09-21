@@ -1,4 +1,8 @@
-.transport-documents .new-transport-document,
+.transport-documents .new-transport-document {
+	margin-right: 10px;
+    margin-left: 16px;
+}
+
 .transport-documents .new-transporter {
     margin-top: 10px;
     margin-left: 16px;

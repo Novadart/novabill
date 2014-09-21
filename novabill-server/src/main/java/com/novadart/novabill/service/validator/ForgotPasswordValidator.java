@@ -19,7 +19,7 @@ public class ForgotPasswordValidator {
 	public void validate(ForgotPassword forgotPassword, Errors errors, ValidationType validationType){
 		if(validationType == ValidationType.FULL_VALIDATION)
 			validator.validate(forgotPassword, errors);
-		if(Principal.findByUsername(forgotPassword.getEmail()) == null)
+		if(forgotPassword.getEmail() == null || Principal.findByUsername(forgotPassword.getEmail()) == null)
 				errors.rejectValue("email", "registration.email.notexists");
 	}
 

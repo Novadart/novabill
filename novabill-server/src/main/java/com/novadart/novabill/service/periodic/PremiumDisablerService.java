@@ -41,6 +41,25 @@ public class PremiumDisablerService implements PeriodicService {
 		notifySoonToExpireAccounts(7);
 	}
 	
+	private void createPendingPremiumDowngradeNotification(Business business, int days) {
+		Notification notification = new Notification();
+		switch (days) {
+		case 7:
+			notification.setType(NotificationType.PREMIUM_DOWNGRADE_7_DAYS);
+			break;
+		case 15:
+			notification.setType(NotificationType.PREMIUM_DOWNGRADE_15_DAYS);
+			break;
+		case 30:
+			notification.setType(NotificationType.PREMIUM_DOWNGRADE_30_DAYS);
+			break;
+		default:
+			throw new IllegalArgumentException("Wrong number of days");
+		}
+		notification.setBusiness(business);
+		business.getNotifications().add(notification);
+	}
+	
 	@Async
 	@Transactional(readOnly = true)
 	private void notifySoonToExpireAccounts(int days){
@@ -53,6 +72,7 @@ public class PremiumDisablerService implements PeriodicService {
 				.setParameter("rbound", rbound)
 				.setParameter("role", RoleType.ROLE_BUSINESS_PREMIUM).getResultList();
 		for(Principal principal: soonToExpirePrincipals){
+			createPendingPremiumDowngradeNotification(principal.getBusiness(), days);
 			Map<String, Object> model = new HashMap<String, Object>();
 			model.put("expired", false);
 			model.put("days", days);
@@ -61,7 +81,7 @@ public class PremiumDisablerService implements PeriodicService {
 		}
 	}
 	
-	private void createNotification(Business business){
+	private void createPremiumDowngradeNotification(Business business){
 		Notification notification = new Notification();
 		notification.setType(NotificationType.PREMIUM_DOWNGRADE);
 		notification.setBusiness(business);
@@ -80,7 +100,7 @@ public class PremiumDisablerService implements PeriodicService {
 			Map<String, Object> model = new HashMap<String, Object>();
 			model.put("expired", true);
 			sendMessage(principal.getUsername(), "Il tuo piano Premium è scaduto", model, "mail-templates/premium-expiration-notification.vm");
-			createNotification(principal.getBusiness());
+			createPremiumDowngradeNotification(principal.getBusiness());
 			logger.info("Disabled expired account of principal {} with VATID {}", principal.getUsername(), principal.getBusiness().getVatID());
 		}
 	}

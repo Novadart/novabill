@@ -29,7 +29,8 @@ public class PrivateController {
 	private final ObjectMapper mapper = new ObjectMapper();
 	
 	public static enum PAGES {
-		DASHBOARD, CLIENTS, COMMODITIES, PRICE_LISTS, PAYMENTS, SETTINGS, INVOICES, ESTIMATIONS, TRANSPORT_DOCUMENTS, CREDIT_NOTES, PREMIUM, SHARE
+		DASHBOARD, CLIENTS, COMMODITIES, PRICE_LISTS, PAYMENTS, SETTINGS, INVOICES, ESTIMATIONS, TRANSPORT_DOCUMENTS, 
+		CREDIT_NOTES, PREMIUM, SHARE, STATISTICS_GENERAL, STATISTICS_CLIENTS, STATISTICS_COMMODITIES 
 	}
 
 
@@ -128,6 +129,27 @@ public class PrivateController {
 	public ModelAndView share(){
 		ModelAndView mav = new ModelAndView("private.share");
 		mav.addObject("activePage", PAGES.SHARE);
+		return mav;
+	}
+	
+	@RequestMapping(value = Urls.PRIVATE_STATISTICS_GENERAL, method = RequestMethod.GET)
+	public ModelAndView statsGeneral(){
+		ModelAndView mav = new ModelAndView("private.statistics.general");
+		mav.addObject("activePage", PAGES.STATISTICS_GENERAL);
+		return mav;
+	}
+	
+	@RequestMapping(value = Urls.PRIVATE_STATISTICS_CLIENTS, method = RequestMethod.GET)
+	public ModelAndView statsClients(){
+		ModelAndView mav = new ModelAndView("private.statistics.clients");
+		mav.addObject("activePage", PAGES.STATISTICS_CLIENTS);
+		return mav;
+	}
+	
+	@RequestMapping(value = Urls.PRIVATE_STATISTICS_COMMODITIES, method = RequestMethod.GET)
+	public ModelAndView statsCommodities(){
+		ModelAndView mav = new ModelAndView("private.statistics.commodities");
+		mav.addObject("activePage", PAGES.STATISTICS_COMMODITIES);
 		return mav;
 	}
 	

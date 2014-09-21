@@ -28,6 +28,17 @@
         </form>
         <div class="similar-clients-message" ng-show="allowNewClient && newClientMode">{{'SIMILAR_CLIENTS' | translate}}</div>
 
+        <div class="text-center text-muted" ng-show="!allowNewClient && !newClientMode && loadedClientsCount === 0">
+            <br />
+            <br />
+            <br />
+            <br />
+            <div>{{'SELECT_CLIENT_ALERT' | translate}}</div>
+            <button type="button" class="btn btn-sm green" ng-click="addClientClick()">
+                {{'NEW_CLIENT' | translate}}
+            </button>
+        </div>
+
 		<div class="scroller" n-div-infinite-scroll="loadMoreClients()">
 			<div ng-repeat="c in clients" class="well well-sm client" ng-click="select(c.id)">{{c.name}}</div>
 		</div>

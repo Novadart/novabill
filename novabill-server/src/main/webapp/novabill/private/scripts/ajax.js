@@ -299,6 +299,36 @@ angular.module('novabill.ajax', ['ngResource', 'angularFileUpload', 'novabill.lo
 		},
 		
 		
+		/*
+		 * Stats resource
+		 */
+		Stats : function() {
+			return {
+				
+				getGeneralBIStats: function(params, successFn, failureFn){
+					$http({
+						method : 'GET',
+						url : baseUrl + 'businesses/' + businessId + '/bizintel/genstats/' + params.year
+					}).success( successFn ).error( failureFn );
+				},
+				
+				getClientBIStats: function(params, successFn, failureFn){
+					$http({
+						method : 'GET',
+						url : baseUrl + 'businesses/' + businessId + '/bizintel/clientstats/' + params.clientID + '/' + params.year
+					}).success( successFn ).error( failureFn );
+				},
+				
+				getCommodityBIStats: function(params, successFn, failureFn){
+					$http({
+						method : 'GET',
+						url : baseUrl + 'businesses/' + businessId + '/bizintel/commoditystats/' + params.commodityID + '/' + params.year
+					}).success( successFn ).error( failureFn );
+				}
+				
+			};
+		},
+		
 		
 		/*
 		 * Transporter resource

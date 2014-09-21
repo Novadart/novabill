@@ -25,6 +25,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 import org.springframework.web.bind.support.SessionStatus;
 
+import com.dumbster.smtp.SimpleSmtpServer;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.UtilsService;
@@ -71,7 +72,10 @@ public class DeleteAccountTest extends AuthenticatedTest {
 		deleteAccount.setPassword(password);
 		BindingResult result = mock(BindingResult.class);
 		when(result.hasErrors()).thenReturn(false);
+		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
 		String redirectLogoutView = deleteAccountController.processSubmit(deleteAccount, result, mock(SessionStatus.class));
+		smtpServer.stop();
+		assertEquals(1, smtpServer.getReceivedEmailSize()); //notification email
 		Principal.entityManager().flush();
 		assertEquals("private.deleteAccount", deleteAccountView);
 		assertEquals("forward:/resources/logout", redirectLogoutView);

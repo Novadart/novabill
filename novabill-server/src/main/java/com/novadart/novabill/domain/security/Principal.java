@@ -34,7 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.novadart.novabill.annotation.Hash;
 import com.novadart.novabill.annotation.Trimmed;
 import com.novadart.novabill.domain.Business;
-import com.novadart.novabill.domain.Registration;
+import com.novadart.novabill.web.mvc.command.Registration;
 
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"username"}))
 @Configurable
@@ -87,8 +87,8 @@ public class Principal implements UserDetails {
 	}
 	
 	public static Principal findByUsername(String username){
-    	String query = "select pd from Principal pd where pd.username = :username";
-    	List<Principal> result = entityManager().createQuery(query, Principal.class).setParameter("username", username).getResultList();
+    	String query = "select pd from Principal pd where lower(pd.username) = :username";
+    	List<Principal> result = entityManager().createQuery(query, Principal.class).setParameter("username", username.toLowerCase()).getResultList();
     	return result.size() == 0? null: result.get(0);
     }
 	

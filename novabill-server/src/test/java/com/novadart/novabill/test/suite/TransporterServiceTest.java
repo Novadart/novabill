@@ -4,6 +4,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
+import java.util.Map;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,10 +15,16 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.novadart.novabill.aspect.logging.DBLoggerAspect;
 import com.novadart.novabill.domain.Business;
+import com.novadart.novabill.domain.LogRecord;
 import com.novadart.novabill.domain.Transporter;
 import com.novadart.novabill.domain.dto.transformer.BusinessDTOTransformer;
 import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.shared.client.data.EntityType;
+import com.novadart.novabill.shared.client.data.OperationType;
 import com.novadart.novabill.shared.client.dto.TransporterDTO;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
@@ -46,7 +55,7 @@ public class TransporterServiceTest extends ServiceTest{
 	}
 	
 	@Test
-	public void addAuthorizedTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException{
+	public void addAuthorizedTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, JsonParseException, JsonMappingException, IOException{
 		TransporterDTO transporterDTO = new TransporterDTO();
 		String transporterDesc = "Transporter description";
 		transporterDTO.setName("Jason");
@@ -54,6 +63,12 @@ public class TransporterServiceTest extends ServiceTest{
 		transporterDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
 		Long id = transporterService.add(transporterDTO);
 		assertEquals(transporterDesc, Transporter.findTransporter(id).getDescription());
+		LogRecord rec = LogRecord.fetchLastN(authenticatedPrincipal.getBusiness().getId(), 1).get(0);
+		assertEquals(EntityType.TRANSPORTER, rec.getEntityType());
+		assertEquals(id, rec.getEntityID());
+		assertEquals(OperationType.CREATE, rec.getOperationType());
+		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
+		assertEquals(transporterDTO.getName(), details.get(DBLoggerAspect.TRANSPORTER_NAME));
 	}
 	
 	@Test(expected = DataAccessException.class)
@@ -98,7 +113,7 @@ public class TransporterServiceTest extends ServiceTest{
 	}
 	
 	@Test
-	public void updateAuthorizedTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException {
+	public void updateAuthorizedTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException, JsonParseException, JsonMappingException, IOException {
 		TransporterDTO transporterDTO = new TransporterDTO();
 		String transporterDesc = "Transporter description";
 		transporterDTO.setName("Jason");
@@ -111,6 +126,12 @@ public class TransporterServiceTest extends ServiceTest{
 		transporterService.update(transporterDTO);
 		Transporter.entityManager().flush();
 		assertEquals("Updated transporter description", Transporter.findTransporter(id).getDescription());
+		LogRecord rec = LogRecord.fetchLastN(authenticatedPrincipal.getBusiness().getId(), 1).get(0);
+		assertEquals(EntityType.TRANSPORTER, rec.getEntityType());
+		assertEquals(id, rec.getEntityID());
+		assertEquals(OperationType.UPDATE, rec.getOperationType());
+		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
+		assertEquals(transporterDTO.getName(), details.get(DBLoggerAspect.TRANSPORTER_NAME));
 	}
 	
 	@Test(expected = DataAccessException.class)
@@ -158,7 +179,7 @@ public class TransporterServiceTest extends ServiceTest{
 	}
 	
 	@Test
-	public void removeAuthorizedTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException{
+	public void removeAuthorizedTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, JsonParseException, JsonMappingException, IOException{
 		TransporterDTO transporterDTO = new TransporterDTO();
 		String transporterDesc = "Transporter description";
 		transporterDTO.setDescription(transporterDesc);
@@ -169,6 +190,13 @@ public class TransporterServiceTest extends ServiceTest{
 		transporterService.remove(authenticatedPrincipal.getBusiness().getId(), id);
 		Transporter.entityManager().flush();
 		assertTrue(Transporter.findTransporter(id) == null);
+		LogRecord rec = LogRecord.fetchLastN(authenticatedPrincipal.getBusiness().getId(), 1).get(0);
+		assertEquals(EntityType.TRANSPORTER, rec.getEntityType());
+		assertEquals(id, rec.getEntityID());
+		assertEquals(OperationType.DELETE, rec.getOperationType());
+		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
+		assertEquals(transporterDTO.getName(), details.get(DBLoggerAspect.TRANSPORTER_NAME));
+		assertEquals(true, rec.isReferringToDeletedEntity());
 	}
 	
 	@Test(expected = DataAccessException.class)

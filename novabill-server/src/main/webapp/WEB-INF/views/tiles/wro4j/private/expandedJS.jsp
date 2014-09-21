@@ -6,6 +6,7 @@
 
 <script src="${novabillDepsUrl}/angular/angular.js"></script>
 <script src="${novabillDepsUrl}/angular/angular-route.js"></script>
+<script src="${novabillDepsUrl}/angular/angular-cookies.js"></script>
 <script src="${novabillDepsUrl}/angular/angular-sanitize.js"></script>
 <script src="${novabillDepsUrl}/angular/angular-animate.js"></script>
 <script src="${novabillDepsUrl}/angular/angular-resource.js"></script>
@@ -17,6 +18,7 @@
 <script src="${novabillDepsUrl}/ng-infinite-scroll.min.js"></script>
 <script src="${novabillDepsUrl}/stacktracejs-0.6.0/stacktrace.js"></script>
 <script src="${novabillDepsUrl}/AngularJS-Toaster-0.4.7/toaster.js"></script>
+<script src="${novabillDepsUrl}/ng-google-chart-0.0.11.js"></script>
 
 <script src="${novabillCoreUrl}/scripts/logging.js" type="text/javascript"></script>
 <script src="${novabillCoreUrl}/scripts/ajax.js" type="text/javascript"></script>
@@ -48,6 +50,10 @@
 <script src="${novabillCoreUrl}/scripts/settings-controllers.js" type="text/javascript"></script>
 <script src="${novabillCoreUrl}/scripts/share.js" type="text/javascript"></script>
 <script src="${novabillCoreUrl}/scripts/share-controllers.js" type="text/javascript"></script>
+<script src="${novabillCoreUrl}/scripts/stats-general.js" type="text/javascript"></script>
+<script src="${novabillCoreUrl}/scripts/stats-clients.js" type="text/javascript"></script>
+<script src="${novabillCoreUrl}/scripts/stats-commodities.js" type="text/javascript"></script>
+<script src="${novabillCoreUrl}/scripts/stats-controllers.js" type="text/javascript"></script>
 <script src="${novabillCoreUrl}/scripts/payments.js" type="text/javascript"></script>
 <script src="${novabillCoreUrl}/scripts/payments-controllers.js" type="text/javascript"></script>
 <script src="${novabillCoreUrl}/scripts/hello.js" type="text/javascript"></script>

@@ -6,10 +6,13 @@ import java.util.Date;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.novadart.novabill.frontend.client.Configuration;
+import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
+import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.i18n.I18NM;
 import com.novadart.novabill.frontend.client.widget.dialog.client.ClientDialog;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
+import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 
 public class DocumentUtils {
@@ -79,7 +82,49 @@ public class DocumentUtils {
 			callback.onSuccess(client);
 		}
 	}
+	
+	public static void showBusinessDialogIfBusinessInformationNotComplete(final AsyncCallback<Void> callback){
+		BusinessDTO b = Configuration.getBusiness();
+		
+		if( isEmpty( b.getSsn() ) 
+				|| isEmpty( b.getVatID() )
+				|| isEmpty( b.getAddress() )
+				|| isEmpty( b.getCity() )
+				|| isEmpty( b.getPostcode() )
+				|| isEmpty( b.getProvince() )
+				|| isEmpty( b.getCountry() ) ){
+			
+			showBusinessDialog(new BusinessUpdatedCallback() {
+				
+				@Override
+				public void onUpdateComplete() {
+					ServerFacade.INSTANCE.getBusinessService().get(Configuration.getBusinessId(), new ManagedAsyncCallback<BusinessDTO>() {
+						
+						@Override
+						public void onSuccess(BusinessDTO result) {
+							Configuration.setBusiness(result);
+							callback.onSuccess(null);
+						}
+					});
+					
+				}
+			});
 
+		} else {
+			callback.onSuccess(null);
+		}
+	}
+	
+	private static interface BusinessUpdatedCallback {
+		public void onUpdateComplete();
+	}
+	
+	
+	private static native void showBusinessDialog(BusinessUpdatedCallback callback)/*-{
+		$wnd.Angular_Dialogs.business(function(){
+			callback.@com.novadart.novabill.frontend.client.util.DocumentUtils.BusinessUpdatedCallback::onUpdateComplete()();
+		});
+	}-*/;
 
 	public static String validateAccountingDocumentItem(String description, String price, 
 			String quantity, String weight, String unitOfMeasure, BigDecimal tax, String discount){

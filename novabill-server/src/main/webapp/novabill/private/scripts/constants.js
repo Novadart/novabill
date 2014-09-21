@@ -64,6 +64,7 @@ angular.module('novabill.constants', [])
 			publicShareBaseUrl : basePath + 'share?businessID='+businessId+'&token=preview',
 			settingsBaseUrl : basePath + 'private/settings/',
 			shareBaseUrl : basePath + 'private/share/',
+			statsBaseUrl : basePath + 'private/stats/',
 			transportDocumentsBaseUrl : basePath + 'private/transport-documents/'
 	};
 
@@ -109,7 +110,8 @@ angular.module('novabill.constants', [])
 					TRANSPORT_DOCUMENT : 'TRANSPORT_DOCUMENT',
 					PAYMENT_TYPE : 'PAYMENT_TYPE',
 					PRICE_LIST : 'PRICE_LIST',
-					SHARING_PERMIT : 'SHARING_PERMIT'
+					SHARING_PERMIT : 'SHARING_PERMIT',
+					TRANSPORTER : 'TRANSPORTER'
 				},
 
 				operationType : {
@@ -157,10 +159,18 @@ angular.module('novabill.constants', [])
 
 				share : function(){ return baseConf.shareBaseUrl + '#/'; },
 				
+				statsGeneral : function(year){ return baseConf.statsBaseUrl + '#/' + year; },
+				statsClients : function(clientID, year){ return baseConf.statsBaseUrl + 'clients/#/' +clientID + '/' + year; },
+				statsCommodities : function(commodityID, year){ return baseConf.statsBaseUrl + 'commodities/#/' + commodityID + '/' + year; },
+				
+				settingsBusiness : function(year){ return baseConf.settingsBaseUrl + '#/'; }, 
+				
 				transportDocumentList : function(){ return baseConf.transportDocumentsBaseUrl + '#/'; },
 				transportDocumentNew : function(clientId){ return baseConf.transportDocumentsBaseUrl + '#/new/' + clientId; },
 				transportDocumentFromEstimation : function(estimationId){ return baseConf.transportDocumentsBaseUrl + '#/from-estimation/' + estimationId; },
-				transportDocumentDetails : function(transportDocumentId){ return baseConf.transportDocumentsBaseUrl + '#/details/' + transportDocumentId; }
+				transportDocumentDetails : function(transportDocumentId){ return baseConf.transportDocumentsBaseUrl + '#/details/' + transportDocumentId; },
+				
+				transporters : function(){ return baseConf.transportDocumentsBaseUrl + '#/?tab=transporters'; }
 
 			},
 

@@ -46,6 +46,7 @@ import com.novadart.novabill.domain.dto.transformer.SharingPermitDTOTransformer;
 import com.novadart.novabill.domain.dto.transformer.TransporterDTOTransformer;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.UtilsService;
+import com.novadart.novabill.service.validator.Groups.HeavyBusiness;
 import com.novadart.novabill.service.validator.SimpleValidator;
 import com.novadart.novabill.shared.client.data.LayoutType;
 import com.novadart.novabill.shared.client.data.PriceListConstants;
@@ -171,7 +172,7 @@ public abstract class BusinessServiceImpl implements BusinessService {
 	public void update(BusinessDTO businessDTO) throws DataAccessException, NoSuchObjectException, ValidationException {
 		Business business = Business.findBusiness(businessDTO.getId());
 		BusinessDTOTransformer.copyFromDTO(business, businessDTO);
-		validator.validate(business);
+		validator.validate(business, HeavyBusiness.class);
 	}
 	
 	@Override

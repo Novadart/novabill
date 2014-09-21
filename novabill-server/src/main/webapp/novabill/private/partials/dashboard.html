@@ -2,6 +2,7 @@
 	<!-- BEGIN PAGE HEADER-->
             <div class="row">
                 <div class="col-md-12">
+
                     <!-- BEGIN PAGE TITLE & BREADCRUMB-->           
                     <h3 class="page-title">
                         Dashboard  <small>{{'STATISTICS_AND_MORE' | translate}}</small>
@@ -22,6 +23,19 @@
                 </div>
             </div>
             <!-- END PAGE HEADER-->
+            
+             <div ng-show="incompleteBusinessAlert" class="col-md-8 col-md-offset-2 alert alert-warning alert-dismissable text-center">
+                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+                 <span ng-bind-html="incompleteBusinessAlert"></span>
+             </div>
+             
+             <div ng-show="showFirstRunAlert" class="col-md-8 col-md-offset-2 alert alert-info alert-dismissable text-center">
+                 <button type="button" ng-click="closeFirstRunAlert()" class="close" data-dismiss="alert" aria-hidden="true"></button>
+                 <h3>{{'ALERT_FIRST_RUN_VIDEO' | translate}}</h3>
+                 <br>
+                 <iframe width="640" height="360" src="//www.youtube.com/embed/qWv0UQ3Q3Dk" frameborder="0" allowfullscreen></iframe>
+             </div>
+            
             <!-- BEGIN DASHBOARD STATS -->
             <div class="row">
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
@@ -72,7 +86,7 @@
                                 <span ng-show="plusTax">{{stats.totalAfterTaxesForYear | currency}}</span>
                                 <label style=""><input type="checkbox" ng-model="plusTax"> + {{'TAX' | translate}}</label>
                             </div>
-                            <div class="desc">{{'TOTAL_BEFORE_TAXES' | translate}}</div>
+                            <div class="desc">{{'TOTAL_INVOICING' | translate}}</div>
                         </div>
                     </div>
                 </div>

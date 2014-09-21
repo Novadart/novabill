@@ -34,6 +34,7 @@ import com.novadart.novabill.aspect.logging.ExceptionTraceAspect;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Email;
 import com.novadart.novabill.domain.EmailStatus;
+import com.novadart.novabill.domain.Notification;
 import com.novadart.novabill.domain.Transaction;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.domain.security.RoleType;
@@ -120,21 +121,28 @@ public class AccountUpgradeTest extends AuthenticatedTest {
 		
 		SmtpMessage email = (SmtpMessage)smtpServer.getReceivedEmail().next();
 		assertEquals(business.getPrincipals().iterator().next().getUsername(), email.getHeaderValue("To"));
+		
 	}
 	
 	@Test
 	public void accountExpirationIn7DaysNotificationTest(){
 		accountExpirationInNDaysNotificationTest(7);
+		Notification notification = Notification.findAllNotifications().iterator().next();
+		assertEquals(NotificationType.PREMIUM_DOWNGRADE_7_DAYS, notification.getType());
 	}
 	
 	@Test
 	public void accountExpirationIn15DaysNotificationTest(){
 		accountExpirationInNDaysNotificationTest(15);
+		Notification notification = Notification.findAllNotifications().iterator().next();
+		assertEquals(NotificationType.PREMIUM_DOWNGRADE_15_DAYS, notification.getType());
 	}
 	
 	@Test
 	public void accountExpirationIn30DaysNotificationTest(){
 		accountExpirationInNDaysNotificationTest(30);
+		Notification notification = Notification.findAllNotifications().iterator().next();
+		assertEquals(NotificationType.PREMIUM_DOWNGRADE_30_DAYS, notification.getType());
 	}
 
 	@Test

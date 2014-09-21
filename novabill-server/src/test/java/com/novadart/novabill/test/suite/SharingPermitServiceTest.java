@@ -115,6 +115,7 @@ public class SharingPermitServiceTest extends ServiceTest {
 		assertEquals(OperationType.DELETE, rec.getOperationType());
 		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
 		assertEquals(sharingPermit.getDescription(), details.get(DBLoggerAspect.SHARING_PERMIT_DESC));
+		assertEquals(true, rec.isReferringToDeletedEntity());
 	}
 	
 	@Test(expected = AccessDeniedException.class)

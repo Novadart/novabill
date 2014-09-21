@@ -8,11 +8,68 @@ angular.module('novabill.notifications', ['novabill.ajax', 'toaster'])
 	
 	$rootScope.addToast = function(not){
 		switch (not.type) {
-		case 'PREMIUM_UPGRADE':
+		
+		case 'INVOICE_DOWNLOADED':
 			toaster.pop(
 					'success', 
-					'Piano Premium attivato!', 
-					'Ti confermiamo che il piano "Premium" è stato attivato correttamente.<br>Puoi iniziare subito a utilizzare le funzionalità aggiuntive.<br><br>Grazie,<br>Il Team Novabill', 
+					not.message, 
+					'', 
+					0, 
+					'trustedHtml', 
+					function(){
+						Business.markNotificationAsSeen({notificationId : not.id});
+						return true;
+					}
+			);
+			break;
+		
+		case 'PREMIUM_DOWNGRADE':
+			toaster.pop(
+					'warning', 
+					'Piano Premium scaduto', 
+					'Il piano "Premium" che avevi sottoscritto è scaduto ed è stato disattivato.<br>Se vuoi riattivarlo, premi sul link nella barra di intestazione.<br><br>Grazie,<br>Il Team Novabill', 
+					0, 
+					'trustedHtml', 
+					function(){
+						Business.markNotificationAsSeen({notificationId : not.id});
+						return true;
+					}
+			);
+			break;
+			
+		case 'PREMIUM_DOWNGRADE_30_DAYS':
+			toaster.pop(
+					'warning', 
+					'Piano Premium in scadenza', 
+					'Il piano "Premium" che hai sottoscritto scade tra 30 giorni.<br>Per prolungarlo, accedi al tuo profilo nella sezione "Impostazioni".<br><br>Grazie,<br>Il Team Novabill', 
+					0, 
+					'trustedHtml', 
+					function(){
+						Business.markNotificationAsSeen({notificationId : not.id});
+						return true;
+					}
+			);
+			break;
+			
+		case 'PREMIUM_DOWNGRADE_15_DAYS':
+			toaster.pop(
+					'warning', 
+					'Piano Premium in scadenza', 
+					'Il piano "Premium" che hai sottoscritto scade tra 15 giorni.<br>Per prolungarlo, accedi al tuo profilo nella sezione "Impostazioni".<br><br>Grazie,<br>Il Team Novabill', 
+					0, 
+					'trustedHtml', 
+					function(){
+						Business.markNotificationAsSeen({notificationId : not.id});
+						return true;
+					}
+			);
+			break;
+			
+		case 'PREMIUM_DOWNGRADE_7_DAYS':
+			toaster.pop(
+					'warning', 
+					'Piano Premium in scadenza', 
+					'Il piano "Premium" che hai sottoscritto scade tra 7 giorni.<br>Per prolungarlo, accedi al tuo profilo nella sezione "Impostazioni".<br><br>Grazie,<br>Il Team Novabill', 
 					0, 
 					'trustedHtml', 
 					function(){
@@ -35,12 +92,12 @@ angular.module('novabill.notifications', ['novabill.ajax', 'toaster'])
 					}
 			);
 			break;
-
-		case 'PREMIUM_DOWNGRADE':
+			
+		case 'PREMIUM_UPGRADE':
 			toaster.pop(
-					'warning', 
-					'Piano Premium scaduto', 
-					'Il piano "Premium" che avevi sottoscritto è scaduto ed è stato disattivato.<br>Se vuoi riattivarlo, premi sul link nella barra di intestazione.<br><br>Grazie,<br>Il Team Novabill', 
+					'success', 
+					'Piano Premium attivato!', 
+					'Ti confermiamo che il piano "Premium" è stato attivato correttamente.<br>Puoi iniziare subito a utilizzare le funzionalità aggiuntive.<br><br>Grazie,<br>Il Team Novabill', 
 					0, 
 					'trustedHtml', 
 					function(){

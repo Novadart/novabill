@@ -25,8 +25,13 @@
                     
                     <div class="container-fluid">
                           <div class="row">
-                            <button type="button" class="btn green new-transport-document" ng-click="newTransportDocumentClick()">{{'NEW_TRANSPORT_DOCUMENT' | translate}}</button>
+                            <button type="button" class="btn green new-transport-document pull-left" ng-click="newTransportDocumentClick()">{{'NEW_TRANSPORT_DOCUMENT' | translate}}</button>
 	
+	                        <div class="docs-filter input-icon left pull-left">
+				                <i class="fa fa-search"></i> <input type="text" class="form-control input-large" autofocus="autofocus" type="text"
+				                    placeholder="{{'FILTER' | translate}}..." ng-model="$parent.query">
+				            </div>
+				            
 	                        <n-year-selector class="pull-right" document-type="transportDocuments" callback="loadTransportDocuments(year)"></n-year-selector>
 	
 	                        <div class="clearfix"></div>

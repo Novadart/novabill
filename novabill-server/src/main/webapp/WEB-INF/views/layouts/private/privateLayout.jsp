@@ -30,6 +30,9 @@
 <spring:url var="priceListsUrl" value="/private/price-lists/" />
 <spring:url var="paymentsUrl" value="/private/payments/" />
 <spring:url var="settingsUrl" value="/private/settings/" />
+<spring:url var="statisticsGeneralUrl" value="/private/stats/" />
+<spring:url var="statisticsClientsUrl" value="/private/stats/clients/" />
+<spring:url var="statisticsCommoditiesUrl" value="/private/stats/commodities/" />
 <spring:url var="shareUrl" value="/private/share/" />
 <spring:url var="clientUiErrorUrl" value="/private/ajax/clientuierror" />
 
@@ -43,6 +46,7 @@
 	PAGES activePage = (PAGES)request.getAttribute("activePage");
 	Principal principal = (Principal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	Business business = principal.getBusiness();
+	boolean isPremium = principal.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_PREMIUM);
 %>
 
 <compress:html enabled="${mvn.tiles.minify.html}" compressJavaScript="${mvn.tiles.minify.html}" compressCss="${mvn.tiles.minify.html}"> 
@@ -116,6 +120,21 @@ window.onerror = function(message, source, line, column) {
 };
 
 </script>
+
+<style type="text/css">
+.premium-label {
+    display: none;
+}
+
+li:HOVER .premium-only .premium-label {
+    display: inline;
+}
+
+.premium-only {
+    color: #999;
+}
+</style>
+
 </head>
 <!-- END HEAD -->
 <!-- BEGIN BODY -->
@@ -233,13 +252,13 @@ window.onerror = function(message, source, line, column) {
 				</li>
 
 				<li class="<%=PAGES.COMMODITIES.equals(activePage) ? "active" : ""%>"><a href="${commoditiesUrl}"> <i
-						class="fa fa-th"></i> <span class="title">Articoli</span> <%
+						class="fa fa-th"></i> <span class="title <%=!isPremium ? "premium-only" : ""%>">Articoli <span class="label label-primary premium-label">Premium</span></span> <%
                         if(PAGES.COMMODITIES.equals(activePage)) {
                     %> <span class="selected"></span> <%} %>
 				</a></li>
 
 				<li class="<%=PAGES.PRICE_LISTS.equals(activePage) ? "active" : ""%>"><a href="${priceListsUrl}"> <i
-						class="fa fa-dollar"></i> <span class="title">Listini</span> <%
+						class="fa fa-dollar"></i> <span class="title <%=!isPremium ? "premium-only" : ""%>">Listini <span class="label label-primary premium-label">Premium</span></span> <%
                         if(PAGES.PRICE_LISTS.equals(activePage)) {
                     %> <span class="selected"></span> <%} %>
 				</a></li>
@@ -248,13 +267,40 @@ window.onerror = function(message, source, line, column) {
 					<div class="spacer" style="margin: 20px 0;"></div>
 				</li>
 
-				<li class="<%=PAGES.PAYMENTS.equals(activePage) ? "active last" : "last" %>"><a href="${paymentsUrl}"> <i
+				<li class="<%=PAGES.PAYMENTS.equals(activePage) ? "active" : "" %>">
+				    <a href="${paymentsUrl}"> <i
 						class="fa fa-briefcase"></i> <span class="title">Pagamenti</span> <% if(PAGES.PAYMENTS.equals(activePage)) { %> <span
 						class="selected"></span> <%} %>
-				</a></li>
+				    </a>
+				</li>
 				
-				<li class="<%=PAGES.SHARE.equals(activePage) ? "active last" : "last" %>"><a href="${shareUrl}"> <i
-                        class="fa fa-group"></i> <span class="title">Condivisione</span> <% if(PAGES.SHARE.equals(activePage)) { %> <span
+                <li class="<%=PAGES.STATISTICS_GENERAL.equals(activePage) || PAGES.STATISTICS_CLIENTS.equals(activePage) || PAGES.STATISTICS_COMMODITIES.equals(activePage)? "active" : "" %>">
+                    <a href="javascript:;">
+                    <i class="fa fa-bar-chart-o"></i> 
+                    <span class="title <%=!isPremium ? "premium-only" : ""%>">Statistiche <span class="label label-primary premium-label">Premium</span></span>                  
+                    <span class="arrow "></span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="<%=PAGES.STATISTICS_GENERAL.equals(activePage) ? "active" : "" %> <%=!isPremium ? " premium-only" : ""%>" >
+                            <a href="${statisticsGeneralUrl}"><i class="fa fa-dashboard"></i> Generali <span class="label label-primary premium-label">Premium</span></a>
+                        </li>
+                        <li class="<%=PAGES.STATISTICS_CLIENTS.equals(activePage) ? "active" : "" %> <%=!isPremium ? " premium-only" : ""%>">
+                            <a href="${statisticsClientsUrl}"><i class="fa fa-user"></i> Clienti <span class="label label-primary premium-label">Premium</span></a>
+                        </li>
+                        <li class="<%=PAGES.STATISTICS_COMMODITIES.equals(activePage) ? "active" : "" %> <%=!isPremium ? " premium-only" : ""%>">
+                            <a href="${statisticsCommoditiesUrl}"><i class="fa fa-th"></i> Articoli <span class="label label-primary premium-label">Premium</span></a>
+                        </li>
+                    </ul>
+                </li>
+                
+				
+				<li>
+                    <div class="spacer" style="margin: 20px 0;"></div>
+                </li>
+				
+				<li class="<%=PAGES.SHARE.equals(activePage) ? "active last" : "last" %> "><a href="${shareUrl}"> <i
+                        class="fa fa-group"></i> <span class="title <%=!isPremium ? "premium-only" : ""%>">
+                            Condivisione <span class="label label-primary premium-label">Premium</span></span> <% if(PAGES.SHARE.equals(activePage)) { %> <span
                         class="selected"></span> <%} %>
                 </a></li>
 
@@ -286,7 +332,7 @@ window.onerror = function(message, source, line, column) {
          	businessName : '<%=business.getName()%>',
          	principalEmail : '<%=principal.getUsername()%>',
          	principalCreationDate : <%=principal.getCreationTime()%>,
-            premium : <%=principal.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_PREMIUM)%>,
+            premium : <%=isPremium%>,
             defaultPriceListName : '<%=PriceListConstants.DEFAULT%>',
             basePath : '${basePath}',
             version : '<tiles:insertAttribute name="novabill.version" />'

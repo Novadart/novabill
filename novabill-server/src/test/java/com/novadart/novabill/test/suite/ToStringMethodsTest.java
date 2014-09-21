@@ -23,10 +23,10 @@ import com.novadart.novabill.domain.PaymentType;
 import com.novadart.novabill.domain.PesistentLogin;
 import com.novadart.novabill.domain.Price;
 import com.novadart.novabill.domain.PriceList;
-import com.novadart.novabill.domain.Registration;
 import com.novadart.novabill.domain.Transporter;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.domain.security.RoleType;
+import com.novadart.novabill.web.mvc.command.Registration;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath*:empty-context.xml")

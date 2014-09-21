@@ -166,6 +166,7 @@ public class CreditNoteServiceTest extends ServiceTest {
 		assertEquals(OperationType.DELETE, rec.getOperationType());
 		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
 		assertEquals(Client.findClient(clientID).getName(), details.get(DBLoggerAspect.CLIENT_NAME));
+		assertEquals(true, rec.isReferringToDeletedEntity());
 	}
 	
 	@Test(expected = DataAccessException.class)

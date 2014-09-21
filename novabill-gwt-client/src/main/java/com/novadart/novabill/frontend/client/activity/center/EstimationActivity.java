@@ -13,6 +13,7 @@ import com.novadart.novabill.frontend.client.place.estimation.ModifyEstimationPl
 import com.novadart.novabill.frontend.client.place.estimation.NewEstimationPlace;
 import com.novadart.novabill.frontend.client.presenter.center.estimation.ModifyEstimationPresenter;
 import com.novadart.novabill.frontend.client.presenter.center.estimation.NewEstimationPresenter;
+import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.frontend.client.view.center.estimation.EstimationView;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
@@ -63,16 +64,27 @@ public class EstimationActivity extends AbstractCenterActivity {
 
 
 	private void setupNewEstimationView(final AcceptsOneWidget panel, final EstimationView view, final NewEstimationPlace place){
-		ServerFacade.INSTANCE.getBatchfetcherService().fetchNewEstimationForClientOpData(place.getClientId(), new DocumentCallack<Pair<Long,ClientDTO>>() {
+		DocumentUtils.showBusinessDialogIfBusinessInformationNotComplete(new AsyncCallback<Void>() {
 
 			@Override
-			public void onSuccess(Pair<Long, ClientDTO> result) {
-				NewEstimationPresenter p = new NewEstimationPresenter(getClientFactory().getPlaceController(), 
-						getClientFactory().getEventBus(), view, getCallback());
-				p.setDataForNewEstimation(result.getSecond(), result.getFirst());
-				p.go(panel);
+			public void onFailure(Throwable caught) {
+			}
+
+			@Override
+			public void onSuccess(Void vo) {
+				ServerFacade.INSTANCE.getBatchfetcherService().fetchNewEstimationForClientOpData(place.getClientId(), new DocumentCallack<Pair<Long,ClientDTO>>() {
+
+					@Override
+					public void onSuccess(Pair<Long, ClientDTO> result) {
+						NewEstimationPresenter p = new NewEstimationPresenter(getClientFactory().getPlaceController(), 
+								getClientFactory().getEventBus(), view, getCallback());
+						p.setDataForNewEstimation(result.getSecond(), result.getFirst());
+						p.go(panel);
+					}
+				});
 			}
 		});
+		
 	}
 
 	private void setupModifyEstimationView(final AcceptsOneWidget panel, final EstimationView view, ModifyEstimationPlace place){

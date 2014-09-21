@@ -1,14 +1,14 @@
 'use strict';
 
 angular.module('novabill.dashboard.controllers', 
-		['novabill.directives', 'novabill.directives.dialogs', 'novabill.constants', 'novabill.translations', 'novabill.ajax'])
+		['novabill.directives', 'novabill.directives.dialogs', 'novabill.constants', 'novabill.translations', 'novabill.ajax', 'ngCookies'])
 
 
 /**
  * DASHBOARD CONTROLLER
  */
-.controller('DashboardCtrl', ['$scope', 'nConstants', '$filter', 'nAjax', 'nRecommendByEmailDialog', 'nAlertDialog',
-                              function($scope, nConstants, $filter, nAjax, nRecommendByEmailDialog, nAlertDialog){
+.controller('DashboardCtrl', ['$scope', 'nConstants', '$filter', 'nAjax', 'nRecommendByEmailDialog', 'nAlertDialog', '$cookies',
+                              function($scope, nConstants, $filter, nAjax, nRecommendByEmailDialog, nAlertDialog, $cookies){
 
 	var Business = nAjax.Business();
 
@@ -137,6 +137,20 @@ angular.module('novabill.dashboard.controllers',
 		    height: '300px'
 		});
 	});
+	
+	Business.get({id : nConstants.conf.businessId}, function(business){
+		if( !business.vatID || !business.ssn || !business.address || !business.city || !business.postcode 
+				|| !business.province || !business.country){
+			$scope.incompleteBusinessAlert = $filter('translate')('ALERT_MISSING_BUSINESS_INFO_DASHBOARD', {link : nConstants.url.settingsBusiness()});
+		}
+	});
+	
+	
+	$scope.showFirstRunAlert =  (new Date().getTime() - nConstants.conf.principalCreationDate) <= 604800000 && !$cookies.hideFirstRunAlert;
+	$scope.closeFirstRunAlert = function(){
+		$cookies.hideFirstRunAlert = true;
+	};
+	
 
 }]);
 

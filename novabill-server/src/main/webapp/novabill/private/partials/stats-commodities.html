@@ -1,0 +1,95 @@
+<div class="container-fluid settings">
+	<div class="row">
+		<div class="col-md-12">
+
+			<!-- BEGIN PAGE TITLE & BREADCRUMB-->
+			<h3 class="page-title">{{'BUSINESS_TAB_STATS_COMMODITIES' | translate}}</h3>
+			<ul class="breadcrumb">
+				<li><i class="fa fa-dashboard"></i> <a href="../">Dashboard</a></li>
+				<li><span>{{'BUSINESS_TAB_STATS_COMMODITIES' | translate}}</span></li>
+			</ul>
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+    <div class="row">
+       <div class="col-md-12">
+           <n-premium-alert></n-premium-alert>
+       
+           <select n-premium-check class="form-control pull-right input-large" 
+               ng-change="commodityChanged()"
+               ng-model="selectedCommodityID" 
+               ng-options="c.id as c.description for c in commodities"></select>
+           
+           <div class="clearfix"></div>
+           
+           <form class="form-horizontal" role="form">
+               <div class="form-body">
+                   <div class="form-group">
+                       <label class="col-md-2 control-label">{{'TOTAL_INVOICING_BEFORE_TAXES' | translate}} {{year}}</label>
+                       <div class="col-md-10">
+                           <p class="form-control-static">{{commodityDetails.totalBeforeTaxes | currency}}</p>
+                       </div>
+                   </div>
+                   <div class="form-group">
+                       <label class="col-md-2 control-label">{{'TOTAL_INVOICING_BEFORE_TAXES_OVERALL' | translate}}</label>
+                       <div class="col-md-10">
+                           <p class="form-control-static">{{commodityDetails.totalBeforeTaxesCurrentYear | currency}}</p>
+                       </div>
+                   </div>
+               </div>
+           </form>
+       
+        </div>
+    </div>
+    
+    
+    <div class="row" style="margin-top: 50px;">
+       <div class="col-md-12">
+       
+           <div google-chart chart="totalsPerMonthsChart"></div>
+           
+       </div>
+    </div>
+    
+    
+    <div class="row" style="margin-top: 50px;">
+       <div class="col-md-12">
+       
+           <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{'STATS_CLIENTS_FOR_COMMODITIES_SORTED_BY_INVOICING' | translate}}</h3>
+                </div>
+                <div class="panel-body">
+                
+                    <div class="table-responsive">
+                        <p class="no-data-message text-center text-info" ng-show="clients.length===0">{{'NO_DATA' | translate}}</p>
+                        <table class="table table-hover" ng-show="clients">
+                            <thead>
+                                <tr>
+                                    <th>{{'DESCRIPTION' | translate}}</th>
+                                    <th>{{'QUANTITY' | translate}}</th>
+                                    <th>{{'TOTAL_INVOICING_BEFORE_TAXES' | translate}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="data in clients">
+                                    <td><a href="javascript:;" ng-click="openClientStats(data.id)">{{data.name}}</a></td>
+                                    <td>{{data.quantity | number}}</td>
+                                    <td>{{data.revenue | currency}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                     
+                </div>
+            </div>
+        </div>
+           
+       </div>
+    </div>
+
+</div>

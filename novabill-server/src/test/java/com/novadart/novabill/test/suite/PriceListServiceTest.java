@@ -153,6 +153,7 @@ public class PriceListServiceTest extends ServiceTest {
 		assertEquals(pl.getName(), details.get(DBLoggerAspect.PRICE_LIST_NAME));
 		for(Client client: clients)
 			assertEquals(PriceListConstants.DEFAULT, client.getDefaultPriceList().getName());
+		assertEquals(true, rec.isReferringToDeletedEntity());
 	}
 	
 	@Test(expected = DataAccessException.class)

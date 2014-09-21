@@ -32,23 +32,23 @@
 			<div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3">
 			    <form:form action="${registerUrl}" modelAttribute="registration" cssClass="register-form" method="post" 
 			               novalidate="novalidate" style="display: block;">
-			        <h3>Inserisci i tuoi dati</h3>
+			        <h3>Inserisci i tuoi dati <small style="margin-left: 10px;">(Dubbi? guarda il <a data-toggle="lightbox" data-width="853" href="https://www.youtube.com/watch?v=qWv0UQ3Q3Dk">video di esempio</a>)</small></h3>
                     <div class="form-group">
                         <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
-                        <label class="control-label visible-ie8 visible-ie9">E-mail</label>
+                        <label class="control-label visible-ie8 visible-ie9">La tua e-mail</label>
                         <div class="input-icon">
                             <i class="fa fa-envelope"></i> 
                             <form:input path="email" cssClass="form-control placeholder-no-fix" type="text"
-                                placeholder="E-mail" />
+                                placeholder="La tua e-mail" />
                             <span class="text-danger"><form:errors path="email" /></span>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label visible-ie8 visible-ie9">Password</label>
+                        <label class="control-label visible-ie8 visible-ie9">Crea una Password</label>
                         <div class="input-icon">
                             <i class="fa fa-lock"></i> 
                             <form:password path="password" cssClass="form-control password placeholder-no-fix password-strength" autocomplete="off" 
-                                id="register_password" placeholder="Password" 
+                                id="register_password" placeholder="Crea una Password" 
                                 data-toggle="popover" data-placement="left" data-trigger="focus"
                                 data-content="La password deve essere lunga almeno 8 caratteri.<br><br><small style='font-style:italic;'><b>Consiglio</b> - per una password sicura includi:<ul><li>caratteri sia maiuscoli che minuscoli</li><li>almeno un numero</li><li>almeno un carattere speciale come : , / % $ ! . # @ *</li></ul></small>"/>
                             <span class="text-danger"><form:errors path="password" /> </span>
@@ -137,6 +137,11 @@
 </div>
 
 <script type="text/javascript">
+$(document).delegate('*[data-toggle="lightbox"]', 'click', function(event) {
+    event.preventDefault();
+    $(this).ekkoLightbox();
+}); 
+
 $('#tosModal').on('show.bs.modal', function () {
     $('#tosModal .modal-body iframe').css('height', $( window ).height()*0.8);
 });

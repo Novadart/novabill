@@ -27,10 +27,10 @@ public aspect ClientServiceActionsAspect extends DBLoggerAspect {
 		execution(public Long com.novadart.novabill.service.web.ClientService.add(..)) && args(businessID, clientDTO);
 	
 	pointcut remove(Long businessID, Long id) :
-		execution(public boolean com.novadart.novabill.web.gwt.ClientGwtController.remove(..)) && args(businessID, id);
+		execution(public boolean com.novadart.novabill.service.web.ClientService.remove(..)) && args(businessID, id);
 	
 	pointcut update(Long businessID, ClientDTO clientDTO) :
-		execution(public void com.novadart.novabill.web.gwt.ClientGwtController.update(..)) && args(businessID, clientDTO);
+		execution(public void com.novadart.novabill.service.web.ClientService.update(..)) && args(businessID, clientDTO);
 	
 	after(Long businessID, ClientDTO clientDTO) returning (Long id) : add(businessID, clientDTO){
 		Long time = System.currentTimeMillis();
@@ -44,11 +44,12 @@ public aspect ClientServiceActionsAspect extends DBLoggerAspect {
 	boolean around(Long businessID, Long id) : remove(businessID, id){
 		Client client = Client.findClient(id);
 		boolean result = proceed(businessID, id);
-		Long time = System.currentTimeMillis();
-		LOGGER.info("[{}, removeClient, {}, businessID: {}, id: {}]",
-				new Object[]{utilsService.getAuthenticatedPrincipalDetails().getUsername(), new Date(time), businessID, id});
-		Map<String, String> details = ImmutableMap.of(CLIENT_NAME, client.getName());
-		logActionInDB(businessID, EntityType.CLIENT, OperationType.DELETE, id, time, details);
+		if(result){
+			Long time = System.currentTimeMillis();
+			LOGGER.info("[{}, removeClient, {}, businessID: {}, id: {}]", new Object[] {utilsService.getAuthenticatedPrincipalDetails().getUsername(), new Date(time), businessID, id});
+			Map<String, String> details = ImmutableMap.of(CLIENT_NAME, client.getName());
+			logActionInDB(businessID, EntityType.CLIENT, OperationType.DELETE, id, time, details);
+		}
 		return result;
 	}
 	

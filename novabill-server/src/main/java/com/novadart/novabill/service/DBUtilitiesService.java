@@ -1,6 +1,7 @@
 package com.novadart.novabill.service;
 
 import java.io.IOException;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -8,7 +9,6 @@ import javax.persistence.PersistenceContext;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.novadart.novabill.domain.Business;
@@ -19,7 +19,6 @@ import com.novadart.novabill.domain.Endpoint;
 import com.novadart.novabill.domain.Estimation;
 import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.domain.PaymentType;
-import com.novadart.novabill.domain.Registration;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.domain.security.RoleType;
 import com.novadart.novabill.service.web.BusinessServiceImpl;
@@ -28,6 +27,7 @@ import com.novadart.novabill.shared.client.data.LayoutType;
 import com.novadart.novabill.shared.client.dto.PaymentDateType;
 import com.novadart.novabill.shared.client.dto.PaymentDeltaType;
 import com.novadart.novabill.shared.client.exception.PremiumUpgradeException;
+import com.novadart.novabill.web.mvc.command.Registration;
 
 
 //@Service
@@ -459,6 +459,29 @@ public class DBUtilitiesService {
 		
 	}
 	
+	public void migrate3_3(){
+		em.createNativeQuery("alter table business " +
+				"alter column address drop not null, " +
+				"alter column postcode drop not null, " +
+				"alter column city drop not null, " +
+				"alter column country drop not null, " +
+				"alter column vatid drop not null, " +
+				"alter column ssn drop not null").executeUpdate();
+		for(Client client: Client.findAllClients()){
+			Set<Invoice> invs = client.getInvoices();
+			if(invs.size() == 0){
+				client.setCreationTime(client.getBusiness().getPrincipals().iterator().next().getCreationTime());
+			}else{
+				long time = System.currentTimeMillis();
+				for(Invoice i: invs){
+					if(time > i.getAccountingDocumentDate().getTime())
+						time = i.getAccountingDocumentDate().getTime();
+				}
+				client.setCreationTime(time);
+			}
+		}
+	}
+	
 	@Scheduled(fixedDelay = 31_536_000_730l)
 	@Transactional(readOnly = false)
 	public void run() throws com.novadart.novabill.shared.client.exception.CloneNotSupportedException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, IOException, PremiumUpgradeException{
@@ -476,7 +499,8 @@ public class DBUtilitiesService {
 		//fixPaymentTypes();
 		//fixInvoices();
 		//migrate2_5();
-		migrate3_0();
+		//migrate3_0();
+		migrate3_3();
 	}
 	
 }

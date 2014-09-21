@@ -14,6 +14,7 @@ public class LogRecordDTOTransformer {
 		recordDTO.setEntityID(record.getEntityID());
 		recordDTO.setTime(record.getTime());
 		recordDTO.setDetails(record.getDetails());
+		recordDTO.setReferringToDeletedEntity(record.isReferringToDeletedEntity());
 		return recordDTO;
 	}
 	

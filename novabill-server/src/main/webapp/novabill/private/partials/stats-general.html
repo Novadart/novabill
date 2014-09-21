@@ -1,0 +1,175 @@
+<div class="container-fluid statistics statistics-general">
+	<div class="row">
+		<div class="col-md-12">
+
+			<!-- BEGIN PAGE TITLE & BREADCRUMB-->
+			<h3 class="page-title">{{'BUSINESS_TAB_STATS_GENERAL' | translate}}</h3>
+			<ul class="breadcrumb">
+				<li><i class="fa fa-dashboard"></i> <a href="../">Dashboard</a></li>
+				<li><span>{{'BUSINESS_TAB_STATS_GENERAL' | translate}}</span></li>
+			</ul>
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	<div class="row">
+	   <n-premium-alert></n-premium-alert>
+	  
+	   <div google-chart chart="totalsPerMonthsChart"></div>
+	   
+	</div>
+	
+	<div class="row" style="margin-top: 50px;">
+
+        <div class="col-md-4">
+            <div class="panel panel-default">
+	            <div class="panel-heading">
+	                <h3 class="panel-title">{{'TOTAL_INVOICING' | translate}} {{year}}</h3>
+	            </div>
+				<div class="panel-body">
+					<form class="form-horizontal" role="form">
+						<div class="form-body">
+							<div class="form-group">
+								<label class="col-md-4 control-label"><strong>{{'TOTAL_INVOICING_BEFORE_TAXES' | translate}}</strong></label>
+								<div class="col-md-8">
+									<p class="form-control-static"><strong>{{totals.totalBeforeTaxes | currency}}</strong></p>
+								</div>
+							</div>
+							<div class="form-group">
+                                <label class="col-md-4 control-label">{{'VAT' | translate}}</label>
+                                <div class="col-md-8">
+                                    <p class="form-control-static">{{totals.totalTaxes | currency}}</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">{{'TOTAL_INVOICING' | translate}}</label>
+                                <div class="col-md-8">
+                                    <p class="form-control-static">{{totals.totalAfterTaxes | currency}}</p>
+                                </div>
+                            </div>
+                        </div>
+					</form>
+				</div>
+			</div>
+        </div>
+		
+		<div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{'CLIENTS' | translate}}</h3>
+                </div>
+                <div class="panel-body">
+                
+                     <form class="form-horizontal" role="form">
+                        <div class="form-body">
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">{{'TOTAL' | translate}}</label>
+                                <div class="col-md-8">
+                                    <p class="form-control-static">{{clients.totalCount}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    
+                    <div google-chart chart="clientsChart"></div>
+                    
+                </div>
+            </div>
+        </div>
+		
+		<div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{'COMMODITIES' | translate}}</h3>
+                </div>
+                <div class="panel-body">
+                     <form class="form-horizontal" role="form">
+                        <div class="form-body">
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">{{'TOTAL' | translate}}</label>
+                                <div class="col-md-8">
+                                    <p class="form-control-static">{{commodities.totalCount}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    
+                    <div google-chart chart="commoditiesChart"></div>
+                    
+                </div>
+            </div>
+        </div>
+
+
+	</div>
+	
+	
+	<div class="row" style="margin-top: 50px;">
+	
+	   <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{'STATS_CLIENTS_SORTED_BY_INVOICING' | translate}}</h3>
+                </div>
+                <div class="panel-body">
+                
+                    <p class="no-data-message text-center text-info" ng-show="ranks.clients && ranks.clients.length===0">{{'NO_DATA' | translate}}</p>
+                
+                    <div class="table-responsive" ng-show="ranks.clients && ranks.clients.length > 0" style="height: 500px; overflow: auto;">
+	                    <table class="table table-hover">
+	                        <thead>
+	                            <tr>
+	                                <th>{{'NAME' | translate}}</th>
+	                                <th>{{'TOTAL_INVOICING_BEFORE_TAXES' | translate}}</th>
+	                            </tr>
+	                        </thead>
+	                        <tbody>
+	                            <tr ng-repeat="data in ranks.clients">
+	                                <td><a href="javascript:;" ng-click="openClientStats(data.id)">{{data.name}}</a></td>
+	                                <td>{{data.revenue | currency}}</td>
+	                            </tr>
+	                        </tbody>
+	                    </table>
+	                </div>
+                
+                </div>
+            </div>
+        </div>
+        
+        
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{'STATS_COMMODITIES_SORTED_BY_INVOICING' | translate}}</h3>
+                </div>
+                <div class="panel-body">
+                
+                    <p class="no-data-message text-center text-info" ng-show="ranks.commodities && ranks.commodities.length===0">{{'NO_DATA' | translate}}</p>
+                
+                    <div class="table-responsive" ng-show="ranks.commodities && ranks.commodities.length > 0" style="height: 500px; overflow: auto;">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>{{'DESCRIPTION' | translate}}</th>
+                                    <th>{{'TOTAL_INVOICING_BEFORE_TAXES' | translate}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="data in ranks.commodities">
+                                    <td><a href="javascript:;" ng-click="openCommodityStats(data.id)">{{data.description}}</a></td>
+                                    <td>{{data.revenue | currency}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                     
+                </div>
+            </div>
+        </div>
+	
+	</div>
+	
+
+</div>

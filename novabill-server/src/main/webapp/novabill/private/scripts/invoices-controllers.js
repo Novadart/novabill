@@ -7,12 +7,21 @@ angular.module('novabill.invoices.controllers',
 		/**
 		 * INVOICES PAGE CONTROLLER
 		 */
-		.controller('InvoicesCtrl', ['$scope', '$location', 'nConstants', 'nSelectClientDialog',
-		                             function($scope, $location, nConstants, nSelectClientDialog){
+		.controller('InvoicesCtrl', ['$scope', '$location', 'nConstants', 'nSelectClientDialog', '$filter',
+		                             function($scope, $location, nConstants, nSelectClientDialog, $filter){
 			var selectedYear = String(new Date().getFullYear());
 			var loadedInvoices = [];
+			var filteredInvoices = [];
 			var PARTITION = 50;
 
+			function updateFilteredInvoices(){
+				filteredInvoices = $filter('filter')(loadedInvoices, $scope.query);
+				$scope.invoices = filteredInvoices.slice(0, 15);
+			}
+			
+			$scope.$watch('query', function(newValue, oldValue){
+				updateFilteredInvoices();
+			});
 
 			$scope.loadInvoices = function(year) {
 				selectedYear = year;
@@ -21,7 +30,7 @@ angular.module('novabill.invoices.controllers',
 					onSuccess : function(page){
 						$scope.$apply(function(){
 							loadedInvoices = page.items;
-							$scope.invoices = loadedInvoices.slice(0, 15);
+							updateFilteredInvoices();
 						});
 					},
 
@@ -32,7 +41,7 @@ angular.module('novabill.invoices.controllers',
 			$scope.loadMoreInvoices = function(){
 				if($scope.invoices){
 					var currentIndex = $scope.invoices.length;
-					$scope.invoices = $scope.invoices.concat(loadedInvoices.slice(currentIndex, currentIndex+PARTITION));
+					$scope.invoices = $scope.invoices.concat(filteredInvoices.slice(currentIndex, currentIndex+PARTITION));
 				}
 			};
 

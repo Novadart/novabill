@@ -1,0 +1,13 @@
+.statistics .ranking-entry {
+	padding: 5px 10px;
+}
+
+.statistics .ranking-entry .total {
+    display: inline-block;
+    width: 150px;
+    text-align: right;
+}
+
+.statistics .ranking-entry .entity-name {
+    padding: 5px 10px;
+}
