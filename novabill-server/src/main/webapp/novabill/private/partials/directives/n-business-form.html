@@ -21,10 +21,10 @@
 		    <div collapse="fieldsToShow==='companyName' && !showAll">
 		    
 			    <div class="form-group" ng-class="{'has-error': form.ssn.$dirty && form.ssn.$invalid, 'has-success': form.ssn.$dirty && form.ssn.$valid}">
-	                <label class="col-md-4 control-label" for="ssn">{{'SSN_EXTENDED' | translate}} <span ng-show="fieldsToShow==='mandatory'">*</span></label>
+	                <label class="col-md-4 control-label" for="ssn">{{'SSN_EXTENDED' | translate}} <span ng-show="fieldsToShow!=='companyName'">*</span></label>
 	                <div class="col-md-8">
 	                    <input n-ssn-or-vat-id class="form-control" type="text" name="ssn" maxlength="25" ng-model="business.ssn" 
-	                        placeholder="{{'SSN_PLACEHOLDER' | translate}}" ng-required="fieldsToShow==='mandatory'">
+	                        placeholder="{{'SSN_PLACEHOLDER' | translate}}" ng-required="fieldsToShow!=='companyName'">
 	                    <div ng-show="form.ssn.$dirty && form.ssn.$invalid">
 	                        <span class="text-danger">{{'VALIDATION_INVALID_VALUE' | translate}}</span>
 	                    </div>
@@ -32,10 +32,10 @@
 	            </div>
 	            
 	            <div class="form-group" ng-class="{'has-error': form.vatId.$dirty && form.vatId.$invalid, 'has-success': form.vatId.$dirty && form.vatId.$valid}">
-	                <label class="col-md-4 control-label" for="vatId">{{'VATID' | translate}} <span ng-show="fieldsToShow==='mandatory'">*</span></label>
+	                <label class="col-md-4 control-label" for="vatId">{{'VATID' | translate}} <span ng-show="fieldsToShow!=='companyName'">*</span></label>
 	                <div class="col-md-8">
 	                    <input n-vat-id class="form-control" type="text" name="vatId" maxlength="25" ng-model="business.vatID" 
-	                        placeholder="{{'VATID_PLACEHOLDER' | translate}}" ng-required="fieldsToShow==='mandatory'">
+	                        placeholder="{{'VATID_PLACEHOLDER' | translate}}" ng-required="fieldsToShow!=='companyName'">
 	                    <div ng-show="form.vatId.$dirty && form.vatId.$invalid">
 	                        <span class="text-danger">{{'VALIDATION_INVALID_VALUE' | translate}}</span>
 	                    </div>
@@ -43,10 +43,10 @@
 	            </div>
 	            
 	            <div class="form-group" ng-class="{'has-error': form.address.$dirty && form.address.$invalid, 'has-success': form.address.$dirty && form.address.$valid}">
-	                <label class="col-md-4 control-label" for="address">{{'ADDRESS' | translate}} <span ng-show="fieldsToShow==='mandatory'">*</span></label>
+	                <label class="col-md-4 control-label" for="address">{{'ADDRESS' | translate}} <span ng-show="fieldsToShow!=='companyName'">*</span></label>
 	                <div class="col-md-8">
 	                    <input class="form-control" type="text" name="address" maxlength="255" ng-model="business.address" 
-	                        placeholder="{{'ADDRESS_PLACEHOLDER' | translate}}" ng-required="fieldsToShow==='mandatory'">
+	                        placeholder="{{'ADDRESS_PLACEHOLDER' | translate}}" ng-required="fieldsToShow!=='companyName'">
 	                    <div ng-show="form.address.$dirty && form.address.$invalid">
 	                        <span class="text-danger">{{'VALIDATION_REQUIRED' | translate}}</span>
 	                    </div>
@@ -54,10 +54,10 @@
 	            </div>
 	            
 	            <div class="form-group" ng-class="{'has-error': form.city.$dirty && form.city.$invalid, 'has-success': form.city.$dirty && form.city.$valid}">
-	                <label class="col-md-4 control-label" for="city">{{'CITY' | translate}} <span ng-show="fieldsToShow==='mandatory'">*</span></label>
+	                <label class="col-md-4 control-label" for="city">{{'CITY' | translate}} <span ng-show="fieldsToShow!=='companyName'">*</span></label>
 	                <div class="col-md-8">
 	                    <input class="form-control" type="text" name="city" maxlength="60" ng-model="business.city" 
-	                        placeholder="{{'CITY_PLACEHOLDER' | translate}}" ng-required="fieldsToShow==='mandatory'">
+	                        placeholder="{{'CITY_PLACEHOLDER' | translate}}" ng-required="fieldsToShow!=='companyName'">
 	                    <div ng-show="form.city.$dirty && form.city.$invalid">
 	                        <span class="text-danger">{{'VALIDATION_REQUIRED' | translate}}</span>
 	                    </div>
@@ -65,10 +65,10 @@
 	            </div>
 	            
 	            <div class="form-group" ng-class="{'has-error': form.postcode.$dirty && form.postcode.$invalid, 'has-success': form.postcode.$dirty && form.postcode.$valid}">
-	                <label class="col-md-4 control-label" for="postcode">{{'POSTCODE' | translate}} <span ng-show="fieldsToShow==='mandatory'">*</span></label>
+	                <label class="col-md-4 control-label" for="postcode">{{'POSTCODE' | translate}} <span ng-show="fieldsToShow!=='companyName'">*</span></label>
 	                <div class="col-md-8">
 	                    <input class="form-control" type="text" name="postcode" maxlength="10" ng-model="business.postcode" 
-	                        placeholder="{{'POSTCODE_PLACEHOLDER' | translate}}" ng-required="fieldsToShow==='mandatory'">
+	                        placeholder="{{'POSTCODE_PLACEHOLDER' | translate}}" ng-required="fieldsToShow!=='companyName'">
 	                    <div ng-show="form.postcode.$dirty && form.postcode.$invalid">
 	                        <span class="text-danger">{{'VALIDATION_REQUIRED' | translate}}</span>
 	                    </div>
@@ -76,10 +76,10 @@
 	            </div>
 	            
 	            <div class="form-group" ng-class="{'has-error': form.province.$dirty && form.province.$invalid, 'has-success': form.province.$dirty && form.province.$valid}">
-	                <label class="col-md-4 control-label" for="province">{{'PROVINCE' | translate}} <span ng-show="fieldsToShow==='mandatory'">*</span></label>
+	                <label class="col-md-4 control-label" for="province">{{'PROVINCE' | translate}} <span ng-show="fieldsToShow!=='companyName'">*</span></label>
 	                <div class="col-md-8">
 	                    <input class="form-control" type="text" name="province" maxlength="100" ng-model="business.province" 
-	                        placeholder="{{'PROVINCE_PLACEHOLDER' | translate}}" ng-required="fieldsToShow==='mandatory'">
+	                        placeholder="{{'PROVINCE_PLACEHOLDER' | translate}}" ng-required="fieldsToShow!=='companyName'">
 	                    <div ng-show="form.province.$dirty && form.province.$invalid">
 	                        <span class="text-danger">{{'VALIDATION_REQUIRED' | translate}}</span>
 	                    </div>
@@ -87,9 +87,9 @@
 	            </div>
 	            
 	            <div class="form-group" ng-class="{'has-error': form.country.$dirty && form.country.$invalid, 'has-success': form.country.$dirty && form.country.$valid}">
-	                <label class="col-md-4 control-label" for="country">{{'COUNTRY' | translate}} <span ng-show="fieldsToShow==='mandatory'">*</span></label>
+	                <label class="col-md-4 control-label" for="country">{{'COUNTRY' | translate}} <span ng-show="fieldsToShow!=='companyName'">*</span></label>
 	                <div class="col-md-8">
-	                    <select class="form-control" name="country" ng-model="business.country" ng-required="fieldsToShow==='mandatory'">
+	                    <select class="form-control" name="country" ng-model="business.country" ng-required="fieldsToShow!=='companyName'">
 	                        <option value="IT">Italia</option>
 	                    </select>
 	                    <div ng-show="form.country.$dirty && form.country.$invalid">
