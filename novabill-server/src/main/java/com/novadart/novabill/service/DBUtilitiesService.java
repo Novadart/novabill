@@ -9,7 +9,6 @@ import javax.persistence.PersistenceContext;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.novadart.novabill.domain.Business;
@@ -31,7 +30,7 @@ import com.novadart.novabill.shared.client.exception.PremiumUpgradeException;
 import com.novadart.novabill.web.mvc.command.Registration;
 
 
-@Service
+//@Service
 public class DBUtilitiesService {
 	
 //	private String blmDBPath = "/tmp/DATI.mdb";
