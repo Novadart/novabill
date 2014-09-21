@@ -517,10 +517,10 @@ angular.module('novabill.directives.dialogs',
 							if(!$scope.query) {
 								filteredClients = [];
 							} else {
-								filteredClients = $filter('filter')(loadedClients, $scope.query);
+								filteredClients = $filter('filter')(loadedClients, {name : $scope.query});
 							}
 						} else {
-							filteredClients = $filter('filter')(loadedClients, $scope.query);
+							filteredClients = $filter('filter')(loadedClients, {name : $scope.query});
 						}
 						$scope.clients = filteredClients.slice(0, 15);
 					}
