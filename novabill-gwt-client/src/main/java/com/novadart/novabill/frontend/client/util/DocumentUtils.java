@@ -26,12 +26,12 @@ public class DocumentUtils {
 		try {
 			ii.setSku(sku);
 			ii.setDescription(description);
-			ii.setPrice(CalcUtils.parseCurrency(price));
-			ii.setQuantity(CalcUtils.parseValue(quantity));
-			ii.setWeight(weight != null && !weight.isEmpty() ? CalcUtils.parseValue(weight) : null);
+			ii.setPrice(CalcUtils.parseCurrency(price.replace('.', ',')));
+			ii.setQuantity(CalcUtils.parseValue(quantity.replace('.', ',')));
+			ii.setWeight(weight != null && !weight.isEmpty() ? CalcUtils.parseValue(weight.replace('.', ',')) : null);
 			ii.setUnitOfMeasure(unitOfMeasure);
-			ii.setTax(CalcUtils.parseValue(tax));
-			ii.setDiscount(discount == null || discount.isEmpty() ? BigDecimal.ZERO : CalcUtils.parseValue(discount));
+			ii.setTax(CalcUtils.parseValue(tax.replace('.', ',')));
+			ii.setDiscount(discount == null || discount.isEmpty() ? BigDecimal.ZERO : CalcUtils.parseValue(discount.replace('.', ',')));
 		} catch (NumberFormatException ex) {
 			return null;
 		}
