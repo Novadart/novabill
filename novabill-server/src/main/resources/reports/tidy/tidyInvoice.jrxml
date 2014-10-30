@@ -160,8 +160,8 @@
         ),
         $F{document.client.country}
     ),
-    com.novadart.novabill.report.ReportUtils.transformIfNotBlank($R{tidy.vatID} + "  %s", $F{document.business.vatID}),
-    com.novadart.novabill.report.ReportUtils.transformIfNotBlank($R{tidy.ssn} + "  %s", $F{document.business.ssn})
+    com.novadart.novabill.report.ReportUtils.transformIfNotBlank($R{tidy.vatID} + "  %s", $F{document.client.vatID}),
+    com.novadart.novabill.report.ReportUtils.transformIfNotBlank($R{tidy.ssn} + "  %s", $F{document.client.ssn})
 )]]></textFieldExpression>
 			</textField>
 			<componentElement>
