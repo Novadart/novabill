@@ -54,7 +54,7 @@ public class TestUtils {
 			put("documentID", Field.documentID); put("accountingDocumentDate", Field.accountingDocumentDate);
 			put("accountingDocumentYear", Field.accountingDocumentYear); put("note", Field.note); put("paymentNote", Field.paymentNote);
 			put("total", Field.total); put("totalTax", Field.totalTax); put("totalBeforeTax", Field.totalBeforeTax);
-			
+			put("layoutType", Field.layoutType);
 			//Accounting doc item
 			put("accountingDocumentItems_description", Field.accountingDocumentItems_description); 
 			put("accountingDocumentItems_unitOfMeasure", Field.accountingDocumentItems_unitOfMeasure); 
@@ -165,6 +165,7 @@ public class TestUtils {
 		doc.setTotal(new BigDecimal("121.0"));
 		doc.setTotalBeforeTax(new BigDecimal("100.0"));
 		doc.setTotalTax(new BigDecimal("21.0"));
+		doc.setLayoutType(LayoutType.TIDY);
 		AccountingDocumentItem item = new AccountingDocumentItem();
 		item.setDescription("description");
 		item.setPrice(new BigDecimal("100.0"));

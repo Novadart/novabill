@@ -57,6 +57,7 @@ public abstract class AbstractCreditNotePresenter extends DocumentPresenter<Cred
 			cn = creditNote;
 		} else {
 			cn = new CreditNoteDTO();
+			cn.setLayoutType(Configuration.getBusiness().getSettings().getDefaultLayoutType());
 			cn.setBusiness(Configuration.getBusiness());
 			cn.setClient(getClient());
 		}
@@ -78,8 +79,6 @@ public abstract class AbstractCreditNotePresenter extends DocumentPresenter<Cred
 		loc.setStreet(getView().getToAddrStreetName().getText());
 		loc.setCountry(getView().getToAddrCountry().getSelectedItemValue());
 		cn.setToEndpoint(loc);
-
-		cn.setLayoutType(Configuration.getBusiness().getSettings().getDefaultLayoutType());
 
 		cn.setDocumentID(Long.parseLong(getView().getNumber().getText()));
 		cn.setAccountingDocumentDate(DocumentUtils.createNormalizedDate(getView().getDate().getValue()));

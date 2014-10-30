@@ -85,6 +85,7 @@ public abstract class AbstractEstimationPresenter extends DocumentPresenter<Esti
 			es = estimation;
 		} else {
 			es = new EstimationDTO();
+			es.setLayoutType(Configuration.getBusiness().getSettings().getDefaultLayoutType());
 			es.setBusiness(Configuration.getBusiness());
 			es.setClient(getClient());
 		}
@@ -111,8 +112,6 @@ public abstract class AbstractEstimationPresenter extends DocumentPresenter<Esti
 			loc.setCountry(getView().getToAddrCountry().getSelectedItemValue());
 		}
 		es.setToEndpoint(loc);
-
-		es.setLayoutType(Configuration.getBusiness().getSettings().getDefaultLayoutType());
 
 		es.setDocumentID(Long.parseLong(getView().getNumber().getText()));
 

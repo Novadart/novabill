@@ -139,7 +139,9 @@
             com.novadart.novabill.report.ReportUtils.transformIfNotBlank("(%s)", $F{document.business.province})
         ),
         $F{document.business.country}
-    )
+    ),
+    com.novadart.novabill.report.ReportUtils.transformIfNotBlank($R{tidy.vatID} + "  %s", $F{document.business.vatID}),
+    com.novadart.novabill.report.ReportUtils.transformIfNotBlank($R{tidy.ssn} + "  %s", $F{document.business.ssn})
 )]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
@@ -157,7 +159,9 @@
             com.novadart.novabill.report.ReportUtils.transformIfNotBlank("(%s)", $F{document.client.province})
         ),
         $F{document.client.country}
-    )
+    ),
+    com.novadart.novabill.report.ReportUtils.transformIfNotBlank($R{tidy.vatID} + "  %s", $F{document.client.vatID}),
+    com.novadart.novabill.report.ReportUtils.transformIfNotBlank($R{tidy.ssn} + "  %s", $F{document.client.ssn})
 )]]></textFieldExpression>
 			</textField>
 			<componentElement>
