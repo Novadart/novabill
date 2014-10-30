@@ -80,7 +80,7 @@ public abstract class AccountingDocument {
     protected String paymentNote;
     
     @NotNull
-    protected LayoutType layoutType = LayoutType.TIDY;
+    protected LayoutType layoutType;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "accountingDocument", orphanRemoval = true)
     @OrderBy("id")
