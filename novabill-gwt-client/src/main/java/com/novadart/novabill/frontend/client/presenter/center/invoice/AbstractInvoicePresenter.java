@@ -100,11 +100,10 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 			inv = invoice;
 		} else {
 			inv = new InvoiceDTO();
+			inv.setLayoutType(Configuration.getBusiness().getSettings().getDefaultLayoutType());
 			inv.setBusiness(Configuration.getBusiness());
 			inv.setClient(getClient());
 		}
-
-		inv.setLayoutType(Configuration.getBusiness().getSettings().getDefaultLayoutType());
 
 		inv.setDocumentID(Long.parseLong(getView().getNumber().getText()));
 		inv.setAccountingDocumentDate( DocumentUtils.createNormalizedDate(getView().getDate().getValue()) );
