@@ -19,6 +19,7 @@ import com.novadart.novabill.domain.Endpoint;
 import com.novadart.novabill.domain.Estimation;
 import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.domain.PaymentType;
+import com.novadart.novabill.domain.TransportDocument;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.domain.security.RoleType;
 import com.novadart.novabill.service.web.BusinessServiceImpl;
@@ -482,6 +483,19 @@ public class DBUtilitiesService {
 		}
 	}
 	
+	public void resetMBDocsToDense(){
+		Business business = Business.findBusiness(49l);
+		for(Invoice invoice: business.getInvoicesForYear(2014))
+			invoice.setLayoutType(LayoutType.DENSE);
+		for(Estimation estimation: business.getEstimationsForYear(2014))
+			estimation.setLayoutType(LayoutType.DENSE);
+		for(CreditNote cred: business.getCreditNotesForYear(2014))
+			cred.setLayoutType(LayoutType.DENSE);
+		for(TransportDocument tran: business.getTransportDocsForYear(2014))
+			tran.setLayoutType(LayoutType.DENSE);
+			
+	}
+	
 	@Scheduled(fixedDelay = 31_536_000_730l)
 	@Transactional(readOnly = false)
 	public void run() throws com.novadart.novabill.shared.client.exception.CloneNotSupportedException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, IOException, PremiumUpgradeException{
@@ -500,7 +514,8 @@ public class DBUtilitiesService {
 		//fixInvoices();
 		//migrate2_5();
 		//migrate3_0();
-		migrate3_3();
+		//migrate3_3();
+		resetMBDocsToDense();
 	}
 	
 }

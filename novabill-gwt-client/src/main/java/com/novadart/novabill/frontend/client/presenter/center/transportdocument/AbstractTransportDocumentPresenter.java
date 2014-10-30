@@ -141,6 +141,7 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 			td = transportDocument;
 		} else {
 			td = new TransportDocumentDTO();
+			td.setLayoutType(Configuration.getBusiness().getSettings().getDefaultLayoutType());
 			td.setBusiness(Configuration.getBusiness());
 			td.setClient(getClient());
 		}
@@ -158,8 +159,6 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 			getView().getToAddrStreetName().setText(getClient().getAddress());
 			getView().getToAddrCountry().setSelectedItemByValue(getClient().getCountry());
 		}
-
-		td.setLayoutType(Configuration.getBusiness().getSettings().getDefaultLayoutType());
 
 		td.setDocumentID(Long.parseLong(getView().getNumber().getText()));
 

@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>novabill</artifactId>
 		<groupId>com.novadart.novabill</groupId>
-		<version>3.3.1</version>
+		<version>3.3.2</version>
 	</parent>
 	<artifactId>novabill-gwt-client</artifactId>
 	<packaging>war</packaging>
