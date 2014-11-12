@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 5.6.2.final using JasperReports Library version 5.6.1  -->
-<!-- 2014-11-12T21:48:41 -->
+<!-- 2014-11-12T23:12:56 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Invoice" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="20" uuid="96f0ca59-afec-4bbb-95f2-0a9732c6c014">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
@@ -582,7 +582,7 @@ com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.t
 		</band>
 		<band height="107" splitType="Prevent">
 			<textField>
-				<reportElement positionType="Float" x="222" y="8" width="110" height="15" uuid="10c84ba8-5231-49df-831a-dd9882492c5a">
+				<reportElement positionType="Float" x="8" y="8" width="110" height="15" uuid="10c84ba8-5231-49df-831a-dd9882492c5a">
 					<property name="local_mesure_unitx" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					<printWhenExpression><![CDATA[$F{document.termsAndConditions} != null && !"".equals($F{document.termsAndConditions}.trim())]]></printWhenExpression>
