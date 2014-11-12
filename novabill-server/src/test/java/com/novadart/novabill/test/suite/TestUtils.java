@@ -195,6 +195,7 @@ public class TestUtils {
 	public static Estimation createEstimation(Long documentID) throws InstantiationException, IllegalAccessException{
 		Estimation doc = createDoc(documentID, Estimation.class);
 		doc.setLimitations("");
+		doc.setTermsAndConditions("");
 		doc.setValidTill(new Date());
 		return doc;
 	}
@@ -259,6 +260,7 @@ public class TestUtils {
 	public static Estimation createInvalidEstimation(Long documentID) throws InstantiationException, IllegalAccessException{
 		Estimation doc = createInvalidDoc(documentID, Estimation.class);
 		doc.setLimitations(StringUtils.leftPad("1", 2000, '1'));
+		doc.setTermsAndConditions(StringUtils.leftPad("1", 4000, '1'));
 		doc.setValidTill(new Date());
 		return doc;
 	}

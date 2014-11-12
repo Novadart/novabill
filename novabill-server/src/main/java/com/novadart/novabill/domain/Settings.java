@@ -41,6 +41,9 @@ public class Settings implements Serializable {
     @Size(max = 300)
     private String transportDocumentFooterNote;
     
+    @Size(max = 3000)
+    private String defaultTermsAndConditionsForEstimation;
+    
     @Size(max = 78)
     @Trimmed
     private String emailSubject;
@@ -127,6 +130,15 @@ public class Settings implements Serializable {
 
 	public void setTransportDocumentFooterNote(String transportDocumentFooterNote) {
 		this.transportDocumentFooterNote = transportDocumentFooterNote;
+	}
+	
+	public String getDefaultTermsAndConditionsForEstimation() {
+		return defaultTermsAndConditionsForEstimation;
+	}
+	
+	public void setDefaultTermsAndConditionsForEstimation(
+			String defaultTermsAndConditionsForEstimation) {
+		this.defaultTermsAndConditionsForEstimation = defaultTermsAndConditionsForEstimation;
 	}
 
 	public String getEmailSubject() {

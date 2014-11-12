@@ -18,5 +18,7 @@ public interface EstimationView extends DocumentView<EstimationView.Presenter> {
 	public ValidatedTextArea getLimitations();
 
 	CheckBox getOverrideIncognitoModeCheckbox();
+
+	public com.novadart.gwtshared.client.validation.widget.ValidatedTextArea getTermsAndConditions();
 	
 }

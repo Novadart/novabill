@@ -34,6 +34,7 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 		ALERT_MISSING_BUSINESS_INFO : 'Per favore completa le informazioni sulla tua azienda',
 		ALERT_MISSING_BUSINESS_INFO_DASHBOARD : 'Le informazioni sulla tua azienda sono incomplete. <a href="{{link}}">Clicca qui</a> per completarle.',
 		BUSINESS_DIALOG_TITLE : 'Completa le informazioni',
+		BUSINESS_OPTION_DEFAULT_TERMS_AND_CONDITIONS_FOR_ESTIMATION : 'Termini e Condizioni da stampare nelle Offerte',
 		BUSINESS_OPTION_EMAIL_PREVIEW : 'Anteprima di esempio',
 		BUSINESS_OPTION_EMAIL_REPLY_TO : 'Indirizzo e-mail per le risposte',
 		BUSINESS_OPTION_EMAIL_REPLY_TO_PLACEHOLDER : 'esempio: info@example.com',

@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 5.6.2.final using JasperReports Library version 5.6.1  -->
+<!-- 2014-11-12T21:48:54 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Estimation" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="20" uuid="96f0ca59-afec-4bbb-95f2-0a9732c6c014">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
@@ -41,7 +43,7 @@
 		<field name="discount" class="java.math.BigDecimal"/>
 		<field name="sku" class="java.lang.String"/>
 	</subDataset>
-	<queryString>
+	<queryString language="SQL">
 		<![CDATA[]]>
 	</queryString>
 	<field name="document.business.name" class="java.lang.String"/>
@@ -80,6 +82,7 @@
 	<field name="document.incognito" class="java.lang.Boolean"/>
 	<field name="document.business.settings.estimationFooterNote" class="java.lang.String"/>
 	<field name="document.business" class="com.novadart.novabill.domain.Business"/>
+	<field name="document.termsAndConditions" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -87,7 +90,7 @@
 		<band height="70" splitType="Prevent">
 			<printWhenExpression><![CDATA[new Boolean($F{logoInStream} != null && !$F{document.incognito})]]></printWhenExpression>
 			<image>
-				<reportElement uuid="ad84ab22-c8c5-403b-9525-8d6a0150fa0d" x="0" y="0" width="250" height="70">
+				<reportElement x="0" y="0" width="250" height="70" uuid="ad84ab22-c8c5-403b-9525-8d6a0150fa0d">
 					<printWhenExpression><![CDATA[new Boolean($F{logoInStream} != null)]]></printWhenExpression>
 				</reportElement>
 				<imageExpression><![CDATA[$F{logoInStream}]]></imageExpression>
@@ -95,7 +98,7 @@
 		</band>
 		<band height="320" splitType="Stretch">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="3328b22d-5804-4f73-9ddd-e5ddfd2d8234" positionType="Float" x="8" y="25" width="160" height="70" forecolor="#333333">
+				<reportElement positionType="Float" x="8" y="25" width="160" height="70" forecolor="#333333" uuid="3328b22d-5804-4f73-9ddd-e5ddfd2d8234">
 					<printWhenExpression><![CDATA[!$F{document.incognito}]]></printWhenExpression>
 				</reportElement>
 				<textElement>
@@ -118,13 +121,13 @@
 )]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement uuid="6ae691ec-7309-421f-af11-54e4f43b840b" mode="Transparent" x="180" y="20" width="160" height="1" forecolor="#666666"/>
+				<reportElement mode="Transparent" x="180" y="20" width="160" height="1" forecolor="#666666" uuid="6ae691ec-7309-421f-af11-54e4f43b840b"/>
 				<graphicElement>
 					<pen lineWidth="0.15" lineStyle="Double" lineColor="#CCCCCC"/>
 				</graphicElement>
 			</line>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="2ab7f2e3-f3c9-4dfb-92ac-ab6811ab54c6" positionType="Float" x="180" y="25" width="160" height="70" forecolor="#333333"/>
+				<reportElement positionType="Float" x="180" y="25" width="160" height="70" forecolor="#333333" uuid="2ab7f2e3-f3c9-4dfb-92ac-ab6811ab54c6"/>
 				<textElement>
 					<font fontName="Open Sans Light" size="8" isBold="false"/>
 				</textElement>
@@ -144,7 +147,7 @@
 )]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement uuid="550be4f8-6d43-4e41-9821-62da9a71684a" x="8" y="20" width="160" height="1" forecolor="#666666">
+				<reportElement x="8" y="20" width="160" height="1" forecolor="#666666" uuid="550be4f8-6d43-4e41-9821-62da9a71684a">
 					<printWhenExpression><![CDATA[!$F{document.incognito}]]></printWhenExpression>
 				</reportElement>
 				<graphicElement>
@@ -152,7 +155,7 @@
 				</graphicElement>
 			</line>
 			<textField>
-				<reportElement uuid="e9c5054b-67ac-41db-804b-b649cd5ad9f8" x="8" y="0" width="160" height="20">
+				<reportElement x="8" y="0" width="160" height="20" uuid="e9c5054b-67ac-41db-804b-b649cd5ad9f8">
 					<printWhenExpression><![CDATA[!$F{document.incognito}]]></printWhenExpression>
 				</reportElement>
 				<textElement>
@@ -161,14 +164,14 @@
 				<textFieldExpression><![CDATA[$R{tidy.from}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="f215e9f5-7cfc-43ee-8870-db792f619a50" x="180" y="0" width="160" height="20"/>
+				<reportElement x="180" y="0" width="160" height="20" uuid="f215e9f5-7cfc-43ee-8870-db792f619a50"/>
 				<textElement>
 					<font fontName="Open Sans Light" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{tidy.client}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="8d0a04d4-d2f1-488e-bef6-bb55b58696da" positionType="Float" x="488" y="0" width="60" height="20"/>
+				<reportElement positionType="Float" x="488" y="0" width="60" height="20" uuid="8d0a04d4-d2f1-488e-bef6-bb55b58696da"/>
 				<textElement textAlignment="Right">
 					<font fontName="Open Sans Light"/>
 					<paragraph lineSpacing="Single" rightIndent="2"/>
@@ -176,7 +179,7 @@
 				<textFieldExpression><![CDATA[$F{document.documentID}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="a6d8e6c2-eae5-49ff-9158-194573f72672" positionType="Float" x="467" y="25" width="80" height="16" forecolor="#999999"/>
+				<reportElement positionType="Float" x="467" y="25" width="80" height="16" forecolor="#999999" uuid="a6d8e6c2-eae5-49ff-9158-194573f72672"/>
 				<textElement textAlignment="Right">
 					<font size="8"/>
 					<paragraph rightIndent="10"/>
@@ -184,7 +187,7 @@
 				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{document.accountingDocumentDate})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="0d7ce6aa-7104-4992-b75a-533d79245aec" mode="Opaque" x="388" y="63" width="70" height="20" backcolor="#CCCCCC"/>
+				<reportElement mode="Opaque" x="388" y="63" width="70" height="20" backcolor="#CCCCCC" uuid="0d7ce6aa-7104-4992-b75a-533d79245aec"/>
 				<box>
 					<topPen lineWidth="0.15" lineColor="#666666"/>
 					<bottomPen lineWidth="0.15" lineColor="#666666"/>
@@ -196,7 +199,7 @@
 				<textFieldExpression><![CDATA[$R{tidy.total}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="9071ebe7-d22a-4bb2-92fc-fdd183b0ec2d" positionType="Float" x="388" y="43" width="80" height="16"/>
+				<reportElement positionType="Float" x="388" y="43" width="80" height="16" uuid="9071ebe7-d22a-4bb2-92fc-fdd183b0ec2d"/>
 				<textElement textAlignment="Left">
 					<font fontName="Open Sans Light" size="8" isBold="true"/>
 					<paragraph leftIndent="10"/>
@@ -204,7 +207,7 @@
 				<textFieldExpression><![CDATA[$R{tidy.validUntil} + ":"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="f3bd9b1e-eddd-47f4-82dd-5cef3766118d" positionType="Float" x="467" y="43" width="80" height="16" forecolor="#999999"/>
+				<reportElement positionType="Float" x="467" y="43" width="80" height="16" forecolor="#999999" uuid="f3bd9b1e-eddd-47f4-82dd-5cef3766118d"/>
 				<textElement textAlignment="Right">
 					<font size="8"/>
 					<paragraph rightIndent="10"/>
@@ -212,14 +215,14 @@
 				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{document.validTill})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="36c422bb-3625-45ba-ac44-7b4e372a2b45" x="388" y="0" width="100" height="20"/>
+				<reportElement x="388" y="0" width="100" height="20" uuid="36c422bb-3625-45ba-ac44-7b4e372a2b45"/>
 				<textElement textAlignment="Left">
 					<font fontName="Open Sans Light" size="10" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{tidy.estimation}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="86071c89-4bab-42b4-a59d-5128504e2872" positionType="Float" x="388" y="25" width="80" height="16"/>
+				<reportElement positionType="Float" x="388" y="25" width="80" height="16" uuid="86071c89-4bab-42b4-a59d-5128504e2872"/>
 				<textElement textAlignment="Left">
 					<font fontName="Open Sans Light" size="8" isBold="true"/>
 					<paragraph leftIndent="10"/>
@@ -227,13 +230,13 @@
 				<textFieldExpression><![CDATA[$R{tidy.date} + ":"]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement uuid="4c5795fa-dad1-459d-aa09-450f7e7d118f" x="388" y="20" width="160" height="1" forecolor="#666666"/>
+				<reportElement x="388" y="20" width="160" height="1" forecolor="#666666" uuid="4c5795fa-dad1-459d-aa09-450f7e7d118f"/>
 				<graphicElement>
 					<pen lineWidth="0.15" lineColor="#CCCCCC"/>
 				</graphicElement>
 			</line>
 			<textField>
-				<reportElement uuid="d6cb25bd-fe17-4292-8c35-6b9df559de81" positionType="Float" mode="Opaque" x="458" y="63" width="90" height="20" backcolor="#CCCCCC"/>
+				<reportElement positionType="Float" mode="Opaque" x="458" y="63" width="90" height="20" backcolor="#CCCCCC" uuid="d6cb25bd-fe17-4292-8c35-6b9df559de81"/>
 				<box>
 					<topPen lineWidth="0.15" lineColor="#666666"/>
 					<bottomPen lineWidth="0.15" lineColor="#666666"/>
@@ -245,7 +248,7 @@
 				<textFieldExpression><![CDATA[java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format($F{document.total}.doubleValue())]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="cfc70f9c-16f8-4012-aa67-0d0169764ddc" positionType="Float" mode="Transparent" x="307" y="140" width="240" height="20" backcolor="#FFFFFF"/>
+				<reportElement positionType="Float" mode="Transparent" x="307" y="140" width="240" height="20" backcolor="#FFFFFF" uuid="cfc70f9c-16f8-4012-aa67-0d0169764ddc"/>
 				<box>
 					<bottomPen lineWidth="0.15" lineColor="#CCCCCC"/>
 				</box>
@@ -256,7 +259,7 @@
 				<textFieldExpression><![CDATA[$R{tidy.paymentnote}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="521fa476-8767-4b15-8daa-1212bcdde30d" positionType="Float" x="8" y="140" width="240" height="20"/>
+				<reportElement positionType="Float" x="8" y="140" width="240" height="20" uuid="521fa476-8767-4b15-8daa-1212bcdde30d"/>
 				<box>
 					<bottomPen lineWidth="0.15" lineColor="#CCCCCC"/>
 				</box>
@@ -266,21 +269,21 @@
 				<textFieldExpression><![CDATA[$R{tidy.note}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement uuid="dc2b1c10-659e-4e17-ab31-21ce950e5cd0" positionType="Float" x="307" y="165" width="240" height="20" forecolor="#333333"/>
+				<reportElement positionType="Float" x="307" y="165" width="240" height="20" forecolor="#333333" uuid="dc2b1c10-659e-4e17-ab31-21ce950e5cd0"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Open Sans Light" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{document.paymentNote}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="33e38752-ccb6-476f-8314-8d0075caaa88" positionType="Float" x="8" y="165" width="240" height="20" forecolor="#333333"/>
+				<reportElement positionType="Float" x="8" y="165" width="240" height="20" forecolor="#333333" uuid="33e38752-ccb6-476f-8314-8d0075caaa88"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Open Sans Light" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{document.note}!=null && !"".equals($F{document.note}.trim()) ? $F{document.note}: $R{tidy.nonote}]]></textFieldExpression>
 			</textField>
 			<componentElement>
-				<reportElement uuid="efa0b762-6546-4748-9a3a-6a2973a62883" key="table" style="table" positionType="Float" x="8" y="245" width="540" height="50"/>
+				<reportElement key="table" style="table" positionType="Float" x="8" y="245" width="540" height="50" uuid="efa0b762-6546-4748-9a3a-6a2973a62883"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
 					<datasetRun subDataset="Items Table Dataset" uuid="9cae1167-07ed-414c-8a4e-54292c7611d4">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{items})]]></dataSourceExpression>
@@ -288,7 +291,7 @@
 					<jr:column width="60" uuid="bc341a0f-927d-4394-9027-46b455edcb8b">
 						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
 							<textField>
-								<reportElement uuid="a2f3c773-4b6d-4b2a-8bad-7d3e1c57b40f" x="0" y="0" width="60" height="20"/>
+								<reportElement x="0" y="0" width="60" height="20" uuid="a2f3c773-4b6d-4b2a-8bad-7d3e1c57b40f"/>
 								<textElement verticalAlignment="Middle">
 									<font fontName="Open Sans Light" size="8" isBold="true"/>
 									<paragraph leftIndent="3"/>
@@ -298,7 +301,7 @@
 						</jr:columnHeader>
 						<jr:detailCell style="table_TD" height="25" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement uuid="fc5c88f2-9a20-4b52-bc97-136be5ac7bca" x="0" y="0" width="58" height="23" forecolor="#333333"/>
+								<reportElement x="0" y="0" width="58" height="23" forecolor="#333333" uuid="fc5c88f2-9a20-4b52-bc97-136be5ac7bca"/>
 								<textElement verticalAlignment="Middle">
 									<font fontName="Open Sans Light" size="8"/>
 									<paragraph leftIndent="3"/>
@@ -310,7 +313,7 @@
 					<jr:column width="190" uuid="2504e2bd-333d-4bd5-8b98-361707556495">
 						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
 							<textField>
-								<reportElement uuid="a92df08b-3acf-4f1a-bbc3-181ebb4674ba" x="0" y="0" width="188" height="18"/>
+								<reportElement x="0" y="0" width="188" height="18" uuid="a92df08b-3acf-4f1a-bbc3-181ebb4674ba"/>
 								<textElement verticalAlignment="Middle">
 									<font fontName="Open Sans Light" size="8" isBold="true"/>
 									<paragraph leftIndent="3"/>
@@ -320,7 +323,7 @@
 						</jr:columnHeader>
 						<jr:detailCell style="table_TD" height="25" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement uuid="958f8ba9-185a-448f-accc-7198c4c04e98" x="0" y="0" width="188" height="23" forecolor="#333333"/>
+								<reportElement x="0" y="0" width="188" height="23" forecolor="#333333" uuid="958f8ba9-185a-448f-accc-7198c4c04e98"/>
 								<textElement verticalAlignment="Middle">
 									<font fontName="Open Sans Light" size="8"/>
 									<paragraph leftIndent="3"/>
@@ -332,7 +335,7 @@
 					<jr:column width="40" uuid="91c1bcfb-c4ce-4e43-b201-316a734a7202">
 						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
 							<textField>
-								<reportElement uuid="5520d9dd-93a2-4812-8701-5d4e62599c63" x="0" y="0" width="38" height="18"/>
+								<reportElement x="0" y="0" width="38" height="18" uuid="5520d9dd-93a2-4812-8701-5d4e62599c63"/>
 								<textElement verticalAlignment="Middle">
 									<font fontName="Open Sans Light" size="8" isBold="true"/>
 									<paragraph leftIndent="3"/>
@@ -342,7 +345,7 @@
 						</jr:columnHeader>
 						<jr:detailCell style="table_TD" height="25" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement uuid="00e7a8de-2fdf-44f6-8596-9336d14be992" x="0" y="0" width="38" height="23" forecolor="#333333"/>
+								<reportElement x="0" y="0" width="38" height="23" forecolor="#333333" uuid="00e7a8de-2fdf-44f6-8596-9336d14be992"/>
 								<textElement verticalAlignment="Middle">
 									<font fontName="Open Sans Light" size="8"/>
 									<paragraph leftIndent="3"/>
@@ -354,7 +357,7 @@
 					<jr:column width="40" uuid="5b930509-c99c-450d-bd68-4b52386c95b9">
 						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
 							<textField>
-								<reportElement uuid="740bb0de-0c21-494a-8efe-f4a21297a420" x="0" y="0" width="38" height="18"/>
+								<reportElement x="0" y="0" width="38" height="18" uuid="740bb0de-0c21-494a-8efe-f4a21297a420"/>
 								<textElement verticalAlignment="Middle">
 									<font fontName="Open Sans Light" size="8" isBold="true"/>
 									<paragraph leftIndent="3"/>
@@ -364,7 +367,7 @@
 						</jr:columnHeader>
 						<jr:detailCell style="table_TD" height="25" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement uuid="f525508b-e6bc-4e86-b020-fa541887092f" x="0" y="0" width="38" height="23" forecolor="#333333"/>
+								<reportElement x="0" y="0" width="38" height="23" forecolor="#333333" uuid="f525508b-e6bc-4e86-b020-fa541887092f"/>
 								<textElement verticalAlignment="Middle">
 									<font fontName="Open Sans Light" size="8"/>
 									<paragraph leftIndent="3"/>
@@ -376,7 +379,7 @@
 					<jr:column width="40" uuid="c3ed68cf-13df-4b93-ae80-7506e46a6f9b">
 						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
 							<textField>
-								<reportElement uuid="52ea9e71-4ffc-414a-8a45-1df54d45d516" x="0" y="0" width="38" height="18"/>
+								<reportElement x="0" y="0" width="38" height="18" uuid="52ea9e71-4ffc-414a-8a45-1df54d45d516"/>
 								<textElement verticalAlignment="Middle">
 									<font fontName="Open Sans Light" size="8" isBold="true"/>
 									<paragraph leftIndent="3"/>
@@ -386,7 +389,7 @@
 						</jr:columnHeader>
 						<jr:detailCell style="table_TD" height="25" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement uuid="7eed53fb-ce3b-4e1f-af06-02e7b9082305" x="0" y="0" width="38" height="23" forecolor="#333333"/>
+								<reportElement x="0" y="0" width="38" height="23" forecolor="#333333" uuid="7eed53fb-ce3b-4e1f-af06-02e7b9082305"/>
 								<textElement textAlignment="Left" verticalAlignment="Middle">
 									<font fontName="Open Sans Light" size="8"/>
 									<paragraph leftIndent="3"/>
@@ -398,7 +401,7 @@
 					<jr:column width="60" uuid="6164c602-557f-4c12-b05e-c99f12df881d">
 						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
 							<textField>
-								<reportElement uuid="a880c3f9-3399-4fe0-9255-0b1742dda851" x="0" y="0" width="58" height="18"/>
+								<reportElement x="0" y="0" width="58" height="18" uuid="a880c3f9-3399-4fe0-9255-0b1742dda851"/>
 								<textElement verticalAlignment="Middle">
 									<font fontName="Open Sans Light" size="8" isBold="true"/>
 									<paragraph leftIndent="3"/>
@@ -408,7 +411,7 @@
 						</jr:columnHeader>
 						<jr:detailCell style="table_TD" height="25" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement uuid="efbd43f2-0ec3-4806-afbf-633cb9f3695a" x="0" y="0" width="58" height="23" forecolor="#333333"/>
+								<reportElement x="0" y="0" width="58" height="23" forecolor="#333333" uuid="efbd43f2-0ec3-4806-afbf-633cb9f3695a"/>
 								<textElement verticalAlignment="Middle">
 									<font fontName="Open Sans Light" size="8"/>
 									<paragraph leftIndent="3"/>
@@ -420,7 +423,7 @@
 					<jr:column width="40" uuid="0f2faa86-b29e-404b-ae4d-be212290c9c7">
 						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
 							<textField>
-								<reportElement uuid="d3565b27-f92c-47d5-b371-0f83dc7bda88" x="0" y="0" width="38" height="18"/>
+								<reportElement x="0" y="0" width="38" height="18" uuid="d3565b27-f92c-47d5-b371-0f83dc7bda88"/>
 								<textElement verticalAlignment="Middle">
 									<font fontName="Open Sans Light" size="8" isBold="true"/>
 									<paragraph leftIndent="3"/>
@@ -430,7 +433,7 @@
 						</jr:columnHeader>
 						<jr:detailCell style="table_TD" height="25" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement uuid="2b679383-685d-4032-bc8b-7353ff886d6e" x="0" y="0" width="38" height="23" forecolor="#333333"/>
+								<reportElement x="0" y="0" width="38" height="23" forecolor="#333333" uuid="2b679383-685d-4032-bc8b-7353ff886d6e"/>
 								<textElement verticalAlignment="Middle">
 									<font fontName="Open Sans Light" size="8"/>
 									<paragraph leftIndent="3"/>
@@ -442,7 +445,7 @@
 					<jr:column width="70" uuid="8aae73a4-e660-4068-b520-e250e1771ca9">
 						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
 							<textField>
-								<reportElement uuid="d8d8aa0c-2bd1-4c6f-bd1d-c61a6d0213b0" x="0" y="0" width="68" height="18"/>
+								<reportElement x="0" y="0" width="68" height="18" uuid="d8d8aa0c-2bd1-4c6f-bd1d-c61a6d0213b0"/>
 								<textElement verticalAlignment="Middle">
 									<font fontName="Open Sans Light" size="8" isBold="true"/>
 									<paragraph leftIndent="3"/>
@@ -452,7 +455,7 @@
 						</jr:columnHeader>
 						<jr:detailCell style="table_TD" height="25" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement uuid="d5c4207e-0094-4170-af62-ec00bc12510a" x="0" y="0" width="68" height="23" forecolor="#333333"/>
+								<reportElement x="0" y="0" width="68" height="23" forecolor="#333333" uuid="d5c4207e-0094-4170-af62-ec00bc12510a"/>
 								<textElement textAlignment="Left" verticalAlignment="Middle">
 									<font fontName="Open Sans Light" size="8"/>
 									<paragraph leftIndent="3"/>
@@ -464,16 +467,16 @@
 				</jr:table>
 			</componentElement>
 		</band>
-		<band height="70" splitType="Prevent">
+		<band height="97" splitType="Prevent">
 			<textField>
-				<reportElement uuid="55ac7095-b58c-48d6-8b08-656bfb8f5313" positionType="Float" x="330" y="25" width="90" height="20"/>
+				<reportElement positionType="Float" x="339" y="25" width="90" height="20" uuid="55ac7095-b58c-48d6-8b08-656bfb8f5313"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Open Sans Light"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{tidy.totalTax}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="2d0b346a-119e-4b79-8d5d-3391d39eb03f" positionType="Float" x="419" y="5" width="120" height="20"/>
+				<reportElement positionType="Float" x="428" y="5" width="120" height="20" uuid="2d0b346a-119e-4b79-8d5d-3391d39eb03f"/>
 				<box>
 					<topPen lineWidth="0.15" lineColor="#CCCCCC"/>
 				</box>
@@ -483,7 +486,7 @@
 				<textFieldExpression><![CDATA[java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format($F{document.totalBeforeTax}.doubleValue())]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="f323c306-88b6-4a05-a171-3eeb81952971" positionType="Float" x="330" y="45" width="90" height="20"/>
+				<reportElement positionType="Float" x="339" y="45" width="90" height="20" uuid="f323c306-88b6-4a05-a171-3eeb81952971"/>
 				<box>
 					<bottomPen lineWidth="0.15" lineColor="#CCCCCC"/>
 				</box>
@@ -493,7 +496,7 @@
 				<textFieldExpression><![CDATA[$R{tidy.total}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="06ee0050-d96e-4c25-a27a-b80fe645b7e6" positionType="Float" x="419" y="45" width="120" height="20"/>
+				<reportElement positionType="Float" x="428" y="45" width="120" height="20" uuid="06ee0050-d96e-4c25-a27a-b80fe645b7e6"/>
 				<box>
 					<bottomPen lineWidth="0.15" lineColor="#CCCCCC"/>
 				</box>
@@ -503,7 +506,7 @@
 				<textFieldExpression><![CDATA[java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format($F{document.total}.doubleValue())]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="5876971a-0379-49be-b6ee-b46f487926f6" positionType="Float" x="330" y="5" width="90" height="20"/>
+				<reportElement positionType="Float" x="339" y="5" width="90" height="20" uuid="5876971a-0379-49be-b6ee-b46f487926f6"/>
 				<box>
 					<topPen lineWidth="0.15" lineColor="#CCCCCC"/>
 				</box>
@@ -513,21 +516,21 @@
 				<textFieldExpression><![CDATA[$R{tidy.totalWithoutTax}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="9e1ae70a-0d3c-4720-a5db-20703f6c6965" positionType="Float" x="419" y="25" width="120" height="20"/>
+				<reportElement positionType="Float" x="428" y="25" width="120" height="20" uuid="9e1ae70a-0d3c-4720-a5db-20703f6c6965"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Open Sans Light"/>
 				</textElement>
 				<textFieldExpression><![CDATA[java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format($F{document.totalTax}.doubleValue())]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="b1330750-53d5-4fba-96a2-1ce18df49e5f" positionType="Float" x="8" y="30" width="240" height="20" forecolor="#333333"/>
+				<reportElement positionType="Float" x="8" y="30" width="240" height="20" forecolor="#333333" uuid="b1330750-53d5-4fba-96a2-1ce18df49e5f"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Open Sans Light" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{document.limitations}!=null && !"".equals($F{document.limitations}.trim())? $F{document.limitations}: $R{tidy.nolimitations}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="97974dbc-c141-4a43-b90c-49e90a99ef91" positionType="Float" x="8" y="5" width="240" height="20"/>
+				<reportElement positionType="Float" x="8" y="5" width="240" height="20" uuid="97974dbc-c141-4a43-b90c-49e90a99ef91"/>
 				<box>
 					<bottomPen lineWidth="0.15" lineColor="#CCCCCC"/>
 				</box>
@@ -537,11 +540,59 @@
 				<textFieldExpression><![CDATA[$R{tidy.limitations}]]></textFieldExpression>
 			</textField>
 		</band>
+		<band height="118" splitType="Prevent">
+			<line>
+				<reportElement positionType="Float" x="417" y="100" width="130" height="1" uuid="48cabca3-98a4-4519-857c-a5499fa911be"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<textField isBlankWhenNull="false">
+				<reportElement positionType="Float" mode="Transparent" x="417" y="60" width="130" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="dcac1f3f-c189-4691-9bf4-107c1b9987b0">
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="Open Sans Light" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{tidy.signForAcceptance}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" mode="Transparent" x="8" y="30" width="540" height="20" forecolor="#333333" backcolor="#FFFFFF" uuid="cafd437c-79d3-4785-94bb-f609d8524ba3">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<printWhenExpression><![CDATA[$F{document.termsAndConditions} != null && !"".equals($F{document.termsAndConditions}.trim())]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle" rotation="None" markup="none">
+					<font fontName="Open Sans Light" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{document.termsAndConditions}!=null ? $F{document.termsAndConditions} : ""]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement positionType="Float" mode="Transparent" x="222" y="10" width="110" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="9b877552-407d-4ffb-a0db-9202950a1127">
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{document.termsAndConditions} != null && !"".equals($F{document.termsAndConditions}.trim())]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="Open Sans Light" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{tidy.termsAndConditions}]]></textFieldExpression>
+			</textField>
+		</band>
 	</detail>
 	<pageFooter>
 		<band height="60" splitType="Stretch">
 			<textField>
-				<reportElement uuid="d6fb970e-5989-4600-b62e-81e89558c855" x="140" y="45" width="274" height="12" forecolor="#646464">
+				<reportElement x="140" y="45" width="274" height="12" forecolor="#646464" uuid="d6fb970e-5989-4600-b62e-81e89558c855">
 					<printWhenExpression><![CDATA[com.novadart.novabill.report.ReportUtils.isFreeUser($F{document.business})]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center" markup="html">
@@ -550,21 +601,21 @@
 				<textFieldExpression><![CDATA["<a href=\"https://www.novabill.it\">" + $R{tidy.watermark.novabill} + " – https://www.novabill.it</a>"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
-				<reportElement uuid="8e82610e-b0a0-47f8-a7db-cfc8070dca29" x="533" y="45" width="15" height="12"/>
+				<reportElement x="533" y="45" width="15" height="12" uuid="8e82610e-b0a0-47f8-a7db-cfc8070dca29"/>
 				<textElement>
 					<font fontName="Open Sans Light" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="25ff91c2-11c8-4955-89ae-7a4f56a35080" x="453" y="45" width="80" height="12"/>
+				<reportElement x="453" y="45" width="80" height="12" uuid="25ff91c2-11c8-4955-89ae-7a4f56a35080"/>
 				<textElement textAlignment="Right">
 					<font fontName="Open Sans Light" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Pagina "+$V{PAGE_NUMBER}+" di"]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="c04c6858-905a-49bc-a008-5354e431e7d4" x="8" y="16" width="540" height="24"/>
+				<reportElement x="8" y="16" width="540" height="24" uuid="c04c6858-905a-49bc-a008-5354e431e7d4"/>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font fontName="Open Sans Light" size="8" isItalic="true"/>
 				</textElement>

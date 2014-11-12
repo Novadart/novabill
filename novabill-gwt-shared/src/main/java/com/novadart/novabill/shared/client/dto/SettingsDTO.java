@@ -19,6 +19,8 @@ public class SettingsDTO implements IsSerializable {
     
     private String transportDocumentFooterNote;
     
+    private String defaultTermsAndConditionsForEstimation;
+    
     private String emailSubject;
     
     private String emailText;
@@ -81,6 +83,15 @@ public class SettingsDTO implements IsSerializable {
 
 	public void setTransportDocumentFooterNote(String transportDocumentFooterNote) {
 		this.transportDocumentFooterNote = transportDocumentFooterNote;
+	}
+	
+	public String getDefaultTermsAndConditionsForEstimation() {
+		return defaultTermsAndConditionsForEstimation;
+	}
+	
+	public void setDefaultTermsAndConditionsForEstimation(
+			String defaultTermsAndConditionsForEstimation) {
+		this.defaultTermsAndConditionsForEstimation = defaultTermsAndConditionsForEstimation;
 	}
 
 	public String getEmailSubject() {

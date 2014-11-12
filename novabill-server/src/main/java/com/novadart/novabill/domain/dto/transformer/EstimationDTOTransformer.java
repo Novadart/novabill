@@ -13,6 +13,7 @@ public class EstimationDTOTransformer extends AccountingDocumentDTOTransformer {
 		EstimationDTO estimationDTO = new EstimationDTO();
 		AccountingDocumentDTOTransformer.copyToDTO(estimation, estimationDTO, copyItems);
 		estimationDTO.setLimitations(estimation.getLimitations());
+		estimationDTO.setTermsAndConditions(estimation.getTermsAndConditions());
 		estimationDTO.setValidTill(estimation.getValidTill());
 		estimationDTO.setIncognito(estimation.isIncognito());
 		estimationDTO.setBusiness(BusinessDTOTransformer.toDTO(estimation.getBusiness()));
@@ -23,6 +24,7 @@ public class EstimationDTOTransformer extends AccountingDocumentDTOTransformer {
 	public static void copyFromDTO(Estimation estimation, EstimationDTO estimationDTO, boolean addItems){
 		AccountingDocumentDTOTransformer.copyFromDTO(estimation, estimationDTO, addItems);
 		estimation.setLimitations(estimationDTO.getLimitations());
+		estimation.setTermsAndConditions(estimationDTO.getTermsAndConditions());
 		estimation.setValidTill(estimationDTO.getValidTill());
 		estimation.setIncognito(estimationDTO.isIncognito());
 	}

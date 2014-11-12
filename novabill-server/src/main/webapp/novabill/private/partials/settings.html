@@ -148,6 +148,18 @@
                             </div>
                             
                             <div class="form-group">
+                                <label for="defaultTermsAndConditionsForEstimation" class="col-md-4 control-label">{{ 'BUSINESS_OPTION_DEFAULT_TERMS_AND_CONDITIONS_FOR_ESTIMATION' | translate }}</label>
+                                <div class="col-md-8">
+                                    <textarea 
+                                    id="defaultTermsAndConditionsForEstimation" 
+                                    name="defaultTermsAndConditionsForEstimation" 
+                                    maxlength="3000"
+                                    ng-model="business.settings.defaultTermsAndConditionsForEstimation" 
+                                    class="form-control input-xlarge" rows="5"></textarea>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
                                 <label for="footerNote" class="col-md-4 control-label">{{ 'BUSINESS_OPTION_FOOTER_TEXT' | translate }}</label>
                                 <div class="col-md-8">
                                    <label for="estimationFooterNote" class="control-label">{{ 'ESTIMATION' | translate }}</label>
