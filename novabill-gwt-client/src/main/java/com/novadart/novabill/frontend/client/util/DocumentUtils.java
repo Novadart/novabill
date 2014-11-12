@@ -86,8 +86,7 @@ public class DocumentUtils {
 	public static void showBusinessDialogIfBusinessInformationNotComplete(final AsyncCallback<Void> callback){
 		BusinessDTO b = Configuration.getBusiness();
 		
-		if( isEmpty( b.getSsn() ) 
-				|| isEmpty( b.getVatID() )
+		if( (isEmpty( b.getSsn() ) && isEmpty( b.getVatID() ))
 				|| isEmpty( b.getAddress() )
 				|| isEmpty( b.getCity() )
 				|| isEmpty( b.getPostcode() )

@@ -66,7 +66,7 @@
                <label class="control-label" for="weight">{{'WEIGHT' | translate}}</label> 
                <input type="text" n-smart-float positive-float name="weight" maxlength="50" ng-model="commodity.weight" class="form-control" placeholder="{{'WEIGHT_PLACEHOLDER' | translate}}">
                <div ng-show="form.weight.$dirty && form.weight.$invalid">
-                   <span class="text-danger" ng-show="form.weight.$error.tax">{{'VALIDATION_INVALID_VALUE' | translate}}</span>
+                   <span class="text-danger" >{{'VALIDATION_INVALID_VALUE' | translate}}</span>
                </div>
            </div>
            

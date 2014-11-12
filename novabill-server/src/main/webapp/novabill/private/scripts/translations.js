@@ -325,6 +325,7 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 		UNIT_OF_MEASURE_PLACEHOLDER : 'esempio: pezzo',
 		UNIT_OF_MEASURE_SHORT : 'U.M.',
 		UNSELECT_ALL : 'Annulla Selezione',
+		VALIDATION_AT_LEAST_ONE_REQUIRED : 'Obbligatorio almeno uno',
 		VALIDATION_EMAIL_TAKEN : 'Email già utilizzata in un\'altra condivisione',
 		VALIDATION_NAME_TAKEN : 'Nome già utilizzato per un altro listino',
 		VALIDATION_INVALID_VALUE : 'Valore non valido',
