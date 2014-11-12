@@ -125,6 +125,7 @@ public abstract class AbstractEstimationPresenter extends DocumentPresenter<Esti
 		es.setNote(getView().getNote().getText());
 		es.setPaymentNote(getView().getPaymentNote().getText());
 		es.setLimitations(getView().getLimitations().getText());
+		es.setTermsAndConditions(getView().getTermsAndConditions().getText());
 		es.setIncognito(Configuration.getBusiness().getSettings().isIncognitoEnabled() && !getView().getOverrideIncognitoModeCheckbox().getValue());
 		CalcUtils.calculateTotals(invItems, es);
 		return es;

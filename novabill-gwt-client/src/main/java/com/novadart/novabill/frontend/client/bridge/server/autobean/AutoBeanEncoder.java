@@ -147,6 +147,7 @@ public class AutoBeanEncoder {
 		s.setEstimationFooterNote(c.getEstimationFooterNote());
 		s.setInvoiceFooterNote(c.getInvoiceFooterNote());
 		s.setTransportDocumentFooterNote(c.getTransportDocumentFooterNote());
+		s.setDefaultTermsAndConditionsForEstimation(c.getDefaultTermsAndConditionsForEstimation());
 		s.setEmailReplyTo(c.getEmailReplyTo());
 		s.setEmailSubject(c.getEmailSubject());
 		s.setEmailText(c.getEmailText());
@@ -291,6 +292,7 @@ public class AutoBeanEncoder {
 		Estimation ei = AutoBeanMaker.INSTANCE.makeEstimation().as();
 
 		ei.setLimitations(estimation.getLimitations());
+		ei.setTermsAndConditions(estimation.getTermsAndConditions());
 		ei.setValidTill(estimation.getValidTill());
 
 		ei.setAccountingDocumentDate(estimation.getAccountingDocumentDate());

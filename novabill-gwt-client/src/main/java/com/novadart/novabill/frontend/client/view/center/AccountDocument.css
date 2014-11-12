@@ -112,7 +112,7 @@ input[type="text"].box.number {
 }
 
 .note,.paymentNote {
-	width: 40em;
+	width: 40em !important;
 }
 
 .companyName {

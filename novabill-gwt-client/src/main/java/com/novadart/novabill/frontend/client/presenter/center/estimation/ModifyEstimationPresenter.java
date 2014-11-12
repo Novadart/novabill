@@ -59,6 +59,7 @@ public class ModifyEstimationPresenter extends AbstractEstimationPresenter {
 		getView().getNote().setText(estimation.getNote());
 		getView().getPaymentNote().setText(estimation.getPaymentNote());
 		getView().getLimitations().setText(estimation.getLimitations());
+		getView().getTermsAndConditions().setText(estimation.getTermsAndConditions());
 		getView().getOverrideIncognitoModeCheckbox().setValue(!estimation.isIncognito());
 	}
 

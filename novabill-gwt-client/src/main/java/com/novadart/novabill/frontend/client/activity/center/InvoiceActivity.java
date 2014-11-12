@@ -16,7 +16,6 @@ import com.novadart.novabill.frontend.client.place.invoice.FromTransportDocument
 import com.novadart.novabill.frontend.client.place.invoice.InvoicePlace;
 import com.novadart.novabill.frontend.client.place.invoice.ModifyInvoicePlace;
 import com.novadart.novabill.frontend.client.place.invoice.NewInvoicePlace;
-import com.novadart.novabill.frontend.client.presenter.center.creditnote.NewCreditNotePresenter;
 import com.novadart.novabill.frontend.client.presenter.center.invoice.ModifyInvoicePresenter;
 import com.novadart.novabill.frontend.client.presenter.center.invoice.NewInvoicePresenter;
 import com.novadart.novabill.frontend.client.util.DocumentUtils;

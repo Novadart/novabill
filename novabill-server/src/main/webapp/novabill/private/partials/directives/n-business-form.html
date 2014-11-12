@@ -21,10 +21,10 @@
 		    <div collapse="fieldsToShow==='companyName' && !showAll">
 		    
 			    <div class="form-group" ng-class="{'has-error': form.ssn.$dirty && form.ssn.$invalid, 'has-success': form.ssn.$dirty && form.ssn.$valid}">
-	                <label class="col-md-4 control-label" for="ssn">{{'SSN_EXTENDED' | translate}} <span ng-show="fieldsToShow!=='companyName'">*</span></label>
+	                <label class="col-md-4 control-label" for="ssn">{{'SSN_EXTENDED' | translate}} <span ng-show="fieldsToShow!=='companyName'">**</span></label>
 	                <div class="col-md-8">
-	                    <input n-ssn-or-vat-id class="form-control" type="text" name="ssn" maxlength="25" ng-model="business.ssn" 
-	                        placeholder="{{'SSN_PLACEHOLDER' | translate}}" ng-required="fieldsToShow!=='companyName'">
+	                    <input n-ssn-or-vat-id n-optional-value class="form-control" type="text" name="ssn" maxlength="25" ng-model="business.ssn" 
+	                        placeholder="{{'SSN_PLACEHOLDER' | translate}}" ng-required="fieldsToShow!=='companyName' && !business.vatID">
 	                    <div ng-show="form.ssn.$dirty && form.ssn.$invalid">
 	                        <span class="text-danger">{{'VALIDATION_INVALID_VALUE' | translate}}</span>
 	                    </div>
@@ -32,10 +32,10 @@
 	            </div>
 	            
 	            <div class="form-group" ng-class="{'has-error': form.vatId.$dirty && form.vatId.$invalid, 'has-success': form.vatId.$dirty && form.vatId.$valid}">
-	                <label class="col-md-4 control-label" for="vatId">{{'VATID' | translate}} <span ng-show="fieldsToShow!=='companyName'">*</span></label>
+	                <label class="col-md-4 control-label" for="vatId">{{'VATID' | translate}} <span ng-show="fieldsToShow!=='companyName'">**</span></label>
 	                <div class="col-md-8">
-	                    <input n-vat-id class="form-control" type="text" name="vatId" maxlength="25" ng-model="business.vatID" 
-	                        placeholder="{{'VATID_PLACEHOLDER' | translate}}" ng-required="fieldsToShow!=='companyName'">
+	                    <input n-vat-id n-optional-value class="form-control" type="text" name="vatId" maxlength="25" ng-model="business.vatID" 
+	                        placeholder="{{'VATID_PLACEHOLDER' | translate}}" ng-required="fieldsToShow!=='companyName' && !business.ssn">
 	                    <div ng-show="form.vatId.$dirty && form.vatId.$invalid">
 	                        <span class="text-danger">{{'VALIDATION_INVALID_VALUE' | translate}}</span>
 	                    </div>
@@ -160,6 +160,8 @@
             </div>
             
             <span>* {{'VALIDATION_REQUIRED' | translate}}</span>
+            <br ng-show="fieldsToShow!=='companyName'">
+            <span ng-show="fieldsToShow!=='companyName'">** {{'VALIDATION_AT_LEAST_ONE_REQUIRED' | translate}}</span>
 	    
 	    </div>
 	    

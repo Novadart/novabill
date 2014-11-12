@@ -82,6 +82,15 @@
 				</g:customCell>
 			</g:row>
 			<g:row>
+                <g:customCell>
+                    <g:Label styleName="{s.label}" text="{i18n.termsAndConditions}"></g:Label>
+                </g:customCell>
+                <g:customCell>
+                    <v:ValidatedTextArea styleName="{s.box} {s.note}"
+                        visibleLines="5" ui:field="termsAndConditions"></v:ValidatedTextArea>
+                </g:customCell>
+            </g:row>
+			<g:row>
 				<g:customCell>
 					<g:Label styleName="{s.label}" text="{i18n.note}"></g:Label>
 				</g:customCell>

@@ -13,6 +13,10 @@ public interface Estimation {
 
 	public void setLimitations(String limitations);
 
+	public String getTermsAndConditions();
+
+	public void setTermsAndConditions(String limitations);
+	
 	public Date getValidTill();
 
 	public void setValidTill(Date validTill);

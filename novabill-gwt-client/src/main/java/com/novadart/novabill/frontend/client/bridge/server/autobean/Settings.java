@@ -34,6 +34,10 @@ public interface Settings {
 
 	public void setTransportDocumentFooterNote(String transportDocumentFooterNote);
 	
+	public String getDefaultTermsAndConditionsForEstimation();
+	
+	public void setDefaultTermsAndConditionsForEstimation(String tac);
+	
 	public String getEmailSubject();
 
 	public void setEmailSubject(String emailSubject);

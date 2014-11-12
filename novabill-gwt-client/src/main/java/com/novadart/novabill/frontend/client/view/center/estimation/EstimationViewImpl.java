@@ -58,6 +58,7 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 	@UiField ValidatedTextArea note;
 	@UiField ValidatedTextArea paymentNote;
 	@UiField ValidatedTextArea limitations;
+	@UiField(provided=true) com.novadart.gwtshared.client.validation.widget.ValidatedTextArea termsAndConditions;
 
 	@UiField CheckBox setToAddress;
 	@UiField HorizontalPanel toAddressContainer;
@@ -102,6 +103,16 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 		validTill = new ValidatedDateBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NOT_EMPTY_DATE);
 		validTill.setFormat(new DateBox.DefaultFormat
 				(DateTimeFormat.getFormat("dd MMMM yyyy")));
+		
+		termsAndConditions = new com.novadart.gwtshared.client.validation.widget.ValidatedTextArea(
+				GlobalBundle.INSTANCE.validatedWidget(), new TextLengthValidation(3000) {
+					
+					@Override
+					public String getErrorMessage() {
+						return I18NM.get.textLengthError(3000);
+					}
+				});
+		
 		createEstimation = new LoaderButton(ImageResources.INSTANCE.loader(), GlobalBundle.INSTANCE.loaderButton());
 
 		toAddrCity = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.city(),ValidationKit.DEFAULT);
@@ -198,6 +209,7 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 		note.setText("");
 		paymentNote.setText("");
 		limitations.setText("");
+		termsAndConditions.setText("");
 		totalTax.setText("");
 		totalBeforeTaxes.setText("");
 		totalAfterTaxes.setText("");
@@ -225,6 +237,7 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 		note.setEnabled(!value);
 		paymentNote.setEnabled(!value);
 		limitations.setEnabled(!value);
+		termsAndConditions.setEnabled(!value);
 
 		toAddrCompanyName.setEnabled(!value);
 		toAddrStreetName.setEnabled(!value);
@@ -342,6 +355,11 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 	@Override
 	public ValidatedTextArea getLimitations() {
 		return limitations;
+	}
+	
+	@Override
+	public com.novadart.gwtshared.client.validation.widget.ValidatedTextArea getTermsAndConditions() {
+		return termsAndConditions;
 	}
 
 	@Override

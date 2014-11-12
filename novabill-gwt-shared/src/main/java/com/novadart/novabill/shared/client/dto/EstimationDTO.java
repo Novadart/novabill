@@ -6,6 +6,8 @@ public class EstimationDTO extends AccountingDocumentDTO {
 	
 	private String limitations;
 	
+	private String termsAndConditions;
+	
 	private Date validTill;
 
 	private boolean incognito;
@@ -18,6 +20,14 @@ public class EstimationDTO extends AccountingDocumentDTO {
 		this.limitations = limitations;
 	}
 
+	public String getTermsAndConditions() {
+		return termsAndConditions;
+	}
+	
+	public void setTermsAndConditions(String termsAndConditions) {
+		this.termsAndConditions = termsAndConditions;
+	}
+	
 	public Date getValidTill() {
 		return validTill;
 	}

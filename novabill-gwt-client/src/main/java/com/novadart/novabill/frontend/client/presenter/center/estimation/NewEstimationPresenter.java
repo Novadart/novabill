@@ -7,6 +7,7 @@ import java.util.List;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
+import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.bridge.BridgeUtils;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
@@ -38,6 +39,7 @@ public class NewEstimationPresenter extends AbstractEstimationPresenter {
 		Date now = DocumentUtils.createNormalizedDate(new Date());
 		getView().getDate().setValue(now);
 		getView().getValidTill().setValue(new Date(now.getTime() + 2592000000L));
+		getView().getTermsAndConditions().setText(Configuration.getBusiness().getSettings().getDefaultTermsAndConditionsForEstimation());;
 
 		getView().getCreateDocument().setVisible(true);
 	}
@@ -57,6 +59,7 @@ public class NewEstimationPresenter extends AbstractEstimationPresenter {
 		getView().getNote().setText(estimation.getNote());
 		getView().getPaymentNote().setText(estimation.getPaymentNote());
 		getView().getLimitations().setText(estimation.getLimitations());
+		getView().getTermsAndConditions().setText(estimation.getTermsAndConditions());
 	}
 
 	@Override

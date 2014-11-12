@@ -35,6 +35,9 @@ public class Estimation extends AccountingDocument implements Serializable {
 	@Size(max = 1500)
 	private String limitations;
 	
+	@Size(max = 3000)
+	private String termsAndConditions;
+	
 	@Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(style = "S-")
 	private Date validTill;
@@ -63,6 +66,14 @@ public class Estimation extends AccountingDocument implements Serializable {
 
 	public void setLimitations(String limitations) {
 		this.limitations = limitations;
+	}
+	
+	public String getTermsAndConditions() {
+		return termsAndConditions;
+	}
+	
+	public void setTermsAndConditions(String termsAndConditions) {
+		this.termsAndConditions = termsAndConditions;
 	}
 	
     public Date getValidTill() {

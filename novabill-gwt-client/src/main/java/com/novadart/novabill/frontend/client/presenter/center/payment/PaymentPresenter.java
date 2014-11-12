@@ -20,7 +20,6 @@ import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.presenter.AbstractPresenter;
 import com.novadart.novabill.frontend.client.util.CalcUtils;
 import com.novadart.novabill.frontend.client.util.DocumentUtils;
-import com.novadart.novabill.frontend.client.view.MainWidget;
 import com.novadart.novabill.frontend.client.view.center.payment.PaymentView;
 import com.novadart.novabill.frontend.client.widget.dialog.payment.PaymentDialog;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
@@ -47,7 +46,7 @@ public class PaymentPresenter extends AbstractPresenter<PaymentView> implements 
 
 	@Override
 	public void go(AcceptsOneWidget panel) {
-		MainWidget.INSTANCE.setStandardView();
+
 		bind();
 		panel.setWidget(getView());
 	}

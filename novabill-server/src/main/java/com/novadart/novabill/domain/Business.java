@@ -132,7 +132,7 @@ public class Business implements Serializable, Taxable {
 
     @Size(max = 25)
     //@Pattern(regexp = RegularExpressionConstants.VAT_ID_REGEX)
-    @NotEmpty(groups = {HeavyBusiness.class})
+//    @NotEmpty(groups = {HeavyBusiness.class})
     @Trimmed
     private String vatID;
     

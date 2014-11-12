@@ -54,6 +54,7 @@ public class AutoBeanDecoder {
 		c.setEstimationFooterNote(s.getEstimationFooterNote());
 		c.setInvoiceFooterNote(s.getInvoiceFooterNote());
 		c.setTransportDocumentFooterNote(s.getTransportDocumentFooterNote());
+		c.setDefaultTermsAndConditionsForEstimation(s.getDefaultTermsAndConditionsForEstimation());
 		return c;
 	}
 	

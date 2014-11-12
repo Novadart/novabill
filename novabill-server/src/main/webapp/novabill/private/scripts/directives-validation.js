@@ -12,9 +12,12 @@ angular.module('novabill.directives.validation',
 	return {
 		require: 'ngModel',
 		restrict: 'A',
+		scope : {
+			nOptionalValue : '='
+		},
 		link: function(scope, elm, attrs, ctrl) {
 			ctrl.$parsers.unshift(function(viewValue) {
-				if (nRegExp.vatId.test(viewValue)) {
+				if ((attrs.nOptionalValue !== undefined && viewValue === '') || nRegExp.vatId.test(viewValue)) {
 					ctrl.$setValidity('vatId', true);
 					return viewValue;
 				} else {
@@ -35,9 +38,12 @@ angular.module('novabill.directives.validation',
 	return {
 		require: 'ngModel',
 		restrict: 'A',
+		scope : {
+			nOptionalValue : '='
+		},
 		link: function(scope, elm, attrs, ctrl) {
 			ctrl.$parsers.unshift(function(viewValue) {
-				if (nRegExp.ssn.test(viewValue)) {
+				if ((attrs.nOptionalValue !== undefined && viewValue === '') || nRegExp.ssn.test(viewValue)) {
 					ctrl.$setValidity('ssn', true);
 					return viewValue;
 				} else {
@@ -58,9 +64,12 @@ angular.module('novabill.directives.validation',
 	return {
 		require: 'ngModel',
 		restrict: 'A',
+		scope : {
+			nOptionalValue : '='
+		},
 		link: function(scope, elm, attrs, ctrl) {
 			ctrl.$parsers.unshift(function(viewValue) {
-				if (nRegExp.ssn.test(viewValue) || nRegExp.vatId.test(viewValue)) {
+				if ((attrs.nOptionalValue !== undefined && viewValue === '') || nRegExp.ssn.test(viewValue) || nRegExp.vatId.test(viewValue)) {
 					ctrl.$setValidity('ssnOrVatId', true);
 					return viewValue;
 				} else {
@@ -170,7 +179,7 @@ angular.module('novabill.directives.validation',
 		restrict: 'A',
 		link: function(scope, elm, attrs, ctrl) {
 			ctrl.$parsers.unshift(function(viewValue) {
-				var testExp = scope.positiveFloatNumber ? nRegExp.positiveFloatNumber : nRegExp.floatNumber;
+				var testExp = attrs.positiveFloat !== undefined ? nRegExp.positiveFloatNumber : nRegExp.floatNumber;
 				
 				if(viewValue === ''){
 					ctrl.$setValidity('float', true);
