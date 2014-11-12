@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 5.6.2.final using JasperReports Library version 5.6.1  -->
-<!-- 2014-11-12T21:48:54 -->
+<!-- 2014-11-12T22:11:34 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Estimation" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="20" uuid="96f0ca59-afec-4bbb-95f2-0a9732c6c014">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
@@ -542,7 +542,7 @@
 		</band>
 		<band height="118" splitType="Prevent">
 			<line>
-				<reportElement positionType="Float" x="417" y="100" width="130" height="1" uuid="48cabca3-98a4-4519-857c-a5499fa911be"/>
+				<reportElement positionType="Float" x="417" y="100" width="130" height="1" forecolor="#CCCCCC" uuid="48cabca3-98a4-4519-857c-a5499fa911be"/>
 				<graphicElement>
 					<pen lineWidth="0.5"/>
 				</graphicElement>
@@ -560,7 +560,7 @@
 				<textFieldExpression><![CDATA[$R{tidy.signForAcceptance}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement positionType="Float" mode="Transparent" x="8" y="30" width="540" height="20" forecolor="#333333" backcolor="#FFFFFF" uuid="cafd437c-79d3-4785-94bb-f609d8524ba3">
+				<reportElement positionType="Float" mode="Transparent" x="8" y="35" width="540" height="20" forecolor="#333333" backcolor="#FFFFFF" uuid="cafd437c-79d3-4785-94bb-f609d8524ba3">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="local_mesure_unity" value="pixel"/>
@@ -569,19 +569,22 @@
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<printWhenExpression><![CDATA[$F{document.termsAndConditions} != null && !"".equals($F{document.termsAndConditions}.trim())]]></printWhenExpression>
 				</reportElement>
-				<textElement verticalAlignment="Middle" rotation="None" markup="none">
+				<textElement textAlignment="Justified" verticalAlignment="Middle" rotation="None" markup="none">
 					<font fontName="Open Sans Light" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{document.termsAndConditions}!=null ? $F{document.termsAndConditions} : ""]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement positionType="Float" mode="Transparent" x="222" y="10" width="110" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="9b877552-407d-4ffb-a0db-9202950a1127">
+				<reportElement positionType="Float" mode="Transparent" x="8" y="10" width="240" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="9b877552-407d-4ffb-a0db-9202950a1127">
 					<property name="local_mesure_unitx" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<printWhenExpression><![CDATA[$F{document.termsAndConditions} != null && !"".equals($F{document.termsAndConditions}.trim())]]></printWhenExpression>
 				</reportElement>
+				<box>
+					<bottomPen lineWidth="0.1" lineColor="#CCCCCC"/>
+				</box>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="Open Sans Light" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
