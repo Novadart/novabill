@@ -263,8 +263,8 @@ angular.module('novabill.directives',
 			creditNote : '=',
 			bottomUpMenu : '='
 		},
-		controller : ['$scope', '$rootScope', '$element', '$translate', 'nConfirmDialog', 'nDownload',
-		              function($scope, $rootScope, $element, $translate, nConfirmDialog, nDownload){
+		controller : ['$scope', '$rootScope', '$element', '$translate', 'nConfirmDialog', 'nDownload', '$window',
+		              function($scope, $rootScope, $element, $translate, nConfirmDialog, nDownload, $window){
 
 			$scope.openUrl = function() {
 				$window.location.assign( nConstants.url.creditNoteDetails( $scope.creditNote.id ) );
