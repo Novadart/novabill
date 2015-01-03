@@ -25,6 +25,7 @@ angular.module('novabill.invoices.controllers',
 
 			$scope.loadInvoices = function(year) {
 				selectedYear = year;
+				$scope.invoices = null;
 
 				GWT_Server.invoice.getAllInRange(nConstants.conf.businessId, selectedYear, '0', '1000000', {
 					onSuccess : function(page){
