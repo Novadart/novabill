@@ -24,6 +24,7 @@ angular.module('novabill.estimations.controllers', ['novabill.utils', 'novabill.
 	
 	$scope.loadEstimations = function(year) {
 		selectedYear = year;
+		$scope.estimations = null;
 
 		GWT_Server.estimation.getAllInRange(nConstants.conf.businessId, selectedYear, '0', '1000000', {
 			onSuccess : function(page){

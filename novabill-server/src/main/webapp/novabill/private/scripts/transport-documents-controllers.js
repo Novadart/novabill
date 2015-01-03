@@ -45,6 +45,7 @@ angular.module('novabill.transportDocuments.controllers',
 
 			 $scope.loadTransportDocuments = function(year) {
 				 selectedYear = year;
+				 $scope.transportDocuments = null;
 
 				 GWT_Server.transportDocument.getAllInRange(nConstants.conf.businessId, selectedYear, '0', '1000000', {
 					 onSuccess : function(page){

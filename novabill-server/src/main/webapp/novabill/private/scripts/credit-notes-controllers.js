@@ -25,6 +25,7 @@ angular.module('novabill.creditNotes.controllers',
 
 			$scope.loadCreditNotes = function(year) {
 				selectedYear = year;
+				$scope.creditNotes = null;
 
 				GWT_Server.creditNote.getAllInRange(nConstants.conf.businessId, selectedYear, '0', '1000000', {
 					onSuccess : function(page){
