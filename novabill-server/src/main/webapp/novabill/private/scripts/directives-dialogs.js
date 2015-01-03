@@ -86,20 +86,32 @@ angular.module('novabill.directives.dialogs',
 				controller: ['$scope', '$modalInstance',
 				             function($scope, $modalInstance){
 					
-					var currentYear = new Date().getFullYear().toString();
+					var currentYear = new Date().getFullYear();
+					var previousYear = currentYear-1;
 
-					GWT_Server.transportDocument.getAllForClient(clientId, currentYear, {
+					GWT_Server.transportDocument.getAllForClient(clientId, previousYear.toString(), {
 
-						onSuccess : function(result){
-							$scope.$apply(function(){
-								$scope.selectedSet = {};
-								$scope.selectedSet[preSelectedId] = true;
-								$scope.docs = partitionTransportDocuments(result.transportDocuments);
+						onSuccess : function(prevYearData){
+							
+							GWT_Server.transportDocument.getAllForClient(clientId, currentYear.toString(), {
 
-								$('.n-select-transport-documents-dialog .scroller').slimScroll({
-									height: '400px'
-								});
+								onSuccess : function(curYearData){
+									$scope.$apply(function(){
+										var docsSet = curYearData.transportDocuments.concat(prevYearData.transportDocuments);
+										$scope.selectedSet = {};
+										$scope.selectedSet[preSelectedId] = true;
+										$scope.docs = partitionTransportDocuments(docsSet);
+
+										$('.n-select-transport-documents-dialog .scroller').slimScroll({
+											height: '400px'
+										});
+									});
+								},
+
+								onFailure : function(){}
+
 							});
+							
 						},
 
 						onFailure : function(){}
