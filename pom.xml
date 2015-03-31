@@ -56,9 +56,7 @@
 	<modules>
 		<module>novabill-gwt-client</module>
 		<module>novabill-gwt-shared</module>
-        <module>novabill-android-client</module>
 		<module>novabill-android-shared</module>
-		<!-- <module>novabill-android-it</module> -->
 		<module>novabill-server</module>
 	</modules>
 

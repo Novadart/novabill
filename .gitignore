@@ -10,4 +10,5 @@ novabill-server/src/main/webapp/rpc
 novabill-report/.pydevproject
 *.jasper
 *~
-
+.idea
+*.iml
