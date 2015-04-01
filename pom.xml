@@ -61,7 +61,7 @@
 	</modules>
 
 	<dependencyManagement>
-		<dependencies>
+		<dependencies> 
 
 			<!-- Novabill internal dependencies -->
 			<dependency> 
