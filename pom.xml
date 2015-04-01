@@ -62,7 +62,7 @@
 
 	<dependencyManagement>
 		<dependencies> 
-
+   
 			<!-- Novabill internal dependencies -->
 			<dependency> 
 				<groupId>${project.groupId}</groupId>
