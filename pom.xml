@@ -64,7 +64,7 @@
 		<dependencies>
 
 			<!-- Novabill internal dependencies -->
-			<dependency>
+			<dependency> 
 				<groupId>${project.groupId}</groupId>
 				<artifactId>novabill-gwt-shared</artifactId>
 				<version>${project.version}</version>
