@@ -1,14 +1,6 @@
 package com.novadart.novabill.frontend.client.widget.validation;
 
-import com.novadart.gwtshared.client.validation.DefaultValidation;
-import com.novadart.gwtshared.client.validation.EmailValidation;
-import com.novadart.gwtshared.client.validation.NotEmptyDateValidation;
-import com.novadart.gwtshared.client.validation.NotEmptyValidation;
-import com.novadart.gwtshared.client.validation.NumberValidation;
-import com.novadart.gwtshared.client.validation.PostcodeValidation;
-import com.novadart.gwtshared.client.validation.SsnValidation;
-import com.novadart.gwtshared.client.validation.TextLengthValidation;
-import com.novadart.gwtshared.client.validation.VatIdValidation;
+import com.novadart.gwtshared.client.validation.*;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.i18n.I18NM;
 

@@ -1,15 +1,14 @@
 package com.novadart.novabill.service.sync;
 
+import com.novadart.novabill.android.shared.data.CRUDOperationType;
+import com.novadart.novabill.android.shared.data.SyncEntityType;
+import com.novadart.novabill.android.shared.dto.SyncDeltaStateDTO;
+import org.springframework.jdbc.core.RowCallbackHandler;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.springframework.jdbc.core.RowCallbackHandler;
-
-import com.novadart.novabill.android.shared.data.CRUDOperationType;
-import com.novadart.novabill.android.shared.data.SyncEntityType;
-import com.novadart.novabill.android.shared.dto.SyncDeltaStateDTO;
 
 class VersionableStateRowCallbackHandler implements RowCallbackHandler {
 	

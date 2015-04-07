@@ -1,23 +1,5 @@
 package com.novadart.novabill.web.rest;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-
 import com.novadart.novabill.android.shared.data.SyncEntityType;
 import com.novadart.novabill.android.shared.dto.ClientDTO;
 import com.novadart.novabill.android.shared.dto.SyncDeltaObjectsDTO;
@@ -25,6 +7,18 @@ import com.novadart.novabill.android.shared.dto.SyncDeltaStateDTO;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.dto.factory.android.ClientDTOFactory;
 import com.novadart.novabill.service.sync.SyncService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/rest/1/sync/delta")

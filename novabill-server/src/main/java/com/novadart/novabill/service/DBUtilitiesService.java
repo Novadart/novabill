@@ -1,25 +1,6 @@
 package com.novadart.novabill.service;
 
-import java.io.IOException;
-import java.util.Set;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.novadart.novabill.domain.Business;
-import com.novadart.novabill.domain.Client;
-import com.novadart.novabill.domain.CreditNote;
-import com.novadart.novabill.domain.EmailPasswordHolder;
-import com.novadart.novabill.domain.Endpoint;
-import com.novadart.novabill.domain.Estimation;
-import com.novadart.novabill.domain.Invoice;
-import com.novadart.novabill.domain.PaymentType;
-import com.novadart.novabill.domain.TransportDocument;
+import com.novadart.novabill.domain.*;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.domain.security.RoleType;
 import com.novadart.novabill.service.web.BusinessServiceImpl;
@@ -29,6 +10,15 @@ import com.novadart.novabill.shared.client.dto.PaymentDateType;
 import com.novadart.novabill.shared.client.dto.PaymentDeltaType;
 import com.novadart.novabill.shared.client.exception.PremiumUpgradeException;
 import com.novadart.novabill.web.mvc.command.Registration;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.io.IOException;
+import java.util.Set;
 
 
 //@Service

@@ -1,10 +1,10 @@
+<%@page import="com.novadart.novabill.domain.Business"%>
+<%@page import="com.novadart.novabill.domain.security.Principal"%>
 <%@page import="com.novadart.novabill.domain.security.RoleType"%>
 <%@page import="com.novadart.novabill.shared.client.data.PriceListConstants"%>
-<%@page import="com.novadart.novabill.web.mvc.Urls"%>
-<%@page import="com.novadart.novabill.domain.security.Principal"%>
-<%@page import="com.novadart.novabill.domain.Business"%>
-<%@page import="org.springframework.security.core.context.SecurityContextHolder"%>
 <%@page import="com.novadart.novabill.web.mvc.PrivateController.PAGES"%>
+<%@page import="com.novadart.novabill.web.mvc.Urls"%>
+<%@page import="org.springframework.security.core.context.SecurityContextHolder"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>

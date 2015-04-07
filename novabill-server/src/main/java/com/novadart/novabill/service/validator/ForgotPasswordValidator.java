@@ -1,10 +1,10 @@
 package com.novadart.novabill.service.validator;
 
+import com.novadart.novabill.domain.ForgotPassword;
+import com.novadart.novabill.domain.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
-import com.novadart.novabill.domain.ForgotPassword;
-import com.novadart.novabill.domain.security.Principal;
 
 @Service
 public class ForgotPasswordValidator {

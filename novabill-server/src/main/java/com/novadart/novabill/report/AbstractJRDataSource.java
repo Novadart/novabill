@@ -1,9 +1,9 @@
 package com.novadart.novabill.report;
 
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+
 import java.util.ArrayList;
 import java.util.Collection;
-
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 public abstract class AbstractJRDataSource {
 	

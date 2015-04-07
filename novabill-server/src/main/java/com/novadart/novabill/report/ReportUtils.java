@@ -1,5 +1,16 @@
 package com.novadart.novabill.report;
 
+import com.google.common.base.Joiner;
+import com.google.common.base.Strings;
+import com.novadart.novabill.domain.Business;
+import com.novadart.novabill.domain.TransportDocument;
+import org.apache.lucene.analysis.ASCIIFoldingFilter;
+import org.apache.lucene.analysis.LowerCaseFilter;
+import org.apache.lucene.analysis.TokenStream;
+import org.apache.lucene.analysis.WhitespaceTokenizer;
+import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
+import org.apache.lucene.util.Version;
+
 import java.io.StringReader;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -8,18 +19,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-import org.apache.lucene.analysis.ASCIIFoldingFilter;
-import org.apache.lucene.analysis.LowerCaseFilter;
-import org.apache.lucene.analysis.TokenStream;
-import org.apache.lucene.analysis.WhitespaceTokenizer;
-import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
-import org.apache.lucene.util.Version;
-
-import com.google.common.base.Joiner;
-import com.google.common.base.Strings;
-import com.novadart.novabill.domain.Business;
-import com.novadart.novabill.domain.TransportDocument;
 
 public class ReportUtils {
 	

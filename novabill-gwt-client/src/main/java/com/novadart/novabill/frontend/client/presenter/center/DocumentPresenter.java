@@ -1,7 +1,5 @@
 package com.novadart.novabill.frontend.client.presenter.center;
 
-import java.util.List;
-
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.place.shared.PlaceController;
@@ -19,6 +17,8 @@ import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.validation.ErrorObject;
 import com.novadart.novabill.shared.client.validation.Field;
+
+import java.util.List;
 
 public abstract class DocumentPresenter<V extends DocumentView<?>> extends AbstractPresenter<V> implements DocumentView.Presenter {
 	

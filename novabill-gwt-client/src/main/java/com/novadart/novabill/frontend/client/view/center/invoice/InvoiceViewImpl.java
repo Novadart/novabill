@@ -1,8 +1,5 @@
 package com.novadart.novabill.frontend.client.view.center.invoice;
 
-import java.util.Date;
-import java.util.List;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -11,14 +8,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.CheckBox;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.*;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.novadart.gwtshared.client.LoaderButton;
 import com.novadart.gwtshared.client.textbox.RichTextArea;
@@ -45,6 +35,9 @@ import com.novadart.novabill.frontend.client.widget.tip.Tips;
 import com.novadart.novabill.frontend.client.widget.validation.ValidationKit;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
+
+import java.util.Date;
+import java.util.List;
 
 public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 

@@ -1,13 +1,9 @@
 package com.novadart.novabill.frontend.client;
 
-import java.util.Comparator;
-
 import com.google.gwt.i18n.client.DateTimeFormat;
-import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
-import com.novadart.novabill.shared.client.dto.ClientDTO;
-import com.novadart.novabill.shared.client.dto.CommodityDTO;
-import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
-import com.novadart.novabill.shared.client.dto.PriceListDTO;
+import com.novadart.novabill.shared.client.dto.*;
+
+import java.util.Comparator;
 
 public class SharedComparators {
 

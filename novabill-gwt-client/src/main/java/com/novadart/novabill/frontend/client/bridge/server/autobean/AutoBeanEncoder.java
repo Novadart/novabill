@@ -1,25 +1,12 @@
 package com.novadart.novabill.frontend.client.bridge.server.autobean;
 
+import com.google.web.bindery.autobean.shared.AutoBean;
+import com.google.web.bindery.autobean.shared.AutoBeanUtils;
+import com.novadart.novabill.shared.client.dto.*;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.google.web.bindery.autobean.shared.AutoBean;
-import com.google.web.bindery.autobean.shared.AutoBeanUtils;
-import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
-import com.novadart.novabill.shared.client.dto.BusinessDTO;
-import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
-import com.novadart.novabill.shared.client.dto.ClientAddressDTO;
-import com.novadart.novabill.shared.client.dto.ClientDTO;
-import com.novadart.novabill.shared.client.dto.ContactDTO;
-import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
-import com.novadart.novabill.shared.client.dto.EndpointDTO;
-import com.novadart.novabill.shared.client.dto.EstimationDTO;
-import com.novadart.novabill.shared.client.dto.InvoiceDTO;
-import com.novadart.novabill.shared.client.dto.LogRecordDTO;
-import com.novadart.novabill.shared.client.dto.PageDTO;
-import com.novadart.novabill.shared.client.dto.SettingsDTO;
-import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 
 public class AutoBeanEncoder {
 	

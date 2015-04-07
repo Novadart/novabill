@@ -1,14 +1,13 @@
 package com.novadart.novabill.aspect.logging;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
+import com.novadart.novabill.domain.Business;
+import com.novadart.novabill.shared.client.exception.PremiumUpgradeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.novadart.novabill.domain.Business;
-import com.novadart.novabill.shared.client.exception.PremiumUpgradeException;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 privileged aspect PremiumUpgradeAspect extends AbstractLogEventEmailSenderAspect {
 	

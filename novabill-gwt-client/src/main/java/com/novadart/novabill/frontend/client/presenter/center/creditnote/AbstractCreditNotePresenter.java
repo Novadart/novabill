@@ -1,8 +1,5 @@
 package com.novadart.novabill.frontend.client.presenter.center.creditnote;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
@@ -19,6 +16,9 @@ import com.novadart.novabill.frontend.client.widget.notification.NotificationCal
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EndpointDTO;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class AbstractCreditNotePresenter extends DocumentPresenter<CreditNoteView> implements CreditNoteView.Presenter {
 

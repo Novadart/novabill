@@ -1,25 +1,16 @@
 package com.novadart.novabill.domain;
 
-import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.Entity;
-import javax.persistence.EntityManager;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Version;
-import javax.validation.constraints.Size;
+import com.novadart.novabill.annotation.Hash;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
-import com.novadart.novabill.annotation.Hash;
+
+import javax.persistence.*;
+import javax.validation.constraints.Size;
+import java.util.Date;
 
 /*
  * EmailPasswordHolder class is a superclass of entities that need to store

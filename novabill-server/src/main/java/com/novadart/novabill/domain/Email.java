@@ -1,23 +1,8 @@
 package com.novadart.novabill.domain;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EntityManager;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Version;
-import javax.validation.constraints.Size;
-
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
+import com.novadart.novabill.annotation.Trimmed;
 import org.apache.commons.lang3.CharEncoding;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -29,9 +14,13 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.google.common.base.Joiner;
-import com.google.common.base.Splitter;
-import com.novadart.novabill.annotation.Trimmed;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import javax.persistence.*;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Configurable
 @Entity

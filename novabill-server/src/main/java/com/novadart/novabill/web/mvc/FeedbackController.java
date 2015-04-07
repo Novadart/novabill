@@ -1,15 +1,14 @@
 package com.novadart.novabill.web.mvc;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.novadart.novabill.domain.Feedback;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.novadart.novabill.domain.Feedback;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @Controller

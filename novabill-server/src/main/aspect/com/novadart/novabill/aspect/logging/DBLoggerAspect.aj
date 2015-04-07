@@ -1,13 +1,13 @@
 package com.novadart.novabill.aspect.logging;
 
-import java.util.Arrays;
-import java.util.Map;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.LogRecord;
 import com.novadart.novabill.shared.client.data.EntityType;
 import com.novadart.novabill.shared.client.data.OperationType;
+
+import java.util.Arrays;
+import java.util.Map;
 
 public abstract aspect DBLoggerAspect {
 	

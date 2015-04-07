@@ -1,12 +1,12 @@
 package com.novadart.novabill.aspect;
 
-import javax.servlet.http.HttpSession;
-
+import com.novadart.novabill.annotation.Xsrf;
+import com.novadart.novabill.service.XsrfTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import com.novadart.novabill.annotation.Xsrf;
-import com.novadart.novabill.service.XsrfTokenService;
+
+import javax.servlet.http.HttpSession;
 
 public aspect XsrfAspect {
 	
