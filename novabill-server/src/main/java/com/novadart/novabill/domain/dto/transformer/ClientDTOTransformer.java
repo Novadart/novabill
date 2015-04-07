@@ -2,6 +2,7 @@ package com.novadart.novabill.domain.dto.transformer;
 
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.Contact;
+import com.novadart.novabill.domain.DocumentIDClass;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 
 public class ClientDTOTransformer {
@@ -24,10 +25,12 @@ public class ClientDTOTransformer {
 		clientDTO.setWeb(client.getWeb());
 		clientDTO.setVatID(client.getVatID());
 		clientDTO.setSsn(client.getSsn());
-		clientDTO.setDefaultPaymentTypeID(client.getDefaultPaymentType() == null? null: client.getDefaultPaymentType().getId());
-		clientDTO.setDefaultPriceListID(client.getDefaultPriceList() == null? null: client.getDefaultPriceList().getId());
+		clientDTO.setDefaultPaymentTypeID(client.getDefaultPaymentType() == null ? null : client.getDefaultPaymentType().getId());
+		clientDTO.setDefaultPriceListID(client.getDefaultPriceList() == null ? null : client.getDefaultPriceList().getId());
 		clientDTO.setNote(client.getNote());
-		clientDTO.setContact(ContactDTOTransformer.toDTO(client.getContact() == null? new Contact(): client.getContact()));
+		clientDTO.setContact(ContactDTOTransformer.toDTO(client.getContact() == null ? new Contact() : client.getContact()));
+		clientDTO.setDocumentIDClass(DocumentIDClassDTOTransformer.toDTO(client.getDocumentIDClass() == null ? new DocumentIDClass()
+				: client.getDocumentIDClass()));
 		return clientDTO;
 	}
 	

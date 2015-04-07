@@ -39,8 +39,9 @@ public class ClientDTO implements IsSerializable {
 	private String note;
 	
 	private ContactDTO contact;
-	
-	
+
+	private DocumentIDClassDTO documentIDClass;
+
 	public Long getId() {
 		return id;
 	}
@@ -220,4 +221,11 @@ public class ClientDTO implements IsSerializable {
 		this.contact = contact;
 	}
 
+	public DocumentIDClassDTO getDocumentIDClass() {
+		return documentIDClass;
+	}
+
+	public void setDocumentIDClass(DocumentIDClassDTO documentIDClass) {
+		this.documentIDClass = documentIDClass;
+	}
 }

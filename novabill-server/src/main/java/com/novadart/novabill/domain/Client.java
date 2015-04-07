@@ -189,6 +189,9 @@ public class Client implements Serializable, Taxable {
     @IndexedEmbedded
     @JoinColumn(name = "business")
     private Business business;
+
+    @ManyToOne
+    private DocumentIDClass documentIDClass;
     
     public List<Invoice> getSortedInvoices(){
     	return AccountingDocument.sortAccountingDocuments(getInvoices()); 
@@ -448,7 +451,15 @@ public class Client implements Serializable, Taxable {
     public void setBusiness(Business business) {
         this.business = business;
     }
-    
+
+    public DocumentIDClass getDocumentIDClass() {
+        return documentIDClass;
+    }
+
+    public void setDocumentIDClass(DocumentIDClass documentIDClass) {
+        this.documentIDClass = documentIDClass;
+    }
+
     /*
      * End of getters and setters section
      * */
