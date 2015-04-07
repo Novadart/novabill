@@ -187,6 +187,9 @@ public class Business implements Serializable, Taxable {
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
     private Set<Notification> notifications = new HashSet<>();
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
+	private Set<DocumentIDClass> documentIDClasses = new HashSet<>();
     
     public List<Invoice> getAllInvoicesInRange(int start, int length){
     	String query = "select invoice from Invoice invoice where invoice.business.id = :id order by invoice.accountingDocumentYear desc, invoice.documentID desc";
@@ -699,8 +702,16 @@ public class Business implements Serializable, Taxable {
 	public void setLogRecords(Set<LogRecord> logRecords) {
 		this.logRecords = logRecords;
 	}
-	
-    /*
+
+	public Set<DocumentIDClass> getDocumentIDClasses() {
+		return documentIDClasses;
+	}
+
+	public void setDocumentIDClasses(Set<DocumentIDClass> documentIDClasses) {
+		this.documentIDClasses = documentIDClasses;
+	}
+
+	/*
      * End of getters and setters section
      * */
     

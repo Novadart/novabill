@@ -212,7 +212,11 @@
 	<bean class="com.novadart.novabill.aspect.logging.TransporterServiceActionsAspect"
 	    factory-method="aspectOf">
 	</bean>
-	
+
+	<bean class="com.novadart.novabill.aspect.logging.DocumentIDClassServiceActionsAspect"
+		  factory-method="aspectOf">
+	</bean>
+
 	<bean class="com.novadart.novabill.aspect.logging.DeleteAccountAspect"
 	    factory-method="aspectOf">
 		<property name="sendEmail" value="${notification.deleteAccount}" />

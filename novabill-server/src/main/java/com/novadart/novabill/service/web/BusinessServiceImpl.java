@@ -13,6 +13,9 @@ import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
+import com.novadart.novabill.domain.dto.transformer.*;
+import com.novadart.novabill.domain.DocumentIDClass;
+import com.novadart.novabill.shared.client.dto.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,37 +38,12 @@ import com.novadart.novabill.domain.Settings;
 import com.novadart.novabill.domain.SharingPermit;
 import com.novadart.novabill.domain.Transporter;
 import com.novadart.novabill.domain.dto.DTOUtils;
-import com.novadart.novabill.domain.dto.transformer.BusinessDTOTransformer;
-import com.novadart.novabill.domain.dto.transformer.ClientDTOTransformer;
-import com.novadart.novabill.domain.dto.transformer.CommodityDTOTransformer;
-import com.novadart.novabill.domain.dto.transformer.LogRecordDTOTransformer;
-import com.novadart.novabill.domain.dto.transformer.NotificationDTOTransformer;
-import com.novadart.novabill.domain.dto.transformer.PaymentTypeDTOTransformer;
-import com.novadart.novabill.domain.dto.transformer.PriceListDTOTransformer;
-import com.novadart.novabill.domain.dto.transformer.SharingPermitDTOTransformer;
-import com.novadart.novabill.domain.dto.transformer.TransporterDTOTransformer;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.Groups.HeavyBusiness;
 import com.novadart.novabill.service.validator.SimpleValidator;
 import com.novadart.novabill.shared.client.data.LayoutType;
 import com.novadart.novabill.shared.client.data.PriceListConstants;
-import com.novadart.novabill.shared.client.dto.BusinessDTO;
-import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
-import com.novadart.novabill.shared.client.dto.ClientDTO;
-import com.novadart.novabill.shared.client.dto.CommodityDTO;
-import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
-import com.novadart.novabill.shared.client.dto.EstimationDTO;
-import com.novadart.novabill.shared.client.dto.InvoiceDTO;
-import com.novadart.novabill.shared.client.dto.LogRecordDTO;
-import com.novadart.novabill.shared.client.dto.NotificationDTO;
-import com.novadart.novabill.shared.client.dto.PaymentDateType;
-import com.novadart.novabill.shared.client.dto.PaymentDeltaType;
-import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
-import com.novadart.novabill.shared.client.dto.PriceListDTO;
-import com.novadart.novabill.shared.client.dto.SharingPermitDTO;
-import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
-import com.novadart.novabill.shared.client.dto.TransporterDTO;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
@@ -381,4 +359,13 @@ public abstract class BusinessServiceImpl implements BusinessService {
 		notification.merge();
 	}
 
+	@Override
+	@PreAuthorize("#businessID == principal.business.id")
+	public List<DocumentIDClassDTO> getDocumentIdClasses(Long businessID) throws NotAuthenticatedException, DataAccessException {
+		Set<DocumentIDClass> documentIDClasses = Business.findBusiness(businessID).getDocumentIDClasses();
+		List<DocumentIDClassDTO> documentIDClassDTOs = new ArrayList<>(documentIDClasses.size());
+		for(DocumentIDClass documentIDClass : documentIDClasses)
+			documentIDClassDTOs.add(DocumentIDClassDTOTransformer.toDTO(documentIDClass));
+		return documentIDClassDTOs;
+	}
 }

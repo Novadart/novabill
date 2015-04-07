@@ -28,6 +28,8 @@ public abstract aspect DBLoggerAspect {
 	public static final String REPLY_TO = "replyTo";
 	
 	public static final String TRANSPORTER_NAME = "transporterName";
+
+	public static final String DOCUMENT_ID_CLASS_NAME = "documentIdClassName";
 	
 	private String toJsonString(Map<String, String> jsonObject) {
 		ObjectMapper mapper = new ObjectMapper();

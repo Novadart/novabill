@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.novadart.novabill.domain.DocumentIDClass;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
@@ -381,6 +382,13 @@ public class TestUtils {
 		clientAddress.setCity("Galluccio");
 		clientAddress.setCountry("IT");
 		return clientAddress;
+	}
+
+	public static DocumentIDClass createDocumentIDClass(){
+		DocumentIDClass docIDClass = new DocumentIDClass();
+		docIDClass.setName("Id class");
+		docIDClass.setSuffix("bis");
+		return docIDClass;
 	}
 	
 }
