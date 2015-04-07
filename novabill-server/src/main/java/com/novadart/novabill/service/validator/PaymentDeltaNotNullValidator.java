@@ -1,10 +1,11 @@
 package com.novadart.novabill.service.validator;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
 import com.novadart.novabill.annotation.PaymentDeltaNotNull;
 import com.novadart.novabill.domain.PaymentType;
 import com.novadart.novabill.shared.client.dto.PaymentDateType;
+
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
 
 
 public class PaymentDeltaNotNullValidator implements ConstraintValidator<PaymentDeltaNotNull, PaymentType> {

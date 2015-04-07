@@ -1,12 +1,11 @@
 package com.novadart.novabill.aspect.logging;
 
-import java.util.Date;
-
+import com.novadart.novabill.web.mvc.command.Registration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.BindingResult;
 
-import com.novadart.novabill.web.mvc.command.Registration;
+import java.util.Date;
 
 public aspect RegistrationAspect extends AbstractLogEventEmailSenderAspect {
 	

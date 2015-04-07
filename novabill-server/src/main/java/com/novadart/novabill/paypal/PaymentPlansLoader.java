@@ -1,16 +1,14 @@
 package com.novadart.novabill.paypal;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.NoSuchElementException;
-
-import javax.annotation.PostConstruct;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import javax.annotation.PostConstruct;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.NoSuchElementException;
 
 @Service
 public class PaymentPlansLoader {

@@ -1,19 +1,12 @@
 package com.novadart.novabill.frontend.client.bridge;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.novadart.novabill.frontend.client.ClientFactory;
 import com.novadart.novabill.frontend.client.Configuration;
-import com.novadart.novabill.frontend.client.activity.center.CreditNoteActivity;
-import com.novadart.novabill.frontend.client.activity.center.EstimationActivity;
-import com.novadart.novabill.frontend.client.activity.center.InvoiceActivity;
-import com.novadart.novabill.frontend.client.activity.center.PaymentActivity;
-import com.novadart.novabill.frontend.client.activity.center.TransportDocumentActivity;
+import com.novadart.novabill.frontend.client.activity.center.*;
 import com.novadart.novabill.frontend.client.bridge.server.autobean.AutoBeanMaker;
 import com.novadart.novabill.frontend.client.bridge.server.autobean.StringList;
 import com.novadart.novabill.frontend.client.bridge.ui.HTMLWrapper;
@@ -25,16 +18,15 @@ import com.novadart.novabill.frontend.client.place.creditnote.NewCreditNotePlace
 import com.novadart.novabill.frontend.client.place.estimation.CloneEstimationPlace;
 import com.novadart.novabill.frontend.client.place.estimation.ModifyEstimationPlace;
 import com.novadart.novabill.frontend.client.place.estimation.NewEstimationPlace;
-import com.novadart.novabill.frontend.client.place.invoice.CloneInvoicePlace;
-import com.novadart.novabill.frontend.client.place.invoice.FromEstimationInvoicePlace;
-import com.novadart.novabill.frontend.client.place.invoice.FromTransportDocumentListInvoicePlace;
-import com.novadart.novabill.frontend.client.place.invoice.ModifyInvoicePlace;
-import com.novadart.novabill.frontend.client.place.invoice.NewInvoicePlace;
+import com.novadart.novabill.frontend.client.place.invoice.*;
 import com.novadart.novabill.frontend.client.place.transportdocument.FromEstimationTransportDocumentPlace;
 import com.novadart.novabill.frontend.client.place.transportdocument.ModifyTransportDocumentPlace;
 import com.novadart.novabill.frontend.client.place.transportdocument.NewTransportDocumentPlace;
 import com.novadart.novabill.frontend.client.widget.dialog.client.ClientDialog;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UiBridge implements ApiBridge {
 	

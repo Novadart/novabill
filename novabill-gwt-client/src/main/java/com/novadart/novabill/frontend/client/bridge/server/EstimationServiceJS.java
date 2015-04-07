@@ -1,20 +1,16 @@
 package com.novadart.novabill.frontend.client.bridge.server;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanUtils;
 import com.novadart.novabill.frontend.client.bridge.BridgeUtils;
-import com.novadart.novabill.frontend.client.bridge.server.autobean.AutoBeanEncoder;
-import com.novadart.novabill.frontend.client.bridge.server.autobean.AutoBeanMaker;
-import com.novadart.novabill.frontend.client.bridge.server.autobean.Estimation;
-import com.novadart.novabill.frontend.client.bridge.server.autobean.EstimationList;
-import com.novadart.novabill.frontend.client.bridge.server.autobean.Page;
+import com.novadart.novabill.frontend.client.bridge.server.autobean.*;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class EstimationServiceJS extends ServiceJS {
 	

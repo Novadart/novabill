@@ -1,21 +1,19 @@
 package com.novadart.novabill.service.web;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-
-import javax.annotation.PostConstruct;
-
+import com.novadart.novabill.annotation.Restrictions;
+import com.novadart.novabill.authorization.PremiumChecker;
+import com.novadart.novabill.domain.*;
+import com.novadart.novabill.domain.dto.DTOUtils;
 import com.novadart.novabill.domain.dto.transformer.*;
-import com.novadart.novabill.domain.DocumentIDClass;
+import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.service.UtilsService;
+import com.novadart.novabill.service.validator.Groups.HeavyBusiness;
+import com.novadart.novabill.service.validator.SimpleValidator;
+import com.novadart.novabill.shared.client.data.LayoutType;
+import com.novadart.novabill.shared.client.data.PriceListConstants;
 import com.novadart.novabill.shared.client.dto.*;
+import com.novadart.novabill.shared.client.exception.*;
+import com.novadart.novabill.shared.client.tuple.Pair;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,32 +22,11 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.novadart.novabill.annotation.Restrictions;
-import com.novadart.novabill.authorization.PremiumChecker;
-import com.novadart.novabill.domain.AccountingDocument;
-import com.novadart.novabill.domain.Business;
-import com.novadart.novabill.domain.Client;
-import com.novadart.novabill.domain.Commodity;
-import com.novadart.novabill.domain.LogRecord;
-import com.novadart.novabill.domain.Notification;
-import com.novadart.novabill.domain.PaymentType;
-import com.novadart.novabill.domain.PriceList;
-import com.novadart.novabill.domain.Settings;
-import com.novadart.novabill.domain.SharingPermit;
-import com.novadart.novabill.domain.Transporter;
-import com.novadart.novabill.domain.dto.DTOUtils;
-import com.novadart.novabill.domain.security.Principal;
-import com.novadart.novabill.service.UtilsService;
-import com.novadart.novabill.service.validator.Groups.HeavyBusiness;
-import com.novadart.novabill.service.validator.SimpleValidator;
-import com.novadart.novabill.shared.client.data.LayoutType;
-import com.novadart.novabill.shared.client.data.PriceListConstants;
-import com.novadart.novabill.shared.client.exception.DataAccessException;
-import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
-import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
-import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
-import com.novadart.novabill.shared.client.exception.ValidationException;
-import com.novadart.novabill.shared.client.tuple.Pair;
+import javax.annotation.PostConstruct;
+import java.lang.CloneNotSupportedException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.*;
 
 public abstract class BusinessServiceImpl implements BusinessService {
 

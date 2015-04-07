@@ -1,6 +1,6 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:v="urn:import:com.novadart.gwtshared.client.validation.widget">
+			 xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	
 	<ui:style type="com.novadart.novabill.frontend.client.widget.payment.SelectPayment.Style">
 		.container {

@@ -1,8 +1,5 @@
 package com.novadart.novabill.frontend.client.presenter.center.estimation;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
@@ -19,6 +16,9 @@ import com.novadart.novabill.frontend.client.widget.notification.NotificationCal
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.EndpointDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class AbstractEstimationPresenter extends DocumentPresenter<EstimationView> implements EstimationView.Presenter {
 

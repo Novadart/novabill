@@ -1,18 +1,12 @@
 package com.novadart.novabill.web.mvc;
 
-import java.awt.Dimension;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
-import javax.annotation.PostConstruct;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.novadart.novabill.domain.Business;
+import com.novadart.novabill.domain.Logo;
+import com.novadart.novabill.domain.Logo.LogoFormat;
+import com.novadart.novabill.service.UtilsService;
+import com.novadart.novabill.shared.client.facade.LogoUploadStatus;
+import com.novadart.utils.image.ImageUtils;
+import com.novadart.utils.image.UnsupportedImageFormatException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -23,21 +17,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.support.ServletContextResource;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.novadart.novabill.domain.Business;
-import com.novadart.novabill.domain.Logo;
-import com.novadart.novabill.domain.Logo.LogoFormat;
-import com.novadart.novabill.service.UtilsService;
-import com.novadart.novabill.shared.client.facade.LogoUploadStatus;
-import com.novadart.utils.image.ImageUtils;
-import com.novadart.utils.image.UnsupportedImageFormatException;
+import javax.annotation.PostConstruct;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.*;
+import java.io.*;
 
 @Controller
 @RequestMapping("/private/businesses/logo")

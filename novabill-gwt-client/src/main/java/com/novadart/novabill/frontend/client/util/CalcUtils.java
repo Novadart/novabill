@@ -1,23 +1,14 @@
 package com.novadart.novabill.frontend.client.util;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.datepicker.client.CalendarUtil;
-import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
-import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
-import com.novadart.novabill.shared.client.dto.CommodityDTO;
-import com.novadart.novabill.shared.client.dto.PaymentDateType;
-import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
-import com.novadart.novabill.shared.client.dto.PriceDTO;
+import com.novadart.novabill.shared.client.dto.*;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.*;
 
 public class CalcUtils {
 

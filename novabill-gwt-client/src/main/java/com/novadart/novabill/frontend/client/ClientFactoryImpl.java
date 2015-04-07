@@ -1,9 +1,5 @@
 package com.novadart.novabill.frontend.client;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.place.shared.PlaceController;
@@ -22,6 +18,10 @@ import com.novadart.novabill.frontend.client.view.center.payment.PaymentView;
 import com.novadart.novabill.frontend.client.view.center.payment.PaymentViewImpl;
 import com.novadart.novabill.frontend.client.view.center.transportdocument.TransportDocumentView;
 import com.novadart.novabill.frontend.client.view.center.transportdocument.TransportDocumentViewImpl;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ClientFactoryImpl implements ClientFactory {
 	private static final EventBus eventBus = 

@@ -1,15 +1,14 @@
 package com.novadart.novabill.springsecurity;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
+import com.novadart.novabill.domain.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.novadart.novabill.domain.security.Principal;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 @Deprecated
 public class MigrationPasswordEncoder implements PasswordEncoder {

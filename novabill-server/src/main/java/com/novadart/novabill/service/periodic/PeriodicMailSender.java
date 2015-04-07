@@ -1,19 +1,17 @@
 package com.novadart.novabill.service.periodic;
 
 
-import java.util.List;
-
-import javax.mail.MessagingException;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
+import com.novadart.novabill.domain.Email;
+import com.novadart.novabill.domain.EmailStatus;
 import org.springframework.mail.MailSendException;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import com.novadart.novabill.domain.Email;
-import com.novadart.novabill.domain.EmailStatus;
+import javax.mail.MessagingException;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.util.List;
 
 @Service
 public class PeriodicMailSender implements PeriodicService {

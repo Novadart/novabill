@@ -1,9 +1,8 @@
 package com.novadart.novabill.web.mvc;
 
-import java.security.NoSuchAlgorithmException;
-
-import javax.servlet.http.HttpSession;
-
+import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.service.UtilsService;
+import com.novadart.novabill.web.mvc.command.DeleteAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,9 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
-import com.novadart.novabill.domain.security.Principal;
-import com.novadart.novabill.service.UtilsService;
-import com.novadart.novabill.web.mvc.command.DeleteAccount;
+import javax.servlet.http.HttpSession;
+import java.security.NoSuchAlgorithmException;
 
 @Controller
 @RequestMapping(Urls.PRIVATE_DELETE_ACCOUNT)

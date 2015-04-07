@@ -1,24 +1,18 @@
 package com.novadart.novabill.frontend.client.bridge.server;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.google.web.bindery.autobean.shared.AutoBeanUtils;
 import com.novadart.novabill.frontend.client.bridge.BridgeUtils;
-import com.novadart.novabill.frontend.client.bridge.server.autobean.AutoBeanDecoder;
-import com.novadart.novabill.frontend.client.bridge.server.autobean.AutoBeanEncoder;
-import com.novadart.novabill.frontend.client.bridge.server.autobean.AutoBeanMaker;
-import com.novadart.novabill.frontend.client.bridge.server.autobean.Client;
-import com.novadart.novabill.frontend.client.bridge.server.autobean.ClientAddress;
-import com.novadart.novabill.frontend.client.bridge.server.autobean.ClientAddressList;
-import com.novadart.novabill.frontend.client.bridge.server.autobean.Page;
+import com.novadart.novabill.frontend.client.bridge.server.autobean.*;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.shared.client.dto.ClientAddressDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class ClientServiceJS extends ServiceJS {

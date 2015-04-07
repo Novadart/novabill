@@ -1,15 +1,15 @@
 package com.novadart.novabill.domain;
 
-import java.io.Serializable;
-import java.util.List;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
 import org.hibernate.annotations.Index;
 import org.hibernate.annotations.Table;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import java.io.Serializable;
+import java.util.List;
 
 /*
  * Important note!

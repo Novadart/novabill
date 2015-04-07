@@ -1,9 +1,8 @@
 package com.novadart.novabill.web.mvc.command;
 
+import com.novadart.novabill.annotation.Trimmed;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
-
-import com.novadart.novabill.annotation.Trimmed;
 
 public class SharingRequest {
 

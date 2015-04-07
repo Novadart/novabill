@@ -1,8 +1,8 @@
 package com.novadart.novabill.web.mvc.command;
 
-import java.io.Serializable;
-
 import com.novadart.novabill.domain.EmailPasswordHolder;
+
+import java.io.Serializable;
 
 
 /*

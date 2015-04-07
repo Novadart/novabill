@@ -1,13 +1,13 @@
 package com.novadart.novabill.domain.dto.transformer;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.novadart.novabill.domain.AccountingDocument;
 import com.novadart.novabill.domain.AccountingDocumentItem;
 import com.novadart.novabill.domain.Endpoint;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class AccountingDocumentDTOTransformer {
 	
