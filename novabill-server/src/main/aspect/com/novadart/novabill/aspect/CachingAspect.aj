@@ -25,6 +25,7 @@ import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 import com.novadart.novabill.shared.client.dto.PriceListDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.dto.TransporterDTO;
+import com.novadart.novabill.shared.client.dto.DocumentIDClassDTO;
 
 public privileged aspect CachingAspect {
 	
