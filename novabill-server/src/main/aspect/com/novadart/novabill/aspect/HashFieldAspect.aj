@@ -1,7 +1,8 @@
 package com.novadart.novabill.aspect;
 
-import com.novadart.novabill.annotation.Hash;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
+
+import com.novadart.novabill.annotation.Hash;
 
 privileged aspect HashFieldAspect {
 	

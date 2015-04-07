@@ -1,15 +1,20 @@
 package com.novadart.novabill.service.web;
 
-import com.novadart.novabill.shared.client.data.FilteringDateType;
-import com.novadart.novabill.shared.client.dto.InvoiceDTO;
-import com.novadart.novabill.shared.client.dto.PageDTO;
-import com.novadart.novabill.shared.client.exception.*;
-import com.novadart.novabill.web.mvc.ajax.dto.EmailDTO;
-
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.List;
+
+import com.novadart.novabill.shared.client.data.FilteringDateType;
+import com.novadart.novabill.shared.client.dto.InvoiceDTO;
+import com.novadart.novabill.shared.client.dto.PageDTO;
+import com.novadart.novabill.shared.client.exception.DataAccessException;
+import com.novadart.novabill.shared.client.exception.DataIntegrityException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
+import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
+import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
+import com.novadart.novabill.shared.client.exception.ValidationException;
+import com.novadart.novabill.web.mvc.ajax.dto.EmailDTO;
 
 public interface InvoiceService {
 

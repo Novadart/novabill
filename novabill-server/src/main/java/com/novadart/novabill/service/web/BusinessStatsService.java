@@ -1,5 +1,21 @@
 package com.novadart.novabill.service.web;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Service;
+
 import com.google.common.collect.ImmutableMap;
 import com.novadart.novabill.annotation.Restrictions;
 import com.novadart.novabill.authorization.PremiumChecker;
@@ -7,20 +23,18 @@ import com.novadart.novabill.domain.AccountingDocumentItem;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.Commodity;
 import com.novadart.novabill.domain.Invoice;
-import com.novadart.novabill.shared.client.dto.*;
+import com.novadart.novabill.shared.client.dto.BIClientStatsDTO;
+import com.novadart.novabill.shared.client.dto.BICommodityStatsDTO;
+import com.novadart.novabill.shared.client.dto.BIGeneralStatsDTO;
+import com.novadart.novabill.shared.client.dto.ClientDTO;
+import com.novadart.novabill.shared.client.dto.CommodityDTO;
+import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.tuple.Pair;
 import com.novadart.novabill.shared.client.tuple.Triple;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Service;
-
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.*;
 
 @Service
 public class BusinessStatsService {

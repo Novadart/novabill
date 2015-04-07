@@ -1,13 +1,14 @@
 package com.novadart.novabill.web.gwt;
 
-import com.google.gwt.user.server.rpc.XsrfProtectedServiceServlet;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import com.google.gwt.user.server.rpc.XsrfProtectedServiceServlet;
 
 public abstract class AbstractGwtController	extends XsrfProtectedServiceServlet implements Controller, ServletContextAware {
 

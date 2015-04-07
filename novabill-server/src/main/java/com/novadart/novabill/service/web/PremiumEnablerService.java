@@ -1,7 +1,34 @@
 package com.novadart.novabill.service.web;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+
+import net.sf.jasperreports.engine.JRException;
+
+import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.session.SessionInformation;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.novadart.novabill.annotation.MailMixin;
-import com.novadart.novabill.domain.*;
+import com.novadart.novabill.domain.AccountingDocumentItem;
+import com.novadart.novabill.domain.Business;
+import com.novadart.novabill.domain.Client;
+import com.novadart.novabill.domain.Endpoint;
+import com.novadart.novabill.domain.Invoice;
+import com.novadart.novabill.domain.Notification;
 import com.novadart.novabill.domain.dto.transformer.BusinessDTOTransformer;
 import com.novadart.novabill.domain.dto.transformer.ClientDTOTransformer;
 import com.novadart.novabill.domain.dto.transformer.InvoiceDTOTransformer;
@@ -20,27 +47,13 @@ import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.NotificationType;
 import com.novadart.novabill.shared.client.dto.PaymentDateType;
 import com.novadart.novabill.shared.client.dto.PaymentDeltaType;
-import com.novadart.novabill.shared.client.exception.*;
-import net.sf.jasperreports.engine.JRException;
-import org.apache.commons.io.IOUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.session.SessionInformation;
-import org.springframework.security.core.session.SessionRegistry;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
+import com.novadart.novabill.shared.client.exception.DataAccessException;
+import com.novadart.novabill.shared.client.exception.DataIntegrityException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
+import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
+import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
+import com.novadart.novabill.shared.client.exception.PremiumUpgradeException;
+import com.novadart.novabill.shared.client.exception.ValidationException;
 
 @MailMixin
 @Service

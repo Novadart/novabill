@@ -1,5 +1,9 @@
 package com.novadart.novabill.frontend.client.presenter.center.invoice;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
@@ -19,10 +23,6 @@ import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.EndpointDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 public abstract class AbstractInvoicePresenter extends DocumentPresenter<InvoiceView> implements InvoiceView.Presenter {
 

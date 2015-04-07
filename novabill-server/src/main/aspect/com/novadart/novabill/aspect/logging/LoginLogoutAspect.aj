@@ -1,13 +1,13 @@
 package com.novadart.novabill.aspect.logging;
 
-import com.novadart.novabill.domain.security.Principal;
-import com.novadart.novabill.service.UtilsService;
+import java.util.Date;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-
-import java.util.Date;
+import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.service.UtilsService;
 
 privileged aspect LoginLogoutAspect {
 	

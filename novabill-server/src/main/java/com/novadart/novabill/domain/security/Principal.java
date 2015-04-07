@@ -1,9 +1,27 @@
 package com.novadart.novabill.domain.security;
 
-import com.novadart.novabill.annotation.Hash;
-import com.novadart.novabill.annotation.Trimmed;
-import com.novadart.novabill.domain.Business;
-import com.novadart.novabill.web.mvc.command.Registration;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.EntityManager;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.Size;
+
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -13,9 +31,10 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.*;
-import javax.validation.constraints.Size;
-import java.util.*;
+import com.novadart.novabill.annotation.Hash;
+import com.novadart.novabill.annotation.Trimmed;
+import com.novadart.novabill.domain.Business;
+import com.novadart.novabill.web.mvc.command.Registration;
 
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"username"}))
 @Configurable

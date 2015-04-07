@@ -1,5 +1,8 @@
 package com.novadart.novabill.frontend.client.util;
 
+import java.math.BigDecimal;
+import java.util.Date;
+
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.novadart.novabill.frontend.client.Configuration;
@@ -11,9 +14,6 @@ import com.novadart.novabill.frontend.client.widget.dialog.client.ClientDialog;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
-
-import java.math.BigDecimal;
-import java.util.Date;
 
 public class DocumentUtils {
 

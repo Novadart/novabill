@@ -1,5 +1,17 @@
 package com.novadart.novabill.service;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
+import org.springframework.stereotype.Service;
+
 import com.novadart.novabill.annotation.MailMixin;
 import com.novadart.novabill.annotation.Restrictions;
 import com.novadart.novabill.authorization.PremiumChecker;
@@ -8,17 +20,6 @@ import com.novadart.novabill.domain.SharingToken;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.MessageSource;
-import org.springframework.stereotype.Service;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
 
 
 @Service

@@ -1,11 +1,36 @@
 package com.novadart.novabill.domain;
 
-import com.novadart.novabill.annotation.Trimmed;
-import com.novadart.novabill.domain.security.Principal;
-import com.novadart.novabill.service.validator.Groups.HeavyBusiness;
-import com.novadart.novabill.shared.client.data.FilteringDateType;
-import com.novadart.novabill.shared.client.dto.PageDTO;
-import com.novadart.utils.fts.TermValueFilterFactory;
+import java.io.IOException;
+import java.io.Serializable;
+import java.io.StringReader;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.EntityManager;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Transient;
+import javax.validation.Valid;
+import javax.validation.constraints.Size;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
@@ -13,8 +38,11 @@ import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.search.BooleanClause.Occur;
-import org.apache.lucene.search.*;
+import org.apache.lucene.search.BooleanQuery;
+import org.apache.lucene.search.FuzzyQuery;
+import org.apache.lucene.search.PrefixQuery;
 import org.apache.lucene.search.Query;
+import org.apache.lucene.search.TermQuery;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.search.annotations.Field;
@@ -27,15 +55,12 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.*;
-import javax.validation.Valid;
-import javax.validation.constraints.Size;
-import java.io.IOException;
-import java.io.Serializable;
-import java.io.StringReader;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import com.novadart.novabill.annotation.Trimmed;
+import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.service.validator.Groups.HeavyBusiness;
+import com.novadart.novabill.shared.client.data.FilteringDateType;
+import com.novadart.novabill.shared.client.dto.PageDTO;
+import com.novadart.utils.fts.TermValueFilterFactory;
 
 /*
  * Important note!

@@ -1,5 +1,7 @@
 package com.novadart.novabill.frontend.client.view.center;
 
+import java.util.List;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.resources.client.CssResource;
@@ -18,8 +20,6 @@ import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.frontend.client.view.HasUILocking;
 import com.novadart.novabill.frontend.client.widget.notification.InlineNotification;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
-
-import java.util.List;
 
 public class ItemInsertionForm extends Composite implements HasUILocking {
 

@@ -1,26 +1,47 @@
 package com.novadart.novabill.domain;
 
-import com.novadart.novabill.annotation.Trimmed;
-import com.novadart.novabill.shared.client.data.PriceListConstants;
-import com.novadart.utils.fts.TermValueFilterFactory;
-import org.apache.solr.analysis.ASCIIFoldingFilterFactory;
-import org.apache.solr.analysis.LowerCaseFilterFactory;
-import org.apache.solr.analysis.StandardTokenizerFactory;
-import org.hibernate.annotations.Index;
-import org.hibernate.annotations.Table;
-import org.hibernate.search.annotations.*;
-import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EntityManager;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Version;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.apache.solr.analysis.ASCIIFoldingFilterFactory;
+import org.apache.solr.analysis.LowerCaseFilterFactory;
+import org.apache.solr.analysis.StandardTokenizerFactory;
+import org.hibernate.annotations.Index;
+import org.hibernate.annotations.Table;
+import org.hibernate.search.annotations.Analyzer;
+import org.hibernate.search.annotations.AnalyzerDef;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.FullTextFilterDef;
+import org.hibernate.search.annotations.FullTextFilterDefs;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.TokenFilterDef;
+import org.hibernate.search.annotations.TokenizerDef;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.novadart.novabill.annotation.Trimmed;
+import com.novadart.novabill.shared.client.data.PriceListConstants;
+import com.novadart.utils.fts.TermValueFilterFactory;
 
 @Indexed
 @AnalyzerDef(name = FTSNamespace.DEFAULT_COMMODITY_ANALYZER,

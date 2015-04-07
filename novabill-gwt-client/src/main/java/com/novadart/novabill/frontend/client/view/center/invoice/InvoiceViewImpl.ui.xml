@@ -1,12 +1,12 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-			 xmlns:g="urn:import:com.google.gwt.user.client.ui"
-			 xmlns:v="urn:import:com.novadart.gwtshared.client.validation.widget"
-			 xmlns:t="urn:import:com.novadart.novabill.frontend.client.view.center"
-			 xmlns:f="urn:import:com.novadart.novabill.frontend.client.widget"
-			 xmlns:gwtshared="urn:import:com.novadart.gwtshared.client"
-			 xmlns:p="urn:import:com.novadart.novabill.frontend.client.widget.payment"
-			 xmlns:textbox="urn:import:com.novadart.gwtshared.client.textbox">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:i="urn:import:com.novadart.novabill.frontend.client.view.center.invoice"
+	xmlns:d="urn:import:com.google.gwt.user.datepicker.client" xmlns:v="urn:import:com.novadart.gwtshared.client.validation.widget"
+	xmlns:t="urn:import:com.novadart.novabill.frontend.client.view.center"
+	xmlns:f="urn:import:com.novadart.novabill.frontend.client.widget"
+	xmlns:gwtshared="urn:import:com.novadart.gwtshared.client"
+	xmlns:p="urn:import:com.novadart.novabill.frontend.client.widget.payment" xmlns:textbox="urn:import:com.novadart.gwtshared.client.textbox">
 
 	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N"
 		field="i18n"></ui:with>

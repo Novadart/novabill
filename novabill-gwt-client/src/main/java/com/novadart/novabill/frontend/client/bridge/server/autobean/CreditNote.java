@@ -1,10 +1,10 @@
 package com.novadart.novabill.frontend.client.bridge.server.autobean;
 
-import com.novadart.novabill.shared.client.data.LayoutType;
-
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+
+import com.novadart.novabill.shared.client.data.LayoutType;
 
 public interface CreditNote {
 	

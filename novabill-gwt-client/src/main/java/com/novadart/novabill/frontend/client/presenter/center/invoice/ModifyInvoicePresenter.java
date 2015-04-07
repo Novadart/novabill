@@ -1,5 +1,7 @@
 package com.novadart.novabill.frontend.client.presenter.center.invoice;
 
+import java.util.List;
+
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
@@ -16,8 +18,6 @@ import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.EndpointDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.exception.ValidationException;
-
-import java.util.List;
 
 public class ModifyInvoicePresenter extends AbstractInvoicePresenter {
 

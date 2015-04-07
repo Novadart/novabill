@@ -1,5 +1,7 @@
 package com.novadart.novabill.frontend.client.activity.center;
 
+import java.util.List;
+
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -8,15 +10,22 @@ import com.novadart.novabill.frontend.client.ClientFactory;
 import com.novadart.novabill.frontend.client.bridge.BridgeUtils;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.place.HomePlace;
-import com.novadart.novabill.frontend.client.place.invoice.*;
+import com.novadart.novabill.frontend.client.place.invoice.CloneInvoicePlace;
+import com.novadart.novabill.frontend.client.place.invoice.FromEstimationInvoicePlace;
+import com.novadart.novabill.frontend.client.place.invoice.FromTransportDocumentListInvoicePlace;
+import com.novadart.novabill.frontend.client.place.invoice.InvoicePlace;
+import com.novadart.novabill.frontend.client.place.invoice.ModifyInvoicePlace;
+import com.novadart.novabill.frontend.client.place.invoice.NewInvoicePlace;
 import com.novadart.novabill.frontend.client.presenter.center.invoice.ModifyInvoicePresenter;
 import com.novadart.novabill.frontend.client.presenter.center.invoice.NewInvoicePresenter;
 import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.frontend.client.view.center.invoice.InvoiceView;
-import com.novadart.novabill.shared.client.dto.*;
+import com.novadart.novabill.shared.client.dto.ClientDTO;
+import com.novadart.novabill.shared.client.dto.EstimationDTO;
+import com.novadart.novabill.shared.client.dto.InvoiceDTO;
+import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
+import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.tuple.Triple;
-
-import java.util.List;
 
 public class InvoiceActivity extends AbstractCenterActivity {
 

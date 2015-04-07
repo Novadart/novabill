@@ -1,12 +1,12 @@
 package com.novadart.novabill.service.periodic;
 
-import com.novadart.novabill.annotation.MailMixin;
-import com.novadart.novabill.domain.Business;
-import com.novadart.novabill.domain.Notification;
-import com.novadart.novabill.domain.security.Principal;
-import com.novadart.novabill.domain.security.RoleType;
-import com.novadart.novabill.shared.client.data.LayoutType;
-import com.novadart.novabill.shared.client.dto.NotificationType;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
@@ -14,11 +14,13 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.novadart.novabill.annotation.MailMixin;
+import com.novadart.novabill.domain.Business;
+import com.novadart.novabill.domain.Notification;
+import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.domain.security.RoleType;
+import com.novadart.novabill.shared.client.data.LayoutType;
+import com.novadart.novabill.shared.client.dto.NotificationType;
 
 
 @Service

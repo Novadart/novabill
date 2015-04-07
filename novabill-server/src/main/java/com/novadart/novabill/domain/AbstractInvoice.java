@@ -1,13 +1,12 @@
 package com.novadart.novabill.domain;
 
-import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.format.annotation.DateTimeFormat;
-
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /*
  * Important note!

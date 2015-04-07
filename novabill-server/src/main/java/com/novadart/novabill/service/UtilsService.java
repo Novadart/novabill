@@ -1,10 +1,11 @@
 package com.novadart.novabill.service;
 
-import com.google.gwt.user.client.rpc.SerializationException;
-import com.google.gwt.user.server.rpc.RPC;
-import com.novadart.novabill.domain.Business;
-import com.novadart.novabill.domain.security.Principal;
-import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -13,10 +14,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
+import com.google.gwt.user.client.rpc.SerializationException;
+import com.google.gwt.user.server.rpc.RPC;
+import com.novadart.novabill.domain.Business;
+import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 
 @Service("utilsService")
 public class UtilsService {

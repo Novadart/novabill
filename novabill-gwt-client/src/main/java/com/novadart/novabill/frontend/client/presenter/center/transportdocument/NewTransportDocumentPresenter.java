@@ -1,5 +1,9 @@
 package com.novadart.novabill.frontend.client.presenter.center.transportdocument;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.place.shared.PlaceController;
@@ -12,12 +16,12 @@ import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.frontend.client.view.center.transportdocument.TransportDocumentView;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.widget.notification.NotificationCallback;
-import com.novadart.novabill.shared.client.dto.*;
+import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
+import com.novadart.novabill.shared.client.dto.ClientDTO;
+import com.novadart.novabill.shared.client.dto.EndpointDTO;
+import com.novadart.novabill.shared.client.dto.EstimationDTO;
+import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.exception.ValidationException;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 public class NewTransportDocumentPresenter extends AbstractTransportDocumentPresenter {
 

@@ -1,9 +1,14 @@
 package com.novadart.novabill.domain;
 
-import javax.persistence.*;
+import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Date;
 
 @Entity
 @Table(name = "persistent_logins")

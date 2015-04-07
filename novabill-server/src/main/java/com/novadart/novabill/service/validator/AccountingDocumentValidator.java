@@ -1,5 +1,11 @@
 package com.novadart.novabill.service.validator;
 
+import java.util.ArrayList;
+import java.util.BitSet;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Service;
 import com.novadart.novabill.domain.AccountingDocument;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.service.UtilsService;
@@ -7,13 +13,6 @@ import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.validation.ErrorCode;
 import com.novadart.novabill.shared.client.validation.ErrorObject;
 import com.novadart.novabill.shared.client.validation.Field;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.BitSet;
-import java.util.List;
 
 @Service
 @Primary

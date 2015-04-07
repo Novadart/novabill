@@ -1,5 +1,9 @@
 package com.novadart.novabill.frontend.client.presenter.center.payment;
 
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
@@ -23,10 +27,6 @@ import com.novadart.novabill.frontend.client.widget.notification.NotificationCal
 import com.novadart.novabill.shared.client.dto.PaymentDateType;
 import com.novadart.novabill.shared.client.dto.PaymentDeltaType;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
-
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
 
 public class PaymentPresenter extends AbstractPresenter<PaymentView> implements PaymentView.Presenter {
 

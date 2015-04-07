@@ -1,16 +1,20 @@
 package com.novadart.novabill.frontend.client.bridge.server;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanUtils;
 import com.novadart.novabill.frontend.client.bridge.BridgeUtils;
-import com.novadart.novabill.frontend.client.bridge.server.autobean.*;
+import com.novadart.novabill.frontend.client.bridge.server.autobean.AutoBeanEncoder;
+import com.novadart.novabill.frontend.client.bridge.server.autobean.AutoBeanMaker;
+import com.novadart.novabill.frontend.client.bridge.server.autobean.Page;
+import com.novadart.novabill.frontend.client.bridge.server.autobean.TransportDocument;
+import com.novadart.novabill.frontend.client.bridge.server.autobean.TransportDocumentList;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class TransportDocumentServiceJS extends ServiceJS {
 	

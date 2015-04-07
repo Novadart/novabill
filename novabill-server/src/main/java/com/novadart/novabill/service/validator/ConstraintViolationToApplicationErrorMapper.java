@@ -1,26 +1,27 @@
 package com.novadart.novabill.service.validator;
 
-import com.novadart.novabill.annotation.PaymentDeltaNotNull;
-import com.novadart.novabill.annotation.SharingPermitEmailBusinessUnique;
-import com.novadart.novabill.annotation.TaxFieldsNotNull;
-import com.novadart.novabill.shared.client.validation.ErrorCode;
-import com.novadart.novabill.shared.client.validation.ErrorObject;
-import com.novadart.novabill.shared.client.validation.Field;
-import org.apache.commons.lang3.StringUtils;
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.stereotype.Service;
-
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Path;
 import javax.validation.Path.Node;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.stereotype.Service;
+
+import com.novadart.novabill.annotation.PaymentDeltaNotNull;
+import com.novadart.novabill.annotation.SharingPermitEmailBusinessUnique;
+import com.novadart.novabill.annotation.TaxFieldsNotNull;
+import com.novadart.novabill.shared.client.validation.ErrorCode;
+import com.novadart.novabill.shared.client.validation.ErrorObject;
+import com.novadart.novabill.shared.client.validation.Field;
 
 /*
  * ConstraintViolationToApplicationErrorMapper service class maps validation errors

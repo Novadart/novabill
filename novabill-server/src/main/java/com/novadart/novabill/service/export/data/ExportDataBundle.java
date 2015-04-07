@@ -1,8 +1,14 @@
 package com.novadart.novabill.service.export.data;
 
-import com.novadart.novabill.domain.*;
-
 import java.util.Set;
+
+import com.novadart.novabill.domain.Business;
+import com.novadart.novabill.domain.Client;
+import com.novadart.novabill.domain.CreditNote;
+import com.novadart.novabill.domain.Estimation;
+import com.novadart.novabill.domain.Invoice;
+import com.novadart.novabill.domain.Logo;
+import com.novadart.novabill.domain.TransportDocument;
 
 public class ExportDataBundle {
 

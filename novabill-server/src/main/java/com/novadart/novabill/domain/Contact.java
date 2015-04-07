@@ -1,15 +1,21 @@
 package com.novadart.novabill.domain;
 
-import com.novadart.novabill.annotation.Trimmed;
-import org.apache.solr.analysis.ASCIIFoldingFilterFactory;
-import org.apache.solr.analysis.LowerCaseFilterFactory;
-import org.apache.solr.analysis.StandardTokenizerFactory;
-import org.hibernate.search.annotations.*;
-import org.hibernate.validator.constraints.Email;
+import java.io.Serializable;
 
 import javax.persistence.Embeddable;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
+
+import org.apache.solr.analysis.ASCIIFoldingFilterFactory;
+import org.apache.solr.analysis.LowerCaseFilterFactory;
+import org.apache.solr.analysis.StandardTokenizerFactory;
+import org.hibernate.search.annotations.Analyzer;
+import org.hibernate.search.annotations.AnalyzerDef;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.TokenFilterDef;
+import org.hibernate.search.annotations.TokenizerDef;
+import org.hibernate.validator.constraints.Email;
+
+import com.novadart.novabill.annotation.Trimmed;
 
 
 /*

@@ -1,11 +1,12 @@
 package com.novadart.novabill.service.validator;
 
-import com.novadart.novabill.domain.EmailPasswordHolder;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
+
+import com.novadart.novabill.domain.EmailPasswordHolder;
 
 /*
  * EmailPasswordHolderValidator service class validates EmailPasswordHolder entities.

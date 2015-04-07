@@ -1,12 +1,12 @@
 package com.novadart.novabill.report;
 
-import com.novadart.novabill.domain.AccountingDocument;
-import com.novadart.novabill.domain.AccountingDocumentItem;
-import com.novadart.novabill.domain.Logo;
-
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.List;
+
+import com.novadart.novabill.domain.AccountingDocument;
+import com.novadart.novabill.domain.AccountingDocumentItem;
+import com.novadart.novabill.domain.Logo;
 
 public class AccountingDocumentJRDataSource<T extends AccountingDocument> extends AbstractJRDataSource {
 	

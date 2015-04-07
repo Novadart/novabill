@@ -1,16 +1,16 @@
 package com.novadart.novabill.service;
 
-import com.novadart.novabill.domain.Client;
-import com.novadart.novabill.domain.Commodity;
+import java.io.File;
+import javax.annotation.PostConstruct;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.Search;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import java.io.File;
+import com.novadart.novabill.domain.Client;
+import com.novadart.novabill.domain.Commodity;
 
 @Service
 public class LuceneIndexerService {

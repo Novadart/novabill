@@ -1,5 +1,11 @@
 package com.novadart.novabill.frontend.client.widget.payment;
 
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
@@ -22,8 +28,6 @@ import com.novadart.novabill.frontend.client.util.CalcUtils;
 import com.novadart.novabill.shared.client.dto.PaymentDateType;
 import com.novadart.novabill.shared.client.dto.PaymentDeltaType;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
-
-import java.util.*;
 
 public class SelectPayment extends Composite implements PaymentSummary.Handler {
 	

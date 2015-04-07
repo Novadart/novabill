@@ -1,14 +1,16 @@
 package com.novadart.novabill.aspect;
 
-import com.novadart.novabill.domain.Email;
-import com.novadart.novabill.domain.EmailStatus;
+import java.util.Map;
+
+import javax.mail.MessagingException;
 import org.apache.commons.lang3.CharEncoding;
 import org.apache.velocity.app.VelocityEngine;
 import org.springframework.mail.MailSendException;
 import org.springframework.ui.velocity.VelocityEngineUtils;
 
-import javax.mail.MessagingException;
-import java.util.Map;
+import com.novadart.novabill.annotation.MailMixin;
+import com.novadart.novabill.domain.Email;
+import com.novadart.novabill.domain.EmailStatus;
 
 privileged aspect MailAspect {
 	

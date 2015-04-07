@@ -1,11 +1,11 @@
 package com.novadart.novabill.service;
 
-import org.apache.commons.codec.binary.Base64;
-import org.springframework.stereotype.Service;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+
+import org.apache.commons.codec.binary.Base64;
+import org.springframework.stereotype.Service;
 
 @Service
 public class TokenGenerator {

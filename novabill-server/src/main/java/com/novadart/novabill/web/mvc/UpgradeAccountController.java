@@ -1,7 +1,11 @@
 package com.novadart.novabill.web.mvc;
 
-import com.novadart.novabill.paypal.PaymentPlansLoader;
-import com.novadart.novabill.service.UtilsService;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.security.NoSuchAlgorithmException;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -10,10 +14,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
-import java.security.NoSuchAlgorithmException;
+import com.novadart.novabill.paypal.PaymentPlansLoader;
+import com.novadart.novabill.service.UtilsService;
 
 @Controller
 public class UpgradeAccountController {

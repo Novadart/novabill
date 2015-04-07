@@ -1,12 +1,13 @@
 package com.novadart.novabill.report;
 
+import java.util.Date;
+import java.util.List;
+
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+
 import com.novadart.novabill.domain.AccountingDocument;
 import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.shared.client.data.FilteringDateType;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-
-import java.util.Date;
-import java.util.List;
 
 public class JRDataSourceFactory {
 	

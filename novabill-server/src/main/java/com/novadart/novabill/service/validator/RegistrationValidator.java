@@ -1,10 +1,10 @@
 package com.novadart.novabill.service.validator;
 
-import com.novadart.novabill.domain.security.Principal;
-import com.novadart.novabill.web.mvc.command.Registration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
+import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.web.mvc.command.Registration;
 
 /*
  * RegistrationValidator service class validates Registration entities. Registration

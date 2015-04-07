@@ -1,6 +1,10 @@
 package com.novadart.novabill.frontend.client.bridge.server.autobean;
 
-import com.novadart.novabill.shared.client.dto.*;
+import com.novadart.novabill.shared.client.dto.BusinessDTO;
+import com.novadart.novabill.shared.client.dto.ClientAddressDTO;
+import com.novadart.novabill.shared.client.dto.ClientDTO;
+import com.novadart.novabill.shared.client.dto.ContactDTO;
+import com.novadart.novabill.shared.client.dto.SettingsDTO;
 
 public class AutoBeanDecoder {
 

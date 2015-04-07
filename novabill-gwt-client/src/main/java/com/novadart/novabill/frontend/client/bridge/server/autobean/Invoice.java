@@ -1,11 +1,11 @@
 package com.novadart.novabill.frontend.client.bridge.server.autobean;
 
-import com.novadart.novabill.shared.client.data.LayoutType;
-import com.novadart.novabill.shared.client.dto.PaymentDateType;
-
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+
+import com.novadart.novabill.shared.client.data.LayoutType;
+import com.novadart.novabill.shared.client.dto.PaymentDateType;
 
 public interface Invoice {
 

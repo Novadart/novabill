@@ -1,15 +1,29 @@
 package com.novadart.novabill.domain.dto;
 
-import com.novadart.novabill.domain.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.GregorianCalendar;
+import java.util.Iterator;
+import java.util.List;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
+
+import com.novadart.novabill.domain.AccountingDocument;
+import com.novadart.novabill.domain.CreditNote;
+import com.novadart.novabill.domain.Estimation;
+import com.novadart.novabill.domain.Invoice;
+import com.novadart.novabill.domain.TransportDocument;
 import com.novadart.novabill.domain.dto.transformer.CreditNoteDTOTransformer;
 import com.novadart.novabill.domain.dto.transformer.EstimationDTOTransformer;
 import com.novadart.novabill.domain.dto.transformer.InvoiceDTOTransformer;
 import com.novadart.novabill.domain.dto.transformer.TransportDocumentDTOTransformer;
-import com.novadart.novabill.shared.client.dto.*;
+import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
+import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
+import com.novadart.novabill.shared.client.dto.EstimationDTO;
+import com.novadart.novabill.shared.client.dto.InvoiceDTO;
+import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-
-import java.util.*;
 
 public class DTOUtils {
 

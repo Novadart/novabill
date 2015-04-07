@@ -1,13 +1,13 @@
 package com.novadart.novabill.frontend.client.place.estimation;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceTokenizer;
 import com.google.gwt.place.shared.Prefix;
 import com.novadart.novabill.frontend.client.place.HistoryPrefix;
 import com.novadart.novabill.frontend.client.place.HistoryUtils;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public abstract class EstimationPlace extends Place {
 

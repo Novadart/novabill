@@ -1,13 +1,14 @@
 package com.novadart.novabill.aspect.logging;
 
-import com.novadart.novabill.service.UtilsService;
-import com.novadart.novabill.web.mvc.command.DeleteAccount;
+import java.util.Date;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 
-import java.util.Date;
+import com.novadart.novabill.service.UtilsService;
+import com.novadart.novabill.web.mvc.command.DeleteAccount;
 
 public aspect DeleteAccountAspect extends AbstractLogEventEmailSenderAspect {
 	

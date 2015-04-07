@@ -1,19 +1,23 @@
 package com.novadart.novabill.web.mvc;
 
-import com.novadart.novabill.domain.ForgotPassword;
-import com.novadart.novabill.domain.security.Principal;
-import com.novadart.novabill.service.validator.ForgotPasswordValidator;
-import com.novadart.novabill.service.validator.ForgotPasswordValidator.ValidationType;
+import java.util.Date;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
-
-import java.util.Date;
-import java.util.List;
+import com.novadart.novabill.domain.ForgotPassword;
+import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.service.validator.ForgotPasswordValidator;
+import com.novadart.novabill.service.validator.ForgotPasswordValidator.ValidationType;
 
 @Controller
 @SessionAttributes("forgotPassword")

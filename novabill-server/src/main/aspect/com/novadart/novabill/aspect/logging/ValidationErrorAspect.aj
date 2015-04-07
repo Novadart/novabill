@@ -1,15 +1,15 @@
 package com.novadart.novabill.aspect.logging;
 
-import com.novadart.novabill.service.UtilsService;
-import com.novadart.novabill.shared.client.exception.ValidationException;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import com.novadart.novabill.service.UtilsService;
+import com.novadart.novabill.shared.client.exception.ValidationException;
 
 public aspect ValidationErrorAspect extends AbstractLogEventEmailSenderAspect {
 	

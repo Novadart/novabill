@@ -1,12 +1,13 @@
 package com.novadart.novabill.service.validator;
 
-import com.novadart.novabill.annotation.TaxFieldsNotNull;
-import com.novadart.novabill.domain.Taxable;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Configurable;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import com.novadart.novabill.annotation.TaxFieldsNotNull;
+import com.novadart.novabill.domain.Taxable;
 
 @Configurable
 public class TaxFieldsNotNullValidator implements ConstraintValidator<TaxFieldsNotNull, Taxable> {

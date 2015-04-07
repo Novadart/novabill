@@ -1,10 +1,11 @@
 package com.novadart.novabill.web.mvc.ajax.dto;
 
-import com.novadart.novabill.annotation.Trimmed;
+import javax.validation.constraints.Size;
+
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.validation.constraints.Size;
+import com.novadart.novabill.annotation.Trimmed;
 
 
 public class EmailDTO {

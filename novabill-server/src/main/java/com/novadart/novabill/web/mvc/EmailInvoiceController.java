@@ -1,15 +1,16 @@
 package com.novadart.novabill.web.mvc;
 
-import com.novadart.novabill.domain.DocumentAccessToken;
-import com.novadart.novabill.domain.Invoice;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+import com.novadart.novabill.domain.DocumentAccessToken;
+import com.novadart.novabill.domain.Invoice;
 
 @Controller
 public class EmailInvoiceController {

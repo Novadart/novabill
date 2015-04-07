@@ -1,6 +1,13 @@
 package com.novadart.novabill.frontend.client.view.center;
 
-import com.google.gwt.cell.client.*;
+import java.math.BigDecimal;
+
+import com.google.gwt.cell.client.AbstractCell;
+import com.google.gwt.cell.client.AbstractEditableCell;
+import com.google.gwt.cell.client.ActionCell;
+import com.google.gwt.cell.client.EditTextCell;
+import com.google.gwt.cell.client.FieldUpdater;
+import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.cell.client.TextInputCell.ViewData;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.i18n.client.NumberFormat;
@@ -16,8 +23,6 @@ import com.novadart.novabill.frontend.client.util.CalcUtils;
 import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
-
-import java.math.BigDecimal;
 
 public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 

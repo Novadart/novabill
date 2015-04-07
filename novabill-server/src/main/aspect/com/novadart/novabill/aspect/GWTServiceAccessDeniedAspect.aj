@@ -1,7 +1,8 @@
 package com.novadart.novabill.aspect;
 
-import com.novadart.novabill.shared.client.exception.DataAccessException;
 import org.springframework.security.access.AccessDeniedException;
+import com.novadart.novabill.annotation.HandleGWTServiceAccessDenied;
+import com.novadart.novabill.shared.client.exception.DataAccessException;
 
 public aspect GWTServiceAccessDeniedAspect {
 	

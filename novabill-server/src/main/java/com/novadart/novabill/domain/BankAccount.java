@@ -1,12 +1,21 @@
 package com.novadart.novabill.domain;
 
-import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.*;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EntityManager;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Version;
+import javax.validation.constraints.Size;
+
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.transaction.annotation.Transactional;
 
 @Configurable
 @Entity

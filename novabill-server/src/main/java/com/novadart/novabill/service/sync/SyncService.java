@@ -1,15 +1,17 @@
 package com.novadart.novabill.service.sync;
 
-import com.novadart.novabill.android.shared.dto.SyncDeltaStateDTO;
-import com.novadart.novabill.service.UtilsService;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.stereotype.Service;
 
-import javax.sql.DataSource;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import com.novadart.novabill.android.shared.dto.SyncDeltaStateDTO;
+import com.novadart.novabill.service.UtilsService;
 
 @Service
 public class SyncService {

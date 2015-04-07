@@ -1,13 +1,14 @@
 package com.novadart.novabill.service.validator;
 
-import com.novadart.novabill.domain.security.Principal;
-import com.novadart.novabill.service.UtilsService;
-import com.novadart.novabill.web.mvc.command.ChangePassword;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
+
+import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.service.UtilsService;
+import com.novadart.novabill.web.mvc.command.ChangePassword;
 
 @Service
 public class ChangePasswordValidator {

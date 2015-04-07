@@ -1,12 +1,12 @@
 package com.novadart.novabill.frontend.client.util;
 
+import java.util.Date;
+
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.novadart.novabill.frontend.client.ClientFactory;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.shared.client.data.FilteringDateType;
-
-import java.util.Date;
 
 public class PDFUtils {
 

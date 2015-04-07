@@ -1,6 +1,19 @@
 package com.novadart.novabill.service.web;
 
-import com.novadart.novabill.domain.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hibernate.Hibernate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.novadart.novabill.domain.Business;
+import com.novadart.novabill.domain.Client;
+import com.novadart.novabill.domain.ClientAddress;
+import com.novadart.novabill.domain.PaymentType;
+import com.novadart.novabill.domain.PriceList;
 import com.novadart.novabill.domain.dto.transformer.ClientAddressDTOTransformer;
 import com.novadart.novabill.domain.dto.transformer.ClientDTOTransformer;
 import com.novadart.novabill.service.UtilsService;
@@ -9,15 +22,12 @@ import com.novadart.novabill.service.validator.SimpleValidator;
 import com.novadart.novabill.shared.client.dto.ClientAddressDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
-import com.novadart.novabill.shared.client.exception.*;
-import org.hibernate.Hibernate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.novadart.novabill.shared.client.exception.DataAccessException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
+import com.novadart.novabill.shared.client.exception.InvalidArgumentException;
+import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
+import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
+import com.novadart.novabill.shared.client.exception.ValidationException;
 
 @Service
 public class ClientService {

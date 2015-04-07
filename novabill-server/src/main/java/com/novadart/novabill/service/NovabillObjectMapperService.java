@@ -1,12 +1,14 @@
 package com.novadart.novabill.service;
 
+import java.math.BigDecimal;
+
+import javax.annotation.PostConstruct;
+
+import org.springframework.stereotype.Service;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import org.springframework.stereotype.Service;
-
-import javax.annotation.PostConstruct;
-import java.math.BigDecimal;
 
 @Service("jacksonObjectMapper")
 public class NovabillObjectMapperService extends ObjectMapper {

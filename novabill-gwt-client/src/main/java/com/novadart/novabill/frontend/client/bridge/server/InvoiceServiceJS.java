@@ -1,18 +1,22 @@
 package com.novadart.novabill.frontend.client.bridge.server;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanUtils;
 import com.novadart.novabill.frontend.client.bridge.BridgeUtils;
-import com.novadart.novabill.frontend.client.bridge.server.autobean.*;
+import com.novadart.novabill.frontend.client.bridge.server.autobean.AutoBeanEncoder;
+import com.novadart.novabill.frontend.client.bridge.server.autobean.AutoBeanMaker;
+import com.novadart.novabill.frontend.client.bridge.server.autobean.Invoice;
+import com.novadart.novabill.frontend.client.bridge.server.autobean.InvoicesList;
+import com.novadart.novabill.frontend.client.bridge.server.autobean.Page;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.shared.client.data.FilteringDateType;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 
 public class InvoiceServiceJS extends ServiceJS {

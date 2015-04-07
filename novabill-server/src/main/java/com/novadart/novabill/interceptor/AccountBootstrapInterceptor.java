@@ -1,12 +1,13 @@
 package com.novadart.novabill.interceptor;
 
-import com.novadart.novabill.domain.security.Principal;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import com.novadart.novabill.domain.security.Principal;
 
 public class AccountBootstrapInterceptor implements HandlerInterceptor {
 

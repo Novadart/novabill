@@ -1,13 +1,23 @@
 package com.novadart.novabill.domain;
 
+import java.util.List;
+
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EntityManager;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Version;
+import javax.validation.constraints.NotNull;
+
 import org.hibernate.annotations.Index;
 import org.hibernate.annotations.Table;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.util.List;
 
 
 @Entity

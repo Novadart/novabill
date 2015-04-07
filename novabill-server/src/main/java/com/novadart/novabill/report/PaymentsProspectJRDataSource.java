@@ -1,10 +1,10 @@
 package com.novadart.novabill.report;
 
-import com.novadart.novabill.domain.Invoice;
-import com.novadart.novabill.shared.client.data.FilteringDateType;
-
 import java.util.Date;
 import java.util.List;
+
+import com.novadart.novabill.domain.Invoice;
+import com.novadart.novabill.shared.client.data.FilteringDateType;
 
 public class PaymentsProspectJRDataSource extends AbstractJRDataSource {
 	

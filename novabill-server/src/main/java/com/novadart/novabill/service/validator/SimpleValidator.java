@@ -1,13 +1,15 @@
 package com.novadart.novabill.service.validator;
 
-import com.novadart.novabill.shared.client.exception.ValidationException;
-import com.novadart.novabill.shared.client.validation.ErrorObject;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.validation.Validator;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.validation.Validator;
-import java.util.ArrayList;
-import java.util.List;
+import com.novadart.novabill.shared.client.exception.ValidationException;
+import com.novadart.novabill.shared.client.validation.ErrorObject;
 
 /*
  * SimpleValidator service class is responsible for checking if the passed object adheres

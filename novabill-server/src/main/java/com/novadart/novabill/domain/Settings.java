@@ -1,15 +1,17 @@
 package com.novadart.novabill.domain;
 
-import com.novadart.novabill.annotation.Trimmed;
-import com.novadart.novabill.shared.client.data.LayoutType;
-import org.hibernate.validator.constraints.Email;
+import java.io.Serializable;
+import java.util.concurrent.TimeUnit;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
-import java.util.concurrent.TimeUnit;
+
+import org.hibernate.validator.constraints.Email;
+
+import com.novadart.novabill.annotation.Trimmed;
+import com.novadart.novabill.shared.client.data.LayoutType;
 
 @Embeddable
 public class Settings implements Serializable {

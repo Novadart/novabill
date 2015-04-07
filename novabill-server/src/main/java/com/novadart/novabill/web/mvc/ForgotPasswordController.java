@@ -1,21 +1,5 @@
 package com.novadart.novabill.web.mvc;
 
-import com.novadart.novabill.annotation.MailMixin;
-import com.novadart.novabill.domain.ForgotPassword;
-import com.novadart.novabill.domain.security.Principal;
-import com.novadart.novabill.service.TokenGenerator;
-import com.novadart.novabill.service.validator.ForgotPasswordValidator;
-import com.novadart.novabill.service.validator.ForgotPasswordValidator.ValidationType;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.MessageSource;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.support.SessionStatus;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
@@ -23,6 +7,25 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
+import com.novadart.novabill.annotation.MailMixin;
+import com.novadart.novabill.domain.ForgotPassword;
+import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.service.TokenGenerator;
+import com.novadart.novabill.service.validator.ForgotPasswordValidator;
+import com.novadart.novabill.service.validator.ForgotPasswordValidator.ValidationType;
 
 @Controller
 @SessionAttributes("forgotPassword")

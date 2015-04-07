@@ -1,14 +1,15 @@
 package com.novadart.novabill.service.validator;
 
-import com.novadart.novabill.annotation.SharingPermitEmailBusinessUnique;
-import com.novadart.novabill.domain.SharingPermit;
-import org.springframework.beans.factory.annotation.Configurable;
-
 import javax.persistence.EntityManager;
 import javax.persistence.FlushModeType;
 import javax.persistence.PersistenceContext;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+
+import org.springframework.beans.factory.annotation.Configurable;
+
+import com.novadart.novabill.annotation.SharingPermitEmailBusinessUnique;
+import com.novadart.novabill.domain.SharingPermit;
 
 @Configurable
 public class SharingPermitEmailBusinessUniqueValidator implements ConstraintValidator<SharingPermitEmailBusinessUnique, SharingPermit> {

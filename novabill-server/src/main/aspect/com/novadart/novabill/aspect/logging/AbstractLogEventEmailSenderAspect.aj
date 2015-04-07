@@ -1,11 +1,12 @@
 package com.novadart.novabill.aspect.logging;
 
-import com.novadart.novabill.annotation.MailMixin;
-import org.slf4j.Logger;
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.slf4j.Logger;
+
+import com.novadart.novabill.annotation.MailMixin;
 
 @MailMixin
 public abstract aspect AbstractLogEventEmailSenderAspect {

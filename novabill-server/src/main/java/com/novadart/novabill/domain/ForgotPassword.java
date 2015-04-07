@@ -1,11 +1,10 @@
 package com.novadart.novabill.domain;
 
-import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.Entity;
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.Entity;
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.transaction.annotation.Transactional;
 
 @Configurable
 @Entity
