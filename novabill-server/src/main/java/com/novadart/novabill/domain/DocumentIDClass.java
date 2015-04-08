@@ -11,6 +11,7 @@ import java.util.Set;
 
 @Configurable
 @Entity
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"suffix", "business"}))
 public class DocumentIDClass {
 
     private String suffix;
@@ -21,6 +22,21 @@ public class DocumentIDClass {
     @JoinColumn(name = "business")
     @ManyToOne
     private Business business;
+
+    public boolean suffixExists(){
+        String query = "select dc from DocumentIDClass dc where suffix = :suffix and dc.business.id = :id";
+        return entityManager().createQuery(query, DocumentIDClass.class).
+                setParameter("suffix", getSuffix()).
+                setParameter("id", getBusiness().getId()).
+                setFirstResult(0).setMaxResults(1).getResultList().size() == 1;
+    }
+
+    public DocumentIDClass shallowCopy(){
+        DocumentIDClass newDocumentIDClass = new DocumentIDClass();
+        newDocumentIDClass.setSuffix(getSuffix());
+        newDocumentIDClass.setBusiness(getBusiness());
+        return newDocumentIDClass;
+    }
 
     /*
 	 * Getters and setters

@@ -51,5 +51,8 @@ public enum Field {
 	emailSubject, emailText, emailReplyTo,
 	
 	//Email
-	to, from, subject, text, replyTo, message
+	to, from, subject, text, replyTo, message,
+
+	//Document id class
+	suffix
 }

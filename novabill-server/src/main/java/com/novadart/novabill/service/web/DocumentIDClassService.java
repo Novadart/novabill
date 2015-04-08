@@ -1,10 +1,10 @@
 package com.novadart.novabill.service.web;
 
 import com.novadart.novabill.domain.Business;
-import com.novadart.novabill.domain.dto.transformer.DocumentIDClassDTOTransformer;
 import com.novadart.novabill.domain.DocumentIDClass;
-import com.novadart.novabill.service.validator.Groups;
-import com.novadart.novabill.service.validator.SimpleValidator;
+import com.novadart.novabill.domain.dto.transformer.DocumentIDClassDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.PriceListDTOTransformer;
+import com.novadart.novabill.service.validator.DocumentIDClassValidator;
 import com.novadart.novabill.shared.client.dto.DocumentIDClassDTO;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
@@ -22,7 +22,7 @@ import java.util.List;
 public class DocumentIDClassService {
 
     @Autowired
-    private SimpleValidator validator;
+    private DocumentIDClassValidator validator;
 
     @Autowired
     private BusinessService businessService;
@@ -41,7 +41,7 @@ public class DocumentIDClassService {
         DocumentIDClassDTOTransformer.copyFromDTO(docIDClass, docIDClassDTO);
         Business business = Business.findBusiness(docIDClassDTO.getBusiness().getId());
         docIDClass.setBusiness(business);
-        validator.validate(docIDClass);
+        validator.validate(docIDClass, true);
         business.getDocumentIDClasses().add(docIDClass);
         docIDClass.setBusiness(business);
         docIDClass.persist();
@@ -63,9 +63,13 @@ public class DocumentIDClassService {
     @PreAuthorize("principal.business.id == #businessID and #documentIDClassDTO?.id != null and " +
             "T(com.novadart.novabill.domain.DocumentIDClass).findDocumentIDClass(#documentIDClassDTO?.id)?.business?.id == principal.business.id")
     public void update(Long businessID, DocumentIDClassDTO documentIDClassDTO) throws NoSuchObjectException, ValidationException {
-        DocumentIDClass documentIDClass = DocumentIDClass.findDocumentIDClass(documentIDClassDTO.getId());
-        DocumentIDClassDTOTransformer.copyFromDTO(documentIDClass, documentIDClassDTO);
-        validator.validate(documentIDClass);
+        DocumentIDClass persistedDocumentIDClass = DocumentIDClass.findDocumentIDClass(documentIDClassDTO.getId());
+        if(persistedDocumentIDClass == null)
+            throw new NoSuchObjectException();
+        DocumentIDClass copy = persistedDocumentIDClass.shallowCopy();
+        DocumentIDClassDTOTransformer.copyFromDTO(copy, documentIDClassDTO);
+        validator.validate(copy, !persistedDocumentIDClass.getSuffix().equals(documentIDClassDTO.getSuffix()));
+        DocumentIDClassDTOTransformer.copyFromDTO(persistedDocumentIDClass, documentIDClassDTO);
     }
 
 }

@@ -4,10 +4,10 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.novadart.novabill.aspect.logging.DBLoggerAspect;
 import com.novadart.novabill.domain.Business;
+import com.novadart.novabill.domain.DocumentIDClass;
 import com.novadart.novabill.domain.LogRecord;
 import com.novadart.novabill.domain.dto.transformer.BusinessDTOTransformer;
 import com.novadart.novabill.domain.dto.transformer.DocumentIDClassDTOTransformer;
-import com.novadart.novabill.domain.DocumentIDClass;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.web.DocumentIDClassService;
 import com.novadart.novabill.shared.client.data.EntityType;
@@ -28,9 +28,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
@@ -162,6 +160,25 @@ public class DocumentIDClassServiceTest extends ServiceTest{
         DocumentIDClass docIDClass = authenticatedPrincipal.getBusiness().getDocumentIDClasses().iterator().next();
         docIDClass.setSuffix("bbis");
         docIDClassesService.update(getUnathorizedBusinessID(), DocumentIDClassDTOTransformer.toDTO(docIDClass));
+    }
+
+    @Test(expected = ValidationException.class)
+    public void duplicateSuffixTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException{
+        Long businessID = authenticatedPrincipal.getBusiness().getId();
+        DocumentIDClassDTO priceListDTO = DocumentIDClassDTOTransformer.toDTO(TestUtils.createDocumentIDClass());
+        priceListDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
+        docIDClassesService.add(businessID, priceListDTO);
+        docIDClassesService.add(businessID, priceListDTO);
+    }
+
+    @Test
+    public void safeDuplicateSuffixOnUpdateTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException {
+        Long businessID = authenticatedPrincipal.getBusiness().getId();
+        DocumentIDClassDTO docIDClassDTO = DocumentIDClassDTOTransformer.toDTO(TestUtils.createDocumentIDClass());
+        docIDClassDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
+        Long id = docIDClassesService.add(businessID, docIDClassDTO);
+        docIDClassDTO.setId(id);
+        docIDClassesService.update(businessID, docIDClassDTO);
     }
 
 }
