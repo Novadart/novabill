@@ -3,17 +3,14 @@ package com.novadart.novabill.service.web;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.novadart.novabill.domain.*;
+import com.novadart.novabill.shared.client.dto.DocumentIDClassDTO;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.novadart.novabill.domain.Business;
-import com.novadart.novabill.domain.Client;
-import com.novadart.novabill.domain.ClientAddress;
-import com.novadart.novabill.domain.PaymentType;
-import com.novadart.novabill.domain.PriceList;
 import com.novadart.novabill.domain.dto.transformer.ClientAddressDTOTransformer;
 import com.novadart.novabill.domain.dto.transformer.ClientDTOTransformer;
 import com.novadart.novabill.service.UtilsService;
@@ -115,8 +112,30 @@ public class ClientService {
 			}
 		}
 	}
-	
-	
+
+
+	private void updateDefaultDocumentIDClass(ClientDTO clientDTO, Client client){
+		if(client.getDefaultDocumentIDClass() == null){
+			if(clientDTO.getDefaultDocumentIDClassID() != null){
+				DocumentIDClass documentIDClass = DocumentIDClass.findDocumentIDClass(clientDTO.getDefaultDocumentIDClassID());
+				client.setDefaultDocumentIDClass(documentIDClass);
+				documentIDClass.getClients().add(client);
+			}
+		} else {
+			if(client.getDefaultDocumentIDClass().getId() != clientDTO.getDefaultDocumentIDClassID()){
+				if(Hibernate.isInitialized(client.getDefaultDocumentIDClass().getClients()))
+					client.getDefaultDocumentIDClass().getClients().remove(client);
+				client.setDefaultDocumentIDClass(null);
+				if(clientDTO.getDefaultDocumentIDClassID() != null){
+					DocumentIDClass documentIDClass = DocumentIDClass.findDocumentIDClass(clientDTO.getDefaultDocumentIDClassID());
+					client.setDefaultDocumentIDClass(documentIDClass);
+					documentIDClass.getClients().add(client);
+				}
+			}
+		}
+	}
+
+
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	@PreAuthorize("principal.business.id == #businessID and #clientDTO?.id != null and " + 
 				  "T(com.novadart.novabill.domain.Client).findClient(#clientDTO?.id)?.business?.id == principal.business.id")
@@ -125,6 +144,7 @@ public class ClientService {
 		ClientDTOTransformer.copyFromDTO(client, clientDTO);
 		updateDefaultPaymentType(clientDTO, client);
 		updateDefaultPriceList(clientDTO, client);
+		updateDefaultDocumentIDClass(clientDTO, client);
 		validator.validate(client, HeavyClient.class);
 	}
 

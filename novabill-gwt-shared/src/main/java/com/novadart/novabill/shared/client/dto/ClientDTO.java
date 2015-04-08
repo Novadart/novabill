@@ -35,12 +35,12 @@ public class ClientDTO implements IsSerializable {
 	private Long defaultPaymentTypeID;
 	
 	private Long defaultPriceListID;
+
+	private Long defaultDocumentIDClassID;
 	
 	private String note;
 	
 	private ContactDTO contact;
-
-	private DocumentIDClassDTO documentIDClass;
 
 	public Long getId() {
 		return id;
@@ -221,11 +221,11 @@ public class ClientDTO implements IsSerializable {
 		this.contact = contact;
 	}
 
-	public DocumentIDClassDTO getDocumentIDClass() {
-		return documentIDClass;
+	public Long getDefaultDocumentIDClassID() {
+		return defaultDocumentIDClassID;
 	}
 
-	public void setDocumentIDClass(DocumentIDClassDTO documentIDClass) {
-		this.documentIDClass = documentIDClass;
+	public void setDefaultDocumentIDClassID(Long defaultDocumentIDClassID) {
+		this.defaultDocumentIDClassID = defaultDocumentIDClassID;
 	}
 }

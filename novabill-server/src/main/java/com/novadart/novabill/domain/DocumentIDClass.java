@@ -17,7 +17,7 @@ public class DocumentIDClass {
 
     private String suffix;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "documentIDClass")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "defaultDocumentIDClass")
     private Set<Client> clients = new HashSet<>();
 
     @JoinColumn(name = "business")

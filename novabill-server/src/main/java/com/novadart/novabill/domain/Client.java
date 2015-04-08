@@ -191,7 +191,7 @@ public class Client implements Serializable, Taxable {
     private Business business;
 
     @ManyToOne
-    private DocumentIDClass documentIDClass;
+    private DocumentIDClass defaultDocumentIDClass;
     
     public List<Invoice> getSortedInvoices(){
     	return AccountingDocument.sortAccountingDocuments(getInvoices()); 
@@ -452,12 +452,12 @@ public class Client implements Serializable, Taxable {
         this.business = business;
     }
 
-    public DocumentIDClass getDocumentIDClass() {
-        return documentIDClass;
+    public DocumentIDClass getDefaultDocumentIDClass() {
+        return defaultDocumentIDClass;
     }
 
-    public void setDocumentIDClass(DocumentIDClass documentIDClass) {
-        this.documentIDClass = documentIDClass;
+    public void setDefaultDocumentIDClass(DocumentIDClass documentIDClass) {
+        this.defaultDocumentIDClass = documentIDClass;
     }
 
     /*

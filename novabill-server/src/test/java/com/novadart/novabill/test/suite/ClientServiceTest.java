@@ -15,6 +15,7 @@ import java.util.Set;
 
 import javax.annotation.Resource;
 
+import com.novadart.novabill.domain.*;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -30,12 +31,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.novadart.novabill.aspect.logging.DBLoggerAspect;
-import com.novadart.novabill.domain.Business;
-import com.novadart.novabill.domain.Client;
-import com.novadart.novabill.domain.ClientAddress;
-import com.novadart.novabill.domain.LogRecord;
-import com.novadart.novabill.domain.PaymentType;
-import com.novadart.novabill.domain.PriceList;
 import com.novadart.novabill.domain.dto.transformer.ClientAddressDTOTransformer;
 import com.novadart.novabill.domain.dto.transformer.ClientDTOTransformer;
 import com.novadart.novabill.domain.security.Principal;
@@ -400,7 +395,59 @@ public class ClientServiceTest extends ServiceTest {
 		clientService.update(authenticatedPrincipal.getBusiness().getId(), clientDTO);
 		assertEquals(priceList, client.getDefaultPriceList());
 	}
-	
+
+	@Test
+	public void updateAuthorizedDefaultDocumentIDClassNotNullNullTest() throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException{
+		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
+		DocumentIDClass docIDClass = TestUtils.createDocumentIDClass();
+		client.setDefaultDocumentIDClass(docIDClass);
+		docIDClass.getClients().add(client);
+		docIDClass.persist();
+		DocumentIDClass.entityManager().flush();
+		ClientDTO clientDTO = ClientDTOTransformer.toDTO(client);
+		clientDTO.setDefaultDocumentIDClassID(null);
+		clientService.update(authenticatedPrincipal.getBusiness().getId(), clientDTO);
+		assertNull(client.getDefaultDocumentIDClass());
+	}
+
+	@Test
+	public void updateAuthorizedDefaultDocumentIDClassNotNullNotNullTest() throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException{
+		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
+		DocumentIDClass docIDClass1 = TestUtils.createDocumentIDClass();
+		client.setDefaultDocumentIDClass(docIDClass1);
+		docIDClass1.getClients().add(client);
+		docIDClass1.persist();
+		DocumentIDClass.entityManager().flush();
+		DocumentIDClass docIDClass2 = TestUtils.createDocumentIDClass();
+		docIDClass2.persist();
+		DocumentIDClass.entityManager().flush();
+		ClientDTO clientDTO = ClientDTOTransformer.toDTO(client);
+		clientDTO.setDefaultDocumentIDClassID(docIDClass2.getId());
+		clientService.update(authenticatedPrincipal.getBusiness().getId(), clientDTO);
+		assertEquals(docIDClass2, client.getDefaultDocumentIDClass());
+	}
+
+	@Test
+	public void updateAuthorizedNullDefaultDocumentIDClassNullNullTest() throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException{
+		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
+		ClientDTO clientDTO = ClientDTOTransformer.toDTO(client);
+		clientDTO.setDefaultDocumentIDClassID(null);
+		clientService.update(authenticatedPrincipal.getBusiness().getId(), clientDTO);
+		assertNull(client.getDefaultDocumentIDClass());
+	}
+
+	@Test
+	public void updateAuthorizedNullDefaultDocumentIDClassNullNotNullTest() throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException{
+		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
+		DocumentIDClass docIDClass = TestUtils.createDocumentIDClass();
+		docIDClass.persist();
+		DocumentIDClass.entityManager().flush();
+		ClientDTO clientDTO = ClientDTOTransformer.toDTO(client);
+		clientDTO.setDefaultDocumentIDClassID(docIDClass.getId());
+		clientService.update(authenticatedPrincipal.getBusiness().getId(), clientDTO);
+		assertEquals(docIDClass, client.getDefaultDocumentIDClass());
+	}
+
 	private ClientAddress addClientAddress(Client client) throws NotAuthenticatedException, FreeUserAccessForbiddenException, ValidationException, DataAccessException{
 		ClientAddress clientAddress = TestUtils.createClientAddress();
 		ClientAddressDTO clientAddressDTO = ClientAddressDTOTransformer.toDTO(clientAddress);
