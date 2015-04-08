@@ -10,7 +10,6 @@ public class DocumentIDClassDTOTransformer {
             return null;
         DocumentIDClassDTO documentIDClassDTO = new DocumentIDClassDTO();
         documentIDClassDTO.setId(documentIDClass.getId());
-        documentIDClassDTO.setName(documentIDClass.getName());
         documentIDClassDTO.setSuffix(documentIDClass.getSuffix());
         return documentIDClassDTO;
     }
@@ -18,7 +17,6 @@ public class DocumentIDClassDTOTransformer {
     public static void copyFromDTO(DocumentIDClass documentIDClass, DocumentIDClassDTO documentIDClassDTO){
         if(documentIDClass == null || documentIDClassDTO == null)
             return;
-        documentIDClass.setName(documentIDClassDTO.getName());
         documentIDClass.setSuffix(documentIDClassDTO.getSuffix());
     }
 

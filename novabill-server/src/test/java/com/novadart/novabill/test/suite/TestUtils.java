@@ -386,8 +386,7 @@ public class TestUtils {
 
 	public static DocumentIDClass createDocumentIDClass(){
 		DocumentIDClass docIDClass = new DocumentIDClass();
-		docIDClass.setName("Id class");
-		docIDClass.setSuffix("bis");
+		docIDClass.setSuffix("uuid");
 		return docIDClass;
 	}
 	

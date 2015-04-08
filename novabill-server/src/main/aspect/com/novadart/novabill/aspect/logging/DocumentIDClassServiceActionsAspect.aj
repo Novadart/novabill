@@ -36,17 +36,17 @@ public aspect DocumentIDClassServiceActionsAspect extends DBLoggerAspect{
         LOGGER.info("[{}, createDocumentIDClass, {}, businessID: {}, id: {}, dto: {}]",
                 new Object[]{utilsService.getAuthenticatedPrincipalDetails().getUsername(), new Date(time), businessID, id,
                         ReflectionToStringBuilder.toString(docIDClassDTO, ToStringStyle.SHORT_PREFIX_STYLE)});
-        Map<String, String> details = ImmutableMap.of(DOCUMENT_ID_CLASS_NAME, docIDClassDTO.getName());
+        Map<String, String> details = ImmutableMap.of(DOCUMENT_ID_CLASS_SUFFIX, docIDClassDTO.getSuffix());
         logActionInDB(businessID, EntityType.DOCUMENT_ID_CLASS, OperationType.CREATE, id, time, details);
     }
 
     void around(Long businessID, Long id): remove(businessID, id) {
-        DocumentIDClass docIDClassDTO = DocumentIDClass.findDocumentIDClass(id);
+        DocumentIDClass docIDClass = DocumentIDClass.findDocumentIDClass(id);
         proceed(businessID, id);
         Long time = System.currentTimeMillis();
         LOGGER.info("[{}, deleteDocumentIDClass, {}, businessID: {}, id: {}]",
                 new Object[]{utilsService.getAuthenticatedPrincipalDetails().getUsername(), new Date(time), businessID, id});
-        Map<String, String> details = ImmutableMap.of(DOCUMENT_ID_CLASS_NAME, docIDClassDTO.getName());
+        Map<String, String> details = ImmutableMap.of(DOCUMENT_ID_CLASS_SUFFIX, docIDClass.getSuffix());
         logActionInDB(businessID, EntityType.DOCUMENT_ID_CLASS, OperationType.DELETE, id, time, details);
     }
 
@@ -55,7 +55,7 @@ public aspect DocumentIDClassServiceActionsAspect extends DBLoggerAspect{
         LOGGER.info("[{}, updateDocumentIDClass, {}, businessID: {}, dto: {}]",
                 new Object[]{utilsService.getAuthenticatedPrincipalDetails().getUsername(), new Date(time), businessID,
                         ReflectionToStringBuilder.toString(docIDClassDTO, ToStringStyle.SHORT_PREFIX_STYLE)});
-        Map<String, String> details = ImmutableMap.of(DOCUMENT_ID_CLASS_NAME, docIDClassDTO.getName());
+        Map<String, String> details = ImmutableMap.of(DOCUMENT_ID_CLASS_SUFFIX, docIDClassDTO.getSuffix());
         logActionInDB(businessID, EntityType.DOCUMENT_ID_CLASS, OperationType.UPDATE, docIDClassDTO.getId(), time, details);
     }
 

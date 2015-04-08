@@ -29,7 +29,7 @@ public abstract aspect DBLoggerAspect {
 	
 	public static final String TRANSPORTER_NAME = "transporterName";
 
-	public static final String DOCUMENT_ID_CLASS_NAME = "documentIdClassName";
+	public static final String DOCUMENT_ID_CLASS_SUFFIX = "documentIdClassSuffix";
 	
 	private String toJsonString(Map<String, String> jsonObject) {
 		ObjectMapper mapper = new ObjectMapper();

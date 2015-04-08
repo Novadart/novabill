@@ -13,8 +13,6 @@ import java.util.Set;
 @Entity
 public class DocumentIDClass {
 
-    private String name;
-
     private String suffix;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "defaultDocumentIDClass")
@@ -28,14 +26,6 @@ public class DocumentIDClass {
 	 * Getters and setters
 	 * *
 	 */
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getSuffix() {
         return suffix;
@@ -171,7 +161,7 @@ public class DocumentIDClass {
     /*End of entity section*/
 
     public String toString() {
-        return String.format("<id: %d, name: %s, suffix: %s>", id, name, suffix);
+        return String.format("<id: %d, suffix: %s>", id, suffix);
     }
 
 

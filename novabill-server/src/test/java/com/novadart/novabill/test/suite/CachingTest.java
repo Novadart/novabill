@@ -947,7 +947,7 @@ public class CachingTest extends ServiceTest {
 		DocumentIDClass.entityManager().flush();
 		Set<DocumentIDClassDTO> docIDClasses = new HashSet<DocumentIDClassDTO>(businessService.getDocumentIdClasses(businessID));
 		DocumentIDClass docIDClass = DocumentIDClass.findDocumentIDClass(id);
-		docIDClass.setName("New doc id class");
+		docIDClass.setSuffix("bbis");
 		docIDClassDTO = DocumentIDClassDTOTransformer.toDTO(docIDClass);
 		docIDClassDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(businessID)));
 

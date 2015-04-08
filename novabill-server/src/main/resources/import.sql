@@ -328,6 +328,6 @@ insert into sharing_permit (id, created_on, description, email, business, versio
 insert into sharing_permit (id, created_on, description, email, business, version) values (186, 1, 'tax advisor', 'mario.rossi@example.com', 2, 1);
 
 --creating document id class
-insert into documentidclass (id, "name", suffix, business, version) values (187, 'numseq', 'bis', 1, 1);
+insert into documentidclass (id, suffix, business, version) values (187, 'bis', 1, 1);
 
 alter sequence hibernate_sequence restart with 188;

@@ -4,10 +4,8 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.novadart.novabill.aspect.logging.DBLoggerAspect;
 import com.novadart.novabill.domain.Business;
-import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.LogRecord;
 import com.novadart.novabill.domain.dto.transformer.BusinessDTOTransformer;
-import com.novadart.novabill.domain.dto.transformer.ClientDTOTransformer;
 import com.novadart.novabill.domain.dto.transformer.DocumentIDClassDTOTransformer;
 import com.novadart.novabill.domain.DocumentIDClass;
 import com.novadart.novabill.domain.security.Principal;
@@ -25,7 +23,6 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import sun.awt.image.ImageWatched;
 
 import java.io.IOException;
 import java.util.List;
@@ -69,7 +66,7 @@ public class DocumentIDClassServiceTest extends ServiceTest{
         assertEquals(id, rec.getEntityID());
         assertEquals(OperationType.CREATE, rec.getOperationType());
         Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
-        assertEquals(docIDClassDTO.getName(), details.get(DBLoggerAspect.DOCUMENT_ID_CLASS_NAME));
+        assertEquals(docIDClassDTO.getSuffix(), details.get(DBLoggerAspect.DOCUMENT_ID_CLASS_SUFFIX));
     }
 
     @Test(expected = AccessDeniedException.class)
@@ -106,7 +103,7 @@ public class DocumentIDClassServiceTest extends ServiceTest{
         assertEquals(docIDClass.getId(), rec.getEntityID());
         assertEquals(OperationType.DELETE, rec.getOperationType());
         Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
-        assertEquals(docIDClass.getName(), details.get(DBLoggerAspect.DOCUMENT_ID_CLASS_NAME));
+        assertEquals(docIDClass.getSuffix(), details.get(DBLoggerAspect.DOCUMENT_ID_CLASS_SUFFIX));
         assertEquals(true, rec.isReferringToDeletedEntity());
     }
 
@@ -137,17 +134,17 @@ public class DocumentIDClassServiceTest extends ServiceTest{
     public void updateAuthenticatedTest() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ValidationException, JsonParseException, JsonMappingException, IOException{
         Long docIDClassID = authenticatedPrincipal.getBusiness().getDocumentIDClasses().iterator().next().getId();
         DocumentIDClass expectedDocIDClass = DocumentIDClass.findDocumentIDClass(docIDClassID);
-        expectedDocIDClass.setName("New doc id class");
+        expectedDocIDClass.setSuffix("bbis");
         docIDClassesService.update(authenticatedPrincipal.getBusiness().getId(), DocumentIDClassDTOTransformer.toDTO(expectedDocIDClass));
         DocumentIDClass.entityManager().flush();
         DocumentIDClass actualDocIDClass = DocumentIDClass.findDocumentIDClass(docIDClassID);
-        assertEquals(actualDocIDClass.getName(), "New doc id class");
+        assertEquals(actualDocIDClass.getSuffix(), "bbis");
         LogRecord rec = LogRecord.fetchLastN(authenticatedPrincipal.getBusiness().getId(), 1).get(0);
         assertEquals(EntityType.DOCUMENT_ID_CLASS, rec.getEntityType());
         assertEquals(docIDClassID, rec.getEntityID());
         assertEquals(OperationType.UPDATE, rec.getOperationType());
         Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
-        assertEquals(expectedDocIDClass.getName(), details.get(DBLoggerAspect.DOCUMENT_ID_CLASS_NAME));
+        assertEquals(expectedDocIDClass.getSuffix(), details.get(DBLoggerAspect.DOCUMENT_ID_CLASS_SUFFIX));
     }
 
     @Test(expected = AccessDeniedException.class)
@@ -163,7 +160,7 @@ public class DocumentIDClassServiceTest extends ServiceTest{
     @Test(expected = AccessDeniedException.class)
     public void updateUnauthenticatedClient() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ValidationException{
         DocumentIDClass docIDClass = authenticatedPrincipal.getBusiness().getDocumentIDClasses().iterator().next();
-        docIDClass.setName("New doc id class");
+        docIDClass.setSuffix("bbis");
         docIDClassesService.update(getUnathorizedBusinessID(), DocumentIDClassDTOTransformer.toDTO(docIDClass));
     }
 
