@@ -41,7 +41,7 @@ public interface BatchDataFetcherGwtService extends RemoteService {
 	
 	public Pair<Long, InvoiceDTO> fetchNewCreditNoteFromInvoiceOpData(Long invoiceID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException;
 	
-	public Triple<Long, List<TransportDocumentDTO>, PaymentTypeDTO> fetchNewInvoiceFromTransportDocumentsOpData(List<Long> transportDocumentIDs) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException;
+	public Triple<Long, List<TransportDocumentDTO>, PaymentTypeDTO> fetchNewInvoiceFromTransportDocumentsOpData(List<Long> transportDocumentIDs, String suffix) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException;
 	
 	public Pair<PriceListDTO, List<PriceListDTO>> fetchSelectCommodityForDocItemOpData(Long clientID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException;
 	

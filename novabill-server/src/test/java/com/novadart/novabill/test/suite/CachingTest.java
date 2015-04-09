@@ -247,7 +247,7 @@ public class CachingTest extends ServiceTest {
 		BigDecimal totals = businessGwtService.getTotalsForYear(businessID, new Integer(testProps.get("year"))).getSecond();
 		
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
-		InvoiceDTO invDTO = InvoiceDTOTransformer.toDTO(TestUtils.createInvOrCredNote(authenticatedPrincipal.getBusiness().getNextInvoiceDocumentID(), Invoice.class), true);
+		InvoiceDTO invDTO = InvoiceDTOTransformer.toDTO(TestUtils.createInvOrCredNote(authenticatedPrincipal.getBusiness().getNextInvoiceDocumentID(null), Invoice.class), true);
 		invDTO.setClient(ClientDTOTransformer.toDTO(client));
 		invDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		invoiceService.add(invDTO);

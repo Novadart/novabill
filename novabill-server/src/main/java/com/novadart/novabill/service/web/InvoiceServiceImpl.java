@@ -185,8 +185,8 @@ public class InvoiceServiceImpl implements InvoiceService {
 	}
 	
 	@Override
-	public Long getNextInvoiceDocumentID() {
-		return utilsService.getAuthenticatedPrincipalDetails().getBusiness().getNextInvoiceDocumentID();
+	public Long getNextInvoiceDocumentID(String suffix) {
+		return utilsService.getAuthenticatedPrincipalDetails().getBusiness().getNextInvoiceDocumentID(suffix);
 	}
 
 	@Override

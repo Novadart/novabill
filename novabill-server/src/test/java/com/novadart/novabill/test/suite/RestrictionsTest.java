@@ -105,7 +105,7 @@ public class RestrictionsTest extends ServiceTest {
 	//@Test
 	public void addInvoiceOverQuotaTest() throws NotAuthenticatedException, ValidationException, DataAccessException, DataIntegrityException, InstantiationException, IllegalAccessException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
-		InvoiceDTO invDTO = InvoiceDTOTransformer.toDTO(TestUtils.createInvOrCredNote(authenticatedPrincipal.getBusiness().getNextInvoiceDocumentID(), Invoice.class), true);
+		InvoiceDTO invDTO = InvoiceDTOTransformer.toDTO(TestUtils.createInvOrCredNote(authenticatedPrincipal.getBusiness().getNextInvoiceDocumentID(null), Invoice.class), true);
 		invDTO.setClient(ClientDTOTransformer.toDTO(client));
 		invDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		boolean raised = false;

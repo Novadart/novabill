@@ -30,7 +30,7 @@ public interface InvoiceGwtService extends RemoteService {
 
 	public void update(InvoiceDTO invoiceDTO) throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException, DataIntegrityException;
 
-	public Long getNextInvoiceDocumentID() throws NotAuthenticatedException, DataAccessException;
+	public Long getNextInvoiceDocumentID(String suffix) throws NotAuthenticatedException, DataAccessException;
 
 	public void remove(Long businessID, Long clientID, Long id) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, DataIntegrityException;
 

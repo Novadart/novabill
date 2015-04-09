@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -14,6 +15,9 @@ import java.util.Set;
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"suffix", "business"}))
 public class DocumentIDClass {
 
+    public final static int SUFFIX_MAX_LENGTH = 10;
+
+    @Size(max = SUFFIX_MAX_LENGTH)
     private String suffix;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "defaultDocumentIDClass")

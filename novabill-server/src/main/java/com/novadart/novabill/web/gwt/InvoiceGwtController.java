@@ -46,8 +46,8 @@ public class InvoiceGwtController extends AbstractGwtController implements Invoi
 		invoiceService.update(invoiceDTO);
 	}
 
-	public Long getNextInvoiceDocumentID() throws NotAuthenticatedException, DataAccessException {
-		return invoiceService.getNextInvoiceDocumentID();
+	public Long getNextInvoiceDocumentID(String suffix) throws NotAuthenticatedException, DataAccessException {
+		return invoiceService.getNextInvoiceDocumentID(suffix);
 	}
 
 	public void remove(Long businessID, Long clientID, Long id) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, DataIntegrityException {

@@ -30,7 +30,7 @@ public interface InvoiceService {
 
 	public void update(InvoiceDTO invoiceDTO) throws DataAccessException, NoSuchObjectException, ValidationException, DataIntegrityException;
 
-	public Long getNextInvoiceDocumentID();
+	public Long getNextInvoiceDocumentID(String suffix);
 
 	public PageDTO<InvoiceDTO> getAllForClientInRange(Long clientID, Integer year, Integer start, Integer length) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException;
 
