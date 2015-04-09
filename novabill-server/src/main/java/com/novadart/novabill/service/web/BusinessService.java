@@ -25,6 +25,8 @@ public interface BusinessService {
 	public void update(BusinessDTO businessDTO) throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException;
 	
 	public List<InvoiceDTO> getInvoices(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException;
+
+	public List<InvoiceDTO> getInvoices(Long businessID, Integer year, String docIDSuffix) throws NotAuthenticatedException, DataAccessException;
 	
 	public List<CreditNoteDTO> getCreditNotes(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException;
 	

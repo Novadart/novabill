@@ -34,6 +34,10 @@ public class InvoiceGwtController extends AbstractGwtController implements Invoi
 		return invoiceService.getAllInRange(businessID, year, start, length);
 	}
 
+	public PageDTO<InvoiceDTO> getAllInRange(Long businessID, Integer year, String suffix, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException {
+		return invoiceService.getAllInRange(businessID, year, suffix, start, length);
+	}
+
 	public List<InvoiceDTO> getAllForClient(Long clientID, Integer year) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException {
 		return invoiceService.getAllForClient(clientID, year);
 	}

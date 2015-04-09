@@ -22,6 +22,8 @@ public interface InvoiceService {
 
 	public PageDTO<InvoiceDTO> getAllInRange(Long businessID, Integer year, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException;
 
+	public PageDTO<InvoiceDTO> getAllInRange(Long businessID, Integer year, String docIDSuffix, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException;
+
 	public List<InvoiceDTO> getAllForClient(Long clientID, Integer year) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException;
 
 	public void remove(Long businessID, Long clientID, Long id) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException, DataIntegrityException;

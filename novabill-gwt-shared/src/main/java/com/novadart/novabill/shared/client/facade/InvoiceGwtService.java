@@ -24,6 +24,8 @@ public interface InvoiceGwtService extends RemoteService {
 
 	public PageDTO<InvoiceDTO> getAllInRange(Long businessID, Integer year, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException;
 
+	public PageDTO<InvoiceDTO> getAllInRange(Long businessID, Integer year, String suffix, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException;
+
 	public List<InvoiceDTO> getAllForClient(Long clientID, Integer year) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException;
 
 	public Long add(InvoiceDTO invoiceDTO) throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, DataIntegrityException;

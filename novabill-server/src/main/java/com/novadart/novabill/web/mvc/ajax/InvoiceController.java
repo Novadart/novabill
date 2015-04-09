@@ -62,6 +62,14 @@ public class InvoiceController {
 			@PathVariable Integer start, @PathVariable Integer length) throws NotAuthenticatedException, DataAccessException{
 		return invoiceService.getAllInRange(businessID, year, start, length);
 	}
+
+	@RequestMapping(value = "/year/{year}/suffix/{suffix}/start/{start}/offset/{length}", method = RequestMethod.GET)
+	@ResponseBody
+	@ResponseStatus(value = HttpStatus.OK)
+	public PageDTO<InvoiceDTO> getAllInRange(@PathVariable Long businessID, @PathVariable Integer year, @PathVariable String suffix,
+											 @PathVariable Integer start, @PathVariable Integer length) throws NotAuthenticatedException, DataAccessException{
+		return invoiceService.getAllInRange(businessID, year, suffix, start, length);
+	}
 	
 	@RequestMapping(value = "/year/{year}/clients/{clientID}", method = RequestMethod.GET)
 	@ResponseBody

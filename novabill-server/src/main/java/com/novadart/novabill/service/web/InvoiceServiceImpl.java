@@ -91,7 +91,15 @@ public class InvoiceServiceImpl implements InvoiceService {
 		List<InvoiceDTO> allInvoices = businessService.getInvoices(businessID, year);
 		return new PageDTO<InvoiceDTO>(DTOUtils.range(allInvoices, start, length), start, length, new Long(allInvoices.size()));
 	}
-	
+
+	@Override
+	@Transactional(readOnly = true)
+	@PreAuthorize("#businessID == principal.business.id")
+	public PageDTO<InvoiceDTO> getAllInRange(Long businessID, Integer year, String docIDSuffix, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException {
+		List<InvoiceDTO> allInvoices = businessService.getInvoices(businessID, year, docIDSuffix);
+		return new PageDTO<InvoiceDTO>(DTOUtils.range(allInvoices, start, length), start, length, new Long(allInvoices.size()));
+	}
+
 	private static class EqualsClientIDPredicate implements Predicate<InvoiceDTO>{
 		
 		private Long id;

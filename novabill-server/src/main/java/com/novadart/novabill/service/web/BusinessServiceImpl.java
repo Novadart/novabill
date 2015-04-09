@@ -345,4 +345,16 @@ public abstract class BusinessServiceImpl implements BusinessService {
 			documentIDClassDTOs.add(DocumentIDClassDTOTransformer.toDTO(documentIDClass));
 		return documentIDClassDTOs;
 	}
+
+	@Override
+	public List<InvoiceDTO> getInvoices(Long businessID, Integer year, final String docIDSuffix) throws NotAuthenticatedException, DataAccessException {
+		List<InvoiceDTO> allInvocesForYear = self().getInvoices(businessID, year);
+		Collection<InvoiceDTO> filtered = DTOUtils.filter(allInvocesForYear, new DTOUtils.Predicate<InvoiceDTO>(){
+			@Override
+			public boolean isTrue(InvoiceDTO doc) {
+				return docIDSuffix == null? doc.getDocumentIDSuffix() == null: docIDSuffix.equals(doc.getDocumentIDSuffix());
+			}
+		});
+		return new ArrayList<>(filtered);
+	}
 }
