@@ -29,6 +29,7 @@ public class ClientDTOTransformer {
 		clientDTO.setDefaultPriceListID(client.getDefaultPriceList() == null ? null : client.getDefaultPriceList().getId());
 		clientDTO.setDefaultDocumentIDClassID(client.getDefaultDocumentIDClass() == null ? null : client.getDefaultDocumentIDClass().getId());
 		clientDTO.setNote(client.getNote());
+		clientDTO.setSplitPaymentClient(client.isSplitPaymentClient());
 		clientDTO.setContact(ContactDTOTransformer.toDTO(client.getContact() == null ? new Contact() : client.getContact()));
 		return clientDTO;
 	}
@@ -49,6 +50,7 @@ public class ClientDTOTransformer {
 		client.setWeb(clientDTO.getWeb());
 		client.setVatID(clientDTO.getVatID());
 		client.setSsn(clientDTO.getSsn());
+		client.setSplitPaymentClient(clientDTO.isSplitPaymentClient());
 		client.setContact(new Contact());
 		ContactDTOTransformer.copyFromDTO(client.getContact(), clientDTO.getContact());
 		client.setNote(clientDTO.getNote());

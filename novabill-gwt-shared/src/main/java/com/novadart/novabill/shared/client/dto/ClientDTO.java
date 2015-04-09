@@ -39,7 +39,9 @@ public class ClientDTO implements IsSerializable {
 	private Long defaultDocumentIDClassID;
 	
 	private String note;
-	
+
+	private boolean splitPaymentClient;
+
 	private ContactDTO contact;
 
 	public Long getId() {
@@ -211,7 +213,14 @@ public class ClientDTO implements IsSerializable {
 		this.note = note;
 	}
 
-	
+	public boolean isSplitPaymentClient() {
+		return splitPaymentClient;
+	}
+
+	public void setSplitPaymentClient(boolean splitPaymentClient) {
+		this.splitPaymentClient = splitPaymentClient;
+	}
+
 	public ContactDTO getContact() {
 		return contact;
 	}
