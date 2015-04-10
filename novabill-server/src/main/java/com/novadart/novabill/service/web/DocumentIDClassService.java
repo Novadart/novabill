@@ -3,7 +3,6 @@ package com.novadart.novabill.service.web;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.DocumentIDClass;
 import com.novadart.novabill.domain.dto.transformer.DocumentIDClassDTOTransformer;
-import com.novadart.novabill.domain.dto.transformer.PriceListDTOTransformer;
 import com.novadart.novabill.service.validator.DocumentIDClassValidator;
 import com.novadart.novabill.shared.client.dto.DocumentIDClassDTO;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
@@ -32,6 +31,16 @@ public class DocumentIDClassService {
         return businessService.getDocumentIdClasses(businessID);
     }
 
+
+    @PreAuthorize("T(com.novadart.novabill.domain.DocumentIDClass).findDocumentIDClass(#id)?.business?.id == principal.business.id")
+    public DocumentIDClassDTO get(Long businessID, Long id) throws NoSuchObjectException, NotAuthenticatedException, DataAccessException {
+        List<DocumentIDClassDTO> documentIDClassesDTOs = businessService.getDocumentIdClasses(businessID);
+        for(DocumentIDClassDTO documentIDClassDTO : documentIDClassesDTOs){
+            if(documentIDClassDTO.getId().equals(id))
+                return documentIDClassDTO;
+        }
+        throw new NoSuchObjectException();
+    }
 
     @Transactional(readOnly = false, rollbackFor = {ValidationException.class})
     @PreAuthorize("#docIDClassDTO?.business?.id == principal.business.id and " +

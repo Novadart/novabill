@@ -3,6 +3,7 @@ package com.novadart.novabill.web.gwt;
 import java.util.List;
 
 import com.novadart.novabill.domain.DocumentIDClass;
+import com.novadart.novabill.service.web.DocumentIDClassService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.novadart.novabill.domain.Client;
@@ -51,7 +52,10 @@ public class BatchDataFetcherGwtController extends AbstractGwtController impleme
 
 	@Autowired
 	private PriceListService priceListService;
-	
+
+	@Autowired
+	private DocumentIDClassService docIDClassService;
+
 	@Autowired
 	private UtilsService utilsService;
 	
@@ -124,11 +128,14 @@ public class BatchDataFetcherGwtController extends AbstractGwtController impleme
 	}
 
 	@Override
-	public Triple<Long, List<TransportDocumentDTO>, PaymentTypeDTO> fetchNewInvoiceFromTransportDocumentsOpData(List<Long> transportDocumentIDs, String suffix) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+	public Triple<Long, List<TransportDocumentDTO>, PaymentTypeDTO> fetchNewInvoiceFromTransportDocumentsOpData(List<Long> transportDocumentIDs) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
 		if(transportDocumentIDs.size() == 0)
 			throw new IllegalArgumentException();
 		List<TransportDocumentDTO> transportDocDTOs = transportDocService.getAllWithIDs(transportDocumentIDs);
-		Long defaultPaymentTypeID = transportDocDTOs.get(0).getClient().getDefaultPaymentTypeID(); 
+		Long defaultPaymentTypeID = transportDocDTOs.get(0).getClient().getDefaultPaymentTypeID();
+		Long defaultDocumentIDClassID = transportDocDTOs.get(0).getClient().getDefaultDocumentIDClassID();
+		String suffix = defaultDocumentIDClassID == null? null:
+				docIDClassService.get(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId(), defaultDocumentIDClassID).getSuffix();
 		return new Triple<Long, List<TransportDocumentDTO>, PaymentTypeDTO>(invoiceService.getNextInvoiceDocumentID(suffix),
 				transportDocDTOs, defaultPaymentTypeID == null? null: paymentTypeService.get(defaultPaymentTypeID));
 	}
