@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Invoice" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="20" uuid="96f0ca59-afec-4bbb-95f2-0a9732c6c014">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="405"/>
+	<property name="ireport.y" value="115"/>
 	<style name="table" pattern="">
 		<box>
 			<pen lineWidth="0.0" lineColor="#000000"/>
@@ -193,7 +193,7 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 			</textField>
 		</band>
 		<band height="327" splitType="Stretch">
-			<printWhenExpression><![CDATA[!document.client.splitPaymentClient]]></printWhenExpression>
+			<printWhenExpression><![CDATA[!$F{document.client.splitPaymentClient}]]></printWhenExpression>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement x="8" y="7" width="308" height="20" uuid="602635c5-8a47-4651-9d4c-e9177e5f3637"/>
 				<textElement verticalAlignment="Middle">
@@ -563,7 +563,7 @@ com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.t
 			</textField>
 		</band>
 		<band height="357">
-			<printWhenExpression><![CDATA[document.client.splitPaymentClient]]></printWhenExpression>
+			<printWhenExpression><![CDATA[$F{document.client.splitPaymentClient}]]></printWhenExpression>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement x="11" y="10" width="308" height="20" uuid="e9dad178-a0a9-4242-be9f-014263f35055"/>
 				<textElement verticalAlignment="Middle">
