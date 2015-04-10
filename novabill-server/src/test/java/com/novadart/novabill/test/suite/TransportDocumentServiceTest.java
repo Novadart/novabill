@@ -346,7 +346,7 @@ public class TransportDocumentServiceTest extends ServiceTest {
 				return t1.getAccountingDocumentDate().compareTo(t2.getAccountingDocumentDate());
 			}
 		});
-		Triple<Long, List<TransportDocumentDTO>, PaymentTypeDTO> pack = batchDataFetcherService.fetchNewInvoiceFromTransportDocumentsOpData(ids, null);
+		Triple<Long, List<TransportDocumentDTO>, PaymentTypeDTO> pack = batchDataFetcherService.fetchNewInvoiceFromTransportDocumentsOpData(ids);
 		assertEquals(nextInvID, pack.getFirst());
 		assertEquals(ids.size(), pack.getSecond().size());
 		for(int i=0; i<transDocDTOs.size(); ++i)
