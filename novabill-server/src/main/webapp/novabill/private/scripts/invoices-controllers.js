@@ -1,15 +1,16 @@
 'use strict';
 
-angular.module('novabill.invoices.controllers', 
-		['novabill.utils', 'novabill.directives', 'novabill.directives.dialogs', 'novabill.translations', 'infinite-scroll'])
+angular.module('novabill.invoices.controllers',
+	['novabill.utils', 'novabill.directives', 'novabill.directives.dialogs', 'novabill.translations', 'infinite-scroll'])
 
 
-		/**
-		 * INVOICES PAGE CONTROLLER
-		 */
-		.controller('InvoicesCtrl', ['$scope', '$location', 'nConstants', 'nSelectClientDialog', '$filter',
-		                             function($scope, $location, nConstants, nSelectClientDialog, $filter){
+/**
+ * INVOICES PAGE CONTROLLER
+ */
+	.controller('InvoicesCtrl', ['$scope', '$location', 'nConstants', 'nSelectClientDialog', '$filter',
+		function($scope, $location, nConstants, nSelectClientDialog, $filter){
 			var selectedYear = String(new Date().getFullYear());
+			var selectedClass = null;
 			var loadedInvoices = [];
 			var filteredInvoices = [];
 			var PARTITION = 50;
@@ -18,16 +19,26 @@ angular.module('novabill.invoices.controllers',
 				filteredInvoices = $filter('filter')(loadedInvoices, $scope.query);
 				$scope.invoices = filteredInvoices.slice(0, 15);
 			}
-			
+
 			$scope.$watch('query', function(newValue, oldValue){
 				updateFilteredInvoices();
 			});
 
-			$scope.loadInvoices = function(year) {
+			$scope.loadInvoicesByYear = function(year) {
 				selectedYear = year;
+				$scope.loadInvoices(selectedYear, selectedClass);
+			};
+
+			$scope.loadInvoicesForClass = function(claz) {
+				selectedClass = claz;
+				$scope.loadInvoices(selectedYear, selectedClass);
+			};
+
+
+			$scope.loadInvoices = function(year, claz) {
 				$scope.invoices = null;
 
-				GWT_Server.invoice.getAllInRange(nConstants.conf.businessId, selectedYear, '0', '1000000', {
+				GWT_Server.invoice.getAllInRange(nConstants.conf.businessId, year, claz, '0', '1000000', {
 					onSuccess : function(page){
 						$scope.$apply(function(){
 							loadedInvoices = page.items;
@@ -49,14 +60,14 @@ angular.module('novabill.invoices.controllers',
 			$scope.newInvoiceClick = function(){
 				var instance = nSelectClientDialog.open();
 				instance.result.then(
-						function (clientId) {
-							//workaround to enable scroll
-							window.location.assign( nConstants.url.invoiceNew(clientId) );
-							window.location.reload();
+					function (clientId) {
+						//workaround to enable scroll
+						window.location.assign( nConstants.url.invoiceNew(clientId) );
+						window.location.reload();
 //							$location.path('/new/'+clientId);
-						},
-						function () {
-						}
+					},
+					function () {
+					}
 				);
 			};
 
@@ -64,7 +75,7 @@ angular.module('novabill.invoices.controllers',
 				$scope.$apply(function(){
 					$scope.invoices= null;
 				});
-				$scope.loadInvoices(selectedYear);
+				$scope.loadInvoices(selectedYear, selectedClass);
 			});
 
 		}])
@@ -72,117 +83,117 @@ angular.module('novabill.invoices.controllers',
 
 
 
-		/**
-		 * INVOICE MODIFY PAGE CONTROLLER
-		 */
-		.controller('InvoiceDetailsCtrl', ['$scope', '$routeParams', '$location', '$translate',
-		                                   function($scope, $routeParams, $location, $translate) {
+/**
+ * INVOICE MODIFY PAGE CONTROLLER
+ */
+	.controller('InvoiceDetailsCtrl', ['$scope', '$routeParams', '$location', '$translate',
+		function($scope, $routeParams, $location, $translate) {
 			$scope.pageTitle = $translate('MODIFY_INVOICE');
 
 			GWT_UI.showModifyInvoicePage('invoice-details', $routeParams.invoiceId, {
 				onSuccess : function(bool){
-					$location.path('/');	
+					$location.path('/');
 				},
 				onFailure : function(){
 					$scope.$apply(function(){
-						$location.path('/');	
+						$location.path('/');
 					});
 				}
 			});
-			
-			
-			
+
+
+
 		}])
 
 
 
-		/**
-		 * INVOICE CREATE PAGE CONTROLLER
-		 */
-		.controller('InvoiceCreateCtrl', ['$scope', '$routeParams', '$location', '$translate',
-		                                  function($scope, $routeParams, $location, $translate) {
+/**
+ * INVOICE CREATE PAGE CONTROLLER
+ */
+	.controller('InvoiceCreateCtrl', ['$scope', '$routeParams', '$location', '$translate',
+		function($scope, $routeParams, $location, $translate) {
 			$scope.pageTitle = $translate('NEW_INVOICE');
 
 			GWT_UI.showNewInvoicePage('invoice-details', $routeParams.clientId, {
 				onSuccess : function(bool){
-					$location.path('/');	
+					$location.path('/');
 				},
 				onFailure : function(){
 					$scope.$apply(function(){
-						$location.path('/');	
+						$location.path('/');
 					});
 				}
 			});
-			
-			
+
+
 		}])
 
 
 
-		/**
-		 * INVOICE CREATE FROM ESTIMATION PAGE CONTROLLER
-		 */
-		.controller('InvoiceFromEstimationCtrl', ['$scope', '$routeParams', '$location', '$translate',
-		                                          function($scope, $routeParams, $location, $translate) {
+/**
+ * INVOICE CREATE FROM ESTIMATION PAGE CONTROLLER
+ */
+	.controller('InvoiceFromEstimationCtrl', ['$scope', '$routeParams', '$location', '$translate',
+		function($scope, $routeParams, $location, $translate) {
 			$scope.pageTitle = $translate('NEW_INVOICE');
 
 			GWT_UI.showFromEstimationInvoicePage('invoice-details', $routeParams.estimationId, {
 				onSuccess : function(bool){
-					$location.path('/');	
-					
+					$location.path('/');
+
 				},
 				onFailure : function(error){
 					$scope.$apply(function(){
-						$location.path('/');	
+						$location.path('/');
 					});
 				}
 			});
-			
-			
+
+
 		}])
 
 
-		/**
-		 * INVOICE CREATE FROM TRANSPORT DOCUMENT LIST PAGE CONTROLLER
-		 */
-		.controller('InvoiceFromTransportDocumentListCtrl', ['$scope', '$routeParams', '$location', '$translate',
-		                                                     function($scope, $routeParams, $location, $translate) {
+/**
+ * INVOICE CREATE FROM TRANSPORT DOCUMENT LIST PAGE CONTROLLER
+ */
+	.controller('InvoiceFromTransportDocumentListCtrl', ['$scope', '$routeParams', '$location', '$translate',
+		function($scope, $routeParams, $location, $translate) {
 			$scope.pageTitle = $translate('NEW_INVOICE');
 
 			GWT_UI.showFromTransportDocumentListInvoicePage('invoice-details', $routeParams.transportDocumentList, {
 				onSuccess : function(bool){
-					$location.path('/');	
+					$location.path('/');
 				},
 				onFailure : function(){
 					$scope.$apply(function(){
-						$location.path('/');	
+						$location.path('/');
 					});
 				}
 			});
-			
-			
+
+
 		}])
 
 
-		/**
-		 * INVOICE CLONE PAGE CONTROLLER
-		 */
-		.controller('InvoiceCloneInvoiceCtrl', ['$scope', '$routeParams', '$location', '$translate',
-		                                        function($scope, $routeParams, $location, $translate) {
+/**
+ * INVOICE CLONE PAGE CONTROLLER
+ */
+	.controller('InvoiceCloneInvoiceCtrl', ['$scope', '$routeParams', '$location', '$translate',
+		function($scope, $routeParams, $location, $translate) {
 			$scope.pageTitle = $translate('NEW_INVOICE');
 
 			GWT_UI.showCloneInvoicePage('invoice-details', $routeParams.clientId, $routeParams.sourceId, {
 				onSuccess : function(bool){
-					$location.path('/');	
+					$location.path('/');
 				},
 				onFailure : function(){
 					$scope.$apply(function(){
-						$location.path('/');	
+						$location.path('/');
 					});
 				}
 			});
-			
-			
+
+
 		}]);
 
 

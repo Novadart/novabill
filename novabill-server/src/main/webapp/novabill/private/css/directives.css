@@ -365,6 +365,22 @@
     line-height: 34px;
 }
 
+/*
+ *  SUFFIX SELECTOR
+ */
+
+.n-suffix-selector .suffix-lbl {
+	display: inline;
+	font-size: 14px;
+	position: relative;
+	top: 3px;
+}
+
+.n-suffix-selector .suffix-select {
+	display: inline;
+	line-height: 34px;
+}
+
 
 /*
  *  COMMODITY PRICE DIALOG

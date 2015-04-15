@@ -16,7 +16,9 @@
                     placeholder="{{'FILTER' | translate}}..." ng-model="query">
             </div>
 
-			<n-year-selector class="pull-right" document-type="invoices" callback="loadInvoices(year)"></n-year-selector>
+			<n-year-selector class="pull-right" document-type="invoices" callback="loadInvoicesByYear(year)"></n-year-selector>
+
+			<n-suffix-selector class="pull-right suffix-selector" callback="loadInvoicesForClass(class)"></n-suffix-selector>
 
 		</div>
 	</div>

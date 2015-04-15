@@ -39,8 +39,8 @@ public class InvoiceServiceJS extends ServiceJS {
 	}
 
 	
-	public static void getAllInRange(String businessID, String year, String start, String length, final JavaScriptObject callback) {
-		SERVER_FACADE.getInvoiceService().getAllInRange(Long.parseLong(businessID), Integer.parseInt(year), Integer.parseInt(start), Integer.parseInt(length), 
+	public static void getAllInRange(String businessID, String year, String suffix, String start, String length, final JavaScriptObject callback) {
+		SERVER_FACADE.getInvoiceService().getAllInRange(Long.parseLong(businessID), Integer.parseInt(year), suffix, Integer.parseInt(start), Integer.parseInt(length),
 				new ManagedAsyncCallback<PageDTO<InvoiceDTO>>() {
 
 			@Override

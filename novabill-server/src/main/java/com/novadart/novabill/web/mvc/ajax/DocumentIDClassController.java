@@ -1,4 +1,4 @@
-package com.novadart.novabill.web.mvc;
+package com.novadart.novabill.web.mvc.ajax;
 
 import com.novadart.novabill.annotation.RestExceptionProcessingMixin;
 import com.novadart.novabill.service.web.DocumentIDClassService;

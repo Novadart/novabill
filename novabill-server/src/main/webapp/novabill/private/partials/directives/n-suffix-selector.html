@@ -1,0 +1,6 @@
+<div class="n-suffix-selector">
+	<span class="suffix-lbl">{{'SUFFIX' | translate}}&nbsp;&nbsp;</span>
+	<select class="suffix-select form-control input-medium" ng-model="selectedClass" ng-change="onChange(event)">
+		<option ng-repeat="c in classes">{{c}}</option>
+	</select>
+</div>

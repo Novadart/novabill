@@ -34,6 +34,8 @@
 	<bean id="transporter" class="com.novadart.novabill.web.gwt.TransporterGwtController"/>
 	
 	<bean id="batchdatafetcher" class="com.novadart.novabill.web.gwt.BatchDataFetcherGwtController"/>
+
+	<bean id="documentidclass" class="com.novadart.novabill.web.gwt.DocumentIDClassGwtController"/>
 	
 	<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
 		<property name="mappings">
@@ -49,6 +51,7 @@
 				/**/pricelist.rpc=pricelist
 				/**/transporter.rpc=transporter
 				/**/batchdatafetcher.rpc=batchdatafetcher
+				/**/documentidclass.rpc=documentidclass
 			</value>
 		</property>
 	</bean>

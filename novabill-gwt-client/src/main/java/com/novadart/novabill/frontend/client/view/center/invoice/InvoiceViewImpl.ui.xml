@@ -72,6 +72,14 @@
 			</g:row>
 			<g:row>
 				<g:customCell>
+					<g:Label styleName="{s.label}" text="{i18n.invoiceNumberClass}"></g:Label>
+				</g:customCell>
+				<g:customCell>
+					<g:ListBox ui:field="documentIDClassListBox" styleName="{s.box}"></g:ListBox>
+				</g:customCell>
+			</g:row>
+			<g:row>
+				<g:customCell>
 					<g:Label ui:field="invoiceNumber" styleName="{s.label}"
 						text="{i18n.invoiceNumber}"></g:Label>
 				</g:customCell>

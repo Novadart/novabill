@@ -5,7 +5,9 @@ import com.google.gwt.i18n.client.Constants;
 
 public interface I18N extends Constants {
 	public static final I18N INSTANCE = GWT.create(I18N.class);
-	
+
+	public String invoiceDefaultNumberClass();
+	public String invoiceNumberClass();
 	public String termsAndConditions();
 	public String legalAddress();
 	public String selectAddress();

@@ -102,7 +102,7 @@ public class InvoiceActivity extends AbstractCenterActivity {
 									@Override
 									public void onSuccess(InvoiceView view) {
 										NewInvoicePresenter p = new NewInvoicePresenter(getClientFactory().getPlaceController(), 
-												getClientFactory().getEventBus(), view, getCallback());
+												getClientFactory().getEventBus(), view, place.getDocumentIDClassDTOs(), getCallback());
 										p.setDataForNewInvoice(newClient, result.getFirst(), result.getThird());
 										p.go(panel);
 
@@ -144,7 +144,7 @@ public class InvoiceActivity extends AbstractCenterActivity {
 									public void onSuccess(InvoiceView view) {
 										result.getSecond().setClient(newClient);
 										NewInvoicePresenter p = new NewInvoicePresenter(getClientFactory().getPlaceController(), 
-												getClientFactory().getEventBus(), view, getCallback());
+												getClientFactory().getEventBus(), view, place.getDocumentIDClassDTOs(), getCallback());
 										p.setDataForNewInvoice(result.getFirst(), result.getSecond(), result.getThird());
 										p.go(panel);
 
@@ -161,8 +161,7 @@ public class InvoiceActivity extends AbstractCenterActivity {
 	}
 
 
-	private void setupFromTransportDocumentListInvoiceView(final AcceptsOneWidget panel, 
-			final FromTransportDocumentListInvoicePlace place){
+	private void setupFromTransportDocumentListInvoiceView(final AcceptsOneWidget panel, final FromTransportDocumentListInvoicePlace place){
 		ServerFacade.INSTANCE.getBatchfetcherService().fetchNewInvoiceFromTransportDocumentsOpData(place.getTransportDocumentList(), 
 				new DocumentCallack<Triple<Long, List<TransportDocumentDTO>, PaymentTypeDTO>>() {
 
@@ -172,8 +171,8 @@ public class InvoiceActivity extends AbstractCenterActivity {
 
 					@Override
 					public void onSuccess(final InvoiceView view) {
-						NewInvoicePresenter p = new NewInvoicePresenter(getClientFactory().getPlaceController(), 
-								getClientFactory().getEventBus(), view, getCallback());
+						NewInvoicePresenter p = new NewInvoicePresenter(getClientFactory().getPlaceController(),
+								getClientFactory().getEventBus(), view, place.getDocumentIDClassDTOs(), getCallback());
 						p.setTransportDocumentSources(place.getTransportDocumentList());
 						p.setDataForNewInvoice(result.getFirst(), result.getSecond(), result.getThird());
 						p.go(panel);
@@ -185,7 +184,7 @@ public class InvoiceActivity extends AbstractCenterActivity {
 
 
 
-	private void setupModifyInvoiceView(final AcceptsOneWidget panel, ModifyInvoicePlace place){
+	private void setupModifyInvoiceView(final AcceptsOneWidget panel, final ModifyInvoicePlace place){
 		ServerFacade.INSTANCE.getInvoiceService().get(place.getInvoiceId(), new DocumentCallack<InvoiceDTO>() {
 
 			@Override
@@ -195,7 +194,7 @@ public class InvoiceActivity extends AbstractCenterActivity {
 					@Override
 					public void onSuccess(InvoiceView view) {
 						ModifyInvoicePresenter p = new ModifyInvoicePresenter(getClientFactory().getPlaceController(), 
-								getClientFactory().getEventBus(), view, getCallback());
+								getClientFactory().getEventBus(), view, place.getDocumentIDClassDTOs(), getCallback());
 						p.setData(result);
 						p.go(panel);
 
@@ -234,7 +233,7 @@ public class InvoiceActivity extends AbstractCenterActivity {
 									@Override
 									public void onSuccess(InvoiceView view) {
 										NewInvoicePresenter p = new NewInvoicePresenter(getClientFactory().getPlaceController(), 
-												getClientFactory().getEventBus(), view, getCallback());
+												getClientFactory().getEventBus(), view, place.getDocumentIDClassDTOs(), getCallback());
 										p.setDataForNewInvoice(newClient, result.getFirst(), result.getThird());
 										p.go(panel);
 									}

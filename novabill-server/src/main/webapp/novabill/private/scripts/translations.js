@@ -294,6 +294,8 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 		STATS_COMMODITIES_SORTED_BY_INVOICING : 'Articoli ordinati per fatturato (IVA escl.)',
 		STATS_GENERAL : 'Generali',
 		STATS_INVOICING_PREV_YEAR : 'Anno {{year}}: {{amount}}',
+		SUFFIX : 'Numerazione',
+		SUFFIX_STANDARD : 'Predefinita',
 		TAX : 'IVA',
 		TAX_PLACEHOLDER : 'esempio: 22',
 		TELEPHONE : 'Telefono',

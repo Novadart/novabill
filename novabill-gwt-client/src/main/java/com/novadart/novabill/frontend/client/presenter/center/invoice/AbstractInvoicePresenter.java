@@ -1,9 +1,5 @@
 package com.novadart.novabill.frontend.client.presenter.center.invoice;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
@@ -19,19 +15,27 @@ import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.frontend.client.view.center.invoice.InvoiceView;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.widget.notification.NotificationCallback;
-import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
-import com.novadart.novabill.shared.client.dto.EndpointDTO;
-import com.novadart.novabill.shared.client.dto.InvoiceDTO;
-import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
+import com.novadart.novabill.shared.client.dto.*;
+import com.novadart.novabill.shared.client.facade.BusinessGwtService;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public abstract class AbstractInvoicePresenter extends DocumentPresenter<InvoiceView> implements InvoiceView.Presenter {
 
 	private InvoiceDTO invoice;
-
 	private PaymentTypeDTO cachedDefaultPaymentTypeDTO = null;
+	private final List<DocumentIDClassDTO> documentIDClasses;
 
-	public AbstractInvoicePresenter(PlaceController placeController, EventBus eventBus,	InvoiceView view, JavaScriptObject callback) {
+	public AbstractInvoicePresenter(PlaceController placeController, EventBus eventBus,	InvoiceView view,
+									List<DocumentIDClassDTO> documentIDClassesDTOs, JavaScriptObject callback) {
 		super(placeController, eventBus, view, callback);
+		this.documentIDClasses = documentIDClassesDTOs;
+	}
+
+	public List<DocumentIDClassDTO> getDocumentIDClasses() {
+		return documentIDClasses;
 	}
 
 	@Override
@@ -47,13 +51,53 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 
 			@Override
 			public void onNotificationClosed(boolean value) {
-				if(value){
+				if (value) {
 					BridgeUtils.invokeJSCallback(Boolean.FALSE, getCallback());
 				}
 			}
 		});
 	}
 
+	@Override
+	public void onDocumentIdClassChange() {
+		String docIdClass = getDocIdClass();
+		if(invoice == null){
+			getView().getNumber().setEnabled(false);
+			ServerFacade.INSTANCE.getInvoiceService().getNextInvoiceDocumentID(docIdClass, new ManagedAsyncCallback<Long>() {
+				@Override
+				public void onSuccess(Long aLong) {
+					getView().getNumber().setText(String.valueOf(aLong));
+					getView().getNumber().setEnabled(true);
+				}
+
+				@Override
+				public void onFailure(Throwable caught) {
+					super.onFailure(caught);
+					getView().getNumber().setEnabled(true);
+				}
+			});
+		} else {
+			if( (docIdClass == null && invoice.getDocumentIDSuffix() == null)
+					|| (docIdClass != null && docIdClass.equalsIgnoreCase(invoice.getDocumentIDSuffix())) ){
+				getView().getNumber().setText(String.valueOf(invoice.getDocumentID()));
+			} else {
+				getView().getNumber().setEnabled(false);
+				ServerFacade.INSTANCE.getInvoiceService().getNextInvoiceDocumentID(docIdClass, new ManagedAsyncCallback<Long>() {
+					@Override
+					public void onSuccess(Long aLong) {
+						getView().getNumber().setText(String.valueOf(aLong));
+						getView().getNumber().setEnabled(true);
+					}
+
+					@Override
+					public void onFailure(Throwable caught) {
+						super.onFailure(caught);
+						getView().getNumber().setEnabled(true);
+					}
+				});
+			}
+		}
+	}
 
 	protected void setInvoice(InvoiceDTO invoice) {
 		this.invoice = invoice;
@@ -106,7 +150,9 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 		}
 
 		inv.setDocumentID(Long.parseLong(getView().getNumber().getText()));
-		inv.setAccountingDocumentDate( DocumentUtils.createNormalizedDate(getView().getDate().getValue()) );
+		inv.setDocumentIDSuffix(getDocIdClass());
+
+		inv.setAccountingDocumentDate(DocumentUtils.createNormalizedDate(getView().getDate().getValue()) );
 		List<AccountingDocumentItemDTO> invItems = new ArrayList<AccountingDocumentItemDTO>();
 		for (AccountingDocumentItemDTO itemDTO : getView().getItemInsertionForm().getItems()) {
 			invItems.add(itemDTO);
@@ -142,6 +188,12 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 		CalcUtils.calculateTotals(invItems, inv);
 		return inv;
 	}
+
+	private String getDocIdClass(){
+		int docIdSelectedIndex = getView().getDocumentIDClassListBox().getSelectedIndex();
+		return docIdSelectedIndex == 0 ? null : getView().getDocumentIDClassListBox().getValue(docIdSelectedIndex);
+	}
+
 
 	@Override
 	public void onPaymentSelected(final PaymentTypeDTO payment) {

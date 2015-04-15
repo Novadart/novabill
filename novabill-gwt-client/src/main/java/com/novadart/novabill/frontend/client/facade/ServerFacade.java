@@ -2,47 +2,40 @@ package com.novadart.novabill.frontend.client.facade;
 
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.novadart.novabill.shared.client.facade.BatchDataFetcherGwtServiceAsync;
-import com.novadart.novabill.shared.client.facade.BusinessGwtServiceAsync;
-import com.novadart.novabill.shared.client.facade.ClientGwtServiceAsync;
-import com.novadart.novabill.shared.client.facade.CommodityGwtServiceAsync;
-import com.novadart.novabill.shared.client.facade.CreditNoteGwtServiceAsync;
-import com.novadart.novabill.shared.client.facade.EstimationGwtServiceAsync;
-import com.novadart.novabill.shared.client.facade.InvoiceGwtServiceAsync;
-import com.novadart.novabill.shared.client.facade.PaymentTypeGwtServiceAsync;
-import com.novadart.novabill.shared.client.facade.PriceListGwtServiceAsync;
-import com.novadart.novabill.shared.client.facade.TransportDocumentGwtServiceAsync;
+import com.novadart.novabill.shared.client.facade.*;
 
 public interface ServerFacade {
 	
-	public static final ServerFacade INSTANCE = GWT.create(ServerFacade.class);
+	ServerFacade INSTANCE = GWT.create(ServerFacade.class);
 
-	public void setupXsrfProtection(final AsyncCallback<Void> callback);
+	void setupXsrfProtection(final AsyncCallback<Void> callback);
 
-	public void sendFeedback(String subject, String name,
+	void sendFeedback(String subject, String name,
 			String email, String message, String category,
 			final AsyncCallback<Boolean> callback);
 
-	public void deleteLogo(final AsyncCallback<Boolean> callback);
+	void deleteLogo(final AsyncCallback<Boolean> callback);
 
-	public InvoiceGwtServiceAsync getInvoiceService();
+	InvoiceGwtServiceAsync getInvoiceService();
 
-	public ClientGwtServiceAsync getClientService();
+	ClientGwtServiceAsync getClientService();
 
-	public BusinessGwtServiceAsync getBusinessService();
+	BusinessGwtServiceAsync getBusinessService();
 
-	public EstimationGwtServiceAsync getEstimationService();
+	EstimationGwtServiceAsync getEstimationService();
 
-	public CreditNoteGwtServiceAsync getCreditNoteService();
+	CreditNoteGwtServiceAsync getCreditNoteService();
 
-	public TransportDocumentGwtServiceAsync getTransportdocumentService();
+	TransportDocumentGwtServiceAsync getTransportdocumentService();
 
-	public PaymentTypeGwtServiceAsync getPaymentService();
+	PaymentTypeGwtServiceAsync getPaymentService();
 
-	public BatchDataFetcherGwtServiceAsync getBatchfetcherService();
+	BatchDataFetcherGwtServiceAsync getBatchfetcherService();
 	
-	public CommodityGwtServiceAsync getCommodityGwtService();
+	CommodityGwtServiceAsync getCommodityGwtService();
 	
-	public PriceListGwtServiceAsync getPriceListGwtService();
+	PriceListGwtServiceAsync getPriceListGwtService();
+
+	DocumentIDClassGwtServiceAsync getDocumentIdClassGwtService();
 
 }
