@@ -255,4 +255,6 @@ public interface I18N extends Constants {
 	public String of();
 	public String sku();
 	public String example();
+
+	String defaultDocIdClass();
 }

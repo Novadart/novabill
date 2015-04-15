@@ -205,6 +205,26 @@ angular.module('novabill.ajax', ['ngResource', 'angularFileUpload', 'novabill.lo
 				}
 			};
 		},
+
+
+		/*
+		 * Document ID Class resource
+		 */
+		DocumentIDClass : function(){
+			return $resource(
+				baseUrl + 'businesses/:businessId/docidclasses/:id',
+				{
+					businessId: businessId,
+					id : '@id'
+				},
+				{
+
+					'update': {
+						method:'PUT'
+					}
+				}
+			);
+		},
 		
 		
 		/*

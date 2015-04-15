@@ -270,6 +270,8 @@
 						</g:row>
 					</g:Grid>
 
+					<g:Label styleName="{s.title2} {s.lowerTitle}" text="{i18n.defaultDocIdClass}"></g:Label>
+					<g:ListBox ui:field="selectDefaultDocIdClass" />
 
 					<g:Label styleName="{s.title2} {s.lowerTitle}" text="{i18n.defaultPaymentType}"></g:Label>
 					<g:ListBox ui:field="selectDefaultPayment" />

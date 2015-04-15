@@ -7,13 +7,25 @@ angular.module('novabill.invoices.controllers',
 /**
  * INVOICES PAGE CONTROLLER
  */
-	.controller('InvoicesCtrl', ['$scope', '$location', 'nConstants', 'nSelectClientDialog', '$filter',
-		function($scope, $location, nConstants, nSelectClientDialog, $filter){
+	.controller('InvoicesCtrl', ['$scope', '$location', 'nConstants', 'nSelectClientDialog', '$filter', 'nEditDocumentIdClassDialog', 'nAjax', 'nConfirmDialog',
+		function($scope, $location, nConstants, nSelectClientDialog, $filter, nEditDocumentIdClassDialog, nAjax, nConfirmDialog){
 			var selectedYear = String(new Date().getFullYear());
 			var selectedClass = null;
 			var loadedInvoices = [];
 			var filteredInvoices = [];
 			var PARTITION = 50;
+			var DocumentIDClass = nAjax.DocumentIDClass();
+
+			$scope.onTabChange = function(token){
+				$location.search('tab',token);
+			};
+
+			$scope.activeTab = {
+				invoices : false,
+				docIdClasses : false
+			};
+			$scope.activeTab[$location.search().tab] = true;
+
 
 			function updateFilteredInvoices(){
 				filteredInvoices = $filter('filter')(loadedInvoices, $scope.query);
@@ -77,6 +89,50 @@ angular.module('novabill.invoices.controllers',
 				});
 				$scope.loadInvoices(selectedYear, selectedClass);
 			});
+
+
+			/*
+			* DOCUMENT ID CLASS TAB
+			*/
+			$scope.loadDocIDClasses = function(){
+				DocumentIDClass.query(function(docIDClasses){
+					$scope.docIdClasses = docIDClasses;
+				});
+			};
+
+			$scope.newDocIDClass = function(){
+				var newDocIDClass = new DocumentIDClass();
+				newDocIDClass.business = { id : nConstants.conf.businessId };
+
+				var instance = nEditDocumentIdClassDialog.open(newDocIDClass);
+				instance.result.then(function(docIdClass){
+					docIdClass.$save( $scope.loadDocIDClasses );
+				});
+			};
+
+			$scope.editDocIDClass = function(docIdClass){
+				var instance = nEditDocumentIdClassDialog.open(docIdClass, true);
+				instance.result.then(function(updatedDocIdClass){
+					updatedDocIdClass.business = { id : nConstants.conf.businessId };
+					updatedDocIdClass.$update(function(){
+						$scope.loadDocIDClasses();
+					});
+				});
+			};
+
+			$scope.removeDocIDClass = function(docIdClass){
+				var instance = nConfirmDialog.open( $filter('translate')('REMOVAL_QUESTION',{data : docIdClass.suffix}) );
+				instance.result.then(function(value){
+					if(value){
+						docIdClass.$delete(function(){
+							$scope.loadDocIDClasses();
+						});
+					}
+				});
+			};
+
+
+			$scope.loadDocIDClasses();
 
 		}])
 

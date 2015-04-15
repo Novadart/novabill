@@ -1,0 +1,32 @@
+<div class="n-edit-transporter-dialog">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="cancel()">&times;</button>
+		<h4 class="modal-title">{{'DOCUMENT_ID_CLASS' | translate}}</h4>
+	</div>
+	<div class="modal-body">
+
+		<div class="alert alert-warning" ng-if="isUpdate">
+			{{'DOC_ID_CLASS_UPDATE_ALERT' | translate}}
+		</div>
+
+		<form name="form" role="form" style="margin-top: 20px;" novalidate>
+
+			<div class="form-group"
+				 ng-class="{'has-error': form.suffix.$dirty && form.suffix.$invalid, 'has-success': form.suffix.$dirty && form.suffix.$valid}">
+				<label class="control-label" for="suffix">{{'SUFFIX' | translate}} *</label>
+				<input type="text" id="suffix" n-doc-id-class
+					   name="suffix" maxlength="50" ng-model="$parent.docIdClass.suffix" class="form-control"
+					   placeholder="{{'SUFFIX_PLACEHOLDER' | translate}}" required>
+				<div ng-show="form.suffix.$dirty && form.suffix.$invalid">
+					<span class="text-danger" ng-show="form.suffix.$error.required && !form.suffix.$error.docIdClass">{{'VALIDATION_REQUIRED' | translate}}</span>
+					<span class="text-danger" ng-show="form.suffix.$error.docIdClass">{{'VALIDATION_INVALID_VALUE' | translate}}</span>
+				</div>
+			</div>
+		</form>
+	</div>
+
+	<div class="modal-footer">
+		<button type="button" class="btn green" ng-disabled="form.$invalid" ng-click="save()">{{'CONTINUE' | translate}}</button>
+		<button type="button" class="btn" data-dismiss="modal" ng-click="cancel()">{{'CANCEL' | translate}}</button>
+	</div>
+</div>
