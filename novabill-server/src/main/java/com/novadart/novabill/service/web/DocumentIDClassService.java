@@ -1,6 +1,7 @@
 package com.novadart.novabill.service.web;
 
 import com.novadart.novabill.domain.Business;
+import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.DocumentIDClass;
 import com.novadart.novabill.domain.dto.transformer.DocumentIDClassDTOTransformer;
 import com.novadart.novabill.service.validator.DocumentIDClassValidator;
@@ -63,6 +64,8 @@ public class DocumentIDClassService {
             "T(com.novadart.novabill.domain.DocumentIDClass).findDocumentIDClass(#id)?.business?.id == #businessID")
     public void remove(Long businessID, Long id) {
         DocumentIDClass docIDClass = DocumentIDClass.findDocumentIDClass(id);
+        for(Client client: docIDClass.getClients())
+            client.setDefaultDocumentIDClass(null);
         docIDClass.remove();
         if(Hibernate.isInitialized(docIDClass.getBusiness().getDocumentIDClasses()))
             docIDClass.getBusiness().getDocumentIDClasses().remove(docIDClass);

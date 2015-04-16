@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.novadart.novabill.aspect.logging.DBLoggerAspect;
 import com.novadart.novabill.domain.Business;
+import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.DocumentIDClass;
 import com.novadart.novabill.domain.LogRecord;
 import com.novadart.novabill.domain.dto.transformer.BusinessDTOTransformer;
@@ -103,6 +104,27 @@ public class DocumentIDClassServiceTest extends ServiceTest{
         Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
         assertEquals(docIDClass.getSuffix(), details.get(DBLoggerAspect.DOCUMENT_ID_CLASS_SUFFIX));
         assertEquals(true, rec.isReferringToDeletedEntity());
+    }
+
+    @Test
+    public void removeAutorizedNullAssociatedClientsTest() throws JsonParseException, JsonMappingException, IOException{
+        Business business = Business.findBusiness(authenticatedPrincipal.getBusiness().getId());
+        DocumentIDClass docIDClass = business.getDocumentIDClasses().iterator().next();
+        Long clientID = authenticatedPrincipal.getBusiness().getClients().iterator().next().getId();
+        Client client = Client.findClient(clientID);
+        docIDClass.getClients().add(client);
+        client.setDefaultDocumentIDClass(docIDClass);
+        Client.entityManager().flush();
+        docIDClassesService.remove(business.getId(), docIDClass.getId());
+        assertTrue(DocumentIDClass.findDocumentIDClass(docIDClass.getId()) == null);
+        LogRecord rec = LogRecord.fetchLastN(authenticatedPrincipal.getBusiness().getId(), 1).get(0);
+        assertEquals(EntityType.DOCUMENT_ID_CLASS, rec.getEntityType());
+        assertEquals(docIDClass.getId(), rec.getEntityID());
+        assertEquals(OperationType.DELETE, rec.getOperationType());
+        Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
+        assertEquals(docIDClass.getSuffix(), details.get(DBLoggerAspect.DOCUMENT_ID_CLASS_SUFFIX));
+        assertEquals(true, rec.isReferringToDeletedEntity());
+        assertEquals(null, client.getDefaultDocumentIDClass());
     }
 
     @Test(expected = AccessDeniedException.class)
