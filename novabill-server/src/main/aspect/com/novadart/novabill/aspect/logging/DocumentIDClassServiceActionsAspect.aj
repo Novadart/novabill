@@ -26,7 +26,7 @@ public aspect DocumentIDClassServiceActionsAspect extends DBLoggerAspect{
             execution(public Long com.novadart.novabill.service.web.DocumentIDClassService.add(..)) && args(businessID, docIDClassDTO);
 
     pointcut remove(Long businessID, Long id):
-            execution(public void com.novadart.novabill.service.web.DocumentIDClassService.remove(..)) && args(businessID, id);
+            execution(public boolean com.novadart.novabill.service.web.DocumentIDClassService.remove(..)) && args(businessID, id);
 
     pointcut update(Long businessID, DocumentIDClassDTO docIDClassDTO) :
             execution(public void com.novadart.novabill.service.web.DocumentIDClassService.update(..)) && args(businessID, docIDClassDTO);
@@ -40,14 +40,17 @@ public aspect DocumentIDClassServiceActionsAspect extends DBLoggerAspect{
         logActionInDB(businessID, EntityType.DOCUMENT_ID_CLASS, OperationType.CREATE, id, time, details);
     }
 
-    void around(Long businessID, Long id): remove(businessID, id) {
+    boolean around(Long businessID, Long id): remove(businessID, id) {
         DocumentIDClass docIDClass = DocumentIDClass.findDocumentIDClass(id);
-        proceed(businessID, id);
-        Long time = System.currentTimeMillis();
-        LOGGER.info("[{}, deleteDocumentIDClass, {}, businessID: {}, id: {}]",
-                new Object[]{utilsService.getAuthenticatedPrincipalDetails().getUsername(), new Date(time), businessID, id});
-        Map<String, String> details = ImmutableMap.of(DOCUMENT_ID_CLASS_SUFFIX, docIDClass.getSuffix());
-        logActionInDB(businessID, EntityType.DOCUMENT_ID_CLASS, OperationType.DELETE, id, time, details);
+        boolean result = proceed(businessID, id);
+        if(result) {
+            Long time = System.currentTimeMillis();
+            LOGGER.info("[{}, deleteDocumentIDClass, {}, businessID: {}, id: {}]",
+                    new Object[]{utilsService.getAuthenticatedPrincipalDetails().getUsername(), new Date(time), businessID, id});
+            Map<String, String> details = ImmutableMap.of(DOCUMENT_ID_CLASS_SUFFIX, docIDClass.getSuffix());
+            logActionInDB(businessID, EntityType.DOCUMENT_ID_CLASS, OperationType.DELETE, id, time, details);
+        }
+        return result;
     }
 
     after(Long businessID, DocumentIDClassDTO docIDClassDTO) returning : update(businessID, docIDClassDTO){

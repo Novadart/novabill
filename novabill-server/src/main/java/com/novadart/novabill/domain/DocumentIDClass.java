@@ -42,6 +42,14 @@ public class DocumentIDClass {
         return newDocumentIDClass;
     }
 
+    public boolean hasInvoices(){
+        String sql = "select count(o) from Invoice o where o.business.id = :businessID and lower(o.documentIDSuffix) = lower(:suffix)";
+        return entityManager().createQuery(sql, Long.class)
+                .setParameter("businessID", getBusiness().getId())
+                .setParameter("suffix", getSuffix()).getSingleResult() != 0l;
+
+    }
+
     /*
 	 * Getters and setters
 	 * *

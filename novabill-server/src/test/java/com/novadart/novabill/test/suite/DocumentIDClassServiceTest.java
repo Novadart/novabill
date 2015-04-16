@@ -3,17 +3,18 @@ package com.novadart.novabill.test.suite;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.novadart.novabill.aspect.logging.DBLoggerAspect;
-import com.novadart.novabill.domain.Business;
-import com.novadart.novabill.domain.Client;
-import com.novadart.novabill.domain.DocumentIDClass;
-import com.novadart.novabill.domain.LogRecord;
+import com.novadart.novabill.domain.*;
 import com.novadart.novabill.domain.dto.transformer.BusinessDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.ClientDTOTransformer;
 import com.novadart.novabill.domain.dto.transformer.DocumentIDClassDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.InvoiceDTOTransformer;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.web.DocumentIDClassService;
+import com.novadart.novabill.service.web.InvoiceService;
 import com.novadart.novabill.shared.client.data.EntityType;
 import com.novadart.novabill.shared.client.data.OperationType;
 import com.novadart.novabill.shared.client.dto.DocumentIDClassDTO;
+import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.exception.*;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.junit.Before;
@@ -38,6 +39,9 @@ public class DocumentIDClassServiceTest extends ServiceTest{
 
     @Autowired
     private DocumentIDClassService docIDClassesService;
+
+    @Autowired
+    private InvoiceService invoiceService;
 
     @Override
     @Before
@@ -160,6 +164,23 @@ public class DocumentIDClassServiceTest extends ServiceTest{
     public void removeUnauthorizedTest(){
         Long id = Business.findBusiness(authenticatedPrincipal.getBusiness().getId()).getDocumentIDClasses().iterator().next().getId();
         docIDClassesService.remove(getUnathorizedBusinessID(), id);
+    }
+
+    @Test
+    public void removeWithInvoicesTest() throws JsonParseException, JsonMappingException, IOException, IllegalAccessException, InstantiationException, NotAuthenticatedException, FreeUserAccessForbiddenException, DataIntegrityException, DataAccessException, ValidationException {
+        Business business = Business.findBusiness(authenticatedPrincipal.getBusiness().getId());
+        DocumentIDClass docIDClass = business.getDocumentIDClasses().iterator().next();
+        Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
+        String suffix = docIDClass.getSuffix();
+        InvoiceDTO invDTO = InvoiceDTOTransformer.toDTO(TestUtils.createInvOrCredNote(authenticatedPrincipal.getBusiness().getNextInvoiceDocumentID(suffix), Invoice.class), true);
+        invDTO.setClient(ClientDTOTransformer.toDTO(client));
+        invDTO.setDocumentIDSuffix(suffix);
+        invDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
+        invoiceService.add(invDTO);
+        Invoice.entityManager().flush();
+        boolean result = docIDClassesService.remove(business.getId(), docIDClass.getId());
+        assertTrue(!result);
+        assertNotNull(DocumentIDClass.findDocumentIDClass(docIDClass.getId()));
     }
 
     @Test

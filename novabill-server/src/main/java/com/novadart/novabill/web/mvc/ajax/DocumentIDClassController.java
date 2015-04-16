@@ -48,8 +48,8 @@ public class DocumentIDClassController {
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
-    public void remove(@PathVariable Long businessID, @PathVariable Long id) throws NotAuthenticatedException, DataAccessException{
-        docidclassesService.remove(businessID, id);
+    public boolean remove(@PathVariable Long businessID, @PathVariable Long id) throws NotAuthenticatedException, DataAccessException{
+        return docidclassesService.remove(businessID, id);
     }
 
 }
