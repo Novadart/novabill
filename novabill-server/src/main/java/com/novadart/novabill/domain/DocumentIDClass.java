@@ -28,7 +28,7 @@ public class DocumentIDClass {
     private Business business;
 
     public boolean suffixExists(){
-        String query = "select dc from DocumentIDClass dc where suffix = :suffix and dc.business.id = :id";
+        String query = "select dc from DocumentIDClass dc where lower(suffix) = lower(:suffix) and dc.business.id = :id";
         return entityManager().createQuery(query, DocumentIDClass.class).
                 setParameter("suffix", getSuffix()).
                 setParameter("id", getBusiness().getId()).
@@ -42,6 +42,14 @@ public class DocumentIDClass {
         return newDocumentIDClass;
     }
 
+    public boolean hasInvoices(){
+        String sql = "select count(o) from Invoice o where o.business.id = :businessID and lower(o.documentIDSuffix) = lower(:suffix)";
+        return entityManager().createQuery(sql, Long.class)
+                .setParameter("businessID", getBusiness().getId())
+                .setParameter("suffix", getSuffix()).getSingleResult() != 0l;
+
+    }
+
     /*
 	 * Getters and setters
 	 * *
@@ -52,7 +60,7 @@ public class DocumentIDClass {
     }
 
     public void setSuffix(String suffix) {
-        this.suffix = suffix;
+        this.suffix = suffix.toLowerCase();
     }
 
     public Set<Client> getClients() {

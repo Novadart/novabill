@@ -80,6 +80,7 @@ public class TestUtils {
 		estimationValidationFieldsMap = new HashMap<String, Field>(accountingDocumentValidationFieldsMap);
 		estimationValidationFieldsMap.putAll(new HashMap<String, Field>(){{
 			put("limitations", Field.limitations); put("validTill", Field.validTill);
+			put("termsAndConditions", Field.termsAndConditions);
 		}});
 		
 		transportDocValidationFieldsMap = new HashMap<String, Field>(accountingDocumentValidationFieldsMap);

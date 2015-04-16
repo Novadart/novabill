@@ -189,7 +189,7 @@ public class Business implements Serializable, Taxable {
     public <T extends AccountingDocument> Long getNextAccountingDocDocumentID(Class<T> cls, String suffix){
     	String sql = String.format("select max(o.documentID) from %s o where o.business.id = :businessId and o.accountingDocumentYear = :year and ",
 				cls.getSimpleName());
-		sql += suffix == null? "o.documentIDSuffix is NULL": "o.documentIDSuffix = :suffix";
+		sql += suffix == null? "o.documentIDSuffix is NULL": "lower(o.documentIDSuffix) = lower(:suffix)";
 		TypedQuery<Long> query = entityManager.createQuery(sql, Long.class)
     			.setParameter("businessId", getId())
     			.setParameter("year", Calendar.getInstance().get(Calendar.YEAR));
@@ -260,7 +260,7 @@ public class Business implements Serializable, Taxable {
     
     public <T extends AccountingDocument> List<Long> getCurrentYearDocumentsIDs(Class<T> cls, String suffix){
     	String sql = String.format("select o.documentID from %s as o where o.business.id = :businessId and o.accountingDocumentYear = :year and ", cls.getSimpleName());
-        sql += (suffix == null? "o.documentIDSuffix is NULL": "o.documentIDSuffix = :suffix") + "order by o.documentID";
+        sql += (suffix == null? "o.documentIDSuffix is NULL": "lower(o.documentIDSuffix) = lower(:suffix)") + "order by o.documentID";
     	TypedQuery<Long> query = entityManager.createQuery(sql, Long.class)
     			.setParameter("businessId", getId())
     			.setParameter("year", Calendar.getInstance().get(Calendar.YEAR));
@@ -269,7 +269,7 @@ public class Business implements Serializable, Taxable {
     
     public <T extends AccountingDocument> List<T> getDocsByIdInYear(Class<T> cls, Long documentID, String suffix, Integer year){
     	String sql = String.format("select o from %s o where o.business.id = :businessId and o.accountingDocumentYear = :year and o.documentID = :id and ", cls.getSimpleName());
-        sql += suffix == null? "o.documentIDSuffix is NULL": "o.documentIDSuffix = :suffix";
+        sql += suffix == null? "o.documentIDSuffix is NULL": "lower(o.documentIDSuffix) = lower(:suffix)";
     	TypedQuery<T> query = entityManager().createQuery(sql, cls)
     			.setParameter("businessId", getId())
     			.setParameter("year", year)

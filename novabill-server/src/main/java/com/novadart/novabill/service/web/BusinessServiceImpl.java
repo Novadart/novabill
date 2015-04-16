@@ -352,7 +352,7 @@ public abstract class BusinessServiceImpl implements BusinessService {
 		Collection<InvoiceDTO> filtered = DTOUtils.filter(allInvocesForYear, new DTOUtils.Predicate<InvoiceDTO>(){
 			@Override
 			public boolean isTrue(InvoiceDTO doc) {
-				return docIDSuffix == null? doc.getDocumentIDSuffix() == null: docIDSuffix.equals(doc.getDocumentIDSuffix());
+				return docIDSuffix == null? doc.getDocumentIDSuffix() == null: docIDSuffix.equalsIgnoreCase(doc.getDocumentIDSuffix());
 			}
 		});
 		return new ArrayList<>(filtered);

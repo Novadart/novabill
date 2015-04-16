@@ -336,7 +336,7 @@ public privileged aspect CachingAspect {
 	 * Dependencies: None
 	 */
 
-	declare @method : public void com.novadart.novabill.service.web.DocumentIDClassService.remove(Long, Long): @CacheEvict(value = DOCUMENTIDCLASSES_CACHE, key = "#businessID");
+	declare @method : public boolean com.novadart.novabill.service.web.DocumentIDClassService.remove(Long, Long): @CacheEvict(value = DOCUMENTIDCLASSES_CACHE, key = "#businessID");
 
 	declare @method : public Long com.novadart.novabill.service.web.DocumentIDClassService.add(Long, DocumentIDClassDTO): @CacheEvict(value = DOCUMENTIDCLASSES_CACHE, key = "#businessID");
 
