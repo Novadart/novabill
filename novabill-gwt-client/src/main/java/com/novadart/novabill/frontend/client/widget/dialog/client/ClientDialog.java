@@ -91,6 +91,7 @@ public class ClientDialog extends Dialog implements HasUILocking {
 	@UiField(provided=true) ValidatedTextBox contactSurname;
 
 	@UiField ListBox selectDefaultDocIdClass;
+	@UiField ListBox selectSplitPayment;
 	@UiField ListBox selectDefaultPayment;
 	@UiField ListBox selectDefaultPriceList;
 
@@ -201,9 +202,9 @@ public class ClientDialog extends Dialog implements HasUILocking {
 			@Override
 			public void onSuccess(List<DocumentIDClassDTO> documentIDClassDTOs) {
 
-				selectDefaultDocIdClass.addItem(I18N.INSTANCE.invoiceDefaultNumberClass(), (String)null);
+				selectDefaultDocIdClass.addItem(I18N.INSTANCE.invoiceDefaultNumberClass(), (String) null);
 				Long defaultDocIdClass = null;
-				if(client != null) {
+				if (client != null) {
 					defaultDocIdClass = client.getDefaultDocumentIDClassID();
 				}
 
@@ -212,8 +213,8 @@ public class ClientDialog extends Dialog implements HasUILocking {
 				for (int i = 0; i < documentIDClassDTOs.size(); i++) {
 					dcd = documentIDClassDTOs.get(i);
 					selectDefaultDocIdClass.addItem(dcd.getSuffix(), String.valueOf(dcd.getId()));
-					if(defaultDocIdClass != null && dcd.getId().equals(defaultDocIdClass)){
-						selectedIndex = i+1;
+					if (defaultDocIdClass != null && dcd.getId().equals(defaultDocIdClass)) {
+						selectedIndex = i + 1;
 					}
 				}
 				selectDefaultDocIdClass.setSelectedIndex(selectedIndex);
@@ -221,6 +222,7 @@ public class ClientDialog extends Dialog implements HasUILocking {
 			}
 		});
 
+		selectSplitPayment.setSelectedIndex(client.isSplitPaymentClient() ? 1 : 0);
 
 		selectDefaultPayment.setEnabled(false);
 		ServerFacade.INSTANCE.getPaymentService().getAll(businessId, 
@@ -369,6 +371,8 @@ public class ClientDialog extends Dialog implements HasUILocking {
 						? null
 						: Long.valueOf(selectDefaultDocIdClass.getValue(selectDefaultDocIdClass.getSelectedIndex()))
 		);
+
+		client.setSplitPaymentClient(selectSplitPayment.isItemSelected(1));
 
 		if(selectDefaultPayment.getSelectedIndex() > 0){
 			PaymentTypeDTO payment = paymentTypes.get(selectDefaultPayment.getValue(selectDefaultPayment.getSelectedIndex()));
@@ -531,6 +535,7 @@ public class ClientDialog extends Dialog implements HasUILocking {
 		selectDefaultDocIdClass.setEnabled(!value);
 		selectDefaultPayment.setEnabled(!value);
 		selectDefaultPriceList.setEnabled(!value);
+		selectSplitPayment.setEnabled(!value);
 		note.setEnabled(!value);
 	}
 
