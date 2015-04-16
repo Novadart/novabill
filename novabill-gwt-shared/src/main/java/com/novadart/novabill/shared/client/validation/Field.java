@@ -16,7 +16,7 @@ public enum Field {
 	paymentDueDate, payed, paymentTypeName, paymentDeltaType, createdFromTransportDocuments, seenByClient,
 	
 	//Estimation
-	limitations, validTill,
+	limitations, validTill, termsAndConditions,
 	
 	//TransportDocument fromEndpoint fields
 	fromEndpoint_companyName, fromEndpoint_street, fromEndpoint_postcode, fromEndpoint_city, fromEndpoint_province, fromEndpoint_country,

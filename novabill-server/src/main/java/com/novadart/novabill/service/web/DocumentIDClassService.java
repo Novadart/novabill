@@ -80,7 +80,7 @@ public class DocumentIDClassService {
             throw new NoSuchObjectException();
         DocumentIDClass copy = persistedDocumentIDClass.shallowCopy();
         DocumentIDClassDTOTransformer.copyFromDTO(copy, documentIDClassDTO);
-        validator.validate(copy, !persistedDocumentIDClass.getSuffix().equals(documentIDClassDTO.getSuffix()));
+        validator.validate(copy, !persistedDocumentIDClass.getSuffix().equalsIgnoreCase(documentIDClassDTO.getSuffix()));
         DocumentIDClassDTOTransformer.copyFromDTO(persistedDocumentIDClass, documentIDClassDTO);
     }
 

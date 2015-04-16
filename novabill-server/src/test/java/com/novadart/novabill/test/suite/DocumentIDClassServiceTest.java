@@ -68,6 +68,24 @@ public class DocumentIDClassServiceTest extends ServiceTest{
         assertEquals(docIDClassDTO.getSuffix(), details.get(DBLoggerAspect.DOCUMENT_ID_CLASS_SUFFIX));
     }
 
+    @Test
+    public void addAuthorizedLowercasedSuffixTest() throws ValidationException, JsonParseException, JsonMappingException, IOException, FreeUserAccessForbiddenException, DataAccessException, NotAuthenticatedException {
+        DocumentIDClassDTO docIDClassDTO = DocumentIDClassDTOTransformer.toDTO(TestUtils.createDocumentIDClass());
+        docIDClassDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
+        docIDClassDTO.setSuffix("UUID");
+        Long businessID = authenticatedPrincipal.getBusiness().getId();
+        Long id = docIDClassesService.add(businessID, docIDClassDTO);
+        DocumentIDClass.entityManager().flush();
+        DocumentIDClassDTO persistedDTO = DocumentIDClassDTOTransformer.toDTO(DocumentIDClass.findDocumentIDClass(id));
+        assertEquals("uuid", persistedDTO.getSuffix());
+        LogRecord rec = LogRecord.fetchLastN(authenticatedPrincipal.getBusiness().getId(), 1).get(0);
+        assertEquals(EntityType.DOCUMENT_ID_CLASS, rec.getEntityType());
+        assertEquals(id, rec.getEntityID());
+        assertEquals(OperationType.CREATE, rec.getOperationType());
+        Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
+        assertEquals(docIDClassDTO.getSuffix(), details.get(DBLoggerAspect.DOCUMENT_ID_CLASS_SUFFIX));
+    }
+
     @Test(expected = AccessDeniedException.class)
     public void addNulltest() throws ValidationException, FreeUserAccessForbiddenException, DataAccessException, NotAuthenticatedException{
         Long businessID = authenticatedPrincipal.getBusiness().getId();
@@ -201,6 +219,20 @@ public class DocumentIDClassServiceTest extends ServiceTest{
         Long id = docIDClassesService.add(businessID, docIDClassDTO);
         docIDClassDTO.setId(id);
         docIDClassesService.update(businessID, docIDClassDTO);
+    }
+
+    @Test(expected = ValidationException.class)
+    public void caseInsensitiveSuffixTest() throws ValidationException {
+        DocumentIDClassDTO docIDClassDTO = DocumentIDClassDTOTransformer.toDTO(TestUtils.createDocumentIDClass());
+        docIDClassDTO.setSuffix("bis");
+        docIDClassDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
+        Long businessID = authenticatedPrincipal.getBusiness().getId();
+        docIDClassesService.add(businessID, docIDClassDTO);
+        DocumentIDClass.entityManager().flush();
+        docIDClassDTO = DocumentIDClassDTOTransformer.toDTO(TestUtils.createDocumentIDClass());
+        docIDClassDTO.setSuffix("BIS");
+        docIDClassDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
+        docIDClassesService.add(businessID, docIDClassDTO);
     }
 
 }
