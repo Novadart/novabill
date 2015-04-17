@@ -50,6 +50,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	@UiField FlowPanel docControls;
 
 	@UiField(provided=true) SelectPayment payment;
+	@UiField ListBox selectSplitPayment;
 	@UiField CheckBox makePaymentAsDefault;
 	@UiField(provided=true) ItemInsertionForm itemInsertionForm;
 	@UiField Label clientName;
@@ -241,6 +242,11 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	}
 
 	@Override
+	public ListBox getSelectSplitPayment() {
+		return selectSplitPayment;
+	}
+
+	@Override
 	public HorizontalPanel getToAddressContainer() {
 		return toAddressContainer;
 	}
@@ -348,6 +354,8 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 
 		payment.reset();
 
+		selectSplitPayment.setSelectedIndex(0);
+
 		makePaymentAsDefault.setValue(false);
 		makePaymentAsDefault.setVisible(false);
 		setLocked(false);
@@ -363,6 +371,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		note.setEnabled(!value);
 		makePaymentAsDefault.setEnabled(!value);
 		abort.setEnabled(!value);
+		selectSplitPayment.setEnabled(!value);
 
 		toAddrCompanyName.setEnabled(!value);
 		toAddrStreetName.setEnabled(!value);

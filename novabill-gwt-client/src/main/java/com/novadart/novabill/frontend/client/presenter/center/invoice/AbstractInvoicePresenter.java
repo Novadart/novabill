@@ -16,7 +16,6 @@ import com.novadart.novabill.frontend.client.view.center.invoice.InvoiceView;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.widget.notification.NotificationCallback;
 import com.novadart.novabill.shared.client.dto.*;
-import com.novadart.novabill.shared.client.facade.BusinessGwtService;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -184,6 +183,7 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 		inv.setPaymentDeltaType(getView().getPayment().getSelectedPayment().getPaymentDeltaType());
 		inv.setSecondaryPaymentDateDelta(getView().getPayment().getSelectedPayment().getSecondaryPaymentDateDelta());
 		inv.setPaymentDueDate(getView().getPayment().getPaymentDueDate());
+		inv.setSplitPayment(getView().getSelectSplitPayment().isItemSelected(1));
 		inv.setPaymentNote(getView().getPaymentNote().getText());
 		CalcUtils.calculateTotals(invItems, inv);
 		return inv;

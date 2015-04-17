@@ -18,7 +18,7 @@
 		<div class="col-md-12">
 
 			<tabset class="tabbable-custom">
-				<tab select="onTabChange('invoices')" active="activeTab.invoices">
+				<tab ng-click="onTabChange('invoices')" active="activeTab.invoices">
 					<tab-heading>
 						<i class="fa fa-file"></i> {{'INVOICES' | translate}}
 					</tab-heading>
@@ -51,7 +51,7 @@
 					</div>
 				</tab>
 
-				<tab select="onTabChange('docIdClasses')" active="activeTab.docIdClasses">
+				<tab ng-click="onTabChange('docIdClasses')" active="activeTab.docIdClasses">
 					<tab-heading>
 						<i class="fa fa-book"></i> {{'DOCUMENT_ID_CLASSES' | translate}}
 					</tab-heading>

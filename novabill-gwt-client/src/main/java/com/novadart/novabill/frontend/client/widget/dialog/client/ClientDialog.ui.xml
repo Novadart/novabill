@@ -1,88 +1,88 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui" 
-	xmlns:validation="urn:import:com.novadart.gwtshared.client.validation.widget"
-	xmlns:n="urn:import:com.novadart.novabill.frontend.client.widget.notification"
-	xmlns:gwtshared="urn:import:com.novadart.gwtshared.client" xmlns:f="urn:import:com.novadart.novabill.frontend.client.widget">
+			 xmlns:g="urn:import:com.google.gwt.user.client.ui"
+			 xmlns:validation="urn:import:com.novadart.gwtshared.client.validation.widget"
+			 xmlns:n="urn:import:com.novadart.novabill.frontend.client.widget.notification"
+			 xmlns:gwtshared="urn:import:com.novadart.gwtshared.client" xmlns:f="urn:import:com.novadart.novabill.frontend.client.widget">
 
 	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N"
-		field="i18n"></ui:with>
+			 field="i18n"></ui:with>
 
 	<ui:with type="com.novadart.novabill.frontend.client.resources.GlobalCss"
-		field="g"></ui:with>
+			 field="g"></ui:with>
 
 	<ui:style field="s"
-		type="com.novadart.novabill.frontend.client.widget.dialog.client.ClientDialog.Style">
-			.wrapper {
-				background-color: white;
-			}
-			
-			.title {
-				text-align: center;
-				padding: 0.2em;
-				font-size: 1.4em;
-				font-weight: bold;
-				margin-bottom: 1em;
-			}
-			
-			.title2 {
-				padding: 0.2em;
-				font-size: 1.1em;
-				font-weight: bold;
-				margin-bottom: 0.5em;
-			}
-			
-			.lowerTitle {
-				margin-top: 1em;
-			}
-			
-			.rightBox {
-				margin-left: 2em;
-			}
-			
-			.gridWrapper {
-				background-color: white;
-			}
-			
-			.label {
-				padding: 0.5em;
-			}
-			
-			.value {
-				margin: 0.3em 0.5em;
-				width: 15em;
-			}
-			
-			.buttonContainer table {
-				margin: 0 auto;
-			}
-			
-			.buttonContainer {
-				padding: 1em 0;
-			}
-			
-			.buttonContainer button {
-				width: 9em;
-			}
-			
-			.buttonContainer .submit {
-				margin-right: 1em;
-				width: 9em;
-			}
-			
-			.mandatory {
-				margin-top: 2em;
-			}
-			
-			.note {
-				min-height: 5em;
-			}
-		</ui:style>
+			  type="com.novadart.novabill.frontend.client.widget.dialog.client.ClientDialog.Style">
+		.wrapper {
+			background-color: white;
+		}
+
+		.title {
+			text-align: center;
+			padding: 0.2em;
+			font-size: 1.4em;
+			font-weight: bold;
+			margin-bottom: 1em;
+		}
+
+		.title2 {
+			padding: 0.2em;
+			font-size: 1.1em;
+			font-weight: bold;
+			margin-bottom: 0.5em;
+		}
+
+		.lowerTitle {
+			margin-top: 1em;
+		}
+
+		.rightBox {
+			margin-left: 2em;
+		}
+
+		.gridWrapper {
+			background-color: white;
+		}
+
+		.label {
+			padding: 0.5em;
+		}
+
+		.value {
+			margin: 0.3em 0.5em;
+			width: 15em;
+		}
+
+		.buttonContainer table {
+			margin: 0 auto;
+		}
+
+		.buttonContainer {
+			padding: 1em 0;
+		}
+
+		.buttonContainer button {
+			width: 9em;
+		}
+
+		.buttonContainer .submit {
+			margin-right: 1em;
+			width: 9em;
+		}
+
+		.mandatory {
+			margin-top: 2em;
+		}
+
+		.note {
+			min-height: 5em;
+		}
+	</ui:style>
 
 	<g:FlowPanel styleName="{s.wrapper}">
 		<g:Label ui:field="clientDialogTitle" styleName="{s.title}"
-			text="{i18n.addNewClientTitle}"></g:Label>
-			
+				 text="{i18n.addNewClientTitle}"></g:Label>
+
 		<n:InlineNotification ui:field="incompleteClientAlert"></n:InlineNotification>
 
 		<g:FlowPanel styleName="{s.gridWrapper}">
@@ -95,7 +95,7 @@
 								<g:Label styleName="{s.label}" text="{i18n.companyName} *"></g:Label>
 							</g:customCell>
 							<g:customCell>
-							    <validation:ValidatedTextArea styleName="{s.value}" ui:field="companyName"></validation:ValidatedTextArea>
+								<validation:ValidatedTextArea styleName="{s.value}" ui:field="companyName"></validation:ValidatedTextArea>
 							</g:customCell>
 						</g:row>
 						<g:row>
@@ -104,7 +104,7 @@
 							</g:customCell>
 							<g:customCell>
 								<validation:ValidatedTextBox
-									styleName="{s.value}" ui:field="address" maxLength="255"></validation:ValidatedTextBox>
+										styleName="{s.value}" ui:field="address" maxLength="255"></validation:ValidatedTextBox>
 							</g:customCell>
 						</g:row>
 						<g:row>
@@ -113,7 +113,7 @@
 							</g:customCell>
 							<g:customCell>
 								<validation:ValidatedTextBox
-									styleName="{s.value}" ui:field="postcode" maxLength="10"></validation:ValidatedTextBox>
+										styleName="{s.value}" ui:field="postcode" maxLength="10"></validation:ValidatedTextBox>
 							</g:customCell>
 						</g:row>
 						<g:row>
@@ -122,7 +122,7 @@
 							</g:customCell>
 							<g:customCell>
 								<validation:ValidatedTextBox
-									styleName="{s.value}" ui:field="city" maxLength="60"></validation:ValidatedTextBox>
+										styleName="{s.value}" ui:field="city" maxLength="60"></validation:ValidatedTextBox>
 							</g:customCell>
 						</g:row>
 						<g:row>
@@ -130,8 +130,8 @@
 								<g:Label styleName="{s.label}" text="{i18n.province}"></g:Label>
 							</g:customCell>
 							<g:customCell>
-							    <validation:ValidatedTextBox
-                                    styleName="{s.value}" ui:field="province" maxLength="100"></validation:ValidatedTextBox>
+								<validation:ValidatedTextBox
+										styleName="{s.value}" ui:field="province" maxLength="100"></validation:ValidatedTextBox>
 							</g:customCell>
 						</g:row>
 						<g:row>
@@ -140,7 +140,7 @@
 							</g:customCell>
 							<g:customCell>
 								<validation:ValidatedListBox
-									styleName="{s.value}" ui:field="country"></validation:ValidatedListBox>
+										styleName="{s.value}" ui:field="country"></validation:ValidatedListBox>
 							</g:customCell>
 						</g:row>
 						<g:row>
@@ -149,7 +149,7 @@
 							</g:customCell>
 							<g:customCell>
 								<validation:ValidatedTextBox
-									styleName="{s.value}" ui:field="ssn" maxLength="25"></validation:ValidatedTextBox>
+										styleName="{s.value}" ui:field="ssn" maxLength="25"></validation:ValidatedTextBox>
 							</g:customCell>
 						</g:row>
 						<g:row>
@@ -158,7 +158,7 @@
 							</g:customCell>
 							<g:customCell>
 								<validation:ValidatedTextBox
-									styleName="{s.value}" ui:field="vatID" maxLength="25"></validation:ValidatedTextBox>
+										styleName="{s.value}" ui:field="vatID" maxLength="25"></validation:ValidatedTextBox>
 							</g:customCell>
 						</g:row>
 						<g:row>
@@ -167,7 +167,7 @@
 							</g:customCell>
 							<g:customCell>
 								<validation:ValidatedTextBox
-									styleName="{s.value}" ui:field="phone" maxLength="25"></validation:ValidatedTextBox>
+										styleName="{s.value}" ui:field="phone" maxLength="25"></validation:ValidatedTextBox>
 							</g:customCell>
 						</g:row>
 						<g:row>
@@ -176,7 +176,7 @@
 							</g:customCell>
 							<g:customCell>
 								<validation:ValidatedTextBox
-									styleName="{s.value}" ui:field="mobile" maxLength="25"></validation:ValidatedTextBox>
+										styleName="{s.value}" ui:field="mobile" maxLength="25"></validation:ValidatedTextBox>
 							</g:customCell>
 						</g:row>
 						<g:row>
@@ -185,7 +185,7 @@
 							</g:customCell>
 							<g:customCell>
 								<validation:ValidatedTextBox
-									styleName="{s.value}" ui:field="fax" maxLength="25"></validation:ValidatedTextBox>
+										styleName="{s.value}" ui:field="fax" maxLength="25"></validation:ValidatedTextBox>
 							</g:customCell>
 						</g:row>
 						<g:row>
@@ -194,7 +194,7 @@
 							</g:customCell>
 							<g:customCell>
 								<validation:ValidatedTextBox
-									styleName="{s.value}" ui:field="email" maxLength="255"></validation:ValidatedTextBox>
+										styleName="{s.value}" ui:field="email" maxLength="255"></validation:ValidatedTextBox>
 							</g:customCell>
 						</g:row>
 						<g:row>
@@ -203,7 +203,7 @@
 							</g:customCell>
 							<g:customCell>
 								<validation:ValidatedTextBox
-									styleName="{s.value}" ui:field="web" maxLength="255"></validation:ValidatedTextBox>
+										styleName="{s.value}" ui:field="web" maxLength="255"></validation:ValidatedTextBox>
 							</g:customCell>
 						</g:row>
 						<g:row>
@@ -228,7 +228,7 @@
 							</g:customCell>
 							<g:customCell>
 								<validation:ValidatedTextBox
-									styleName="{s.value}" ui:field="contactName"></validation:ValidatedTextBox>
+										styleName="{s.value}" ui:field="contactName"></validation:ValidatedTextBox>
 							</g:customCell>
 						</g:row>
 						<g:row>
@@ -237,7 +237,7 @@
 							</g:customCell>
 							<g:customCell>
 								<validation:ValidatedTextBox
-									styleName="{s.value}" ui:field="contactSurname"></validation:ValidatedTextBox>
+										styleName="{s.value}" ui:field="contactSurname"></validation:ValidatedTextBox>
 							</g:customCell>
 						</g:row>
 						<g:row>
@@ -246,7 +246,7 @@
 							</g:customCell>
 							<g:customCell>
 								<validation:ValidatedTextBox
-									styleName="{s.value}" ui:field="contactMobile"></validation:ValidatedTextBox>
+										styleName="{s.value}" ui:field="contactMobile"></validation:ValidatedTextBox>
 							</g:customCell>
 						</g:row>
 						<g:row>
@@ -255,7 +255,7 @@
 							</g:customCell>
 							<g:customCell>
 								<validation:ValidatedTextBox
-									styleName="{s.value}" ui:field="contactEmail"></validation:ValidatedTextBox>
+										styleName="{s.value}" ui:field="contactEmail"></validation:ValidatedTextBox>
 							</g:customCell>
 						</g:row>
 						<g:row>
@@ -264,7 +264,7 @@
 							</g:customCell>
 							<g:customCell>
 								<validation:ValidatedTextBox
-									styleName="{s.value}" ui:field="contactPhone"></validation:ValidatedTextBox>
+										styleName="{s.value}" ui:field="contactPhone"></validation:ValidatedTextBox>
 							</g:customCell>
 						</g:row>
 						<g:row>
@@ -273,7 +273,7 @@
 							</g:customCell>
 							<g:customCell>
 								<validation:ValidatedTextBox
-									styleName="{s.value}" ui:field="contactFax"></validation:ValidatedTextBox>
+										styleName="{s.value}" ui:field="contactFax"></validation:ValidatedTextBox>
 							</g:customCell>
 						</g:row>
 					</g:Grid>
@@ -295,7 +295,7 @@
 					<g:ListBox ui:field="selectDefaultPayment" />
 
 					<g:Label styleName="{s.title2} {s.lowerTitle}" text="{i18n.defaultPriceList}"></g:Label>
-                    <g:ListBox ui:field="selectDefaultPriceList" />
+					<g:ListBox ui:field="selectDefaultPriceList" />
 
 				</g:FlowPanel>
 			</g:HorizontalPanel>
@@ -308,9 +308,9 @@
 			<g:SimplePanel styleName="{s.buttonContainer}">
 				<g:HorizontalPanel>
 					<gwtshared:LoaderButton ui:field="ok"
-						text="{i18n.submit}"></gwtshared:LoaderButton>
+											text="{i18n.submit}"></gwtshared:LoaderButton>
 					<g:Button styleName="cancelButton btn default" ui:field="cancel"
-						text="{i18n.cancel}"></g:Button>
+							  text="{i18n.cancel}"></g:Button>
 				</g:HorizontalPanel>
 			</g:SimplePanel>
 		</g:FlowPanel>

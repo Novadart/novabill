@@ -102,6 +102,8 @@ public class ModifyInvoicePresenter extends AbstractInvoicePresenter {
 		
 		getView().getNote().setText(invoice.getNote());
 		getView().getPaymentNote().setText(invoice.getPaymentNote());
+
+		getView().getSelectSplitPayment().setSelectedIndex(invoice.isSplitPayment() ? 1 : 0);
 	}
 	
 	@Override

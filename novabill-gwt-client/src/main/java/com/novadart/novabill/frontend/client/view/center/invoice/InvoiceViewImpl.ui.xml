@@ -115,6 +115,21 @@
 			</g:row>
 			<g:row>
 				<g:customCell>
+					<g:Label styleName="{s.label}" text="{i18n.splitPayment}" />
+				</g:customCell>
+				<g:customCell>
+					<g:ListBox ui:field="selectSplitPayment">
+						<g:item>
+							No
+						</g:item>
+						<g:item>
+							Sì
+						</g:item>
+					</g:ListBox>
+				</g:customCell>
+			</g:row>
+			<g:row>
+				<g:customCell>
 					<g:Label ui:field="paymentNoteLabel" styleName="{s.label}"
 						text="{i18n.paymentNote}"></g:Label>
 				</g:customCell>

@@ -30,6 +30,8 @@ public interface InvoiceView extends DocumentView<InvoiceView.Presenter> {
 
 	ValidatedTextArea getPaymentNote();
 
+	ListBox getSelectSplitPayment();
+
 	Label getInvoiceNumber();
 
 	SelectPayment getPayment();

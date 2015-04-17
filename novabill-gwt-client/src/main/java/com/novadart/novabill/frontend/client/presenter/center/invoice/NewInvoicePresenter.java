@@ -46,11 +46,10 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 		getView().getClientName().setText(client.getName());
 		Date d = DocumentUtils.createNormalizedDate(new Date());
 		getView().getDate().setValue(d);
-		getView().getInvoiceNumberSuffix().setText(" / "+ getYearFormat().format(d));
+		getView().getInvoiceNumberSuffix().setText(" / " + getYearFormat().format(d));
 		getView().getNumber().setText(progressiveId.toString());
 
 		getView().getCreateDocument().setVisible(true);
-
 
 		Long clientDefaultDocumentIdClass = client.getDefaultDocumentIDClassID();
 		ListBox listBox = getView().getDocumentIDClassListBox();
@@ -72,11 +71,13 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 	public void setDataForNewInvoice(ClientDTO client, Long progressiveId, PaymentTypeDTO paymentType) {
 		initData(client, progressiveId);
 		setupPayment(paymentType);
+		getView().getSelectSplitPayment().setSelectedIndex(client.isSplitPaymentClient() ? 1 : 0);
 	}
 
 
 	public void setDataForNewInvoice(ClientDTO client, Long progressiveId, InvoiceDTO invoice) {
 		initData(client, progressiveId);
+		getView().getSelectSplitPayment().setSelectedIndex(invoice.isSplitPayment() ? 1 : 0);
 
 		List<AccountingDocumentItemDTO> items = new ArrayList<AccountingDocumentItemDTO>(invoice.getItems().size());
 		for (AccountingDocumentItemDTO i : invoice.getItems()) {
@@ -98,6 +99,7 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 	public void setDataForNewInvoice(Long progressiveId, EstimationDTO estimation, PaymentTypeDTO paymentType) {
 		initData(estimation.getClient(), progressiveId);
 		setupPayment(paymentType);
+		getView().getSelectSplitPayment().setSelectedIndex(estimation.getClient().isSplitPaymentClient() ? 1 : 0);
 
 		List<AccountingDocumentItemDTO> items = new ArrayList<AccountingDocumentItemDTO>(estimation.getItems().size());
 		for (AccountingDocumentItemDTO i : estimation.getItems()) {
@@ -121,8 +123,10 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 
 
 	public void setDataForNewInvoice(Long progressiveId, List<TransportDocumentDTO> transportDocuments, PaymentTypeDTO paymentType) {
-		initData(transportDocuments.get(0).getClient(), progressiveId);
+		ClientDTO clientDTO = transportDocuments.get(0).getClient();
+		initData(clientDTO, progressiveId);
 		setupPayment(paymentType);
+		getView().getSelectSplitPayment().setSelectedIndex(clientDTO.isSplitPaymentClient() ? 1 : 0);
 
 		List<AccountingDocumentItemDTO> items = new ArrayList<AccountingDocumentItemDTO>();
 
