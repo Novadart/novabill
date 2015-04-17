@@ -257,4 +257,6 @@ public interface I18N extends Constants {
 	public String example();
 
 	String defaultDocIdClass();
+
+	String splitPayment();
 }
