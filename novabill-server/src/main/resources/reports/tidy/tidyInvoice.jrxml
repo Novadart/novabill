@@ -78,7 +78,7 @@
 	<field name="document.business.web" class="java.lang.String"/>
 	<field name="document.business.settings.invoiceFooterNote" class="java.lang.String"/>
 	<field name="document.business" class="com.novadart.novabill.domain.Business"/>
-	<field name="document.client.splitPaymentClient" class="java.lang.Boolean"/>
+	<field name="document.splitPayment" class="java.lang.Boolean"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -458,7 +458,7 @@
 			</textField>
 		</band>
 		<band height="110" splitType="Prevent">
-			<printWhenExpression><![CDATA[$F{document.client.splitPaymentClient}]]></printWhenExpression>
+			<printWhenExpression><![CDATA[$F{document.splitPayment}]]></printWhenExpression>
 			<textField>
 				<reportElement positionType="Float" x="330" y="25" width="90" height="20" uuid="e70d9f40-7c6a-41a3-bb67-b65e945623a1"/>
 				<textElement verticalAlignment="Middle">
@@ -555,7 +555,7 @@
 			</textField>
 		</band>
 		<band height="70">
-			<printWhenExpression><![CDATA[!$F{document.client.splitPaymentClient}]]></printWhenExpression>
+			<printWhenExpression><![CDATA[!$F{document.splitPayment}]]></printWhenExpression>
 			<textField>
 				<reportElement positionType="Float" x="330" y="8" width="90" height="20" uuid="f104573a-3c8a-467f-ab3d-661f3d287f50"/>
 				<box>

@@ -88,7 +88,7 @@
 	<field name="document.toEndpoint.companyName" class="java.lang.String"/>
 	<field name="document.business.settings.invoiceFooterNote" class="java.lang.String"/>
 	<field name="document.business" class="com.novadart.novabill.domain.Business"/>
-	<field name="document.client.splitPaymentClient" class="java.lang.Boolean"/>
+	<field name="document.splitPayment" class="java.lang.Boolean"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -193,7 +193,7 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 			</textField>
 		</band>
 		<band height="327" splitType="Stretch">
-			<printWhenExpression><![CDATA[!$F{document.client.splitPaymentClient}]]></printWhenExpression>
+			<printWhenExpression><![CDATA[!$F{document.splitPayment}]]></printWhenExpression>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement x="8" y="7" width="308" height="20" uuid="602635c5-8a47-4651-9d4c-e9177e5f3637"/>
 				<textElement verticalAlignment="Middle">
@@ -563,7 +563,7 @@ com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.t
 			</textField>
 		</band>
 		<band height="357">
-			<printWhenExpression><![CDATA[$F{document.client.splitPaymentClient}]]></printWhenExpression>
+			<printWhenExpression><![CDATA[$F{document.splitPayment}]]></printWhenExpression>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement x="11" y="10" width="308" height="20" uuid="e9dad178-a0a9-4242-be9f-014263f35055"/>
 				<textElement verticalAlignment="Middle">
