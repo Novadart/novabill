@@ -16,8 +16,7 @@ angular.module("novabill.stats.general", ['novabill.stats.controllers', 'novabil
 	
 	.when('/:year', {
 		templateUrl: nConstantsProvider.url.htmlFragmentUrl('/stats-general.html'),
-		controller: 'StatsGeneralCtrl',
-		reloadOnSearch : false
+		controller: 'StatsGeneralCtrl'
 	})
 	
 	.otherwise ({

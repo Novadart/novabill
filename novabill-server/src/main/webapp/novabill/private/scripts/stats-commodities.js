@@ -16,8 +16,7 @@ angular.module("novabill.stats.commodities", ['novabill.stats.controllers', 'nov
 	
 	.when('/:commodityID/:year', {
 		templateUrl: nConstantsProvider.url.htmlFragmentUrl('/stats-commodities.html'),
-		controller: 'StatsCommoditiesCtrl',
-		reloadOnSearch : false
+		controller: 'StatsCommoditiesCtrl'
 	})
 	
 	.otherwise ({

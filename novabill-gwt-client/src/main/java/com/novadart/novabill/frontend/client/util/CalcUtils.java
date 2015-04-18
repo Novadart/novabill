@@ -52,45 +52,45 @@ public class CalcUtils {
 	 * Commodities methods
 	 */
 	
-	public static BigDecimal calculatePriceForCommodity(CommodityDTO commodity, String priceListName){
-		PriceDTO price = commodity.getPrices().get(priceListName);
-
-		if(priceListName.equalsIgnoreCase("::default")){
-			return price.getPriceValue();
-		} else {
-
-			if(price.getPriceValue() == null || price.getId() == null){
-				//if no price for the given price list, return the default price
-				price = commodity.getPrices().get("::default");
-				return price.getPriceValue();
-			}
-
-			PriceDTO defaultPrice = commodity.getPrices().get("::default");
-			BigDecimal percentage = null;
-
-			switch (price.getPriceType()) {
-			case DISCOUNT_PERCENT:
-				percentage = price.getPriceValue().multiply(new BigDecimal("-1")).add(BD_100).divide(BD_100);
-				return round2Dec(defaultPrice.getPriceValue().multiply(percentage));
-
-			case DISCOUNT_FIXED:
-				return round2Dec(defaultPrice.getPriceValue().subtract(price.getPriceValue()));
-
-			case OVERCHARGE_FIXED:
-				return round2Dec(defaultPrice.getPriceValue().add(price.getPriceValue()));
-
-			case OVERCHARGE_PERCENT:
-				percentage = price.getPriceValue().add(BD_100).divide(BD_100);
-				return round2Dec(defaultPrice.getPriceValue().multiply(percentage));
-
-			case FIXED:
-				return price.getPriceValue();
-
-			default:
-				return null;
-			}
-		}
-	}
+//	public static BigDecimal calculatePriceForCommodity(CommodityDTO commodity, String priceListName){
+//		PriceDTO price = commodity.getPrices().get(priceListName);
+//
+//		if(priceListName.equalsIgnoreCase("::default")){
+//			return price.getPriceValue();
+//		} else {
+//
+//			if(price.getPriceValue() == null || price.getId() == null){
+//				//if no price for the given price list, return the default price
+//				price = commodity.getPrices().get("::default");
+//				return price.getPriceValue();
+//			}
+//
+//			PriceDTO defaultPrice = commodity.getPrices().get("::default");
+//			BigDecimal percentage = null;
+//
+//			switch (price.getPriceType()) {
+//			case DISCOUNT_PERCENT:
+//				percentage = price.getPriceValue().multiply(new BigDecimal("-1")).add(BD_100).divide(BD_100);
+//				return round2Dec(defaultPrice.getPriceValue().multiply(percentage));
+//
+//			case DISCOUNT_FIXED:
+//				return round2Dec(defaultPrice.getPriceValue().subtract(price.getPriceValue()));
+//
+//			case OVERCHARGE_FIXED:
+//				return round2Dec(defaultPrice.getPriceValue().add(price.getPriceValue()));
+//
+//			case OVERCHARGE_PERCENT:
+//				percentage = price.getPriceValue().add(BD_100).divide(BD_100);
+//				return round2Dec(defaultPrice.getPriceValue().multiply(percentage));
+//
+//			case FIXED:
+//				return price.getPriceValue();
+//
+//			default:
+//				return null;
+//			}
+//		}
+//	}
 
 
 	/*

@@ -5,6 +5,12 @@ angular.module('novabill.directives',
 		'novabill.utils', 'novabill.translations',
 		'novabill.calc', 'novabill.constants', 'ngSanitize', 'ui.bootstrap'])
 
+
+
+
+
+
+
 	/*
 	 * Invoice widget
 	 */
@@ -657,7 +663,38 @@ angular.module('novabill.directives',
 
 
 	/*
-	 * Year selector
+	 * Stats year selector
+	 */
+	.directive('nStatsYearSelector', ['nConstants', function(nConstants) {
+		return {
+			templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-stats-year-selector.html'),
+			scope: {
+				callback : '&',
+				selectedYear : '='
+			},
+			controller : ['$scope', 'nConstants', function($scope, nConstants){
+				var principalCreationYear = new Date(nConstants.conf.principalCreationDate).getFullYear();
+				var currentYear = new Date().getFullYear();
+
+				var years = [];
+				for(var i=currentYear; i>=principalCreationYear; i--){
+					years.push(i);
+				}
+				$scope.years = years;
+
+				$scope.onChange = function(){
+					$scope.callback({ year : String($scope.selectedYear) });
+				};
+
+			}],
+			restrict: 'E',
+			replace: true
+		};
+	}])
+
+
+	/*
+	 * Suffix selector
 	 */
 	.directive('nSuffixSelector', ['nConstants', function(nConstants) {
 		return {
