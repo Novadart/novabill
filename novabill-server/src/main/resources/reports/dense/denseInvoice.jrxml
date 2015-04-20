@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Invoice" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="20" uuid="96f0ca59-afec-4bbb-95f2-0a9732c6c014">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="115"/>
+	<property name="ireport.y" value="435"/>
 	<style name="table" pattern="">
 		<box>
 			<pen lineWidth="0.0" lineColor="#000000"/>
@@ -932,7 +932,7 @@ com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.t
 				<textFieldExpression><![CDATA[$R{dense.invoice.destination}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="Float" x="268" y="314" width="162" height="15" uuid="310f6a82-b453-48af-aa69-6564f063d1ca"/>
+				<reportElement positionType="Float" x="340" y="314" width="90" height="15" uuid="310f6a82-b453-48af-aa69-6564f063d1ca"/>
 				<textElement>
 					<font size="9" isBold="true"/>
 				</textElement>
@@ -991,7 +991,7 @@ com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.t
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font size="8" isItalic="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{document.business.settings.invoiceFooterNote}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{document.business.settings.invoiceFooterNote} + ($F{document.splitPayment}? "\n" + $R{dense.splitPaymentTaxFooter}: "")]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>

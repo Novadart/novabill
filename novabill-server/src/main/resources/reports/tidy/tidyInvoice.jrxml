@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Invoice" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="20" uuid="96f0ca59-afec-4bbb-95f2-0a9732c6c014">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="163"/>
+	<property name="ireport.y" value="195"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -469,7 +469,9 @@
 			<textField>
 				<reportElement positionType="Float" x="330" y="45" width="90" height="20" uuid="c282c883-0b55-46a3-9ab4-b2a0fd55576d"/>
 				<box>
-					<bottomPen lineWidth="0.15" lineColor="#CCCCCC"/>
+					<topPen lineColor="#000000"/>
+					<leftPen lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#CCCCCC"/>
 				</box>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Open Sans Light" isBold="true"/>
@@ -486,7 +488,7 @@
 			<textField>
 				<reportElement positionType="Float" x="419" y="45" width="120" height="20" uuid="14484aea-08e0-4ad3-9f02-b22a8ab01fb0"/>
 				<box>
-					<bottomPen lineWidth="0.15" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.0" lineColor="#CCCCCC"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Open Sans Light" isBold="true"/>
@@ -516,7 +518,7 @@
 			<textField>
 				<reportElement positionType="Float" x="330" y="65" width="90" height="20" uuid="ed0e4ff0-3df2-4bf4-a012-7e23c4b536d2"/>
 				<box>
-					<bottomPen lineWidth="0.15" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.0" lineColor="#CCCCCC"/>
 				</box>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Open Sans Light" isBold="true"/>
@@ -526,7 +528,7 @@
 			<textField>
 				<reportElement positionType="Float" x="419" y="65" width="120" height="20" uuid="6d0cccfa-4e26-4c8d-9316-714db0284803"/>
 				<box>
-					<bottomPen lineWidth="0.15" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.0" lineColor="#CCCCCC"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Open Sans Light" isBold="true"/>
@@ -642,7 +644,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font fontName="Open Sans Light" size="8" isItalic="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{document.business.settings.invoiceFooterNote}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{document.business.settings.invoiceFooterNote} + ($F{document.splitPayment}? "\n" + $R{tidy.splitPaymentTaxFooter}: "")]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>
