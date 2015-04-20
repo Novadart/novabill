@@ -841,7 +841,7 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 			<textField>
 				<reportElement positionType="Float" x="340" y="299" width="90" height="15" uuid="7d9b287a-077b-4640-9909-ebe6a88c4d04"/>
 				<textElement>
-					<font size="9" isBold="true"/>
+					<font size="9" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{dense.total}]]></textFieldExpression>
 			</textField>
@@ -889,7 +889,7 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 			<textField isBlankWhenNull="true">
 				<reportElement positionType="Float" x="430" y="299" width="120" height="15" uuid="85a778d0-0cdb-46ce-a055-69958a26ddd0"/>
 				<textElement textAlignment="Right">
-					<font size="9" isBold="true"/>
+					<font size="9" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format($F{document.total}.doubleValue())]]></textFieldExpression>
 			</textField>
@@ -934,14 +934,14 @@ com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.t
 			<textField>
 				<reportElement positionType="Float" x="340" y="314" width="90" height="15" uuid="310f6a82-b453-48af-aa69-6564f063d1ca"/>
 				<textElement>
-					<font size="9" isBold="true"/>
+					<font size="9" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{dense.splitPaymentTax}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement positionType="Float" x="430" y="314" width="120" height="15" uuid="8eaaa207-61c1-4503-be6a-dd81d3bdd017"/>
 				<textElement textAlignment="Right">
-					<font size="9" isBold="true"/>
+					<font size="9" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA["- " + java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format($F{document.totalTax}.doubleValue())]]></textFieldExpression>
 			</textField>
@@ -950,7 +950,7 @@ com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.t
 				<textElement>
 					<font size="9" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$R{dense.total}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{dense.splitPaymentNet}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement positionType="Float" x="429" y="329" width="120" height="15" uuid="b1b3fc4e-d2ee-43e8-b60e-42ab9674e619"/>
@@ -987,11 +987,18 @@ com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.t
 				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="8" y="16" width="540" height="24" uuid="8f4bec79-1fe6-46b2-b659-7dc48f2e9adc"/>
+				<reportElement x="8" y="20" width="540" height="24" uuid="8f4bec79-1fe6-46b2-b659-7dc48f2e9adc"/>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font size="8" isItalic="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{document.business.settings.invoiceFooterNote} + ($F{document.splitPayment}? "\n" + $R{dense.splitPaymentTaxFooter}: "")]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{document.business.settings.invoiceFooterNote}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="8" y="0" width="540" height="20" uuid="60b466f4-f2e7-4d32-9a83-f8581b6c31c3"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font size="8" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{document.splitPayment}? $R{dense.splitPaymentTaxFooter}: ""]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>
