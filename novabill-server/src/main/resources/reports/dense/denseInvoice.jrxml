@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Invoice" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="20" uuid="96f0ca59-afec-4bbb-95f2-0a9732c6c014">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="435"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table" pattern="">
 		<box>
 			<pen lineWidth="0.0" lineColor="#000000"/>
@@ -89,6 +89,7 @@
 	<field name="document.business.settings.invoiceFooterNote" class="java.lang.String"/>
 	<field name="document.business" class="com.novadart.novabill.domain.Business"/>
 	<field name="document.splitPayment" class="java.lang.Boolean"/>
+	<field name="document.documentIDSuffix" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -128,7 +129,9 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 				<textElement textAlignment="Right">
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{document.documentID} + "/" + $F{document.accountingDocumentYear}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{document.documentID} +
+com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.documentIDSuffix}) +
+"/" + $F{document.accountingDocumentYear}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement positionType="Float" isPrintRepeatedValues="false" x="471" y="34" width="76" height="16" uuid="7946f9a5-6eda-4df4-91cd-52e01e648105"/>
@@ -174,7 +177,9 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 				<textElement textAlignment="Right">
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{document.documentID} + "/" + $F{document.accountingDocumentYear}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{document.documentID} +
+com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.documentIDSuffix}) +
+"/" + $F{document.accountingDocumentYear}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement positionType="Float" isPrintRepeatedValues="false" x="420" y="18" width="52" height="16" uuid="9147ae7f-5ccc-49db-87e9-f84eb59575b1"/>
