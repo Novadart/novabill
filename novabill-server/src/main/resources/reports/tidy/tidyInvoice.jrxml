@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Invoice" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="20" uuid="96f0ca59-afec-4bbb-95f2-0a9732c6c014">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="40"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -79,6 +79,7 @@
 	<field name="document.business.settings.invoiceFooterNote" class="java.lang.String"/>
 	<field name="document.business" class="com.novadart.novabill.domain.Business"/>
 	<field name="document.splitPayment" class="java.lang.Boolean"/>
+	<field name="document.documentIDSuffix" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -106,7 +107,9 @@
 					<font fontName="Open Sans Light"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{document.documentID} + "/" + $F{document.accountingDocumentYear}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{document.documentID} +
+com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.documentIDSuffix}) +
+"/" + $F{document.accountingDocumentYear}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement positionType="Float" x="467" y="25" width="80" height="16" forecolor="#999999" uuid="d0f6965d-2485-4a1b-b3c6-ff209b5da55c"/>
