@@ -7,8 +7,8 @@ angular.module('novabill.invoices.controllers',
 /**
  * INVOICES PAGE CONTROLLER
  */
-	.controller('InvoicesCtrl', ['$scope', '$location', 'nConstants', 'nSelectClientDialog', '$filter', 'nEditDocumentIdClassDialog', 'nAjax', 'nConfirmDialog',
-		function($scope, $location, nConstants, nSelectClientDialog, $filter, nEditDocumentIdClassDialog, nAjax, nConfirmDialog){
+	.controller('InvoicesCtrl', ['$scope', '$location', 'nConstants', 'nSelectClientDialog', '$filter', 'nEditDocumentIdClassDialog', 'nAjax', 'nConfirmDialog', 'nAlertDialog',
+		function($scope, $location, nConstants, nSelectClientDialog, $filter, nEditDocumentIdClassDialog, nAjax, nConfirmDialog, nAlertDialog){
 			var selectedYear = String(new Date().getFullYear());
 			var selectedClass = null;
 			var loadedInvoices = [];
@@ -124,7 +124,10 @@ angular.module('novabill.invoices.controllers',
 				var instance = nConfirmDialog.open( $filter('translate')('REMOVAL_QUESTION',{data : docIdClass.suffix}) );
 				instance.result.then(function(value){
 					if(value){
-						docIdClass.$delete(function(){
+						docIdClass.$delete(function(result){
+							if(result[0] === "f"){ // checking like this because of angularjs bug
+								nAlertDialog.open( $filter('translate')('DOCUMENT_ID_CLASS_DELETION_ALERT') );
+							}
 							$scope.loadDocIDClasses();
 						});
 					}

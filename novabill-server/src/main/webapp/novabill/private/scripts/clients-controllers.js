@@ -1,21 +1,21 @@
 'use strict';
 
-angular.module('novabill.clients.controllers', 
-		['novabill.utils', 'novabill.constants', 'novabill.directives', 'novabill.ajax',
-		 'novabill.directives.dialogs', 'novabill.translations', 'infinite-scroll'])
+angular.module('novabill.clients.controllers',
+	['novabill.utils', 'novabill.constants', 'novabill.directives', 'novabill.ajax',
+		'novabill.directives.dialogs', 'novabill.translations', 'infinite-scroll'])
 
 
-		/**
-		 * CLIENTS PAGE CONTROLLER
-		 */
-		.controller('ClientsCtrl', ['$scope', 'nSorting', '$location', 'nConstants', 'nAjax',
-		                            function($scope, nSorting, $location, nConstants, nAjax){
+/**
+ * CLIENTS PAGE CONTROLLER
+ */
+	.controller('ClientsCtrl', ['$scope', 'nSorting', '$location', 'nConstants', 'nAjax',
+		function($scope, nSorting, $location, nConstants, nAjax){
 
 			var loadedClients = [];
 			var filteredClients = [];
 			var displayedClientsCount = 0;
 			var PARTITION = 50;
-			
+
 			var Business = nAjax.Business();
 
 			$scope.partitionClients = function(clients){
@@ -23,8 +23,8 @@ angular.module('novabill.clients.controllers',
 				var partitions = [];
 				var pt = null;
 
-				var lo = '', 
-				l = '';
+				var lo = '',
+					l = '';
 				var cl;
 
 				for ( var id in clients) {
@@ -33,8 +33,8 @@ angular.module('novabill.clients.controllers',
 
 					if(l != lo) {
 						pt = {
-								letter : l,
-								clients : []
+							letter : l,
+							clients : []
 						};
 						partitions.push(pt);
 					}
@@ -52,8 +52,8 @@ angular.module('novabill.clients.controllers',
 			$scope.containsQuery = function(query, client) {
 				var normalizedQuery = query.toLowerCase();
 				return (client.name && client.name.toLowerCase().indexOf(normalizedQuery) > -1) ||
-				(client.address && client.address.toLowerCase().indexOf(normalizedQuery) > -1) ||
-				(client.city && client.city.toLowerCase().indexOf(normalizedQuery) > -1);
+					(client.address && client.address.toLowerCase().indexOf(normalizedQuery) > -1) ||
+					(client.city && client.city.toLowerCase().indexOf(normalizedQuery) > -1);
 			};
 
 			$scope.filterClients = function(query, clients){
@@ -98,8 +98,8 @@ angular.module('novabill.clients.controllers',
 			$scope.loadMoreClients = function(){
 				if($scope.partitions){
 					var currentIndex = displayedClientsCount;
-					$scope.partitions = $scope.partitionClients( 
-							filteredClients.slice(0, currentIndex+PARTITION) 
+					$scope.partitions = $scope.partitionClients(
+						filteredClients.slice(0, currentIndex+PARTITION)
 					);
 				}
 			};
@@ -114,9 +114,9 @@ angular.module('novabill.clients.controllers',
 
 			$scope.address = function(client){
 				var address = (client.address ? client.address+' ' : '') +
-				(client.postcode ? ' - '+client.postcode+' - ' : '') +
-				(client.city ? client.city+' ' : '') +
-				(client.province ? '('+client.province+') ' : '');
+					(client.postcode ? ' - '+client.postcode+' - ' : '') +
+					(client.city ? client.city+' ' : '') +
+					(client.province ? '('+client.province+') ' : '');
 				return address;
 			};
 
@@ -154,31 +154,31 @@ angular.module('novabill.clients.controllers',
 
 
 
-		/**
-		 * CLIENT DETAILS PAGE CONTROLLER
-		 */
-		.controller('ClientDetailsCtrl', ['$scope', '$route', '$routeParams', '$location', '$rootScope', 
-		                                  'nConstants', '$filter', 'nAlertDialog', 'nConfirmDialog', 'nEditAddressDialog', 'nSorting',
-		                                  function($scope, $route, $routeParams, $location, $rootScope, 
-		                                		  nConstants, $filter, nAlertDialog, nConfirmDialog, nEditAddressDialog, nSorting) {
+/**
+ * CLIENT DETAILS PAGE CONTROLLER
+ */
+	.controller('ClientDetailsCtrl', ['$scope', '$route', '$routeParams', '$location', '$rootScope',
+		'nConstants', '$filter', 'nAlertDialog', 'nConfirmDialog', 'nEditAddressDialog', 'nSorting',
+		function($scope, $route, $routeParams, $location, $rootScope,
+				 nConstants, $filter, nAlertDialog, nConfirmDialog, nEditAddressDialog, nSorting) {
 
 			$scope.onTabChange = function(token){
 				$location.search('tab',token);
-				
+
 				if(token === 'addresses'){
 					$scope.loadClientAddresses();
 				}
 			};
-			
+
 			$scope.activeTab = {
-					documents : false,
-					addresses : false
+				documents : false,
+				addresses : false
 			};
 			$scope.activeTab[$location.search().tab] = true;
 
 			$scope.docsView = 'invoices';
-			
-			
+
+
 			$scope.editClient = function() {
 				GWT_UI.modifyClientDialog(nConstants.conf.businessId, $scope.client.id, {
 
@@ -208,7 +208,7 @@ angular.module('novabill.clients.controllers',
 									nAlertDialog.open($filter('translate')('CLIENT_DELETION_ALERT'));
 								}
 							},
-	
+
 							onFailure : function(error){}
 						});
 					}
@@ -264,14 +264,14 @@ angular.module('novabill.clients.controllers',
 
 			$scope.editLegalAddress = function(){
 
-				var address = { 
-						isLegalAddress : true,
-						companyName : $scope.client.name,
-						address : $scope.client.address,
-						postcode: $scope.client.postcode,
-						city: $scope.client.city,
-						province: $scope.client.province,
-						country: $scope.client.country
+				var address = {
+					isLegalAddress : true,
+					companyName : $scope.client.name,
+					address : $scope.client.address,
+					postcode: $scope.client.postcode,
+					city: $scope.client.city,
+					province: $scope.client.province,
+					country: $scope.client.country
 				};
 
 				var instance = nEditAddressDialog.open(address);
@@ -342,7 +342,7 @@ angular.module('novabill.clients.controllers',
 									$scope.loadClientAddresses(true);
 								});
 							},
-	
+
 							onFailure : function(error){}
 						});
 					}
@@ -356,22 +356,22 @@ angular.module('novabill.clients.controllers',
 					return;
 				}
 
-				$scope.businessDetails = 
+				$scope.businessDetails =
 					($scope.client.vatID ? $filter('translate')('VATID')+': '+$scope.client.vatID : '') +
 					($scope.client.vatID && $scope.client.ssn ? ' - ' : '') +
 					($scope.client.ssn ? $filter('translate')('SSN')+': '+$scope.client.ssn : '');
 
-				$scope.address = 
+				$scope.address =
 					($scope.client.address ? $scope.client.address+' ' : '') +
 					($scope.client.postcode ? ' - '+$scope.client.postcode+' - ' : '') +
 					($scope.client.city ? $scope.client.city+' ' : '') +
 					($scope.client.province ? '('+$scope.client.province+') ' : '');
 
 				var a1 = [
-				          ($scope.client.email ? 'Email: '+$scope.client.email : ''),
-				          ($scope.client.fax ? 'Fax: '+$scope.client.fax : ''),
-				          ($scope.client.mobile ? 'Cell: '+$scope.client.mobile : ''),
-				          ($scope.client.phone ? 'Tel: '+$scope.client.phone : '') ];
+					($scope.client.email ? 'Email: '+$scope.client.email : ''),
+					($scope.client.fax ? 'Fax: '+$scope.client.fax : ''),
+					($scope.client.mobile ? 'Cell: '+$scope.client.mobile : ''),
+					($scope.client.phone ? 'Tel: '+$scope.client.phone : '') ];
 
 				var a2 = [];
 				angular.forEach(a1, function(val, _){
@@ -380,7 +380,7 @@ angular.module('novabill.clients.controllers',
 
 				var contactInfo = "";
 				for(var i=0; i<a2.length-1; i++){
-					contactInfo += a2[i] + ' - '; 
+					contactInfo += a2[i] + ' - ';
 				}
 				if(a2.length > 0){
 					contactInfo += a2[a2.length-1];
@@ -409,13 +409,14 @@ angular.module('novabill.clients.controllers',
 			/*
 			 * load documents. 
 			 * types = {'invoice','estimation','creditNote','transportDocument'}
-			 */ 
+			 */
 			var loading = {};
 			var selectedYear = {};
+			var selectedInvoiceClass = null;
 			var firstRun = {
-					'estimation' : true,
-					'creditNote' : true,
-					'transportDocument' : true
+				'estimation' : true,
+				'creditNote' : true,
+				'transportDocument' : true
 			};
 
 			$scope.loadDocs = function(year, type){
@@ -441,36 +442,63 @@ angular.module('novabill.clients.controllers',
 				});
 			};
 
-
-			$scope.loadInvoices = function(year){ 
-				$scope.loadDocs(year === undefined ? selectedYear['invoice'] : year, 'invoice'); 
+			$scope.loadInvoicesByYear = function(year) {
+				selectedYear['invoice'] = year;
+				$scope.loadInvoices(selectedYear['invoice'], selectedInvoiceClass);
 			};
 
-			$scope.loadEstimations = function(year){ 
+			$scope.loadInvoicesForClass = function(claz) {
+				selectedInvoiceClass = claz;
+				$scope.loadInvoices(selectedYear['invoice'], selectedInvoiceClass);
+			};
+
+
+			$scope.loadInvoices = function(year, claz){
+				if(loading['invoice']){
+					return;
+				}
+
+				loading['invoice'] = true;
+				GWT_Server.invoice.getAllForClient($routeParams.clientId, year, claz, {
+
+					onSuccess : function(clientData){
+						$scope.$apply(function(){
+							$scope['invoiceData'] = clientData['invoices'];
+						});
+						loading['invoice'] = false;
+					},
+
+					onFailure : function(error){
+						loading['invoice'] = false;
+					}
+				});
+			};
+
+			$scope.loadEstimations = function(year){
 				if(firstRun['estimation']){
 					firstRun['estimation'] = false;
 					selectedYear['estimation'] = year;
 					return;
 				}
-				$scope.loadDocs(year === undefined ? selectedYear['estimation'] : year, 'estimation'); 
+				$scope.loadDocs(year === undefined ? selectedYear['estimation'] : year, 'estimation');
 			};
 
-			$scope.loadCreditNotes = function(year){ 
+			$scope.loadCreditNotes = function(year){
 				if(firstRun['creditNote']){
 					firstRun['creditNote'] = false;
 					selectedYear['creditNote'] = year;
 					return;
 				}
-				$scope.loadDocs(year === undefined ? selectedYear['creditNote'] : year, 'creditNote'); 
+				$scope.loadDocs(year === undefined ? selectedYear['creditNote'] : year, 'creditNote');
 			};
 
-			$scope.loadTransportDocuments = function(year){ 
+			$scope.loadTransportDocuments = function(year){
 				if(firstRun['transportDocument']){
 					firstRun['transportDocument'] = false;
 					selectedYear['transportDocument'] = year;
 					return;
 				}
-				$scope.loadDocs(year === undefined ? selectedYear['transportDocument'] : year, 'transportDocument'); 
+				$scope.loadDocs(year === undefined ? selectedYear['transportDocument'] : year, 'transportDocument');
 			};
 
 			$scope.$on(nConstants.events.INVOICE_REMOVED, function(event){

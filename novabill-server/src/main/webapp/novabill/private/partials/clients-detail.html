@@ -61,7 +61,8 @@
 	                  
 	                  <div collapse="docsView !== 'invoices'">
 				          <button type="button" class="btn green new-invoice" style="margin: 0 auto 40px;" ng-click="newInvoiceClick()">{{'NEW_INVOICE' | translate}}</button>
-                          <n-year-selector class="pull-right" document-type="invoices" callback="loadInvoices(year)"></n-year-selector>
+                          <n-year-selector class="pull-right" document-type="invoices" callback="loadInvoicesByYear(year)"></n-year-selector>
+						  <n-suffix-selector class="pull-right suffix-selector" callback="loadInvoicesForClass(class)"></n-suffix-selector>
                           <img class="spinner" ng-show="invoiceData===null" src="../../private_assets/img/ajax-loading.gif">
                           <p class="no-data-message text-center text-info" ng-show="invoiceData && invoiceData.length===0">{{'NO_DATA' | translate}}</p>
                           <n-invoice invoice="inv" bottom-up-menu="!$first && $last" ng-repeat="inv in invoiceData"></n-invoice>
