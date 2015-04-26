@@ -60,6 +60,14 @@ public class PrivateController {
 		mav.addObject("estimationYears", mapper.writeValueAsString(businessService.getEstimationYears(businessID)));
 		mav.addObject("creditNoteYears", mapper.writeValueAsString(businessService.getCreditNoteYears(businessID)));
 		mav.addObject("transportDocumentYears", mapper.writeValueAsString(businessService.getTransportDocumentYears(businessID)));
+
+		List<String> suffixes = new ArrayList<>();
+		for (DocumentIDClassDTO documentIDClassDTO : documentIDClassService.getAll(principal.getBusiness().getId())) {
+			suffixes.add(documentIDClassDTO.getSuffix());
+		}
+
+		mav.addObject("invoiceSuffixes", mapper.writeValueAsString(suffixes));
+
 		return mav;
 	}
 	

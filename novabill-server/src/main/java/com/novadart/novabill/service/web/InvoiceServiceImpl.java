@@ -121,7 +121,14 @@ public class InvoiceServiceImpl implements InvoiceService {
 	public List<InvoiceDTO> getAllForClient(Long clientID, Integer year) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException {
 		return new ArrayList<InvoiceDTO>(DTOUtils.filter(businessService.getInvoices(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId(), year), new EqualsClientIDPredicate(clientID)));
 	}
-	
+
+	@Override
+	@Transactional(readOnly = true)
+	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#clientID)?.business?.id == principal.business.id")
+	public List<InvoiceDTO> getAllForClient(Long clientID, Integer year, String docIDSuffix) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException {
+		return new ArrayList<InvoiceDTO>(DTOUtils.filter(businessService.getInvoices(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId(), year, docIDSuffix), new EqualsClientIDPredicate(clientID)));
+	}
+
 	@Override
 	@Transactional(readOnly = false, rollbackFor = {Exception.class})
 	@PreAuthorize("#businessID == principal.business.id and " +

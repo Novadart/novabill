@@ -42,6 +42,11 @@ public class InvoiceGwtController extends AbstractGwtController implements Invoi
 		return invoiceService.getAllForClient(clientID, year);
 	}
 
+	@Override
+	public List<InvoiceDTO> getAllForClient(Long clientID, Integer year, String suffix) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException {
+		return invoiceService.getAllForClient(clientID, year, suffix);
+	}
+
 	public Long add(InvoiceDTO invoiceDTO) throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, DataIntegrityException {
 		return invoiceService.add(invoiceDTO);
 	}

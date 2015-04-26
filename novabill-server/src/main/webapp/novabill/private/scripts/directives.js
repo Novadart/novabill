@@ -711,7 +711,7 @@ angular.module('novabill.directives',
 
 				$scope.onChange = function(event){
 					var index = $scope.classes.indexOf($scope.selectedClass);
-					$scope.callback({ class : index==0 ? null : String($scope.selectedClass) });
+					$scope.callback({ documentIdClass : index==0 ? null : String($scope.selectedClass) });
 				};
 
 			}],
