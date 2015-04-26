@@ -35,6 +35,7 @@ import com.novadart.novabill.frontend.client.place.transportdocument.ModifyTrans
 import com.novadart.novabill.frontend.client.place.transportdocument.NewTransportDocumentPlace;
 import com.novadart.novabill.frontend.client.widget.dialog.client.ClientDialog;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
+import com.novadart.novabill.shared.client.dto.DocumentIDClassDTO;
 
 public class UiBridge implements ApiBridge {
 	
@@ -74,7 +75,7 @@ public class UiBridge implements ApiBridge {
 			// transport documents
 			showNewTransportDocumentPage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showNewTransportDocumentPage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 			showModifyTransportDocumentPage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showModifyTransportDocumentPage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
-			showFromEstimationTransportDocumentPage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showFromEstimationTransportDocumentPage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
+			showFromEstimationTransportDocumentPage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showFromEstimationTransportDocumentPage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)
 		};
 	
 	}-*/;
@@ -114,52 +115,77 @@ public class UiBridge implements ApiBridge {
 	/*
 	 * INVOICES
 	 */
-	public static void showNewInvoicePage(String wrapperId, String clientId, JavaScriptObject callback) {
-		AcceptsOneWidget panel = new HTMLWrapper(wrapperId);
+	public static void showNewInvoicePage(String wrapperId, String clientId, final JavaScriptObject callback) {
+		final AcceptsOneWidget panel = new HTMLWrapper(wrapperId);
 		
-		NewInvoicePlace nip = new NewInvoicePlace();
+		final NewInvoicePlace nip = new NewInvoicePlace();
 		nip.setClientId(Long.parseLong(clientId));
 
-		InvoiceActivity is = new InvoiceActivity(nip, ClientFactory.INSTANCE, callback);
-		is.start(panel, null);
+		ServerFacade.INSTANCE.getDocumentIdClassGwtService().getAll(Configuration.getBusinessId(), new ManagedAsyncCallback<List<DocumentIDClassDTO>>() {
+			@Override
+			public void onSuccess(List<DocumentIDClassDTO> documentIDClassDTOs) {
+				nip.setDocumentIDClassDTOs(documentIDClassDTOs);
+				InvoiceActivity is = new InvoiceActivity(nip, ClientFactory.INSTANCE, callback);
+				is.start(panel, null);
+			}
+		});
 	}
 	
 	
-	public static void showCloneInvoicePage(String wrapperId, String clientId, String invoiceId, JavaScriptObject callback) {
-		AcceptsOneWidget panel = new HTMLWrapper(wrapperId);
+	public static void showCloneInvoicePage(String wrapperId, String clientId, String invoiceId, final JavaScriptObject callback) {
+		final AcceptsOneWidget panel = new HTMLWrapper(wrapperId);
 		
-		CloneInvoicePlace cip = new CloneInvoicePlace();
+		final CloneInvoicePlace cip = new CloneInvoicePlace();
 		cip.setInvoiceId(Long.parseLong(invoiceId));
 		cip.setClientId(Long.parseLong(clientId));
 
-		InvoiceActivity is = new InvoiceActivity(cip, ClientFactory.INSTANCE, callback);
-		is.start(panel, null);
+		ServerFacade.INSTANCE.getDocumentIdClassGwtService().getAll(Configuration.getBusinessId(), new ManagedAsyncCallback<List<DocumentIDClassDTO>>() {
+			@Override
+			public void onSuccess(List<DocumentIDClassDTO> documentIDClassDTOs) {
+				cip.setDocumentIDClassDTOs(documentIDClassDTOs);
+				InvoiceActivity is = new InvoiceActivity(cip, ClientFactory.INSTANCE, callback);
+				is.start(panel, null);
+			}
+		});
+
 	}
 	
 	
-	public static void showModifyInvoicePage(String wrapperId, String invoiceId, JavaScriptObject callback) {
-		AcceptsOneWidget panel = new HTMLWrapper(wrapperId);
+	public static void showModifyInvoicePage(String wrapperId, String invoiceId, final JavaScriptObject callback) {
+		final AcceptsOneWidget panel = new HTMLWrapper(wrapperId);
 		
-		ModifyInvoicePlace mip = new ModifyInvoicePlace();
+		final ModifyInvoicePlace mip = new ModifyInvoicePlace();
 		mip.setInvoiceId(Long.parseLong(invoiceId));
 
-		InvoiceActivity is = new InvoiceActivity(mip, ClientFactory.INSTANCE, callback);
-		is.start(panel, null);
+		ServerFacade.INSTANCE.getDocumentIdClassGwtService().getAll(Configuration.getBusinessId(), new ManagedAsyncCallback<List<DocumentIDClassDTO>>() {
+			@Override
+			public void onSuccess(List<DocumentIDClassDTO> documentIDClassDTOs) {
+				mip.setDocumentIDClassDTOs(documentIDClassDTOs);
+				InvoiceActivity is = new InvoiceActivity(mip, ClientFactory.INSTANCE, callback);
+				is.start(panel, null);
+			}
+		});
 	}
 	
 	
-	public static void showFromEstimationInvoicePage(String wrapperId, String estimationId, JavaScriptObject callback) {
-		AcceptsOneWidget panel = new HTMLWrapper(wrapperId);
+	public static void showFromEstimationInvoicePage(String wrapperId, String estimationId, final JavaScriptObject callback) {
+		final AcceptsOneWidget panel = new HTMLWrapper(wrapperId);
 		
-		FromEstimationInvoicePlace fei = new FromEstimationInvoicePlace();
+		final FromEstimationInvoicePlace fei = new FromEstimationInvoicePlace();
 		fei.setEstimationId(Long.parseLong(estimationId));
 
-		InvoiceActivity is = new InvoiceActivity(fei, ClientFactory.INSTANCE, callback);
-		is.start(panel, null);
+		ServerFacade.INSTANCE.getDocumentIdClassGwtService().getAll(Configuration.getBusinessId(), new ManagedAsyncCallback<List<DocumentIDClassDTO>>() {
+			@Override
+			public void onSuccess(List<DocumentIDClassDTO> documentIDClassDTOs) {
+				fei.setDocumentIDClassDTOs(documentIDClassDTOs);
+				InvoiceActivity is = new InvoiceActivity(fei, ClientFactory.INSTANCE, callback);
+				is.start(panel, null);
+			}
+		});
 	}
 	
-	public static void showFromTransportDocumentListInvoicePage(String wrapperId, String transportDocumentList, JavaScriptObject callback) {
-		AcceptsOneWidget panel = new HTMLWrapper(wrapperId);
+	public static void showFromTransportDocumentListInvoicePage(String wrapperId, String transportDocumentList, final JavaScriptObject callback) {
+		final AcceptsOneWidget panel = new HTMLWrapper(wrapperId);
 		
 		StringList bean = AutoBeanCodex.decode(AutoBeanMaker.INSTANCE, StringList.class, transportDocumentList).as();
 		
@@ -168,11 +194,18 @@ public class UiBridge implements ApiBridge {
 			longs.add( Long.parseLong(str) );
 		}
 		
-		FromTransportDocumentListInvoicePlace ftdi = new FromTransportDocumentListInvoicePlace();
+		final FromTransportDocumentListInvoicePlace ftdi = new FromTransportDocumentListInvoicePlace();
 		ftdi.setTransportDocumentList(longs);
 
-		InvoiceActivity is = new InvoiceActivity(ftdi, ClientFactory.INSTANCE, callback);
-		is.start(panel, null);
+		ServerFacade.INSTANCE.getDocumentIdClassGwtService().getAll(Configuration.getBusinessId(), new ManagedAsyncCallback<List<DocumentIDClassDTO>>() {
+			@Override
+			public void onSuccess(List<DocumentIDClassDTO> documentIDClassDTOs) {
+				ftdi.setDocumentIDClassDTOs(documentIDClassDTOs);
+				InvoiceActivity is = new InvoiceActivity(ftdi, ClientFactory.INSTANCE, callback);
+				is.start(panel, null);
+			}
+		});
+
 	}
 	
 	/*

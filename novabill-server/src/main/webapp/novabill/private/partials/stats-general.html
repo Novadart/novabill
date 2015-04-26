@@ -10,18 +10,26 @@
 			</ul>
 
 		</div>
+
+
+        <n-stats-year-selector
+                class="pull-right"
+                selected-year="year"
+                callback="loadYear(year)"></n-stats-year-selector>
+
 	</div>
 
 	<div class="clearfix"></div>
 
 	<div class="row">
 	   <n-premium-alert></n-premium-alert>
-	  
+
 	   <div google-chart chart="totalsPerMonthsChart"></div>
 	   
 	</div>
 	
 	<div class="row" style="margin-top: 50px;">
+
 
         <div class="col-md-4">
             <div class="panel panel-default">

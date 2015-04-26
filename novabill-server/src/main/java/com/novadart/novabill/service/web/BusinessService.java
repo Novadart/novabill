@@ -4,20 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import com.novadart.novabill.shared.client.data.LayoutType;
-import com.novadart.novabill.shared.client.dto.BusinessDTO;
-import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
-import com.novadart.novabill.shared.client.dto.ClientDTO;
-import com.novadart.novabill.shared.client.dto.CommodityDTO;
-import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
-import com.novadart.novabill.shared.client.dto.EstimationDTO;
-import com.novadart.novabill.shared.client.dto.InvoiceDTO;
-import com.novadart.novabill.shared.client.dto.LogRecordDTO;
-import com.novadart.novabill.shared.client.dto.NotificationDTO;
-import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
-import com.novadart.novabill.shared.client.dto.PriceListDTO;
-import com.novadart.novabill.shared.client.dto.SharingPermitDTO;
-import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
-import com.novadart.novabill.shared.client.dto.TransporterDTO;
+import com.novadart.novabill.shared.client.dto.*;
 import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
@@ -38,6 +25,8 @@ public interface BusinessService {
 	public void update(BusinessDTO businessDTO) throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException;
 	
 	public List<InvoiceDTO> getInvoices(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException;
+
+	public List<InvoiceDTO> getInvoices(Long businessID, Integer year, String docIDSuffix) throws NotAuthenticatedException, DataAccessException;
 	
 	public List<CreditNoteDTO> getCreditNotes(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException;
 	
@@ -78,5 +67,7 @@ public interface BusinessService {
 	public List<NotificationDTO> getNotifications(Long businessID);
 	
 	public void markNotificationAsSeen(Long businessID, Long id);
+
+	public List<DocumentIDClassDTO> getDocumentIdClasses(Long businessID) throws NotAuthenticatedException, DataAccessException;
 	
 }

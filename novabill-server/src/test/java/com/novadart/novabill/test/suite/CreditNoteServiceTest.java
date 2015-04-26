@@ -221,7 +221,7 @@ public class CreditNoteServiceTest extends ServiceTest {
 		client.setBusiness(authenticatedPrincipal.getBusiness());
 		Long clientID = clientService.add(authenticatedPrincipal.getBusiness().getId(), ClientDTOTransformer.toDTO(client));
 		
-		CreditNoteDTO credNoteDTO = CreditNoteDTOTransformer.toDTO(TestUtils.createInvOrCredNote(authenticatedPrincipal.getBusiness().getNextInvoiceDocumentID(), CreditNote.class), true);
+		CreditNoteDTO credNoteDTO = CreditNoteDTOTransformer.toDTO(TestUtils.createInvOrCredNote(authenticatedPrincipal.getBusiness().getNextInvoiceDocumentID(null), CreditNote.class), true);
 		credNoteDTO.setClient(ClientDTOTransformer.toDTO(Client.findClient(clientID)));
 		credNoteDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		creditNoteService.add(credNoteDTO);

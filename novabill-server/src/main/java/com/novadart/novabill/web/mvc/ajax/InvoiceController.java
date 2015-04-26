@@ -10,12 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 
 import com.novadart.novabill.annotation.RestExceptionProcessingMixin;
 import com.novadart.novabill.service.UtilsService;
@@ -67,6 +62,14 @@ public class InvoiceController {
 			@PathVariable Integer start, @PathVariable Integer length) throws NotAuthenticatedException, DataAccessException{
 		return invoiceService.getAllInRange(businessID, year, start, length);
 	}
+
+	@RequestMapping(value = "/year/{year}/suffix/{suffix}/start/{start}/offset/{length}", method = RequestMethod.GET)
+	@ResponseBody
+	@ResponseStatus(value = HttpStatus.OK)
+	public PageDTO<InvoiceDTO> getAllInRange(@PathVariable Long businessID, @PathVariable Integer year, @PathVariable String suffix,
+											 @PathVariable Integer start, @PathVariable Integer length) throws NotAuthenticatedException, DataAccessException{
+		return invoiceService.getAllInRange(businessID, year, suffix, start, length);
+	}
 	
 	@RequestMapping(value = "/year/{year}/clients/{clientID}", method = RequestMethod.GET)
 	@ResponseBody
@@ -99,8 +102,8 @@ public class InvoiceController {
 	@RequestMapping(value = "/nextid", method = RequestMethod.GET)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
-	public String getNextInvoiceDocumentID() {
-		return invoiceService.getNextInvoiceDocumentID().toString();
+	public String getNextInvoiceDocumentID(@RequestParam(value = "suffix", required = false) String suffix) {
+		return invoiceService.getNextInvoiceDocumentID(suffix) + suffix;
 	}
 
 	@RequestMapping(value = "/year/{year}/clients/{clientID}/start/{start}/offset/{length}", method = RequestMethod.GET)

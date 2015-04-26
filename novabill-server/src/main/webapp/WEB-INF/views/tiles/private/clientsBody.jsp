@@ -14,6 +14,8 @@ var documentYears = {
 		creditNotes : <%=request.getAttribute("creditNoteYears")%>,
 };
 
+var invoiceSuffixes = <%=request.getAttribute("invoiceSuffixes")%>;
+
 function onGWTLoaded(){
      angular.bootstrap(angular.element('.page-content'), ['novabill.clients']);
 }

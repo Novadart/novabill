@@ -174,7 +174,7 @@ public class PremiumEnablerService {
 	
 	private Long createInvoice(Business novadartBusiness, Long clientID, String paymentPlan) throws DataAccessException, ValidationException, FreeUserAccessForbiddenException, NotAuthenticatedException, DataIntegrityException{
 		Invoice invoice = new Invoice();
-		invoice.setDocumentID(invoiceService.getNextInvoiceDocumentID());
+		invoice.setDocumentID(invoiceService.getNextInvoiceDocumentID(null));
 		Date now = new Date();
 		invoice.setAccountingDocumentDate(now);
 		invoice.setPaymentTypeName("Rimessa Diretta");

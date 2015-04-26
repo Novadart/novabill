@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.place.shared.PlaceController;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.web.bindery.event.shared.EventBus;
 import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.bridge.BridgeUtils;
@@ -13,16 +14,14 @@ import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.view.center.invoice.InvoiceView;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.widget.notification.NotificationCallback;
-import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
-import com.novadart.novabill.shared.client.dto.ClientDTO;
-import com.novadart.novabill.shared.client.dto.EndpointDTO;
-import com.novadart.novabill.shared.client.dto.InvoiceDTO;
+import com.novadart.novabill.shared.client.dto.*;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 
 public class ModifyInvoicePresenter extends AbstractInvoicePresenter {
 
-	public ModifyInvoicePresenter(PlaceController placeController, EventBus eventBus, InvoiceView view, JavaScriptObject callback) {
-		super(placeController, eventBus, view, callback);
+	public ModifyInvoicePresenter(PlaceController placeController, EventBus eventBus, InvoiceView view,
+								  List<DocumentIDClassDTO> documentIDClassesDTOs, JavaScriptObject callback) {
+		super(placeController, eventBus, view, documentIDClassesDTOs, callback);
 	}
 	
 	@Override
@@ -32,7 +31,48 @@ public class ModifyInvoicePresenter extends AbstractInvoicePresenter {
 
 	public void setData(InvoiceDTO invoice) {
 		setInvoice(invoice);
-		setClient(invoice.getClient());
+
+		ClientDTO client = invoice.getClient();
+		setClient(client);
+
+		ListBox listBox = getView().getDocumentIDClassListBox();
+		listBox.clear();
+		listBox.addItem(I18N.INSTANCE.invoiceDefaultNumberClass());
+
+		int selectedIndex = -1;
+		String docIdClass = invoice.getDocumentIDSuffix();
+		if(docIdClass == null) { // using the default doc id class
+
+			selectedIndex = 0;
+
+		} else { // the document has a non default document class id
+
+			// let's try to find it among the ones we loaded from the db
+			int i = 0;
+			for (DocumentIDClassDTO documentIDClassDTO : getDocumentIDClasses()) {
+				i++;
+				if (docIdClass.equals(documentIDClassDTO.getSuffix())) {
+					selectedIndex = i;
+					break;
+				}
+			}
+
+			// in his case a docid class has been set but it does not correspond to any of the existing doc id classes in the DB.
+			// This means that the docid class does not exist anymore. We need to manually add it
+			if(selectedIndex == -1){
+				listBox.addItem(docIdClass);
+				selectedIndex = 1;
+			}
+		}
+
+		// add the other doc id classes
+		for (DocumentIDClassDTO dcd : getDocumentIDClasses()) {
+			listBox.addItem(dcd.getSuffix());
+		}
+
+		listBox.setSelectedIndex(selectedIndex);
+
+
 		getView().getDate().setValue(invoice.getAccountingDocumentDate());
 		getView().getPayment().setDocumentCreationDate(invoice.getAccountingDocumentDate());
 		
@@ -62,6 +102,8 @@ public class ModifyInvoicePresenter extends AbstractInvoicePresenter {
 		
 		getView().getNote().setText(invoice.getNote());
 		getView().getPaymentNote().setText(invoice.getPaymentNote());
+
+		getView().getSelectSplitPayment().setSelectedIndex(invoice.isSplitPayment() ? 1 : 0);
 	}
 	
 	@Override

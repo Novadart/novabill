@@ -14,16 +14,7 @@ import com.google.gwt.user.client.rpc.XsrfToken;
 import com.google.gwt.user.client.rpc.XsrfTokenService;
 import com.google.gwt.user.client.rpc.XsrfTokenServiceAsync;
 import com.novadart.novabill.frontend.client.ClientFactory;
-import com.novadart.novabill.shared.client.facade.BatchDataFetcherGwtServiceAsync;
-import com.novadart.novabill.shared.client.facade.BusinessGwtServiceAsync;
-import com.novadart.novabill.shared.client.facade.ClientGwtServiceAsync;
-import com.novadart.novabill.shared.client.facade.CommodityGwtServiceAsync;
-import com.novadart.novabill.shared.client.facade.CreditNoteGwtServiceAsync;
-import com.novadart.novabill.shared.client.facade.EstimationGwtServiceAsync;
-import com.novadart.novabill.shared.client.facade.InvoiceGwtServiceAsync;
-import com.novadart.novabill.shared.client.facade.PaymentTypeGwtServiceAsync;
-import com.novadart.novabill.shared.client.facade.PriceListGwtServiceAsync;
-import com.novadart.novabill.shared.client.facade.TransportDocumentGwtServiceAsync;
+import com.novadart.novabill.shared.client.facade.*;
 
 public class ServerFacadeImpl implements ServerFacade {
 
@@ -57,6 +48,7 @@ public class ServerFacadeImpl implements ServerFacade {
 				((HasRpcToken) getBatchfetcherService()).setRpcToken(xsrfToken);
 				((HasRpcToken) getCommodityGwtService()).setRpcToken(xsrfToken);
 				((HasRpcToken) getPriceListGwtService()).setRpcToken(xsrfToken);
+				((HasRpcToken) getDocumentIdClassGwtService()).setRpcToken(xsrfToken);
 				
 				callback.onSuccess(null);
 			}
@@ -165,6 +157,10 @@ public class ServerFacadeImpl implements ServerFacade {
 		return TransportDocumentGwtServiceAsync.Util.getInstance();
 	}
 
+	@Override
+	public DocumentIDClassGwtServiceAsync getDocumentIdClassGwtService() {
+		return DocumentIDClassGwtServiceAsync.Util.getInstance();
+	}
 
 	@Override
 	public PaymentTypeGwtServiceAsync getPaymentService() {

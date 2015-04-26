@@ -42,10 +42,7 @@ import com.novadart.novabill.frontend.client.widget.ValidatedTextArea;
 import com.novadart.novabill.frontend.client.widget.notification.InlineNotification;
 import com.novadart.novabill.frontend.client.widget.validation.AlternativeSsnVatIdValidation;
 import com.novadart.novabill.frontend.client.widget.validation.ValidationKit;
-import com.novadart.novabill.shared.client.dto.ClientDTO;
-import com.novadart.novabill.shared.client.dto.ContactDTO;
-import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
-import com.novadart.novabill.shared.client.dto.PriceListDTO;
+import com.novadart.novabill.shared.client.dto.*;
 
 public class ClientDialog extends Dialog implements HasUILocking {
 
@@ -93,6 +90,8 @@ public class ClientDialog extends Dialog implements HasUILocking {
 	@UiField(provided=true) ValidatedTextBox contactName;
 	@UiField(provided=true) ValidatedTextBox contactSurname;
 
+	@UiField ListBox selectDefaultDocIdClass;
+	@UiField ListBox selectSplitPayment;
 	@UiField ListBox selectDefaultPayment;
 	@UiField ListBox selectDefaultPriceList;
 
@@ -197,6 +196,34 @@ public class ClientDialog extends Dialog implements HasUILocking {
 	@Override
 	protected void onLoad() {
 		super.onLoad();
+
+		selectDefaultDocIdClass.setEnabled(false);
+		ServerFacade.INSTANCE.getDocumentIdClassGwtService().getAll(Configuration.getBusinessId(), new ManagedAsyncCallback<List<DocumentIDClassDTO>>() {
+			@Override
+			public void onSuccess(List<DocumentIDClassDTO> documentIDClassDTOs) {
+
+				selectDefaultDocIdClass.addItem(I18N.INSTANCE.invoiceDefaultNumberClass(), (String) null);
+				Long defaultDocIdClass = null;
+				if (client != null) {
+					defaultDocIdClass = client.getDefaultDocumentIDClassID();
+				}
+
+				int selectedIndex = 0;
+				DocumentIDClassDTO dcd;
+				for (int i = 0; i < documentIDClassDTOs.size(); i++) {
+					dcd = documentIDClassDTOs.get(i);
+					selectDefaultDocIdClass.addItem(dcd.getSuffix(), String.valueOf(dcd.getId()));
+					if (defaultDocIdClass != null && dcd.getId().equals(defaultDocIdClass)) {
+						selectedIndex = i + 1;
+					}
+				}
+				selectDefaultDocIdClass.setSelectedIndex(selectedIndex);
+				selectDefaultDocIdClass.setEnabled(true);
+			}
+		});
+
+		selectSplitPayment.setSelectedIndex(client.isSplitPaymentClient() ? 1 : 0);
+
 		selectDefaultPayment.setEnabled(false);
 		ServerFacade.INSTANCE.getPaymentService().getAll(businessId, 
 				new ManagedAsyncCallback<List<PaymentTypeDTO>>() {
@@ -338,6 +365,14 @@ public class ClientDialog extends Dialog implements HasUILocking {
 		client.setPhone(phone.getText());
 		client.setPostcode(postcode.getText());
 		client.setProvince(province.getText());
+
+		client.setDefaultDocumentIDClassID(
+				selectDefaultDocIdClass.getSelectedIndex() == 0
+						? null
+						: Long.valueOf(selectDefaultDocIdClass.getValue(selectDefaultDocIdClass.getSelectedIndex()))
+		);
+
+		client.setSplitPaymentClient(selectSplitPayment.isItemSelected(1));
 
 		if(selectDefaultPayment.getSelectedIndex() > 0){
 			PaymentTypeDTO payment = paymentTypes.get(selectDefaultPayment.getValue(selectDefaultPayment.getSelectedIndex()));
@@ -497,8 +532,10 @@ public class ClientDialog extends Dialog implements HasUILocking {
 		contactName.setEnabled(!value);
 		contactSurname.setEnabled(!value);
 		cancel.setEnabled(!value);
+		selectDefaultDocIdClass.setEnabled(!value);
 		selectDefaultPayment.setEnabled(!value);
 		selectDefaultPriceList.setEnabled(!value);
+		selectSplitPayment.setEnabled(!value);
 		note.setEnabled(!value);
 	}
 

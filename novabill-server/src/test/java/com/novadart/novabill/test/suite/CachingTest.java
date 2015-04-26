@@ -14,6 +14,10 @@ import java.util.Set;
 
 import javax.annotation.Resource;
 
+import com.novadart.novabill.domain.*;
+import com.novadart.novabill.domain.dto.transformer.*;
+import com.novadart.novabill.service.web.DocumentIDClassService;
+import com.novadart.novabill.shared.client.dto.*;
 import net.sf.ehcache.CacheManager;
 
 import org.junit.Before;
@@ -26,45 +30,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.novadart.novabill.aspect.CachingAspect;
-import com.novadart.novabill.domain.Business;
-import com.novadart.novabill.domain.Client;
-import com.novadart.novabill.domain.ClientAddress;
-import com.novadart.novabill.domain.Commodity;
-import com.novadart.novabill.domain.CreditNote;
-import com.novadart.novabill.domain.Estimation;
-import com.novadart.novabill.domain.Invoice;
-import com.novadart.novabill.domain.PaymentType;
-import com.novadart.novabill.domain.Price;
-import com.novadart.novabill.domain.PriceList;
-import com.novadart.novabill.domain.TransportDocument;
-import com.novadart.novabill.domain.dto.transformer.BusinessDTOTransformer;
-import com.novadart.novabill.domain.dto.transformer.ClientAddressDTOTransformer;
-import com.novadart.novabill.domain.dto.transformer.ClientDTOTransformer;
-import com.novadart.novabill.domain.dto.transformer.CommodityDTOTransformer;
-import com.novadart.novabill.domain.dto.transformer.CreditNoteDTOTransformer;
-import com.novadart.novabill.domain.dto.transformer.EstimationDTOTransformer;
-import com.novadart.novabill.domain.dto.transformer.InvoiceDTOTransformer;
-import com.novadart.novabill.domain.dto.transformer.PaymentTypeDTOTransformer;
-import com.novadart.novabill.domain.dto.transformer.PriceDTOTransformer;
-import com.novadart.novabill.domain.dto.transformer.PriceListDTOTransformer;
-import com.novadart.novabill.domain.dto.transformer.TransportDocumentDTOTransformer;
-import com.novadart.novabill.domain.dto.transformer.TransporterDTOTransformer;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.web.BusinessService;
 import com.novadart.novabill.service.web.InvoiceService;
 import com.novadart.novabill.shared.client.data.PriceListConstants;
-import com.novadart.novabill.shared.client.dto.BusinessDTO;
-import com.novadart.novabill.shared.client.dto.ClientAddressDTO;
-import com.novadart.novabill.shared.client.dto.ClientDTO;
-import com.novadart.novabill.shared.client.dto.CommodityDTO;
-import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
-import com.novadart.novabill.shared.client.dto.EstimationDTO;
-import com.novadart.novabill.shared.client.dto.InvoiceDTO;
-import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
-import com.novadart.novabill.shared.client.dto.PriceDTO;
-import com.novadart.novabill.shared.client.dto.PriceListDTO;
-import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
-import com.novadart.novabill.shared.client.dto.TransporterDTO;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.DataIntegrityException;
 import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
@@ -128,6 +97,9 @@ public class CachingTest extends ServiceTest {
 	
 	@Autowired
 	private InvoiceService invoiceAjaxService;
+
+	@Autowired
+	private DocumentIDClassService docIDClassService;
 	
 	@Autowired
 	private CacheManager cacheManager;
@@ -149,6 +121,7 @@ public class CachingTest extends ServiceTest {
 		cacheManager.getCache(CachingAspect.DOCSYEARS_CACHE).flush();
 		cacheManager.getCache(CachingAspect.TRANSPORTER_CACHE).flush();
 		cacheManager.getCache(CachingAspect.CLIENTADDRESS_CACHE).flush();
+		cacheManager.getCache(CachingAspect.DOCUMENTIDCLASSES_CACHE).flush();
 	}
 	
 	@Test
@@ -215,23 +188,23 @@ public class CachingTest extends ServiceTest {
 		Integer count = businessGwtService.countClients(authenticatedPrincipal.getBusiness().getId());
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
 		client.setName("The new name for this client");
-		List<InvoiceDTO> invoices = businessService.getInvoices(authenticatedPrincipal.getBusiness().getId(), 2013);
-		List<EstimationDTO> estimations = businessService.getEstimations(authenticatedPrincipal.getBusiness().getId(), 2013);
-		List<CreditNoteDTO> credNotes = businessService.getCreditNotes(authenticatedPrincipal.getBusiness().getId(), 2013);
-		List<TransportDocumentDTO> tranDocs = businessService.getTransportDocuments(authenticatedPrincipal.getBusiness().getId(), 2013);
-		assertTrue(invoices == businessService.getInvoices(authenticatedPrincipal.getBusiness().getId(), 2013));
-		assertTrue(estimations == businessService.getEstimations(authenticatedPrincipal.getBusiness().getId(), 2013));
-		assertTrue(credNotes == businessService.getCreditNotes(authenticatedPrincipal.getBusiness().getId(), 2013));
-		assertTrue(tranDocs == businessService.getTransportDocuments(authenticatedPrincipal.getBusiness().getId(), 2013));
+		List<InvoiceDTO> invoices = businessService.getInvoices(authenticatedPrincipal.getBusiness().getId(), 2015);
+		List<EstimationDTO> estimations = businessService.getEstimations(authenticatedPrincipal.getBusiness().getId(), 2015);
+		List<CreditNoteDTO> credNotes = businessService.getCreditNotes(authenticatedPrincipal.getBusiness().getId(), 2015);
+		List<TransportDocumentDTO> tranDocs = businessService.getTransportDocuments(authenticatedPrincipal.getBusiness().getId(), 2015);
+		assertTrue(invoices == businessService.getInvoices(authenticatedPrincipal.getBusiness().getId(), 2015));
+		assertTrue(estimations == businessService.getEstimations(authenticatedPrincipal.getBusiness().getId(), 2015));
+		assertTrue(credNotes == businessService.getCreditNotes(authenticatedPrincipal.getBusiness().getId(), 2015));
+		assertTrue(tranDocs == businessService.getTransportDocuments(authenticatedPrincipal.getBusiness().getId(), 2015));
 		clientService.update(authenticatedPrincipal.getBusiness().getId(), ClientDTOTransformer.toDTO(client));
 		Set<ClientDTO> notCachedClients = new HashSet<ClientDTO>(businessGwtService.getClients(authenticatedPrincipal.getBusiness().getId()));
 		assertTrue(!clients.equals(notCachedClients));
 		Integer cachedCount = businessGwtService.countClients(authenticatedPrincipal.getBusiness().getId());
 		assertTrue(count.equals(cachedCount));
-		assertTrue(invoices != businessService.getInvoices(authenticatedPrincipal.getBusiness().getId(), 2013));
-		assertTrue(estimations != businessService.getEstimations(authenticatedPrincipal.getBusiness().getId(), 2013));
-		assertTrue(credNotes != businessService.getCreditNotes(authenticatedPrincipal.getBusiness().getId(), 2013));
-		assertTrue(tranDocs != businessService.getTransportDocuments(authenticatedPrincipal.getBusiness().getId(), 2013));
+		assertTrue(invoices != businessService.getInvoices(authenticatedPrincipal.getBusiness().getId(), 2015));
+		assertTrue(estimations != businessService.getEstimations(authenticatedPrincipal.getBusiness().getId(), 2015));
+		assertTrue(credNotes != businessService.getCreditNotes(authenticatedPrincipal.getBusiness().getId(), 2015));
+		assertTrue(tranDocs != businessService.getTransportDocuments(authenticatedPrincipal.getBusiness().getId(), 2015));
 	}
 	
 	@Test
@@ -274,7 +247,7 @@ public class CachingTest extends ServiceTest {
 		BigDecimal totals = businessGwtService.getTotalsForYear(businessID, new Integer(testProps.get("year"))).getSecond();
 		
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
-		InvoiceDTO invDTO = InvoiceDTOTransformer.toDTO(TestUtils.createInvOrCredNote(authenticatedPrincipal.getBusiness().getNextInvoiceDocumentID(), Invoice.class), true);
+		InvoiceDTO invDTO = InvoiceDTOTransformer.toDTO(TestUtils.createInvOrCredNote(authenticatedPrincipal.getBusiness().getNextInvoiceDocumentID(null), Invoice.class), true);
 		invDTO.setClient(ClientDTOTransformer.toDTO(client));
 		invDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		invoiceService.add(invDTO);
@@ -948,6 +921,55 @@ public class CachingTest extends ServiceTest {
 		clientAddressDTO.setClient(ClientDTOTransformer.toDTO(client));
 		clientService.updateClientAddress(clientAddressDTO);
 		assertTrue(uncachedRes != clientService.getClientAddresses(clientID));
+	}
+
+
+	@Test
+	public void docIDClassAddCacheTest() throws NotAuthenticatedException, DataAccessException, ValidationException, FreeUserAccessForbiddenException, NoSuchObjectException{
+		Long businessID = authenticatedPrincipal.getBusiness().getId();
+		Set<DocumentIDClassDTO> docIDClasses = new HashSet<DocumentIDClassDTO>(businessService.getDocumentIdClasses(businessID));
+		DocumentIDClassDTO docIDClassDTO = DocumentIDClassDTOTransformer.toDTO(TestUtils.createDocumentIDClass());
+		docIDClassDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
+		Long id = authenticatedPrincipal.getBusiness().getPriceLists().iterator().next().getId();
+		docIDClassService.add(businessID, docIDClassDTO);
+		DocumentIDClass.entityManager().flush();
+		Set<DocumentIDClassDTO> notCachedDocIDClasses = new HashSet<DocumentIDClassDTO>(businessService.getDocumentIdClasses(businessID));
+		assertTrue(!docIDClasses.equals(notCachedDocIDClasses));
+		assertTrue(docIDClasses.size() + 1 == notCachedDocIDClasses.size());
+	}
+
+	@Test
+	public void docIDClassUpdateCacheTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException{
+		Long businessID = authenticatedPrincipal.getBusiness().getId();
+		DocumentIDClassDTO docIDClassDTO = DocumentIDClassDTOTransformer.toDTO(TestUtils.createDocumentIDClass());
+		docIDClassDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(businessID)));
+		Long id = docIDClassService.add(businessID, docIDClassDTO);
+		DocumentIDClass.entityManager().flush();
+		Set<DocumentIDClassDTO> docIDClasses = new HashSet<DocumentIDClassDTO>(businessService.getDocumentIdClasses(businessID));
+		DocumentIDClass docIDClass = DocumentIDClass.findDocumentIDClass(id);
+		docIDClass.setSuffix("bbis");
+		docIDClassDTO = DocumentIDClassDTOTransformer.toDTO(docIDClass);
+		docIDClassDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(businessID)));
+
+		docIDClassService.update(businessID, docIDClassDTO);
+		Set<DocumentIDClassDTO> nonCachedDocIdClasses = new HashSet<DocumentIDClassDTO>(businessService.getDocumentIdClasses(businessID));
+		assertTrue(!docIDClasses.equals(nonCachedDocIdClasses));
+		assertTrue(docIDClasses.size() == nonCachedDocIdClasses.size());
+	}
+
+	@Test
+	public void docIDClassRemoveCacheTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException{
+		Long businessID = authenticatedPrincipal.getBusiness().getId();
+		DocumentIDClassDTO docClassIdDTO = DocumentIDClassDTOTransformer.toDTO(TestUtils.createDocumentIDClass());
+		docClassIdDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(businessID)));
+		Long id = docIDClassService.add(businessID, docClassIdDTO);
+		DocumentIDClass.entityManager().flush();
+		Set<DocumentIDClassDTO> docIDClasses = new HashSet<DocumentIDClassDTO>(businessService.getDocumentIdClasses(businessID));
+		docIDClassService.remove(businessID, id);
+		DocumentIDClass.entityManager().flush();
+		Set<DocumentIDClassDTO> nonCachedDocIDClasses = new HashSet<DocumentIDClassDTO>(businessService.getDocumentIdClasses(businessID));
+		assertTrue(!docIDClasses.equals(nonCachedDocIDClasses));
+		assertTrue(docIDClasses.size() == nonCachedDocIDClasses.size() + 1);
 	}
 	
 }

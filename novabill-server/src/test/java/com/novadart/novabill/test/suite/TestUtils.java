@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.novadart.novabill.domain.DocumentIDClass;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
@@ -79,6 +80,7 @@ public class TestUtils {
 		estimationValidationFieldsMap = new HashMap<String, Field>(accountingDocumentValidationFieldsMap);
 		estimationValidationFieldsMap.putAll(new HashMap<String, Field>(){{
 			put("limitations", Field.limitations); put("validTill", Field.validTill);
+			put("termsAndConditions", Field.termsAndConditions);
 		}});
 		
 		transportDocValidationFieldsMap = new HashMap<String, Field>(accountingDocumentValidationFieldsMap);
@@ -381,6 +383,12 @@ public class TestUtils {
 		clientAddress.setCity("Galluccio");
 		clientAddress.setCountry("IT");
 		return clientAddress;
+	}
+
+	public static DocumentIDClass createDocumentIDClass(){
+		DocumentIDClass docIDClass = new DocumentIDClass();
+		docIDClass.setSuffix("uuid");
+		return docIDClass;
 	}
 	
 }

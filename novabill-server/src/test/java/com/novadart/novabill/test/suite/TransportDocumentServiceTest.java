@@ -276,7 +276,7 @@ public class TransportDocumentServiceTest extends ServiceTest {
 		client.setBusiness(authenticatedPrincipal.getBusiness());
 		Long clientID = clientService.add(authenticatedPrincipal.getBusiness().getId(), ClientDTOTransformer.toDTO(client));
 		
-		TransportDocumentDTO transDocDTO = TransportDocumentDTOTransformer.toDTO(TestUtils.createTransportDocument(authenticatedPrincipal.getBusiness().getNextInvoiceDocumentID()), true);
+		TransportDocumentDTO transDocDTO = TransportDocumentDTOTransformer.toDTO(TestUtils.createTransportDocument(authenticatedPrincipal.getBusiness().getNextInvoiceDocumentID(null)), true);
 		transDocDTO.setClient(ClientDTOTransformer.toDTO(Client.findClient(clientID)));
 		transDocDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		transportDocService.add(transDocDTO);
@@ -335,7 +335,7 @@ public class TransportDocumentServiceTest extends ServiceTest {
 		transDocDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		transportDocService.add(transDocDTO);
 		TransportDocument.entityManager().flush();
-		Long nextInvID = invoiceService.getNextInvoiceDocumentID();
+		Long nextInvID = invoiceService.getNextInvoiceDocumentID(null);
 		List<TransportDocumentDTO> transDocDTOs = businessService.getTransportDocuments(authenticatedPrincipal.getBusiness().getId(), Calendar.getInstance().get(Calendar.YEAR));
 		List<Long> ids = new ArrayList<>(transDocDTOs.size());
 		for(TransportDocumentDTO dto: transDocDTOs)

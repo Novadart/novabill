@@ -20,6 +20,7 @@ public class InvoiceDTOTransformer extends AbstractInvoiceDTOTransformer {
 		invoiceDTO.setClient(ClientDTOTransformer.toDTO(invoice.getClient()));
 		invoiceDTO.setSeenByClientTime(invoice.getSeenByClientTime());
 		invoiceDTO.setEmailedToClient(invoice.isEmailedToClient());
+		invoiceDTO.setSplitPayment(invoice.isSplitPayment());
 		return invoiceDTO;
 	}
 	
@@ -31,6 +32,7 @@ public class InvoiceDTOTransformer extends AbstractInvoiceDTOTransformer {
 		invoice.setPaymentDeltaType(invoiceDTO.getPaymentDeltaType());
 		invoice.setSecondaryPaymentDateDelta(invoiceDTO.getSecondaryPaymentDateDelta());
 		invoice.setCreatedFromTransportDocuments(invoiceDTO.isCreatedFromTransportDocuments());
+		invoice.setSplitPayment(invoiceDTO.isSplitPayment());
 	}
 	
 }

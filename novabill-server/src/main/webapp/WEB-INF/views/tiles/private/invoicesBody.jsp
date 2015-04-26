@@ -7,8 +7,10 @@
 
 <script type="text/javascript">
 var documentYears = {
-        invoices : <%=request.getAttribute("invoiceYears")%>,
+        invoices : <%=request.getAttribute("invoiceYears")%>
 };
+
+var invoiceSuffixes = <%=request.getAttribute("invoiceSuffixes")%>;
 
 function onGWTLoaded(){
     angular.bootstrap(angular.element('.page-content'), ['novabill.invoices']);

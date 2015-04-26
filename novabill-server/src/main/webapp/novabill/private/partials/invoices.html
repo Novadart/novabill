@@ -9,28 +9,90 @@
 			</ul>
 			<!-- END PAGE TITLE & BREADCRUMB-->
 
-            <button type="button" class="btn green new-invoice pull-left" ng-click="newInvoiceClick()">{{'NEW_INVOICE' | translate}}</button>
-
-            <div class="docs-filter input-icon left pull-left">
-                <i class="fa fa-search"></i> <input type="text" class="form-control input-large" autofocus="autofocus" type="text"
-                    placeholder="{{'FILTER' | translate}}..." ng-model="query">
-            </div>
-
-			<n-year-selector class="pull-right" document-type="invoices" callback="loadInvoices(year)"></n-year-selector>
-
 		</div>
 	</div>
 
 	<div class="clearfix"></div>
 
 	<div class="row">
-		<div class="col-md-12" infinite-scroll="loadMoreInvoices()">
+		<div class="col-md-12">
 
-			<div class="invoices">
-				<img class="spinner" ng-show="invoices==null" src="../../private_assets/img/ajax-loading.gif">
-				<p class="no-data-message text-center text-info" ng-show="invoices && invoices.length===0">{{'NO_DATA' | translate}}</p>
-				<n-invoice invoice="inv" bottom-up-menu="!$first && $last" ng-repeat="inv in invoices"></n-invoice>
-			</div>
+			<tabset class="tabbable-custom">
+				<tab ng-click="onTabChange('invoices')" active="activeTab.invoices">
+					<tab-heading>
+						<i class="fa fa-file"></i> {{'INVOICES' | translate}}
+					</tab-heading>
+
+					<div class="container-fluid">
+						<div class="row">
+							<button type="button" class="btn green new-invoice pull-left" ng-click="newInvoiceClick()">{{'NEW_INVOICE' | translate}}</button>
+
+							<div class="docs-filter input-icon left pull-left">
+								<i class="fa fa-search"></i> <input type="text" class="form-control input-large" autofocus="autofocus" type="text"
+																	placeholder="{{'FILTER' | translate}}..." ng-model="query">
+							</div>
+
+							<n-year-selector class="pull-right" document-type="invoices" callback="loadInvoicesByYear(year)"></n-year-selector>
+
+							<n-suffix-selector class="pull-right suffix-selector" callback="loadInvoicesForClass(documentIdClass)"></n-suffix-selector>
+
+							<div class="clearfix"></div>
+
+							<div class="col-md-12" infinite-scroll="loadMoreInvoices()">
+
+								<div class="invoices">
+									<img class="spinner" ng-show="invoices==null" src="../../private_assets/img/ajax-loading.gif">
+									<p class="no-data-message text-center text-info" ng-show="invoices && invoices.length===0">{{'NO_DATA' | translate}}</p>
+									<n-invoice invoice="inv" bottom-up-menu="!$first && $last" ng-repeat="inv in invoices"></n-invoice>
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</tab>
+
+				<tab ng-click="onTabChange('docIdClasses')" active="activeTab.docIdClasses">
+					<tab-heading>
+						<i class="fa fa-book"></i> {{'DOCUMENT_ID_CLASSES' | translate}}
+					</tab-heading>
+					<div class="container-fluid">
+						<div class="row">
+
+							<button type="button" class="btn green new-doc-id-class" ng-click="newDocIDClass()">{{'NEW_DOC_ID_CLASS' | translate}}</button>
+
+							<div class="clearfix"></div>
+
+							<div class="col-md-12">
+
+								<div class="transporters">
+									<img class="spinner" ng-show="docIdClasses==null" src="../../private_assets/img/ajax-loading.gif">
+									<p class="no-data-message text-center text-info" ng-show="docIdClasses && docIdClasses.length===0">{{'NO_DATA' | translate}}</p>
+
+
+									<div class="well" style="position: relative;" ng-repeat="d in docIdClasses">
+										<div style="text-transform: uppercase; font-weight: bold; font-size: larger;">{{d.suffix}}</div>
+
+										<div  style="position: absolute; right: 20px; bottom: 15px;">
+											<a href="javascript: void(0)" ng-click="editDocIDClass(d)" class="btn btn-sm blue">
+												<i class="fa fa-edit"></i>
+												{{'EDIT' | translate}}</a>
+											<a href="javascript: void(0)" ng-click="removeDocIDClass(d)" class="btn btn-sm red">
+												<i class="fa fa-trash-o"></i>
+												{{'DELETE' | translate}}
+											</a>
+										</div>
+									</div>
+
+								</div>
+
+							</div>
+
+						</div>
+
+					</div>
+				</tab>
+
+			</tabset>
 
 		</div>
 	</div>

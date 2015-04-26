@@ -13,6 +13,8 @@ public class AccountingDocumentDTO implements IsSerializable {
 	protected Long id;
 	
 	protected Long documentID;
+
+	protected String documentIDSuffix;
 	
 	protected Date accountingDocumentDate;
 	
@@ -56,7 +58,14 @@ public class AccountingDocumentDTO implements IsSerializable {
 		this.documentID = documentID;
 	}
 
-	
+	public String getDocumentIDSuffix() {
+		return documentIDSuffix;
+	}
+
+	public void setDocumentIDSuffix(String documentIDSuffix) {
+		this.documentIDSuffix = documentIDSuffix;
+	}
+
 	public Date getAccountingDocumentDate() {
 		return accountingDocumentDate;
 	}

@@ -14,6 +14,7 @@ public abstract class AccountingDocumentDTOTransformer {
 	protected static void copyToDTO(AccountingDocument accountingDocument, AccountingDocumentDTO accountingDocumentDTO, boolean copyItems) {
 		accountingDocumentDTO.setId(accountingDocument.getId());
 		accountingDocumentDTO.setDocumentID(accountingDocument.getDocumentID());
+		accountingDocumentDTO.setDocumentIDSuffix(accountingDocument.getDocumentIDSuffix());
 		accountingDocumentDTO.setAccountingDocumentDate(accountingDocument.getAccountingDocumentDate());
 		accountingDocumentDTO.setNote(accountingDocument.getNote());
 		accountingDocumentDTO.setLayoutType(accountingDocument.getLayoutType());
@@ -33,6 +34,7 @@ public abstract class AccountingDocumentDTOTransformer {
 	
 	public static void copyFromDTO(AccountingDocument accountingDocument, AccountingDocumentDTO accountingDocumentDTO, boolean addItems){
 		accountingDocument.setDocumentID(accountingDocumentDTO.getDocumentID());
+		accountingDocument.setDocumentIDSuffix(accountingDocumentDTO.getDocumentIDSuffix());
 		accountingDocument.setAccountingDocumentDate(accountingDocumentDTO.getAccountingDocumentDate());
 		accountingDocument.setNote(accountingDocumentDTO.getNote());
 		accountingDocument.setLayoutType(accountingDocumentDTO.getLayoutType());

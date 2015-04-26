@@ -1,6 +1,8 @@
 package com.novadart.novabill.frontend.client.place.invoice;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.google.gwt.place.shared.Place;
@@ -8,14 +10,25 @@ import com.google.gwt.place.shared.PlaceTokenizer;
 import com.google.gwt.place.shared.Prefix;
 import com.novadart.novabill.frontend.client.place.HistoryPrefix;
 import com.novadart.novabill.frontend.client.place.HistoryUtils;
+import com.novadart.novabill.shared.client.dto.DocumentIDClassDTO;
 
 public abstract class InvoicePlace extends Place {
-	
+
+	private List<DocumentIDClassDTO> documentIDClassDTOs = new ArrayList<DocumentIDClassDTO>();
+
 	public static String ARG_ID = "id";
 	public static String ARG_CLONE = "clone";
 	public static String ARG_CLIENT = "client";
 	public static String ARG_ESTIMATION = "estimation";
 	public static String ARG_TRANSPORT_DOCUMENT = "transport_doc";
+
+	public List<DocumentIDClassDTO> getDocumentIDClassDTOs() {
+		return documentIDClassDTOs;
+	}
+
+	public void setDocumentIDClassDTOs(List<DocumentIDClassDTO> documentIDClassDTOs) {
+		this.documentIDClassDTOs = documentIDClassDTOs;
+	}
 
 	@Prefix(value=HistoryPrefix.INVOICE)
 	public static class Tokenizer implements PlaceTokenizer<InvoicePlace> {

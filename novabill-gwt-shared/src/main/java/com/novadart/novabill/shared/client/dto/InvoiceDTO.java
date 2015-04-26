@@ -21,6 +21,8 @@ public class InvoiceDTO extends AbstractInvoiceDTO implements IsSerializable {
 	private Long seenByClientTime;
 	
 	private boolean emailedToClient;
+
+	private boolean splitPayment;
 	
     private List<Long> transportDocumentIDs;
     
@@ -114,4 +116,11 @@ public class InvoiceDTO extends AbstractInvoiceDTO implements IsSerializable {
 		this.emailedToClient = emailedToClient;
 	}
 
+	public boolean isSplitPayment() {
+		return splitPayment;
+	}
+
+	public void setSplitPayment(boolean splitPayment) {
+		this.splitPayment = splitPayment;
+	}
 }

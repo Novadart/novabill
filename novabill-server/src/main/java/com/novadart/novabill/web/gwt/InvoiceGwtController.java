@@ -34,8 +34,17 @@ public class InvoiceGwtController extends AbstractGwtController implements Invoi
 		return invoiceService.getAllInRange(businessID, year, start, length);
 	}
 
+	public PageDTO<InvoiceDTO> getAllInRange(Long businessID, Integer year, String suffix, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException {
+		return invoiceService.getAllInRange(businessID, year, suffix, start, length);
+	}
+
 	public List<InvoiceDTO> getAllForClient(Long clientID, Integer year) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException {
 		return invoiceService.getAllForClient(clientID, year);
+	}
+
+	@Override
+	public List<InvoiceDTO> getAllForClient(Long clientID, Integer year, String suffix) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException {
+		return invoiceService.getAllForClient(clientID, year, suffix);
 	}
 
 	public Long add(InvoiceDTO invoiceDTO) throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, DataIntegrityException {
@@ -46,8 +55,8 @@ public class InvoiceGwtController extends AbstractGwtController implements Invoi
 		invoiceService.update(invoiceDTO);
 	}
 
-	public Long getNextInvoiceDocumentID() throws NotAuthenticatedException, DataAccessException {
-		return invoiceService.getNextInvoiceDocumentID();
+	public Long getNextInvoiceDocumentID(String suffix) throws NotAuthenticatedException, DataAccessException {
+		return invoiceService.getNextInvoiceDocumentID(suffix);
 	}
 
 	public void remove(Long businessID, Long clientID, Long id) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, DataIntegrityException {

@@ -6,7 +6,7 @@ package com.novadart.novabill.shared.client.validation;
  */
 public enum Field {
 	//Accounting document fields
-	documentID, accountingDocumentDate, accountingDocumentYear, note, paymentNote, layoutType, total, totalTax, totalBeforeTax,
+	documentID, documentIDSuffix, accountingDocumentDate, accountingDocumentYear, note, paymentNote, layoutType, total, totalTax, totalBeforeTax,
 	
 	//Accounting document item fields
 	accountingDocumentItems_description, accountingDocumentItems_unitOfMeasure, accountingDocumentItems_tax, accountingDocumentItems_quantity,
@@ -16,7 +16,7 @@ public enum Field {
 	paymentDueDate, payed, paymentTypeName, paymentDeltaType, createdFromTransportDocuments, seenByClient,
 	
 	//Estimation
-	limitations, validTill,
+	limitations, validTill, termsAndConditions,
 	
 	//TransportDocument fromEndpoint fields
 	fromEndpoint_companyName, fromEndpoint_street, fromEndpoint_postcode, fromEndpoint_city, fromEndpoint_province, fromEndpoint_country,
@@ -51,5 +51,8 @@ public enum Field {
 	emailSubject, emailText, emailReplyTo,
 	
 	//Email
-	to, from, subject, text, replyTo, message
+	to, from, subject, text, replyTo, message,
+
+	//Document id class
+	suffix
 }

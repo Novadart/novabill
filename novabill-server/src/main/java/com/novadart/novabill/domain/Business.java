@@ -1,36 +1,11 @@
 package com.novadart.novabill.domain;
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.io.StringReader;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.EntityManager;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Transient;
-import javax.validation.Valid;
-import javax.validation.constraints.Size;
-
+import com.novadart.novabill.annotation.Trimmed;
+import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.service.validator.Groups.HeavyBusiness;
+import com.novadart.novabill.shared.client.data.FilteringDateType;
+import com.novadart.novabill.shared.client.dto.PageDTO;
+import com.novadart.utils.fts.TermValueFilterFactory;
 import org.apache.commons.lang.StringUtils;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
@@ -38,11 +13,8 @@ import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.search.BooleanClause.Occur;
-import org.apache.lucene.search.BooleanQuery;
-import org.apache.lucene.search.FuzzyQuery;
-import org.apache.lucene.search.PrefixQuery;
+import org.apache.lucene.search.*;
 import org.apache.lucene.search.Query;
-import org.apache.lucene.search.TermQuery;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.search.annotations.Field;
@@ -55,12 +27,15 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.novadart.novabill.annotation.Trimmed;
-import com.novadart.novabill.domain.security.Principal;
-import com.novadart.novabill.service.validator.Groups.HeavyBusiness;
-import com.novadart.novabill.shared.client.data.FilteringDateType;
-import com.novadart.novabill.shared.client.dto.PageDTO;
-import com.novadart.utils.fts.TermValueFilterFactory;
+import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.Size;
+import java.io.IOException;
+import java.io.Serializable;
+import java.io.StringReader;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /*
  * Important note!
@@ -187,6 +162,9 @@ public class Business implements Serializable, Taxable {
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
     private Set<Notification> notifications = new HashSet<>();
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
+	private Set<DocumentIDClass> documentIDClasses = new HashSet<>();
     
     public List<Invoice> getAllInvoicesInRange(int start, int length){
     	String query = "select invoice from Invoice invoice where invoice.business.id = :id order by invoice.accountingDocumentYear desc, invoice.documentID desc";
@@ -208,29 +186,31 @@ public class Business implements Serializable, Taxable {
     	return entityManager().createQuery(query, TransportDocument.class).setParameter("id", getId()).setFirstResult(start).setMaxResults(length).getResultList();
     }
     
-    public <T extends AccountingDocument> Long getNextAccountingDocDocumentID(Class<T> cls){
-    	String query = String.format("select max(o.documentID) from %s o where o.business.id = :businessId and o.accountingDocumentYear = :year",
-    									cls.getSimpleName());
-    	Long id = entityManager.createQuery(query, Long.class)
+    public <T extends AccountingDocument> Long getNextAccountingDocDocumentID(Class<T> cls, String suffix){
+    	String sql = String.format("select max(o.documentID) from %s o where o.business.id = :businessId and o.accountingDocumentYear = :year and ",
+				cls.getSimpleName());
+		sql += suffix == null? "o.documentIDSuffix is NULL": "lower(o.documentIDSuffix) = lower(:suffix)";
+		TypedQuery<Long> query = entityManager.createQuery(sql, Long.class)
     			.setParameter("businessId", getId())
-    			.setParameter("year", Calendar.getInstance().get(Calendar.YEAR)).getSingleResult(); 
+    			.setParameter("year", Calendar.getInstance().get(Calendar.YEAR));
+		Long id = (suffix == null? query: query.setParameter("suffix", suffix)).getSingleResult();
     	return (id == null)? 1: id + 1;
     }
-    
-    public Long getNextInvoiceDocumentID(){
-    	return getNextAccountingDocDocumentID(Invoice.class);
+
+    public Long getNextInvoiceDocumentID(String suffix){
+    	return getNextAccountingDocDocumentID(Invoice.class, suffix);
     }
     
     public Long getNextCreditNoteDocumentID(){
-    	return getNextAccountingDocDocumentID(CreditNote.class);
+    	return getNextAccountingDocDocumentID(CreditNote.class, null);
     }
     
     public Long getNextEstimationDocumentID(){
-    	return getNextAccountingDocDocumentID(Estimation.class);
+    	return getNextAccountingDocDocumentID(Estimation.class, null);
     }
     
     public Long getNextTransportDocDocumentID(){
-    	return getNextAccountingDocDocumentID(TransportDocument.class);
+    	return getNextAccountingDocDocumentID(TransportDocument.class, null);
     }
     
     private <T extends AccountingDocument> List<T> fetchAccountingDocsEagerly(Class<T> cls, Integer year){
@@ -257,10 +237,6 @@ public class Business implements Serializable, Taxable {
     	return fetchAccountingDocsEagerly(TransportDocument.class, year);
     }
     
-    public List<Long> getCurrentYearInvoicesDocumentIDs(){
-    	return getCurrentYearDocumentsIDs(Invoice.class);
-    }
-    
     private <T extends AccountingDocument> List<Integer> getAccountingDocsYears(Class<T> cls){
     	String query = String.format("select distinct doc.accountingDocumentYear from %s doc where doc.business.id = :id order by doc.accountingDocumentYear ", cls.getSimpleName());
     	return entityManager.createQuery(query, Integer.class).setParameter("id", getId()).getResultList();
@@ -282,19 +258,23 @@ public class Business implements Serializable, Taxable {
     	return getAccountingDocsYears(TransportDocument.class);
     }
     
-    public <T extends AccountingDocument> List<Long> getCurrentYearDocumentsIDs(Class<T> cls){
-    	String query = String.format("select o.documentID from %s as o where o.business.id = :businessId and o.accountingDocumentYear = :year order by o.documentID", cls.getSimpleName());
-    	return entityManager.createQuery(query, Long.class)
+    public <T extends AccountingDocument> List<Long> getCurrentYearDocumentsIDs(Class<T> cls, String suffix){
+    	String sql = String.format("select o.documentID from %s as o where o.business.id = :businessId and o.accountingDocumentYear = :year and ", cls.getSimpleName());
+        sql += (suffix == null? "o.documentIDSuffix is NULL": "lower(o.documentIDSuffix) = lower(:suffix)") + "order by o.documentID";
+    	TypedQuery<Long> query = entityManager.createQuery(sql, Long.class)
     			.setParameter("businessId", getId())
-    			.setParameter("year", Calendar.getInstance().get(Calendar.YEAR)).getResultList();
+    			.setParameter("year", Calendar.getInstance().get(Calendar.YEAR));
+        return (suffix == null? query: query.setParameter("suffix", suffix)).getResultList();
     }
     
-    public <T extends AccountingDocument> List<T> getDocsByIdInYear(Class<T> cls, Long documentID, Integer year){
-    	String query = String.format("select o from %s o where o.business.id = :businessId and o.accountingDocumentYear = :year and o.documentID = :id", cls.getSimpleName());
-    	return entityManager().createQuery(query, cls)
+    public <T extends AccountingDocument> List<T> getDocsByIdInYear(Class<T> cls, Long documentID, String suffix, Integer year){
+    	String sql = String.format("select o from %s o where o.business.id = :businessId and o.accountingDocumentYear = :year and o.documentID = :id and ", cls.getSimpleName());
+        sql += suffix == null? "o.documentIDSuffix is NULL": "lower(o.documentIDSuffix) = lower(:suffix)";
+    	TypedQuery<T> query = entityManager().createQuery(sql, cls)
     			.setParameter("businessId", getId())
     			.setParameter("year", year)
-    			.setParameter("id", documentID).getResultList();
+    			.setParameter("id", documentID);
+        return (suffix == null? query: query.setParameter("suffix", suffix)).getResultList();
     }
     
     private static Date createDateFromString(String dateString){
@@ -699,8 +679,16 @@ public class Business implements Serializable, Taxable {
 	public void setLogRecords(Set<LogRecord> logRecords) {
 		this.logRecords = logRecords;
 	}
-	
-    /*
+
+	public Set<DocumentIDClass> getDocumentIDClasses() {
+		return documentIDClasses;
+	}
+
+	public void setDocumentIDClasses(Set<DocumentIDClass> documentIDClasses) {
+		this.documentIDClasses = documentIDClasses;
+	}
+
+	/*
      * End of getters and setters section
      * */
     

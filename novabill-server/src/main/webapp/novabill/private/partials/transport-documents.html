@@ -18,7 +18,7 @@
 	   <div class="col-md-12" >
 	   
 	       <tabset class="tabbable-custom">
-                <tab select="onTabChange('transportdocuments')" active="activeTab.transportdocuments">
+                <tab ng-click="onTabChange('transportdocuments')" active="activeTab.transportdocuments">
                     <tab-heading>
                         <i class="fa fa-file"></i> {{'TRANSPORT_DOCUMENTS' | translate}}
                     </tab-heading>
@@ -49,7 +49,7 @@
                     </div>
                 </tab>
                 
-                <tab select="onTabChange('transporters')" active="activeTab.transporters">
+                <tab ng-click="onTabChange('transporters')" active="activeTab.transporters">
                     <tab-heading>
                         <i class="fa fa-truck"></i> {{'TRANSPORTERS_LIST' | translate}}
                     </tab-heading>

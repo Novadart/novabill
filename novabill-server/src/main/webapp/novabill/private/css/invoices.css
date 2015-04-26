@@ -10,3 +10,13 @@ div.invoices {
     margin: 0 auto;
     display: block;
 }
+
+.suffix-selector {
+    margin-right: 20px;
+}
+
+.new-doc-id-class {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 16px;
+}

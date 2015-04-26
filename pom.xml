@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.novadart.novabill</groupId>
 	<artifactId>novabill</artifactId>
-	<version>3.4.3</version>
+	<version>3.5</version>
 	<packaging>pom</packaging>
 
 	<name>Novabill</name>
@@ -56,17 +56,15 @@
 	<modules>
 		<module>novabill-gwt-client</module>
 		<module>novabill-gwt-shared</module>
-        <module>novabill-android-client</module>
 		<module>novabill-android-shared</module>
-		<!-- <module>novabill-android-it</module> -->
 		<module>novabill-server</module>
 	</modules>
 
 	<dependencyManagement>
-		<dependencies>
-
+		<dependencies> 
+   
 			<!-- Novabill internal dependencies -->
-			<dependency>
+			<dependency> 
 				<groupId>${project.groupId}</groupId>
 				<artifactId>novabill-gwt-shared</artifactId>
 				<version>${project.version}</version>
@@ -111,6 +109,11 @@
 			<dependency>
 				<groupId>com.google.gwt</groupId>
 				<artifactId>gwt-user</artifactId>
+				<version>${gwt.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.google.gwt</groupId>
+				<artifactId>gwt-dev</artifactId>
 				<version>${gwt.version}</version>
 			</dependency>
 			<dependency>

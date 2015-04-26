@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>novabill</artifactId>
 		<groupId>com.novadart.novabill</groupId>
-		<version>3.4.3</version>
+		<version>3.5</version>
 	</parent>
 	<artifactId>novabill-gwt-client</artifactId>
 	<packaging>war</packaging>
@@ -19,6 +19,10 @@
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-user</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-dev</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.novadart</groupId>

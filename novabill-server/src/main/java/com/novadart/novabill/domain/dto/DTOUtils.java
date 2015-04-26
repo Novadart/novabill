@@ -105,7 +105,7 @@ public class DTOUtils {
 	}
 	
 	public static <T extends AccountingDocumentDTO> Collection<T> filter(Collection<T> collection, Predicate<T> pred){
-		ArrayList<T> filtered = new ArrayList<T>();
+		ArrayList<T> filtered = new ArrayList<T>(collection.size());
 		Iterator<T> iter = collection.iterator();
 		T doc;
 		while(iter.hasNext())

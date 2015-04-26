@@ -14,6 +14,7 @@ import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.PriceList;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.web.CacheEvictHooksService;
+
 import com.novadart.novabill.shared.client.dto.ClientAddressDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;
@@ -24,6 +25,7 @@ import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 import com.novadart.novabill.shared.client.dto.PriceListDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.dto.TransporterDTO;
+import com.novadart.novabill.shared.client.dto.DocumentIDClassDTO;
 
 public privileged aspect CachingAspect {
 	
@@ -75,6 +77,8 @@ public privileged aspect CachingAspect {
 	public static final String TRANSPORTER_CACHE = "transporter-cache";
 	
 	public static final String CLIENTADDRESS_CACHE = "clientaddress-cache";
+
+	public static final String DOCUMENTIDCLASSES_CACHE = "documentidclasses-cache";
 	
 	//declare @method : public BusinessDTO com.novadart.novabill.service.web.BusinessServiceImpl.get(Long): @Cacheable(value = BUSINESS_CACHE, key = "#businessID");
 	
@@ -111,6 +115,8 @@ public privileged aspect CachingAspect {
 	declare @method : public List<Integer> com.novadart.novabill.service.web.BusinessServiceImpl.getEstimationYears(Long): @Cacheable(value = DOCSYEARS_CACHE, key = "#businessID.toString().concat('-estimations')");
 	
 	declare @method : public List<Integer> com.novadart.novabill.service.web.BusinessServiceImpl.getTransportDocumentYears(Long): @Cacheable(value = DOCSYEARS_CACHE, key = "#businessID.toString().concat('-transportdocs')");
+
+	declare @method : public List<DocumentIDClassDTO> com.novadart.novabill.service.web.DocumentIDClassService.getAll(Long): @Cacheable(value = DOCUMENTIDCLASSES_CACHE, key = "#businessID");
 	
 	//declare @method : public void com.novadart.novabill.service.web.BusinessServiceImpl.update(BusinessDTO): @CacheEvict(value = BUSINESS_CACHE, key = "#businessDTO.id");
 	
@@ -323,6 +329,18 @@ public privileged aspect CachingAspect {
 		for(PriceList priceList: Business.findBusiness(businessID).getPriceLists())
 			cacheEvictHooksService.evictPriceList(priceList.getId());
 	}
+
+
+	/*
+	 * Document id class caching
+	 * Dependencies: None
+	 */
+
+	declare @method : public boolean com.novadart.novabill.service.web.DocumentIDClassService.remove(Long, Long): @CacheEvict(value = DOCUMENTIDCLASSES_CACHE, key = "#businessID");
+
+	declare @method : public Long com.novadart.novabill.service.web.DocumentIDClassService.add(Long, DocumentIDClassDTO): @CacheEvict(value = DOCUMENTIDCLASSES_CACHE, key = "#businessID");
+
+	declare @method : public void com.novadart.novabill.service.web.DocumentIDClassService.update(Long, DocumentIDClassDTO): @CacheEvict(value = DOCUMENTIDCLASSES_CACHE, key = "#businessID");
 	
 	
 }

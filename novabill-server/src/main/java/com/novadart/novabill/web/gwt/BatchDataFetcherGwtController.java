@@ -2,6 +2,8 @@ package com.novadart.novabill.web.gwt;
 
 import java.util.List;
 
+import com.novadart.novabill.domain.DocumentIDClass;
+import com.novadart.novabill.service.web.DocumentIDClassService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.novadart.novabill.domain.Client;
@@ -50,37 +52,49 @@ public class BatchDataFetcherGwtController extends AbstractGwtController impleme
 
 	@Autowired
 	private PriceListService priceListService;
-	
+
+	@Autowired
+	private DocumentIDClassService docIDClassService;
+
 	@Autowired
 	private UtilsService utilsService;
 	
 	private PaymentTypeDTO getDefaultPaymentTypeDTO(Long paymentTypeID) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException{
 		return paymentTypeID == null? null: paymentTypeService.get(paymentTypeID);
 	}
-	
+
+	private String getInvoiceDocumentIDSuffixForClient(Long clientID) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException {
+		Long documentIDClassID = clientService.get(clientID).getDefaultDocumentIDClassID();
+		return documentIDClassID == null? null: DocumentIDClass.findDocumentIDClass(documentIDClassID).getSuffix();
+	}
+
 	@Override
 	public Triple<Long, ClientDTO, PaymentTypeDTO> fetchNewInvoiceForClientOpData(Long clientID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
 		ClientDTO clientDTO = clientService.get(clientID);
-		return new Triple<Long, ClientDTO, PaymentTypeDTO>(invoiceService.getNextInvoiceDocumentID(), clientDTO, getDefaultPaymentTypeDTO(clientDTO.getDefaultPaymentTypeID()));
+		String suffix = getInvoiceDocumentIDSuffixForClient(clientID);
+		return new Triple<Long, ClientDTO, PaymentTypeDTO>(invoiceService.getNextInvoiceDocumentID(suffix), clientDTO, getDefaultPaymentTypeDTO(clientDTO.getDefaultPaymentTypeID()));
 	}
 
 	@Override
 	public Triple<Long, EstimationDTO, PaymentTypeDTO> fetchNewInvoiceFromEstimationOpData(Long estimationID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
 		EstimationDTO estimationtDTO = estimationService.get(estimationID);
-		return new Triple<Long, EstimationDTO, PaymentTypeDTO>(invoiceService.getNextInvoiceDocumentID(), estimationtDTO,
+		String suffix = getInvoiceDocumentIDSuffixForClient(estimationtDTO.getClient().getId());
+		return new Triple<Long, EstimationDTO, PaymentTypeDTO>(invoiceService.getNextInvoiceDocumentID(suffix), estimationtDTO,
 				getDefaultPaymentTypeDTO(estimationtDTO.getClient().getDefaultPaymentTypeID()));
 	}
 
 	@Override
 	public Triple<Long, TransportDocumentDTO, PaymentTypeDTO> fetchNewInvoiceFromTransportDocumentOpData(Long transportDocumentID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
 		TransportDocumentDTO transDocDTO = transportDocService.get(transportDocumentID);
-		return new Triple<Long, TransportDocumentDTO, PaymentTypeDTO>(invoiceService.getNextInvoiceDocumentID(), transDocDTO,
+		String suffix = getInvoiceDocumentIDSuffixForClient(transDocDTO.getClient().getId());
+		return new Triple<Long, TransportDocumentDTO, PaymentTypeDTO>(invoiceService.getNextInvoiceDocumentID(suffix), transDocDTO,
 				getDefaultPaymentTypeDTO(transDocDTO.getClient().getDefaultPaymentTypeID()));
 	}
 
 	@Override
 	public Triple<Long, ClientDTO, InvoiceDTO> fetchCloneInvoiceOpData(Long invoiceID, Long clientID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
-		return new Triple<Long, ClientDTO, InvoiceDTO>(invoiceService.getNextInvoiceDocumentID(), clientService.get(clientID), invoiceService.get(invoiceID));
+		String suffix = getInvoiceDocumentIDSuffixForClient(clientID);
+		return new Triple<Long, ClientDTO, InvoiceDTO>(invoiceService.getNextInvoiceDocumentID(suffix), clientService.get(clientID), invoiceService.get(invoiceID));
 	}
 
 	@Override
@@ -118,8 +132,11 @@ public class BatchDataFetcherGwtController extends AbstractGwtController impleme
 		if(transportDocumentIDs.size() == 0)
 			throw new IllegalArgumentException();
 		List<TransportDocumentDTO> transportDocDTOs = transportDocService.getAllWithIDs(transportDocumentIDs);
-		Long defaultPaymentTypeID = transportDocDTOs.get(0).getClient().getDefaultPaymentTypeID(); 
-		return new Triple<Long, List<TransportDocumentDTO>, PaymentTypeDTO>(invoiceService.getNextInvoiceDocumentID(),
+		Long defaultPaymentTypeID = transportDocDTOs.get(0).getClient().getDefaultPaymentTypeID();
+		Long defaultDocumentIDClassID = transportDocDTOs.get(0).getClient().getDefaultDocumentIDClassID();
+		String suffix = defaultDocumentIDClassID == null? null:
+				docIDClassService.get(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId(), defaultDocumentIDClassID).getSuffix();
+		return new Triple<Long, List<TransportDocumentDTO>, PaymentTypeDTO>(invoiceService.getNextInvoiceDocumentID(suffix),
 				transportDocDTOs, defaultPaymentTypeID == null? null: paymentTypeService.get(defaultPaymentTypeID));
 	}
 

@@ -156,6 +156,9 @@ public class Client implements Serializable, Taxable {
 	private String note;
     
     private Long creationTime = System.currentTimeMillis();
+
+    @Column(columnDefinition = "boolean default false")
+    private boolean splitPaymentClient = false;
     
     @AttributeOverrides({
     	@AttributeOverride(name = "firstName", column = @Column(name = "contact_first_name")),
@@ -189,6 +192,9 @@ public class Client implements Serializable, Taxable {
     @IndexedEmbedded
     @JoinColumn(name = "business")
     private Business business;
+
+    @ManyToOne
+    private DocumentIDClass defaultDocumentIDClass;
     
     public List<Invoice> getSortedInvoices(){
     	return AccountingDocument.sortAccountingDocuments(getInvoices()); 
@@ -393,7 +399,15 @@ public class Client implements Serializable, Taxable {
 		this.creationTime = creationTime;
 	}
 
-	public Contact getContact() {
+    public boolean isSplitPaymentClient() {
+        return splitPaymentClient;
+    }
+
+    public void setSplitPaymentClient(boolean splitPaymentClient) {
+        this.splitPaymentClient = splitPaymentClient;
+    }
+
+    public Contact getContact() {
 		return contact;
 	}
 
@@ -448,7 +462,15 @@ public class Client implements Serializable, Taxable {
     public void setBusiness(Business business) {
         this.business = business;
     }
-    
+
+    public DocumentIDClass getDefaultDocumentIDClass() {
+        return defaultDocumentIDClass;
+    }
+
+    public void setDefaultDocumentIDClass(DocumentIDClass documentIDClass) {
+        this.defaultDocumentIDClass = documentIDClass;
+    }
+
     /*
      * End of getters and setters section
      * */

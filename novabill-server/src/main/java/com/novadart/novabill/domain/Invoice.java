@@ -64,6 +64,9 @@ public class Invoice extends AbstractInvoice implements Serializable {
 	@Column(columnDefinition = "boolean default false")
 	private boolean emailedToClient = false;
 
+	@Column(columnDefinition = "boolean default false")
+	private boolean splitPayment = false;
+
     @ManyToOne
     @JoinColumn(name = "business")
     protected Business business;
@@ -212,8 +215,16 @@ public class Invoice extends AbstractInvoice implements Serializable {
 	public void setPaymentTypeName(String paymentTypeName) {
 		this.paymentTypeName = paymentTypeName;
 	}
-    
-    public Business getBusiness() {
+
+	public boolean isSplitPayment() {
+		return splitPayment;
+	}
+
+	public void setSplitPayment(boolean splitPayment) {
+		this.splitPayment = splitPayment;
+	}
+
+	public Business getBusiness() {
         return this.business;
     }
     

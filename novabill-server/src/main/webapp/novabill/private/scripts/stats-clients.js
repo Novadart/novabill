@@ -16,8 +16,7 @@ angular.module("novabill.stats.clients", ['novabill.stats.controllers', 'novabil
 	
 	.when('/:clientID/:year', {
 		templateUrl: nConstantsProvider.url.htmlFragmentUrl('/stats-clients.html'),
-		controller: 'StatsClientsCtrl',
-		reloadOnSearch : false
+		controller: 'StatsClientsCtrl'
 	})
 	
 	.otherwise ({

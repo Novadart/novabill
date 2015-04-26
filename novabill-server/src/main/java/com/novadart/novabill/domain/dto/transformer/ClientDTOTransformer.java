@@ -2,6 +2,7 @@ package com.novadart.novabill.domain.dto.transformer;
 
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.Contact;
+import com.novadart.novabill.domain.DocumentIDClass;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 
 public class ClientDTOTransformer {
@@ -24,10 +25,12 @@ public class ClientDTOTransformer {
 		clientDTO.setWeb(client.getWeb());
 		clientDTO.setVatID(client.getVatID());
 		clientDTO.setSsn(client.getSsn());
-		clientDTO.setDefaultPaymentTypeID(client.getDefaultPaymentType() == null? null: client.getDefaultPaymentType().getId());
-		clientDTO.setDefaultPriceListID(client.getDefaultPriceList() == null? null: client.getDefaultPriceList().getId());
+		clientDTO.setDefaultPaymentTypeID(client.getDefaultPaymentType() == null ? null : client.getDefaultPaymentType().getId());
+		clientDTO.setDefaultPriceListID(client.getDefaultPriceList() == null ? null : client.getDefaultPriceList().getId());
+		clientDTO.setDefaultDocumentIDClassID(client.getDefaultDocumentIDClass() == null ? null : client.getDefaultDocumentIDClass().getId());
 		clientDTO.setNote(client.getNote());
-		clientDTO.setContact(ContactDTOTransformer.toDTO(client.getContact() == null? new Contact(): client.getContact()));
+		clientDTO.setSplitPaymentClient(client.isSplitPaymentClient());
+		clientDTO.setContact(ContactDTOTransformer.toDTO(client.getContact() == null ? new Contact() : client.getContact()));
 		return clientDTO;
 	}
 	
@@ -47,6 +50,7 @@ public class ClientDTOTransformer {
 		client.setWeb(clientDTO.getWeb());
 		client.setVatID(clientDTO.getVatID());
 		client.setSsn(clientDTO.getSsn());
+		client.setSplitPaymentClient(clientDTO.isSplitPaymentClient());
 		client.setContact(new Contact());
 		ContactDTOTransformer.copyFromDTO(client.getContact(), clientDTO.getContact());
 		client.setNote(clientDTO.getNote());

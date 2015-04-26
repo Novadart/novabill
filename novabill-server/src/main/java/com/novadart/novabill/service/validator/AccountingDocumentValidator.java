@@ -43,15 +43,15 @@ public class AccountingDocumentValidator{
 	
 	private <T extends AccountingDocument> boolean validateDocumentID(Class<T> cls, T doc, List<Long> gapsAccumulator){
 		Business authenticatedBusiness = utilsService.getAuthenticatedPrincipalDetails().getBusiness();
-		for(T persistedDoc : authenticatedBusiness.getDocsByIdInYear(cls, doc.getDocumentID(), doc.getAccountingDocumentYear())){
-			if(!persistedDoc.getId().equals(doc.getId())){//same documentID, but different id: error!
-				List<Long> docIDs = authenticatedBusiness.getCurrentYearDocumentsIDs(cls);
+		for(T persistedDoc : authenticatedBusiness.getDocsByIdInYear(cls, doc.getDocumentID(), doc.getDocumentIDSuffix(), doc.getAccountingDocumentYear())){
+			if(!persistedDoc.getId().equals(doc.getId())){//same documentID and suffix, but different id: error!
+				List<Long> docIDs = authenticatedBusiness.getCurrentYearDocumentsIDs(cls, doc.getDocumentIDSuffix());
 				List<Long> gaps = computeDocumentIDGaps(docIDs, 10);
 				if(gaps.size() > 0){
 					for(Long gap: gaps)
 						gapsAccumulator.add(gap);
 				}else
-					gapsAccumulator.add(authenticatedBusiness.getNextAccountingDocDocumentID(cls));
+					gapsAccumulator.add(authenticatedBusiness.getNextAccountingDocDocumentID(cls, doc.getDocumentIDSuffix()));
 				return false;
 			}
 		}

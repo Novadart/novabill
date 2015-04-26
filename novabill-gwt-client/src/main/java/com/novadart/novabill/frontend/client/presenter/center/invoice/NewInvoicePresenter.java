@@ -7,6 +7,7 @@ import java.util.List;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.place.shared.PlaceController;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.web.bindery.event.shared.EventBus;
 import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.bridge.BridgeUtils;
@@ -18,64 +19,76 @@ import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.frontend.client.view.center.invoice.InvoiceView;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.widget.notification.NotificationCallback;
-import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
-import com.novadart.novabill.shared.client.dto.ClientDTO;
-import com.novadart.novabill.shared.client.dto.EndpointDTO;
-import com.novadart.novabill.shared.client.dto.EstimationDTO;
-import com.novadart.novabill.shared.client.dto.InvoiceDTO;
-import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
-import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
+import com.novadart.novabill.shared.client.dto.*;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 
 public class NewInvoicePresenter extends AbstractInvoicePresenter {
 
 	private List<Long> transportDocumentSources = null;
-	
-	public NewInvoicePresenter(PlaceController placeController,	EventBus eventBus, InvoiceView view, JavaScriptObject callback) {
-		super(placeController, eventBus, view, callback);
+
+	public NewInvoicePresenter(PlaceController placeController,	EventBus eventBus, InvoiceView view,
+							   List<DocumentIDClassDTO> documentIDClassesDTOs, JavaScriptObject callback) {
+		super(placeController, eventBus, view, documentIDClassesDTOs, callback);
 	}
 
 	@Override
 	protected void setPresenterInView(InvoiceView view) {
 		view.setPresenter(this);
 	}
-	
+
 	public void setTransportDocumentSources(List<Long> transportDocumentSources) {
 		this.transportDocumentSources = transportDocumentSources;
 	}
-	
+
 	private void initData(ClientDTO client, Long progressiveId){
 		setClient(client);
 
 		getView().getClientName().setText(client.getName());
 		Date d = DocumentUtils.createNormalizedDate(new Date());
 		getView().getDate().setValue(d);
-		getView().getInvoiceNumberSuffix().setText(" / "+ getYearFormat().format(d));
+		getView().getInvoiceNumberSuffix().setText(" / " + getYearFormat().format(d));
 		getView().getNumber().setText(progressiveId.toString());
 
 		getView().getCreateDocument().setVisible(true);
+
+		Long clientDefaultDocumentIdClass = client.getDefaultDocumentIDClassID();
+		ListBox listBox = getView().getDocumentIDClassListBox();
+		listBox.clear();
+		listBox.addItem(I18N.INSTANCE.invoiceDefaultNumberClass());
+
+		int selectedIndex = 0;
+		DocumentIDClassDTO dcd;
+		for (int i=0; i < getDocumentIDClasses().size(); i++) {
+			dcd = getDocumentIDClasses().get(i);
+			listBox.addItem(dcd.getSuffix());
+			if(dcd.getId().equals(clientDefaultDocumentIdClass)){
+				selectedIndex = i+1; // remember that element 0 is added via code
+			}
+		}
+		listBox.setSelectedIndex(selectedIndex);
 	}
 
 	public void setDataForNewInvoice(ClientDTO client, Long progressiveId, PaymentTypeDTO paymentType) {
 		initData(client, progressiveId);
 		setupPayment(paymentType);
+		getView().getSelectSplitPayment().setSelectedIndex(client.isSplitPaymentClient() ? 1 : 0);
 	}
 
 
 	public void setDataForNewInvoice(ClientDTO client, Long progressiveId, InvoiceDTO invoice) {
 		initData(client, progressiveId);
+		getView().getSelectSplitPayment().setSelectedIndex(invoice.isSplitPayment() ? 1 : 0);
 
-		List<AccountingDocumentItemDTO> items = null;
-		items = new ArrayList<AccountingDocumentItemDTO>(invoice.getItems().size());
+		List<AccountingDocumentItemDTO> items = new ArrayList<AccountingDocumentItemDTO>(invoice.getItems().size());
 		for (AccountingDocumentItemDTO i : invoice.getItems()) {
 			items.add(i.clone());
 		}
 		getView().getPayment().setDocumentCreationDate(getView().getDate().getValue());
-		getView().getPayment().init(invoice.getPaymentTypeName(), invoice.getPaymentDateGenerator(), 
+		getView().getPayment().init(invoice.getPaymentTypeName(), invoice.getPaymentDateGenerator(),
 				invoice.getPaymentDateDelta(), invoice.getPaymentDeltaType(), invoice.getSecondaryPaymentDateDelta());
-		
+
 		//NOTE obviously in this case we don't load the endpoint as it is specific to the client
-		
+
 		//NOTE we don't show the checkbox to set this as the default payment because we don't know its ID
 		getView().getItemInsertionForm().setItems(items);
 		getView().getNote().setText(invoice.getNote());
@@ -86,14 +99,15 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 	public void setDataForNewInvoice(Long progressiveId, EstimationDTO estimation, PaymentTypeDTO paymentType) {
 		initData(estimation.getClient(), progressiveId);
 		setupPayment(paymentType);
+		getView().getSelectSplitPayment().setSelectedIndex(estimation.getClient().isSplitPaymentClient() ? 1 : 0);
 
 		List<AccountingDocumentItemDTO> items = new ArrayList<AccountingDocumentItemDTO>(estimation.getItems().size());
 		for (AccountingDocumentItemDTO i : estimation.getItems()) {
 			items.add(i.clone());
 		}
 		getView().getItemInsertionForm().setItems(items);
-		
-        EndpointDTO loc = estimation.getToEndpoint();
+
+		EndpointDTO loc = estimation.getToEndpoint();
 		getView().getToAddrCity().setText(loc.getCity());
 		getView().getToAddrCompanyName().setText(loc.getCompanyName());
 		getView().getToAddrPostCode().setText(loc.getPostcode());
@@ -102,42 +116,44 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 		getView().getToAddrCountry().setSelectedItemByValue(loc.getCountry());
 		getView().getSetToAddress().setValue(true);
 		getView().getToAddressContainer().setVisible(true);
-		
-		getView().getNote().setText(I18NM.get.generatedFromEstimation(estimation.getDocumentID(), 
+
+		getView().getNote().setText(I18NM.get.generatedFromEstimation(estimation.getDocumentID(),
 				DateTimeFormat.getFormat("dd MMMM yyyy").format(estimation.getAccountingDocumentDate())));
 	}
-	
-	
+
+
 	public void setDataForNewInvoice(Long progressiveId, List<TransportDocumentDTO> transportDocuments, PaymentTypeDTO paymentType) {
-		initData(transportDocuments.get(0).getClient(), progressiveId);
+		ClientDTO clientDTO = transportDocuments.get(0).getClient();
+		initData(clientDTO, progressiveId);
 		setupPayment(paymentType);
+		getView().getSelectSplitPayment().setSelectedIndex(clientDTO.isSplitPaymentClient() ? 1 : 0);
 
 		List<AccountingDocumentItemDTO> items = new ArrayList<AccountingDocumentItemDTO>();
-		
+
 		AccountingDocumentItemDTO item;
 		for(TransportDocumentDTO td : transportDocuments){
-			
+
 			item = new AccountingDocumentItemDTO();
 			item.setDescription("##  "
-			+ I18N.INSTANCE.transportDocumentShort()
-			+" N. "+td.getDocumentID()
-			+"  "
-			+ I18N.INSTANCE.of() +" "
-			+ DocumentUtils.DOCUMENT_DATE_FORMAT.format(td.getAccountingDocumentDate()) 
-			+ "  ##");
-			
+					+ I18N.INSTANCE.transportDocumentShort()
+					+" N. "+td.getDocumentID()
+					+"  "
+					+ I18N.INSTANCE.of() +" "
+					+ DocumentUtils.DOCUMENT_DATE_FORMAT.format(td.getAccountingDocumentDate())
+					+ "  ##");
+
 			items.add(item);
-			
+
 			for (AccountingDocumentItemDTO i : td.getItems()) {
 				items.add(i.clone());
 			}
-			
+
 		}
-		
+
 		getView().getItemInsertionForm().setItems(items);
 	}
 
-	
+
 
 	@Override
 	public void onCreateDocumentClicked() {
@@ -215,11 +231,11 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 			getView().getPayment().init();
 		} else {
 			getView().getPayment().init(defaultPayment);
-			
+
 			//if the payment note was not inherited from a previous invoice, fill it
 			if(getView().getPaymentNote().isEmpty()){
 				getView().getPaymentNote().setText(defaultPayment.getDefaultPaymentNote());
-			} 
+			}
 		}
 	}
 

@@ -3,7 +3,12 @@ package com.novadart.novabill.web.mvc;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.novadart.novabill.domain.DocumentIDClass;
+import com.novadart.novabill.service.web.DocumentIDClassService;
+import com.novadart.novabill.shared.client.dto.DocumentIDClassDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -25,7 +30,10 @@ public class PrivateController {
 	
 	@Autowired
 	private BusinessService businessService;
-	
+
+	@Autowired
+	private DocumentIDClassService documentIDClassService;
+
 	private final ObjectMapper mapper = new ObjectMapper();
 	
 	public static enum PAGES {
@@ -52,6 +60,14 @@ public class PrivateController {
 		mav.addObject("estimationYears", mapper.writeValueAsString(businessService.getEstimationYears(businessID)));
 		mav.addObject("creditNoteYears", mapper.writeValueAsString(businessService.getCreditNoteYears(businessID)));
 		mav.addObject("transportDocumentYears", mapper.writeValueAsString(businessService.getTransportDocumentYears(businessID)));
+
+		List<String> suffixes = new ArrayList<>();
+		for (DocumentIDClassDTO documentIDClassDTO : documentIDClassService.getAll(principal.getBusiness().getId())) {
+			suffixes.add(documentIDClassDTO.getSuffix());
+		}
+
+		mav.addObject("invoiceSuffixes", mapper.writeValueAsString(suffixes));
+
 		return mav;
 	}
 	
@@ -61,6 +77,13 @@ public class PrivateController {
 		mav.addObject("activePage", PAGES.INVOICES);
 		Principal principal = (Principal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		mav.addObject("invoiceYears", mapper.writeValueAsString(businessService.getInvoceYears(principal.getBusiness().getId())));
+
+		List<String> suffixes = new ArrayList<>();
+		for (DocumentIDClassDTO documentIDClassDTO : documentIDClassService.getAll(principal.getBusiness().getId())) {
+			suffixes.add(documentIDClassDTO.getSuffix());
+		}
+
+		mav.addObject("invoiceSuffixes", mapper.writeValueAsString(suffixes));
 		return mav;
 	}
 	

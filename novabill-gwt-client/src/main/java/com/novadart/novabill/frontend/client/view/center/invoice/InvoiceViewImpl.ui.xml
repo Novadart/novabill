@@ -72,6 +72,14 @@
 			</g:row>
 			<g:row>
 				<g:customCell>
+					<g:Label styleName="{s.label}" text="{i18n.invoiceNumberClass}"></g:Label>
+				</g:customCell>
+				<g:customCell>
+					<g:ListBox ui:field="documentIDClassListBox" styleName="{s.box}"></g:ListBox>
+				</g:customCell>
+			</g:row>
+			<g:row>
+				<g:customCell>
 					<g:Label ui:field="invoiceNumber" styleName="{s.label}"
 						text="{i18n.invoiceNumber}"></g:Label>
 				</g:customCell>
@@ -103,6 +111,21 @@
 						<g:CheckBox ui:field="makePaymentAsDefault" styleName="{style.setDefaultCheckbox}"
 							text="{i18n.makePaymentAsDefault}" />
 					</g:VerticalPanel>
+				</g:customCell>
+			</g:row>
+			<g:row>
+				<g:customCell>
+					<g:Label styleName="{s.label}" text="{i18n.splitPayment}" />
+				</g:customCell>
+				<g:customCell>
+					<g:ListBox ui:field="selectSplitPayment">
+						<g:item>
+							No
+						</g:item>
+						<g:item>
+							Sì
+						</g:item>
+					</g:ListBox>
 				</g:customCell>
 			</g:row>
 			<g:row>

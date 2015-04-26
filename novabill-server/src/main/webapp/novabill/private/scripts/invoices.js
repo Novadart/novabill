@@ -12,7 +12,8 @@ angular.module("novabill.invoices", ['novabill.invoices.controllers', 'novabill.
 	
 	.when('/', {
 		templateUrl: nConstantsProvider.url.htmlFragmentUrl('/invoices.html'),
-		controller: 'InvoicesCtrl'
+		controller: 'InvoicesCtrl',
+		reloadOnSearch : false
 	})
 	
 	

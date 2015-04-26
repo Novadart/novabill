@@ -55,6 +55,9 @@ public abstract class AccountingDocument {
 	
 	protected Long documentID;
 
+    @Size(max = DocumentIDClass.SUFFIX_MAX_LENGTH)
+    protected String documentIDSuffix;
+
 	@NotNull
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(style = "S-")
@@ -142,7 +145,15 @@ public abstract class AccountingDocument {
     public void setDocumentID(Long documentID) {
         this.documentID = documentID;
     }
-    
+
+    public String getDocumentIDSuffix() {
+        return documentIDSuffix;
+    }
+
+    public void setDocumentIDSuffix(String documentIDSuffix) {
+        this.documentIDSuffix = documentIDSuffix;
+    }
+
     public Date getAccountingDocumentDate() {
         return this.accountingDocumentDate;
     }
