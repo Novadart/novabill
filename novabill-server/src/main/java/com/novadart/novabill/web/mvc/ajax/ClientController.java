@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+//@Controller
 @RestExceptionProcessingMixin
 @RequestMapping("/private/ajax/businesses/{businessID}/clients")
 public class ClientController {

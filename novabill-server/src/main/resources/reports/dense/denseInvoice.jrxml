@@ -99,7 +99,7 @@
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement x="8" y="0" width="308" height="20" uuid="4210a258-e7d9-4021-8ded-27a8860612e9"/>
 				<textElement>
-					<font fontName="Arial" size="12" isBold="true"/>
+					<font fontName="Arial" size="9" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{document.business.name}]]></textFieldExpression>
 			</textField>
@@ -202,7 +202,7 @@ com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.d
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement x="8" y="7" width="308" height="20" uuid="602635c5-8a47-4651-9d4c-e9177e5f3637"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="12" isBold="true"/>
+					<font fontName="Arial" size="9" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{document.business.name}]]></textFieldExpression>
 			</textField>
