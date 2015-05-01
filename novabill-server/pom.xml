@@ -16,10 +16,6 @@
 			<artifactId>novabill-gwt-shared</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>novabill-android-shared</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>com.novadart.utils</groupId>
 			<artifactId>novadart-utils</artifactId>
 		</dependency>

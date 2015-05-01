@@ -1,8 +1,0 @@
-<sync-adapter xmlns:android="http://schemas.android.com/apk/res/android"
-    android:contentAuthority="com.novadart.novabill"
-    android:accountType="com.novadart.novabill"
-    android:userVisible="true"
-    android:allowParallelSyncs="false"
-    android:isAlwaysSyncable="true"
-    android:supportsUploading="true">
-</sync-adapter>

@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<createStatements>
-    CREATE TABLE user (_id INTEGER PRIMARY KEY, email TEXT UNIQUE)
-    CREATE TABLE sync_mark (_id INTEGER PRIMARY KEY AUTOINCREMENT, mark INTEGER, user_id INTEGER NOT NULL, FOREIGN KEY(user_id) REFERENCES user(_id))
-    CREATE TABLE client (_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, address TEXT, postcode TEXT, city TEXT, province TEXT, country TEXT, email TEXT, phone TEXT, mobile TEXT, fax TEXT, web TEXT, vatID TEXT, ssn TEXT, version INTEGER, server_id INTEGER NOT NULL, user_id INTEGER NOT NULL, FOREIGN KEY(user_id) REFERENCES user(_id))
-</createStatements>

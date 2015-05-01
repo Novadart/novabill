@@ -192,18 +192,12 @@ public class BusinessServiceTest extends ServiceTest {
 		business.setVatID("");
 		business.setSsn("");
 		boolean validationError = false;
-		boolean containsError = false;
 		try {
 			businessGwtService.update(BusinessDTOTransformer.toDTO(business));
 		} catch (ValidationException e) {
 			validationError = true;
-			for(ErrorObject er: e.getErrors())
-				if(er.getField().equals(Field.vatID)){
-					containsError = true;
-					break;
-				}
 		}
-		assertTrue(validationError && containsError);
+		assertTrue(validationError);
 	}
 	
 	@Test(expected = ValidationException.class)
