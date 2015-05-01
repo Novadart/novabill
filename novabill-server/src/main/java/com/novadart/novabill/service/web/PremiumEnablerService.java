@@ -183,6 +183,7 @@ public class PremiumEnablerService {
 		invoice.setPaymentDueDate(now);
 		invoice.setPayed(true);
 		invoice.setPaymentNote("Pagato");
+		invoice.setLayoutType(LayoutType.TIDY);
 		
 		PaymentPlanDescriptor planDesc = paymentPlansLoader.getPayPalPaymentPlanDescriptor(paymentPlan);
 		AccountingDocumentItem item = new AccountingDocumentItem();

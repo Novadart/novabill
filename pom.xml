@@ -43,8 +43,6 @@
 		<hibernate-search.version>4.4.3.Final</hibernate-search.version>
 		<spring-security.version>3.2.4.RELEASE</spring-security.version>
 		<gwt.version>2.5.1</gwt.version>
-		<android-sdk.version>4.1.1.4</android-sdk.version>
-		<android-sdk.path>${local.android-sdk.path}</android-sdk.path>
 		<jackson.version>2.3.3</jackson.version>
 	</properties>
 
@@ -56,7 +54,6 @@
 	<modules>
 		<module>novabill-gwt-client</module>
 		<module>novabill-gwt-shared</module>
-		<module>novabill-android-shared</module>
 		<module>novabill-server</module>
 	</modules>
 
@@ -74,23 +71,6 @@
 				<artifactId>novabill-gwt-client</artifactId>
 				<version>${project.version}</version>
 				<type>war</type>
-			</dependency>
-			<dependency>
-				<groupId>${project.groupId}</groupId>
-				<artifactId>novabill-android-shared</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>${project.groupId}</groupId>
-				<artifactId>novabill-android-client</artifactId>
-				<version>${project.version}</version>
-				<type>jar</type>
-			</dependency>
-			<dependency>
-				<groupId>${project.groupId}</groupId>
-				<artifactId>novabill-android-client</artifactId>
-				<version>${project.version}</version>
-				<type>apk</type>
 			</dependency>
 
 			<!-- Novadart Libs -->
@@ -284,28 +264,6 @@
 				<groupId>org.apache.lucene</groupId>
 				<artifactId>lucene-core</artifactId>
 				<version>3.6.2</version>
-			</dependency>
-
-			<!-- Android -->
-			<dependency>
-				<groupId>com.google.android</groupId>
-				<artifactId>android</artifactId>
-				<version>${android-sdk.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.google.android</groupId>
-				<artifactId>android-test</artifactId>
-				<version>${android-sdk.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.android</groupId>
-				<artifactId>spring-android-core</artifactId>
-				<version>1.0.1.RELEASE</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.android</groupId>
-				<artifactId>spring-android-rest-template</artifactId>
-				<version>1.0.1.RELEASE</version>
 			</dependency>
 
 			<!-- Apache Tiles -->
@@ -575,28 +533,6 @@
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>gwt-maven-plugin</artifactId>
 					<version>${gwt.version}</version>
-				</plugin>
-				<plugin>
-					<groupId>com.jayway.maven.plugins.android.generation2</groupId>
-					<artifactId>android-maven-plugin</artifactId>
-					<version>3.7.0</version>
-					<configuration>
-						<undeployBeforeDeploy>true</undeployBeforeDeploy>
-						<sdk>
-							<path>${android-sdk.path}</path>
-							<platform>17</platform>
-						</sdk>
-						<emulator>
-							<avd>novabill_emulator</avd>
-							<wait>60000</wait>
-						</emulator>
-					</configuration>
-					<extensions>true</extensions>
-				</plugin>
-				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>build-helper-maven-plugin</artifactId>
-					<version>1.8</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
