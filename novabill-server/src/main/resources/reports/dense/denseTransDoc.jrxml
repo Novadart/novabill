@@ -111,7 +111,7 @@
 		<band height="65" splitType="Prevent">
 			<printWhenExpression><![CDATA[$V{PAGE_NUMBER} > 1]]></printWhenExpression>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="8" y="19" width="308" height="16" uuid="2981466b-3f2e-4887-9158-9f57acd33547"/>
+				<reportElement positionType="Float" x="8" y="16" width="308" height="16" uuid="2981466b-3f2e-4887-9158-9f57acd33547"/>
 				<textElement textAlignment="Left">
 					<font size="8"/>
 					<paragraph lineSpacing="Single"/>
@@ -132,9 +132,9 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 )]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement x="8" y="0" width="308" height="18" uuid="4b5bd081-9f5c-449a-9350-0dcb8d1d36fb"/>
+				<reportElement x="8" y="0" width="308" height="16" uuid="4b5bd081-9f5c-449a-9350-0dcb8d1d36fb"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="true"/>
+					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{document.business.name}]]></textFieldExpression>
 			</textField>
@@ -209,9 +209,9 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 		</band>
 		<band height="299" splitType="Stretch">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement x="8" y="8" width="308" height="18" uuid="602635c5-8a47-4651-9d4c-e9177e5f3637"/>
+				<reportElement x="8" y="8" width="308" height="16" uuid="602635c5-8a47-4651-9d4c-e9177e5f3637"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="true" isItalic="true"/>
+					<font fontName="Arial" size="10" isBold="true" isItalic="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{document.business.name}]]></textFieldExpression>
 			</textField>
@@ -347,7 +347,7 @@ com.novadart.novabill.report.ReportUtils.join(" ",
 com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.toEndpoint.country})))]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="8" y="27" width="308" height="16" uuid="80ed6c81-de7e-4e0e-ae80-8a3257cff749"/>
+				<reportElement positionType="Float" x="8" y="24" width="308" height="16" uuid="80ed6c81-de7e-4e0e-ae80-8a3257cff749"/>
 				<textElement textAlignment="Left">
 					<font size="8"/>
 					<paragraph lineSpacing="Single"/>
