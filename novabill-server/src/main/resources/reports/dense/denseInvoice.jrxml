@@ -97,14 +97,14 @@
 		<band height="57" splitType="Prevent">
 			<printWhenExpression><![CDATA[$V{PAGE_NUMBER} > 1]]></printWhenExpression>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement x="8" y="0" width="308" height="20" uuid="4210a258-e7d9-4021-8ded-27a8860612e9"/>
+				<reportElement x="8" y="0" width="308" height="16" uuid="4210a258-e7d9-4021-8ded-27a8860612e9"/>
 				<textElement>
-					<font fontName="Arial" size="9" isBold="true"/>
+					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{document.business.name}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="8" y="20" width="308" height="16" uuid="d62d1cd6-ffe0-414b-8cf4-c519465390fd"/>
+				<reportElement positionType="Float" x="8" y="16" width="308" height="16" uuid="d62d1cd6-ffe0-414b-8cf4-c519465390fd"/>
 				<textElement textAlignment="Left">
 					<font size="8"/>
 					<paragraph lineSpacing="Single"/>
@@ -200,9 +200,9 @@ com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.d
 		<band height="327" splitType="Stretch">
 			<printWhenExpression><![CDATA[!$F{document.splitPayment}]]></printWhenExpression>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement x="8" y="7" width="308" height="20" uuid="602635c5-8a47-4651-9d4c-e9177e5f3637"/>
+				<reportElement x="8" y="7" width="308" height="16" uuid="602635c5-8a47-4651-9d4c-e9177e5f3637"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="true"/>
+					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{document.business.name}]]></textFieldExpression>
 			</textField>
@@ -433,7 +433,7 @@ com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.d
 				<textFieldExpression><![CDATA[$F{document.paymentNote}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="8" y="27" width="308" height="16" uuid="ab50832a-c2d5-4f4e-a2c8-33c2e3cd861a"/>
+				<reportElement positionType="Float" x="8" y="23" width="308" height="16" uuid="ab50832a-c2d5-4f4e-a2c8-33c2e3cd861a"/>
 				<textElement textAlignment="Left">
 					<font size="8"/>
 					<paragraph lineSpacing="Single"/>
