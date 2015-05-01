@@ -5,6 +5,7 @@
 <%@page import="com.novadart.novabill.domain.Business"%>
 <%@page import="org.springframework.security.core.context.SecurityContextHolder"%>
 <%@page import="com.novadart.novabill.web.mvc.PrivateController.PAGES"%>
+<%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
@@ -329,7 +330,7 @@ li:HOVER .premium-only .premium-label {
 	<script>
     var NovabillConf = {
             businessId : '<%=business.getId()%>',
-         	businessName : '<%=business.getName()%>',
+         	businessName : '<%=StringEscapeUtils.escapeJavaScript(business.getName())%>',
          	principalEmail : '<%=principal.getUsername()%>',
          	principalCreationDate : <%=principal.getCreationTime()%>,
             premium : <%=isPremium%>,
