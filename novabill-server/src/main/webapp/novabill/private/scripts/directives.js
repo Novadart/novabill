@@ -1077,6 +1077,36 @@ angular.module('novabill.directives',
 						}
 						break;
 
+					case nConstants.logRecord.entityType.DOCUMENT_ID_CLASS:
+						switch ($scope.record.operationType) {
+							case nConstants.logRecord.operationType.CREATE:
+								if($scope.record.referringToDeletedEntity)
+									$scope.description = tr('LR_DOCUMENT_ID_CLASS_CREATE_DEL',
+										'{documentIdClassSuffix: "'+details.documentIdClassSuffix+'"}');
+								else
+									$scope.description = tr('LR_DOCUMENT_ID_CLASS_CREATE',
+										'{documentIdClassSuffix: "'+details.documentIdClassSuffix+'", link: "'+nConstants.url.documentIdClasses()+'"}');
+								break;
+
+							case nConstants.logRecord.operationType.UPDATE:
+								if($scope.record.referringToDeletedEntity)
+									$scope.description = tr('LR_DOCUMENT_ID_CLASS_UPDATE_DEL',
+										'{documentIdClassSuffix: "'+details.documentIdClassSuffix+'"}');
+								else
+									$scope.description = tr('LR_DOCUMENT_ID_CLASS_UPDATE',
+										'{documentIdClassSuffix: "'+details.documentIdClassSuffix+'", link: "'+nConstants.url.documentIdClasses()+'"}');
+								break;
+
+							case nConstants.logRecord.operationType.DELETE:
+								$scope.description = tr('LR_DOCUMENT_ID_CLASS_DELETE',
+									'{documentIdClassSuffix: "'+details.documentIdClassSuffix+'"}');
+								break;
+
+							default:
+								break;
+						}
+						break;
+
 					case nConstants.logRecord.entityType.PRICE_LIST:
 						switch ($scope.record.operationType) {
 							case nConstants.logRecord.operationType.CREATE:
