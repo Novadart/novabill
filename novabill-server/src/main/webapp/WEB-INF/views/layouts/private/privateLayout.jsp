@@ -317,7 +317,7 @@ li:HOVER .premium-only .premium-label {
 	<!-- END CONTAINER -->
 	<!-- BEGIN FOOTER -->
 	<div class="footer">
-		<div class="footer-inner">2014 &copy; Novadart.</div>
+		<div class="footer-inner">2013-2015 &copy; Novadart.</div>
 		<div class="footer-tools">
 			<span class="go-top"> <i class="fa fa-angle-up"></i>
 			</span>
