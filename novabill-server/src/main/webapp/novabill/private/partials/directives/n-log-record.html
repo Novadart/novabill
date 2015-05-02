@@ -2,9 +2,9 @@
 	<div class="col1">
 		<div class="cont">
 			<div class="cont-col1">
-				<div 
-				    class="label label-sm"
-				    ng-class="{'label-success': record.operationType===OPERATION_TYPE.CREATE,
+				<div
+						class="label label-sm"
+						ng-class="{'label-success': record.operationType===OPERATION_TYPE.CREATE,
 				               'label-danger': record.operationType===OPERATION_TYPE.DELETE,
 				               'label-info': record.operationType===OPERATION_TYPE.UPDATE||record.operationType===OPERATION_TYPE.SET_PAYED||record.operationType===OPERATION_TYPE.EMAIL}">
 					<i ng-if="record.entityType === ENTITY_TYPE.CLIENT" class="fa fa-user"></i>
@@ -17,6 +17,7 @@
 					<i ng-if="record.entityType === ENTITY_TYPE.PRICE_LIST" class="fa fa-dollar"></i>
 					<i ng-if="record.entityType === ENTITY_TYPE.SHARING_PERMIT" class="fa fa-group"></i>
 					<i ng-if="record.entityType === ENTITY_TYPE.TRANSPORTER" class="fa fa-truck"></i>
+					<i ng-if="record.entityType === ENTITY_TYPE.DOCUMENT_ID_CLASS" class="fa fa-book"></i>
 				</div>
 			</div>
 			<div class="cont-col2">

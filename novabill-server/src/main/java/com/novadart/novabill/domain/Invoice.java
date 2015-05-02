@@ -146,6 +146,18 @@ public class Invoice extends AbstractInvoice implements Serializable {
     			setParameter("bid", businessID).
     			setParameter("cid", clientID).getSingleResult();
     }
+
+	/**
+	 * Returns the total before taxes for given client for given year
+	 */
+	public static BigDecimal getTotalBeforeTaxesForClientForYear(Long businessID, Long clientID, Integer year) {
+		String sql = "select sum(i.totalBeforeTax) from Invoice i where i.business.id = :bid and i.client.id = :cid and i.accountingDocumentYear = :year";
+		return entityManager().createQuery(sql, BigDecimal.class).
+				setParameter("bid", businessID).
+				setParameter("cid", clientID).
+				setParameter("year", year).getSingleResult();
+	}
+
     
     /*
      * Getters and setters

@@ -183,9 +183,11 @@ public class BusinessStatsService {
 		BigDecimal totalBeforeTaxesForClient = Invoice.getTotalBeforeTaxesForClient(businessID, clientID);
 		clientStatsDTO.setTotalBeforeTaxes((totalBeforeTaxesForClient == null? BigDecimal.ZERO: totalBeforeTaxesForClient).setScale(2, RoundingMode.HALF_UP));
 		clientStatsDTO.setTotalsPerMonths(ImmutableMap.of(year, computeTotalsPerMonths(invoiceService.getAllForClient(clientID, year)),
-														  year - 1, computeTotalsPerMonths(invoiceService.getAllForClient(clientID, year - 1))));
+				year - 1, computeTotalsPerMonths(invoiceService.getAllForClient(clientID, year - 1))));
 		clientStatsDTO.setCommodityStatsForCurrentYear(computeCommodityRevenueStatsForClientForYear(businessID, clientID, year, businessService.getCommodities(businessID)));
 		clientStatsDTO.setCommodityStatsForPrevYear(computeCommodityRevenueStatsForClientForYear(businessID, clientID, year - 1, businessService.getCommodities(businessID)));
+		BigDecimal totalBeforeTaxesForClientForYear = Invoice.getTotalBeforeTaxesForClientForYear(businessID, clientID, year);
+		clientStatsDTO.setTotalBeforeTaxesCurrentYear((totalBeforeTaxesForClientForYear == null? BigDecimal.ZERO: totalBeforeTaxesForClientForYear).setScale(2, RoundingMode.HALF_UP));
 		return clientStatsDTO;
 	}
 	

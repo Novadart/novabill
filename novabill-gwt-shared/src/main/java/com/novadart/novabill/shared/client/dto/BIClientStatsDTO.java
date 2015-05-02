@@ -7,6 +7,8 @@ import java.util.Map;
 public class BIClientStatsDTO {
 
 	private BigDecimal totalBeforeTaxes;
+
+	private BigDecimal totalBeforeTaxesCurrentYear;
 	
 	private Map<Integer, BigDecimal[]> totalsPerMonths;
 	
@@ -56,4 +58,11 @@ public class BIClientStatsDTO {
 		this.commodityStatsForPrevYear = commodityStatsForPrevYear;
 	}
 
+	public BigDecimal getTotalBeforeTaxesCurrentYear() {
+		return totalBeforeTaxesCurrentYear;
+	}
+
+	public void setTotalBeforeTaxesCurrentYear(BigDecimal totalBeforeTaxesCurrentYear) {
+		this.totalBeforeTaxesCurrentYear = totalBeforeTaxesCurrentYear;
+	}
 }
