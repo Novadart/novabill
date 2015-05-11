@@ -36,8 +36,8 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java.version>1.7</java.version>
-		<aspectj.version>1.7.4</aspectj.version>
+		<java.version>1.8</java.version>
+		<aspectj.version>1.8.1</aspectj.version>
 		<spring.version>3.2.9.RELEASE</spring.version>
 		<hibernate.version>4.2.13.Final</hibernate.version>
 		<hibernate-search.version>4.4.3.Final</hibernate-search.version>
@@ -294,7 +294,7 @@
 			<dependency>
 				<groupId>net.sf.jasperreports</groupId>
 				<artifactId>jasperreports</artifactId>
-				<version>5.5.1</version>
+				<version>6.0.3</version>
 			</dependency>
 			<dependency>
 				<groupId>com.novadart.jasperreports.fonts</groupId>
@@ -494,7 +494,7 @@
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>aspectj-maven-plugin</artifactId>
-					<version>1.6</version>
+					<version>1.7</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
