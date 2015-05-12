@@ -15,7 +15,7 @@
 				<i ng-show="!newClientMode" class="fa fa-search"></i> 
 				<input type="text" class="form-control input-large" name="inp" autofocus="autofocus" type="text"
 					placeholder="{{newClientMode ? ('INSERT_CLIENT_NAME' | translate) : ('FILTER' | translate)+'...'}}" 
-					ng-required="newClientMode" ng-model="$parent.query">
+					ng-required="newClientMode" ng-model="query">
 			</div>
 			
 			<button type="button" class="btn green new-client" ng-click="createNewClient()" ng-show="newClientMode" 

@@ -5,14 +5,14 @@
 	</div>
 	<div class="modal-body">
 
-		<select class="form-control" style="margin: 5px 0 2px" ng-model="$parent.selectedPriceList"
+		<select class="form-control" style="margin: 5px 0 2px" ng-model="selectedPriceList"
 			ng-init="selectedPriceList" ng-change="changePriceList()"
 			ng-options="p.id as (p.name | nReplaceReservedWord:'DEFAULT_PRICE_LIST') for p in listOfPriceLists">
 		</select>
 
 		<div class="commodities-filter input-icon left" style="margin: 0 0 10px">
 			<i class="fa fa-search"></i> <input type="text" class="form-control" autofocus="autofocus" type="text"
-				placeholder="Filter..." ng-model="$parent.query">
+				placeholder="Filter..." ng-model="query">
 		</div>
 
 		<div class="scroller" n-div-infinite-scroll="loadMoreCommodities()">

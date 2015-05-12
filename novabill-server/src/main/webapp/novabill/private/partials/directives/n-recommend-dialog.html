@@ -8,7 +8,7 @@
             
             <div class="form-group" ng-class="{'has-error': form.toAddress.$dirty && form.toAddress.$invalid, 'has-success': form.toAddress.$dirty && form.toAddress.$valid}">
                 <label class="control-label" for="toAddress">{{'EMAIL' | translate}} *</label> 
-                <input type="email" name="toAddress" maxlength="255" ng-model="$parent.data.to" class="form-control" placeholder="{{'EMAIL_PLACEHOLDER' | translate}}" required>
+                <input type="email" name="toAddress" maxlength="255" ng-model="data.to" class="form-control" placeholder="{{'EMAIL_PLACEHOLDER' | translate}}" required>
                 <div ng-show="form.toAddress.$dirty && form.toAddress.$invalid">
                     <span class="text-danger" ng-show="form.toAddress.$error.required">{{'VALIDATION_REQUIRED' | translate}}</span> 
                 </div>
