@@ -174,7 +174,12 @@ angular.module('novabill.clients.controllers',
 				documents : false,
 				addresses : false
 			};
-			$scope.activeTab[$location.search().tab] = true;
+
+			if($location.search().tab) {
+				$scope.activeTab[$location.search().tab] = true;
+			} else {
+				$scope.activeTab.documents = true;
+			}
 
 			$scope.docsView = 'invoices';
 

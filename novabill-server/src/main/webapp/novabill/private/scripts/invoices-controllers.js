@@ -24,8 +24,12 @@ angular.module('novabill.invoices.controllers',
 				invoices : false,
 				docIdClasses : false
 			};
-			$scope.activeTab[$location.search().tab] = true;
 
+			if($location.search().tab) {
+				$scope.activeTab[$location.search().tab] = true;
+			} else {
+				$scope.activeTab.invoices = true;
+			}
 
 			function updateFilteredInvoices(){
 				filteredInvoices = $filter('filter')(loadedInvoices, $scope.query);
