@@ -5,24 +5,18 @@
 	<!-- LAYOUTS -->
 	
 	<definition name="private.layout" template="/WEB-INF/views/layouts/private/privateLayout.jsp">
-	   <put-attribute name="novabill.version" value="${project.version}"></put-attribute>
-	   <put-attribute name="css" value="private.${mvn.tiles.css.definition}" />
+	   <put-attribute name="novabill.version" value="${project.version}" />
+	   <put-attribute name="css" value="/WEB-INF/views/tiles/private/resourcesCSS.jsp" />
 	   <put-attribute name="analytics" value="/WEB-INF/views/tiles/private/analytics.jsp" />
-	   <put-attribute name="javascript" value="private.${mvn.tiles.javascript.definition}" />
+	   <put-attribute name="javascript" value="/WEB-INF/views/tiles/private/resourcesJS.jsp" />
 	</definition>
 	
 	<definition name="private.hello.layout" template="/WEB-INF/views/layouts/private/privateHelloLayout.jsp">
-       <put-attribute name="novabill.version" value="${project.version}"></put-attribute>
-       <put-attribute name="css" value="private.${mvn.tiles.css.definition}" />
+       <put-attribute name="novabill.version" value="${project.version}" />
+       <put-attribute name="css" value="/WEB-INF/views/tiles/private/resourcesCSS.jsp" />
        <put-attribute name="analytics" value="/WEB-INF/views/tiles/private/analytics.jsp" />
-       <put-attribute name="javascript" value="private.${mvn.tiles.javascript.definition}" />
+       <put-attribute name="javascript" value="/WEB-INF/views/tiles/private/resourcesJS.jsp" />
     </definition>
-
-    <!-- WRO4J HELPERS -->
-    <definition name="private.minifiedJS" template="/WEB-INF/views/tiles/wro4j/private/minifiedJS.jsp" />
-    <definition name="private.minifiedCSS" template="/WEB-INF/views/tiles/wro4j/private/minifiedCSS.jsp" />
-    <definition name="private.expandedJS" template="/WEB-INF/views/tiles/wro4j/private/expandedJS.jsp" />
-    <definition name="private.expandedCSS" template="/WEB-INF/views/tiles/wro4j/private/expandedCSS.jsp" />
 
 	<!-- PAGES -->
 	<definition name="private.dashboard" extends="private.layout">
@@ -82,9 +76,9 @@
         <put-attribute name="body" value="/WEB-INF/views/tiles/private/statisticsCommoditiesBody.jsp" />
     </definition>
 	
-	<definition name="private.hello" extends="private.hello.layout"></definition>
+	<definition name="private.hello" extends="private.hello.layout" />
 	
-	<definition name="private.printPDF" template="/WEB-INF/views/layouts/private/printPDF.jsp"></definition>
+	<definition name="private.printPDF" template="/WEB-INF/views/layouts/private/printPDF.jsp" />
 	
 	<definition name="private.premium" extends="private.layout">
 	   <put-attribute name="cssExtra" value="/WEB-INF/views/tiles/private/premiumCSS.jsp" />

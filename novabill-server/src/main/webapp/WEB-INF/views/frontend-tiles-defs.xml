@@ -5,7 +5,7 @@
 	<!-- LAYOUTS -->
 	<definition name="frontend.subPageLayout" template="/WEB-INF/views/layouts/frontend/subPageLayout.jsp" >
 		<put-attribute name="analytics" value="/WEB-INF/views/tiles/frontend/analytics.jsp" />
-		<put-attribute name="novabill.version" value="${project.version}"></put-attribute>
+		<put-attribute name="novabill.version" value="${project.version}" />
 		<put-attribute name="header" value="/WEB-INF/views/tiles/frontend/header.jsp" />
 		<put-attribute name="footer" value="/WEB-INF/views/tiles/frontend/footer.jsp" />
 	</definition>
@@ -14,12 +14,6 @@
 	
 	<definition name="frontend.indexLayout" template="/WEB-INF/views/layouts/frontend/indexLayout.jsp"/>
 	
-	<!-- WRO4J HELPERS -->
-    <definition name="frontend.minifiedJS" template="/WEB-INF/views/tiles/wro4j/frontend/minifiedJS.jsp" />
-    <definition name="frontend.minifiedCSS" template="/WEB-INF/views/tiles/wro4j/frontend/minifiedCSS.jsp" />
-    <definition name="frontend.expandedJS" template="/WEB-INF/views/tiles/wro4j/frontend/expandedJS.jsp" />
-    <definition name="frontend.expandedCSS" template="/WEB-INF/views/tiles/wro4j/frontend/expandedCSS.jsp" />
-
 	<!-- PAGES -->
 	<definition name="frontend.index" extends="frontend.indexLayout">
 	   <put-attribute name="analytics" value="/WEB-INF/views/tiles/frontend/analytics.jsp" />
@@ -121,9 +115,9 @@
     
 	<definition name="sharing.share" extends="frontend.subPageLayout">
 	   <put-attribute name="css" value="/WEB-INF/views/tiles/frontend/sharing/shareCss.jsp" />
-	   <put-attribute name="cssExtra" value="frontend.${mvn.tiles.css.definition}" />
+	   <put-attribute name="cssExtra" value="/WEB-INF/views/tiles/frontend/expandedCSS.jsp" />
        <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/sharing/shareBody.jsp" />
-       <put-attribute name="javascriptExtra" value="frontend.${mvn.tiles.javascript.definition}" />
+       <put-attribute name="javascriptExtra" value="/WEB-INF/views/tiles/frontend/expandedJS.jsp" />
     </definition>
     
     <definition name="sharing.invalidSharingRequest" extends="frontend.subPageLayout">
