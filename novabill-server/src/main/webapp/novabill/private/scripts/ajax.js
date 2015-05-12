@@ -24,7 +24,7 @@ angular.module('novabill.ajax', ['ngResource', 'angularFileUpload', 'novabill.lo
      * this interceptor uses the application logging service to
      * log server-side any errors from $http requests
      */
-	$httpProvider.responseInterceptors.push(
+	$httpProvider.interceptors.push(
 			['$rootScope', '$q', '$injector','$location','nApplicationLogger',
 			 function($rootScope, $q, $injector, $location, nApplicationLogger){
 

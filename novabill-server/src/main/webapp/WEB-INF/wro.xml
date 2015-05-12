@@ -9,7 +9,7 @@
         <js>/novabill-deps/angular/angular-resource.min.js</js>
         <js>/novabill-deps/angular/i18n/angular-locale_it-it.js</js>
         <js>/novabill-deps/angular-translate.min.js</js>
-        <js>/novabill-deps/angular-ui/ui-bootstrap-tpls-0.11.0.min.js</js>
+        <js>/novabill-deps/angular-ui/ui-bootstrap-tpls-0.13.0.min.js</js>
         <js>/novabill-deps/ng-infinite-scroll.min.js</js>
     </group>
     
