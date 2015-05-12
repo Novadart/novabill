@@ -374,7 +374,11 @@
                         WEB-INF/views/layouts/private/privateHelloLayout.jsp,
                         WEB-INF/views/layouts/private/printPDF.jsp,
                         WEB-INF/views/tiles/frontend/analytics.jsp,
+                        WEB-INF/views/tiles/frontend/resourcesCSS.jsp,
+                        WEB-INF/views/tiles/frontend/resourcesJS.jsp,
                         WEB-INF/views/tiles/private/analytics.jsp,
+                        WEB-INF/views/tiles/private/resourcesCSS.jsp,
+                        WEB-INF/views/tiles/private/resourcesJS.jsp,
                         WEB-INF/web.xml,
                         WEB-INF/views/private-tiles-defs.xml,
                         WEB-INF/views/frontend-tiles-defs.xml
@@ -393,7 +397,11 @@
                                 <include>views/layouts/private/privateHelloLayout.jsp</include>
                                 <include>views/layouts/private/printPDF.jsp</include>
                                 <include>views/tiles/frontend/analytics.jsp</include>
+                                <include>views/tiles/frontend/resourcesCSS.jsp</include>
+                                <include>views/tiles/frontend/resourcesJS.jsp</include>
                                 <include>views/tiles/private/analytics.jsp</include>
+                                <include>views/tiles/private/resourcesCSS.jsp</include>
+                                <include>views/tiles/private/resourcesJS.jsp</include>
                                 <include>views/private-tiles-defs.xml</include>
                                 <include>views/frontend-tiles-defs.xml</include>
                             </includes>

@@ -3,4 +3,4 @@
 
 <spring:url var="novabillCoreUrl" value="/novabill/frontend" />
 
-<link href="${novabillCoreUrl}/css/directives-frontend.css" rel="stylesheet" type="text/css" />
+<link href="${novabillCoreUrl}/css/directives-frontend.css?v=${project.version}" rel="stylesheet" type="text/css" />
