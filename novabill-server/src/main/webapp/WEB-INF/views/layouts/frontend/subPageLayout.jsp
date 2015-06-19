@@ -36,8 +36,10 @@
    <link href="${frontendAssetsUrl}/css/style-responsive.css" rel="stylesheet" type="text/css"/>
    <link href="${frontendAssetsUrl}/css/custom.css" rel="stylesheet" type="text/css"/>
    <!-- END THEME STYLES -->
-   
-   <link href="${frontendAssetsUrl}/plugins/cookieCuttr/cookiecuttr.css" rel="stylesheet" type="text/css"/>
+
+    <script src="${frontendAssetsUrl}/plugins/jquery-1.10.2.min.js" type="text/javascript"></script>
+   <link href="${frontendAssetsUrl}/plugins/jquery.cookiebar/jquery.cookiebar.css" rel="stylesheet" type="text/css"/>
+    <script src="${frontendAssetsUrl}/plugins/jquery.cookiebar/jquery.cookiebar.js" type="text/javascript"></script>
    
    <!-- BEGIN PAGE LEVEL PLUGIN STYLES --> 
    <link href="${frontendAssetsUrl}/plugins/fancybox/source/jquery.fancybox.css" rel="stylesheet" /> 
@@ -59,8 +61,6 @@
    }
    </style>
    
-   <!-- Placed here because it might be needed in the body -->
-   <script src="${frontendAssetsUrl}/plugins/jquery-1.10.2.min.js" type="text/javascript"></script>
 </head>
 <!-- END HEAD -->
 
@@ -83,7 +83,6 @@
     <script src="${frontendAssetsUrl}/plugins/respond.min.js"></script>  
     <![endif]-->  
     <script src="${frontendAssetsUrl}/plugins/jquery.cookie-1.4.0.js" type="text/javascript"></script>
-    <script src="${frontendAssetsUrl}/plugins/cookieCuttr/jquery.cookiecuttr.js" type="text/javascript"></script>
     <script src="${frontendAssetsUrl}/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
     <script src="${frontendAssetsUrl}/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>      
     <script type="text/javascript" src="${frontendAssetsUrl}/plugins/hover-dropdown.js"></script>
@@ -100,15 +99,23 @@
 	};
 	
 	$(function(){
-		//start cookie cuttr            
-        $.cookieCuttr({
-            cookieAnalyticsMessage : 'Utilizziamo i cookie per raccogliere dati statistici anonimi e migliorare il servizio. Non memorizziamo dati personali.',
-            cookieAcceptButtonText: 'Ok, ho capito',
-            cookieWhatAreLinkText : '',
-            cookieNotificationLocationBottom : true,
-            cookieDeclineButton : true,
-            cookieDeclineButtonText : 'Disabilita i cookie'
-        });    
+        var message = 'Questo sito o gli strumenti terzi da questo utilizzati si avvalgono di cookie necessari al funzionamento ed utili alle finalità illustrate nella cookie policy. ' +
+                'Se vuoi saperne di più o negare il consenso a tutti o ad alcuni cookie, consulta la cookie policy. <br>Chiudendo questo banner, scorrendo questa pagina, ' +
+                'cliccando su un link o proseguendo la navigazione in altra maniera, acconsenti all’uso dei cookie.';
+        var acceptOnScroll = typeof window.COOKIEBAR_DISABLE_ONSCROLL === 'undefined';
+        $.cookieBar({
+            autoEnable: false,
+            message: message,
+            acceptButton: true,
+            acceptText: 'Chiudi',
+            policyButton: true,
+            policyText: 'Cookie Policy',
+            policyURL: '${cookiesPolicy}',
+            fixed:true,
+            zindex:'9999999',
+            acceptOnContinue: true,
+            acceptOnScroll: acceptOnScroll
+        });
 	});
 	</script>
 	

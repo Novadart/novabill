@@ -113,24 +113,24 @@
                 <p style="padding-bottom: 20px;">
                     <span class="margin-right-10">2013-2015 © <a href="http://www.novadart.com" target="_blank">Novadart</a>. ALL Rights Reserved.</span>
                     <a href="https://www.iubenda.com/privacy-policy/257554" class="iubenda-light iubenda-embed" title="Privacy Policy">Privacy Policy</a>
-				    <script type="text/javascript">
-				        (function(w, d) {
-				            var loader = function() {
-				                var s = d.createElement("script"), tag = d
-				                        .getElementsByTagName("script")[0];
-				                s.src = "https://cdn.iubenda.com/iubenda.js";
-				                tag.parentNode.insertBefore(s, tag);
-				            };
-				            if (w.addEventListener) {
-				                w.addEventListener("load", loader, false);
-				            } else if (w.attachEvent) {
-				                w.attachEvent("onload", loader);
-				            } else {
-				                w.onload = loader;
-				            }
-				        })(window, document);
-				    </script>
-                    
+                    <script type="text/javascript">
+                        (function(w, d) {
+                            var loader = function() {
+                                var s = d.createElement("script"), tag = d
+                                        .getElementsByTagName("script")[0];
+                                s.src = "https://cdn.iubenda.com/iubenda.js";
+                                tag.parentNode.insertBefore(s, tag);
+                            };
+                            if (w.addEventListener) {
+                                w.addEventListener("load", loader, false);
+                            } else if (w.attachEvent) {
+                                w.attachEvent("onload", loader);
+                            } else {
+                                w.onload = loader;
+                            }
+                        })(window, document);
+                    </script>
+
                     | <a href="${tosUrl}">Termini di Servizio</a>
                 </p>
             </div>
@@ -145,7 +145,7 @@
                     <li><a href="#"><i class="fa fa-github"></i></a></li>
                     <li><a href="#"><i class="fa fa-youtube"></i></a></li>
                     <li><a href="#"><i class="fa fa-dropbox"></i></a></li> -->
-                </ul>                
+                </ul>
             </div>
             <div class="col-md-2 col-sm-2">
                 <ul class="social-footer">
@@ -159,44 +159,56 @@
 
 <sec:authorize access="isAuthenticated()">
 
-<%
-Principal principal = (Principal)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-%>
+    <%
+        Principal principal = (Principal)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    %>
 
-<script>
-// Include the UserVoice JavaScript SDK (only needed once on a page)
-UserVoice=window.UserVoice||[];(function(){var uv=document.createElement('script');uv.type='text/javascript';uv.async=true;uv.src='//widget.uservoice.com/qijZFrEigj9IF6UL4zLtNw.js';var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(uv,s)})();
+    <script type="application/javascript">
+        $(function(){
+            if(jQuery.cookieBar('cookies')) {
+                // Include the UserVoice JavaScript SDK (only needed once on a page)
+                UserVoice = window.UserVoice || [];
+                (function () {
+                    var uv = document.createElement('script');
+                    uv.type = 'text/javascript';
+                    uv.async = true;
+                    uv.src = '//widget.uservoice.com/qijZFrEigj9IF6UL4zLtNw.js';
+                    var s = document.getElementsByTagName('script')[0];
+                    s.parentNode.insertBefore(uv, s)
+                })();
 
-//
-// UserVoice Javascript SDK developer documentation:
-// https://www.uservoice.com/o/javascript-sdk
-//
+                //
+                // UserVoice Javascript SDK developer documentation:
+                // https://www.uservoice.com/o/javascript-sdk
+                //
 
-// Set colors
-UserVoice.push(['set', {
-  accent_color: '#448dd6',
-  trigger_color: 'white',
-  trigger_background_color: 'rgba(46, 49, 51, 0.6)'
-}]);
+                // Set colors
+                UserVoice.push(['set', {
+                    accent_color: '#448dd6',
+                    trigger_color: 'white',
+                    trigger_background_color: 'rgba(46, 49, 51, 0.6)'
+                }]);
 
-// Identify the user and pass traits
-// To enable, replace sample data with actual user traits and uncomment the line
-UserVoice.push(['identify', {
-  email:      '<%=principal.getUsername()%>', // User’s email address
-  created_at: <%=principal.getCreationTime()%>, // Unix timestamp for the date the user signed up
-  id:         <%=principal.getId()%>, // Optional: Unique id of the user (if set, this should not change)
-  account: {
-    plan:         '<%=principal.getGrantedRoles()%>' // Plan name for the account
-  }
-}]);
+                // Identify the user and pass traits
+                // To enable, replace sample data with actual user traits and uncomment the line
+                UserVoice.push(['identify', {
+                    email: '<%=principal.getUsername()%>', // User’s email address
+                    created_at: <%=principal.getCreationTime()%>, // Unix timestamp for the date the user signed up
+                    id:         <%=principal.getId()%>, // Optional: Unique id of the user (if set, this should not change)
+                    account: {
+                        plan: '<%=principal.getGrantedRoles()%>' // Plan name for the account
+                    }
+                }]);
 
-// Add default trigger to the bottom-right corner of the window:
-UserVoice.push(['addTrigger', { mode: 'contact', trigger_position: 'bottom-left' }]);
+                // Add default trigger to the bottom-right corner of the window:
+                UserVoice.push(['addTrigger', {mode: 'contact', trigger_position: 'bottom-left'}]);
 
-// Or, use your own custom trigger:
-//UserVoice.push(['addTrigger', '#id', { mode: 'contact' }]);
+                // Or, use your own custom trigger:
+                //UserVoice.push(['addTrigger', '#id', { mode: 'contact' }]);
 
-// Autoprompt for Satisfaction and SmartVote (only displayed under certain conditions)
-UserVoice.push(['autoprompt', {}]);
-</script>
+                // Autoprompt for Satisfaction and SmartVote (only displayed under certain conditions)
+                UserVoice.push(['autoprompt', {}]);
+            }
+        });
+    </script>
 </sec:authorize>
