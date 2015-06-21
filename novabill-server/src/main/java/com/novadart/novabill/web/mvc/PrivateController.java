@@ -1,14 +1,12 @@
 package com.novadart.novabill.web.mvc;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.novadart.novabill.domain.DocumentIDClass;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.service.web.BusinessService;
 import com.novadart.novabill.service.web.DocumentIDClassService;
 import com.novadart.novabill.shared.client.dto.DocumentIDClassDTO;
+import com.novadart.novabill.shared.client.exception.DataAccessException;
+import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -17,13 +15,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.novadart.novabill.domain.security.Principal;
-import com.novadart.novabill.service.web.BusinessService;
-import com.novadart.novabill.shared.client.exception.DataAccessException;
-import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class PrivateController {
@@ -36,7 +32,7 @@ public class PrivateController {
 
 	private final ObjectMapper mapper = new ObjectMapper();
 	
-	public static enum PAGES {
+	public enum PAGES {
 		DASHBOARD, CLIENTS, COMMODITIES, PRICE_LISTS, PAYMENTS, SETTINGS, INVOICES, ESTIMATIONS, TRANSPORT_DOCUMENTS, 
 		CREDIT_NOTES, PREMIUM, SHARE, STATISTICS_GENERAL, STATISTICS_CLIENTS, STATISTICS_COMMODITIES 
 	}
@@ -50,7 +46,7 @@ public class PrivateController {
 	}
 	
 	@RequestMapping(value = Urls.PRIVATE_CLIENTS, method = RequestMethod.GET)
-	public ModelAndView clients() throws JsonGenerationException, JsonMappingException, IOException, NotAuthenticatedException, DataAccessException{
+	public ModelAndView clients() throws IOException, NotAuthenticatedException, DataAccessException{
 		ModelAndView mav = new ModelAndView("private.clients");
 		mav.addObject("activePage", PAGES.CLIENTS);
 		
@@ -72,7 +68,7 @@ public class PrivateController {
 	}
 	
 	@RequestMapping(value = Urls.PRIVATE_DOCS_INVOICES, method = RequestMethod.GET)
-	public ModelAndView invoices() throws JsonGenerationException, JsonMappingException, IOException, NotAuthenticatedException, DataAccessException{
+	public ModelAndView invoices() throws IOException, NotAuthenticatedException, DataAccessException{
 		ModelAndView mav = new ModelAndView("private.invoices");
 		mav.addObject("activePage", PAGES.INVOICES);
 		Principal principal = (Principal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -88,7 +84,7 @@ public class PrivateController {
 	}
 	
 	@RequestMapping(value = Urls.PRIVATE_DOCS_ESTIMATIONS, method = RequestMethod.GET)
-	public ModelAndView estimations() throws JsonGenerationException, JsonMappingException, IOException, NotAuthenticatedException, DataAccessException{
+	public ModelAndView estimations() throws IOException, NotAuthenticatedException, DataAccessException{
 		ModelAndView mav = new ModelAndView("private.estimations");
 		mav.addObject("activePage", PAGES.ESTIMATIONS);
 		Principal principal = (Principal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -97,7 +93,7 @@ public class PrivateController {
 	}
 	
 	@RequestMapping(value = Urls.PRIVATE_DOCS_TRANSPORT_DOCUMENTS, method = RequestMethod.GET)
-	public ModelAndView transportDocuments() throws JsonGenerationException, JsonMappingException, IOException, NotAuthenticatedException, DataAccessException{
+	public ModelAndView transportDocuments() throws IOException, NotAuthenticatedException, DataAccessException{
 		ModelAndView mav = new ModelAndView("private.transportDocuments");
 		mav.addObject("activePage", PAGES.TRANSPORT_DOCUMENTS);
 		Principal principal = (Principal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -106,7 +102,7 @@ public class PrivateController {
 	}
 	
 	@RequestMapping(value = Urls.PRIVATE_DOCS_CREDIT_NOTES, method = RequestMethod.GET)
-	public ModelAndView creditNotes() throws JsonGenerationException, JsonMappingException, IOException, NotAuthenticatedException, DataAccessException{
+	public ModelAndView creditNotes() throws IOException, NotAuthenticatedException, DataAccessException{
 		ModelAndView mav = new ModelAndView("private.creditNotes");
 		mav.addObject("activePage", PAGES.CREDIT_NOTES);
 		Principal principal = (Principal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

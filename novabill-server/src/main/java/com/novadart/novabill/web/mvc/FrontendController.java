@@ -50,6 +50,13 @@ public class FrontendController {
 		model.addAttribute("pageName", "Oops");
 		return "frontend.oops";
 	}
+
+
+	@RequestMapping(value = Urls.PUBLIC_COOKIES_POLICY, method = RequestMethod.GET)
+	public String cookiesPolicy(Model model){
+		model.addAttribute("pageName", "Informativa Cookie");
+		return "frontend.cookiesPolicy";
+	}
 	
 	@RequestMapping(value = Urls.PUBLIC_TOS, method = RequestMethod.GET)
 	public String tos(Model model){
