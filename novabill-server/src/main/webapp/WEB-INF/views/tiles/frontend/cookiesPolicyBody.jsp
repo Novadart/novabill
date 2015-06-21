@@ -123,6 +123,18 @@
 
     <br/>
 
+    <p class="p2"><strong><span class="s1">Iubenda</span></strong></p>
+
+    <p class="p2"><span class="s1">Il&nbsp;Sito utilizza Iubenda. Si tratta di un servizio di generazione di privacy policy per siti web fornito da iubenda s.r.l. (“iubenda”) che utilizza dei cookie che vengono depositati sul computer dell’utente per rendere possibile il funzionamento del servizio.</span>
+    </p>
+
+    <p class="p2"><span class="s1">I dati generati da iubenda sono conservati da iubenda così come indicato nella Informativa reperibile al seguente link <a
+            href="https://www.iubenda.com/privacy-policy/775731/legal"><span
+            class="s2">https://www.iubenda.com/privacy-policy/775731/legal</span></a></span>
+    </p>
+
+    <br/>
+
     <h2 class="p1"><span class="s1"><b>Modalità<span class="Apple-converted-space">&nbsp; </span>del
         trattamento</b></span></h2>
 

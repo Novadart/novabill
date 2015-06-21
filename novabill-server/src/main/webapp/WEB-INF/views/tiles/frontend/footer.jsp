@@ -6,6 +6,7 @@
 
 <spring:url value="/frontend_assets" var="frontendAssetsUrl" />
 <spring:url value="/tos" var="tosUrl" />
+<spring:url value="/cookies-policy" var="cookiePolicyUrl" />
 <spring:url var="shareAskUrl" value="/share-ask" />
 
 <!-- BEGIN FOOTER -->
@@ -132,6 +133,7 @@
                     </script>
 
                     | <a href="${tosUrl}">Termini di Servizio</a>
+                    | <a href="${cookiePolicyUrl}">Cookie Policy</a>
                 </p>
             </div>
             <div class="col-md-2 col-sm-2">
