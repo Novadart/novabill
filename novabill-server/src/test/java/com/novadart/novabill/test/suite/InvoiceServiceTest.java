@@ -1,25 +1,31 @@
 package com.novadart.novabill.test.suite;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.lang.reflect.InvocationTargetException;
-import java.security.NoSuchAlgorithmException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import com.dumbster.smtp.SimpleSmtpServer;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.novadart.novabill.aspect.logging.DBLoggerAspect;
+import com.novadart.novabill.domain.*;
+import com.novadart.novabill.domain.dto.DTOUtils;
+import com.novadart.novabill.domain.dto.transformer.BusinessDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.ClientDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.InvoiceDTOTransformer;
+import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.service.PDFStorageService;
+import com.novadart.novabill.service.web.InvoiceService;
+import com.novadart.novabill.shared.client.data.EntityType;
+import com.novadart.novabill.shared.client.data.FilteringDateType;
+import com.novadart.novabill.shared.client.data.OperationType;
+import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
+import com.novadart.novabill.shared.client.dto.InvoiceDTO;
+import com.novadart.novabill.shared.client.dto.PageDTO;
+import com.novadart.novabill.shared.client.exception.*;
+import com.novadart.novabill.shared.client.facade.BusinessGwtService;
+import com.novadart.novabill.shared.client.facade.ClientGwtService;
+import com.novadart.novabill.shared.client.facade.InvoiceGwtService;
+import com.novadart.novabill.shared.client.validation.ErrorObject;
+import com.novadart.novabill.shared.client.validation.Field;
+import com.novadart.novabill.web.mvc.ajax.dto.EmailDTO;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,40 +35,18 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.dumbster.smtp.SimpleSmtpServer;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.novadart.novabill.aspect.logging.DBLoggerAspect;
-import com.novadart.novabill.domain.Business;
-import com.novadart.novabill.domain.Client;
-import com.novadart.novabill.domain.DocumentAccessToken;
-import com.novadart.novabill.domain.Invoice;
-import com.novadart.novabill.domain.LogRecord;
-import com.novadart.novabill.domain.TransportDocument;
-import com.novadart.novabill.domain.dto.DTOUtils;
-import com.novadart.novabill.domain.dto.transformer.BusinessDTOTransformer;
-import com.novadart.novabill.domain.dto.transformer.ClientDTOTransformer;
-import com.novadart.novabill.domain.dto.transformer.InvoiceDTOTransformer;
-import com.novadart.novabill.domain.security.Principal;
-import com.novadart.novabill.service.web.InvoiceService;
-import com.novadart.novabill.shared.client.data.EntityType;
-import com.novadart.novabill.shared.client.data.FilteringDateType;
-import com.novadart.novabill.shared.client.data.OperationType;
-import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
-import com.novadart.novabill.shared.client.dto.InvoiceDTO;
-import com.novadart.novabill.shared.client.dto.PageDTO;
-import com.novadart.novabill.shared.client.exception.DataAccessException;
-import com.novadart.novabill.shared.client.exception.DataIntegrityException;
-import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
-import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
-import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
-import com.novadart.novabill.shared.client.exception.ValidationException;
-import com.novadart.novabill.shared.client.facade.BusinessGwtService;
-import com.novadart.novabill.shared.client.facade.ClientGwtService;
-import com.novadart.novabill.shared.client.facade.InvoiceGwtService;
-import com.novadart.novabill.shared.client.validation.ErrorObject;
-import com.novadart.novabill.shared.client.validation.Field;
-import com.novadart.novabill.web.mvc.ajax.dto.EmailDTO;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.lang.reflect.InvocationTargetException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.security.NoSuchAlgorithmException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+import static org.junit.Assert.*;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -82,7 +66,10 @@ public class InvoiceServiceTest extends ServiceTest {
 	
 	@Autowired
 	private BusinessGwtService businessService;
-	
+
+	@Autowired
+	private PDFStorageService pdfStorageService;
+
 	@Override
 	@Before
 	public void authenticate() {
@@ -285,6 +272,7 @@ public class InvoiceServiceTest extends ServiceTest {
 		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
 		assertEquals(expectedInvoice.getClient().getName(), details.get(DBLoggerAspect.CLIENT_NAME));
 		assertEquals(expectedInvoice.getDocumentID().toString(), details.get(DBLoggerAspect.DOCUMENT_ID));
+		assertTrue(Files.exists(FileSystems.getDefault().getPath(actualInvoice.getDocumentPDFPath())));
 	}
 	
 	@Test(expected = DataAccessException.class)
@@ -317,6 +305,7 @@ public class InvoiceServiceTest extends ServiceTest {
 		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
 		assertEquals(client.getName(), details.get(DBLoggerAspect.CLIENT_NAME));
 		assertEquals(invDTO.getDocumentID().toString(), details.get(DBLoggerAspect.DOCUMENT_ID));
+		assertTrue(Files.exists(FileSystems.getDefault().getPath(Invoice.findInvoice(id).getDocumentPDFPath())));
 	}
 	
 	@Test
@@ -500,5 +489,26 @@ public class InvoiceServiceTest extends ServiceTest {
 		emailDTO.setMessage("Test message");
 		invoiceAjaxService.email(inv.getBusiness().getId(), inv.getId(), emailDTO);
 	}
-	
+
+	@Test
+	public void purgeOrghanInvoicePdfsTest() throws IllegalAccessException, InstantiationException, NotAuthenticatedException, FreeUserAccessForbiddenException, DataIntegrityException, DataAccessException, ValidationException, NoSuchObjectException {
+		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
+		InvoiceDTO invDTO = InvoiceDTOTransformer.toDTO(TestUtils.createInvOrCredNote(authenticatedPrincipal.getBusiness().getNextInvoiceDocumentID(null), Invoice.class), true);
+		invDTO.setClient(ClientDTOTransformer.toDTO(client));
+		invDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
+		Long id = invoiceService.add(invDTO);
+		Invoice.entityManager().flush();
+		String oldPdfPath = Invoice.findInvoice(id).getDocumentPDFPath();
+		Invoice expectedInvoice = Invoice.findInvoice(id);
+		expectedInvoice.setNote("Temporary note for this invoice");
+		invoiceService.update(InvoiceDTOTransformer.toDTO(expectedInvoice, true));
+		Invoice.entityManager().flush();
+		String currPdfPath = Invoice.findInvoice(id).getDocumentPDFPath();
+		assertTrue(Files.exists(FileSystems.getDefault().getPath(oldPdfPath)));
+		assertTrue(Files.exists(FileSystems.getDefault().getPath(currPdfPath)));
+		pdfStorageService.purgeOrphanPDFs();
+		assertTrue(!Files.exists(FileSystems.getDefault().getPath(oldPdfPath)));
+		assertTrue(Files.exists(FileSystems.getDefault().getPath(currPdfPath)));
+	}
+
 }

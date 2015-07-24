@@ -1,19 +1,19 @@
 package com.novadart.novabill.web.mvc;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
-
-import net.sf.jasperreports.engine.JRException;
-
+import com.novadart.novabill.domain.Business;
+import com.novadart.novabill.domain.CreditNote;
+import com.novadart.novabill.domain.Invoice;
+import com.novadart.novabill.domain.dto.DTOUtils;
+import com.novadart.novabill.report.ReportUtils;
+import com.novadart.novabill.service.SharingService;
+import com.novadart.novabill.service.export.data.DataExporter;
+import com.novadart.novabill.service.export.data.ExportDataBundle;
+import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
+import com.novadart.novabill.shared.client.dto.InvoiceDTO;
+import com.novadart.novabill.shared.client.exception.DataAccessException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
+import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
+import com.novadart.novabill.web.mvc.command.SharingRequest;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -25,30 +25,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 
-import com.novadart.novabill.domain.Business;
-import com.novadart.novabill.domain.CreditNote;
-import com.novadart.novabill.domain.Invoice;
-import com.novadart.novabill.domain.dto.DTOUtils;
-import com.novadart.novabill.report.JasperReportKeyResolutionException;
-import com.novadart.novabill.report.ReportUtils;
-import com.novadart.novabill.service.SharingService;
-import com.novadart.novabill.service.export.data.DataExporter;
-import com.novadart.novabill.service.export.data.ExportDataBundle;
-import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
-import com.novadart.novabill.shared.client.dto.InvoiceDTO;
-import com.novadart.novabill.shared.client.exception.DataAccessException;
-import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
-import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
-import com.novadart.novabill.web.mvc.command.SharingRequest;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
 
 @Controller
 @SessionAttributes("sharingRequest")
@@ -140,7 +129,7 @@ public class SharingController {
 	
 	public void downloadSharedDocs(Long businessID, String token, Date startDate, Date endDate,
 			HttpServletResponse response, Locale locale, String exportFileName,
-			ExportDataBundle exportDataBundle) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, IOException, JRException, JasperReportKeyResolutionException{
+			ExportDataBundle exportDataBundle) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, IOException {
 		File zipFile = null;
 		try{
 			zipFile = dataExporter.exportData(exportDataBundle, messageSource, locale);
@@ -163,7 +152,7 @@ public class SharingController {
 	public void downloadSharedInvoices(@PathVariable Long businessID, @RequestParam(value = "token", required = true) String token,
 			@RequestParam(value = "startDate", required = false) @DateTimeFormat(iso = ISO.DATE) Date startDate,
 			@RequestParam(value = "endDate", required = false) @DateTimeFormat(iso = ISO.DATE) Date endDate,
-			HttpServletResponse response, Locale locale) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, IOException, JRException, JasperReportKeyResolutionException {
+			HttpServletResponse response, Locale locale) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, IOException {
 		if(sharingService.isValidRequest(businessID, token)){
 			List<Invoice> invoices = Business.getAllInvoicesCreationDateInRange(businessID, startDate, endDate);
 			ExportDataBundle exportDataBundle = new ExportDataBundle();
@@ -180,7 +169,7 @@ public class SharingController {
 	public void downloadSharedCreditNotes(@PathVariable Long businessID, @RequestParam(value = "token", required = true) String token,
 			@RequestParam(value = "startDate", required = false) @DateTimeFormat(iso = ISO.DATE) Date startDate,
 			@RequestParam(value = "endDate", required = false) @DateTimeFormat(iso = ISO.DATE) Date endDate,
-			HttpServletResponse response, Locale locale) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, IOException, JRException, JasperReportKeyResolutionException {
+			HttpServletResponse response, Locale locale) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, IOException {
 		if(sharingService.isValidRequest(businessID, token)){
 			List<CreditNote> creditNotes = Business.getAllCreditNotesCreationDateInRange(businessID, startDate, endDate);
 			ExportDataBundle exportDataBundle = new ExportDataBundle();

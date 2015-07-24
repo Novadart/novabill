@@ -25,13 +25,13 @@ public privileged aspect CreditNoteServiceActionsAspect extends DBLoggerAspect {
 	private static final Logger LOGGER = LoggerFactory.getLogger(CreditNoteServiceActionsAspect.class);
 	
 	pointcut add(CreditNoteDTO creditNoteDTO) :
-		execution(public Long com.novadart.novabill.service.web.CreditNoteService.add(..)) && args(creditNoteDTO);
+		call(public Long com.novadart.novabill.service.web.CreditNoteService.add(..)) && args(creditNoteDTO);
 	
 	pointcut remove(Long businessID, Long clientID, Long id) : 
-		execution(public void com.novadart.novabill.service.web.CreditNoteService.remove(..)) && args(businessID, clientID, id);
+		call(public void com.novadart.novabill.service.web.CreditNoteService.remove(..)) && args(businessID, clientID, id);
 	
 	pointcut update(CreditNoteDTO creditNoteDTO) : 
-		execution(public void com.novadart.novabill.service.web.CreditNoteService.update(..)) && args(creditNoteDTO);
+		call(public void com.novadart.novabill.service.web.CreditNoteService.update(..)) && args(creditNoteDTO);
 	
 	after(CreditNoteDTO creditNoteDTO) returning (Long id) : add(creditNoteDTO){
 		Long time = System.currentTimeMillis();

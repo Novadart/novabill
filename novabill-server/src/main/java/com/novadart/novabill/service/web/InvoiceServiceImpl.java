@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+import com.novadart.novabill.report.DocumentType;
+import com.novadart.novabill.service.PDFStorageService;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -74,6 +76,9 @@ public class InvoiceServiceImpl implements InvoiceService {
 	
 	@Autowired
 	private TokenGenerator tokenGenerator;
+
+	@Autowired
+	private PDFStorageService pdfStorageService;
 	
 	@Override
 	@PreAuthorize("T(com.novadart.novabill.domain.Invoice).findInvoice(#id)?.business?.id == principal.business.id")
@@ -163,6 +168,8 @@ public class InvoiceServiceImpl implements InvoiceService {
 		client.getInvoices().add(invoice);
 		invoice.setBusiness(business);
 		business.getInvoices().add(invoice);
+		String pdfPath = pdfStorageService.generateAndStorePdfForAccountingDocument(invoice, DocumentType.INVOICE);
+		invoice.setDocumentPDFPath(pdfPath);
 		invoice.persist();
 		invoice.flush();
 		Long businessID = invoiceDTO.getBusiness().getId();
@@ -197,6 +204,8 @@ public class InvoiceServiceImpl implements InvoiceService {
 			}
 		}
 		validator.validate(Invoice.class, persistedInvoice);
+		String pdfPath = pdfStorageService.generateAndStorePdfForAccountingDocument(persistedInvoice, DocumentType.INVOICE);
+		persistedInvoice.setDocumentPDFPath(pdfPath);
 	}
 	
 	@Override

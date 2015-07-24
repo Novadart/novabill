@@ -1,26 +1,13 @@
 package com.novadart.novabill.service.export.data;
 
-import java.io.BufferedOutputStream;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
-
-import javax.annotation.PostConstruct;
-
-import net.sf.jasperreports.engine.JRException;
-
+import com.google.common.base.Joiner;
+import com.novadart.novabill.domain.AccountingDocument;
+import com.novadart.novabill.domain.Client;
+import com.novadart.novabill.domain.Logo;
+import com.novadart.novabill.report.DocumentType;
+import com.novadart.novabill.report.JRDataSourceFactory;
+import com.novadart.novabill.report.JasperReportService;
+import com.novadart.novabill.report.ReportUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,15 +15,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
-import com.google.common.base.Joiner;
-import com.novadart.novabill.domain.AccountingDocument;
-import com.novadart.novabill.domain.Client;
-import com.novadart.novabill.domain.Logo;
-import com.novadart.novabill.report.DocumentType;
-import com.novadart.novabill.report.JRDataSourceFactory;
-import com.novadart.novabill.report.JasperReportKeyResolutionException;
-import com.novadart.novabill.report.JasperReportService;
-import com.novadart.novabill.report.ReportUtils;
+import javax.annotation.PostConstruct;
+import java.io.*;
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 @Service
 public class DataExporter {
@@ -87,7 +71,7 @@ public class DataExporter {
 		return clientsData;
 	}
 	
-	private <T extends AccountingDocument> File exportAccountingDocument(File outDir, T doc, Logo logo, Long businessID, DocumentType docType, Boolean putWatermark) throws IOException, JRException, JasperReportKeyResolutionException{
+	private <T extends AccountingDocument> File exportAccountingDocument(File outDir, T doc, Logo logo, Long businessID, DocumentType docType, Boolean putWatermark) throws IOException {
 		File docFile = File.createTempFile("doc", ".pdf", outDir);
 		docFile.deleteOnExit();
 		jrService.exportReportToPdfFile(JRDataSourceFactory.createDataSource(doc, businessID), docType, doc.getLayoutType(), docFile.getPath());
@@ -95,7 +79,7 @@ public class DataExporter {
 	}
 	
 	private <T extends AccountingDocument> List<File> exportAccountingDocumentsData(File outDir, ZipOutputStream zipStream, Collection<T> docs, Logo logo,
-			DocumentType docType, Long businessID, Boolean putWatermark, String entryFormat) throws IOException, FileNotFoundException, JRException, JasperReportKeyResolutionException {
+			DocumentType docType, Long businessID, Boolean putWatermark, String entryFormat) throws IOException, FileNotFoundException {
 		List<File> files = new ArrayList<File>();
 		for(T doc: docs){
 			File docFile;
@@ -111,7 +95,7 @@ public class DataExporter {
 	}
 	
 	public File exportData(ExportDataBundle exportDataBundle, MessageSource messageSource,
-			Locale locale) throws IOException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, JRException, JasperReportKeyResolutionException {
+			Locale locale) throws IOException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 		File outDir = new File(dataOutLocation);
 		File zipFile = File.createTempFile("export", ".zip", outDir);
 		ZipOutputStream zipStream = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(zipFile)));

@@ -1,29 +1,7 @@
 package com.novadart.novabill.web.mvc;
 
-import java.io.IOException;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-
-import javax.servlet.http.HttpServletResponse;
-
-import net.sf.jasperreports.engine.JRException;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-
-import com.novadart.novabill.domain.Business;
-import com.novadart.novabill.domain.CreditNote;
-import com.novadart.novabill.domain.Estimation;
-import com.novadart.novabill.domain.Invoice;
-import com.novadart.novabill.domain.TransportDocument;
-import com.novadart.novabill.report.DocumentType;
-import com.novadart.novabill.report.JRDataSourceFactory;
-import com.novadart.novabill.report.JasperReportKeyResolutionException;
-import com.novadart.novabill.report.JasperReportService;
-import com.novadart.novabill.report.ReportUtils;
+import com.novadart.novabill.domain.*;
+import com.novadart.novabill.report.*;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.shared.client.data.FilteringDateType;
 import com.novadart.novabill.shared.client.data.LayoutType;
@@ -31,6 +9,16 @@ import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 public class PDFController{
 
@@ -44,7 +32,7 @@ public class PDFController{
 	private UtilsService utilsService;
 	
 	protected ResponseEntity<byte[]> getInvoicePDF(Long id, String token, boolean print,
-			HttpServletResponse response, Locale locale) throws IOException, DataAccessException, NoSuchObjectException, JasperReportKeyResolutionException, JRException{
+			HttpServletResponse response, Locale locale) throws IOException, DataAccessException, NoSuchObjectException{
 		Invoice invoice = Invoice.findInvoice(id);
 		if(invoice == null)
 			throw new NoSuchObjectException();
@@ -56,7 +44,7 @@ public class PDFController{
 	}
 
 	protected ResponseEntity<byte[]> getEstimationPDF(Long id, String token, boolean print,
-			HttpServletResponse response, Locale locale) throws IOException, DataAccessException, NoSuchObjectException, JRException, JasperReportKeyResolutionException{
+			HttpServletResponse response, Locale locale) throws IOException, DataAccessException, NoSuchObjectException {
 		Estimation estimation = Estimation.findEstimation(id);
 		if(estimation == null)
 			throw new NoSuchObjectException();
@@ -68,7 +56,7 @@ public class PDFController{
 	}
 
 	protected ResponseEntity<byte[]> getCreditNotePDF(Long id, String token, boolean print,
-			HttpServletResponse response, Locale locale) throws IOException, DataAccessException, NoSuchObjectException, JRException, JasperReportKeyResolutionException{
+			HttpServletResponse response, Locale locale) throws IOException, DataAccessException, NoSuchObjectException {
 		CreditNote creditNote = CreditNote.findCreditNote(id);
 		if(creditNote == null)
 			throw new NoSuchObjectException();
@@ -80,7 +68,7 @@ public class PDFController{
 	}
 
 	protected ResponseEntity<byte[]> getTransportDocumentPDF(Long id, String token, boolean print,
-			HttpServletResponse response, Locale locale) throws IOException, DataAccessException, NoSuchObjectException, JRException, JasperReportKeyResolutionException{
+			HttpServletResponse response, Locale locale) throws IOException, DataAccessException, NoSuchObjectException {
 		TransportDocument transportDocument = TransportDocument.findTransportDocument(id);
 		if(transportDocument == null)
 			throw new NoSuchObjectException();
@@ -92,7 +80,7 @@ public class PDFController{
 	}
 
 	protected ResponseEntity<byte[]> getPaymentsProspectPaymentDueDatePDF(Date startDate, Date endDate, FilteringDateType filteringDateType, String token,
-			boolean print, HttpServletResponse response, Locale locale) throws JRException, JasperReportKeyResolutionException, FreeUserAccessForbiddenException, NotAuthenticatedException, DataAccessException {
+			boolean print, HttpServletResponse response, Locale locale) throws FreeUserAccessForbiddenException, NotAuthenticatedException, DataAccessException {
 		Business business  = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId());
 		List<Invoice> invoices = business.getAllUnpaidInvoicesInDateRange(filteringDateType, startDate, endDate);
 		String pdfName = messageSource.getMessage("export.paymentspros.name.pattern", null, "Payments_prospect.pdf", locale);

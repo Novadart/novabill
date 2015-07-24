@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import com.novadart.novabill.report.DocumentType;
+import com.novadart.novabill.service.PDFStorageService;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -40,6 +42,9 @@ public class EstimationService {
 	
 	@Autowired
 	private AccountingDocumentValidator validator;
+
+	@Autowired
+	private PDFStorageService pdfStorageService;
 	
 	@PreAuthorize("T(com.novadart.novabill.domain.Estimation).findEstimation(#id)?.business?.id == principal.business.id")
 	public EstimationDTO get(Long id) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException {
@@ -84,6 +89,8 @@ public class EstimationService {
 		Business business = Business.findBusiness(estimationDTO.getBusiness().getId());
 		estimation.setBusiness(business);
 		business.getEstimations().add(estimation);
+		String pdfPath = pdfStorageService.generateAndStorePdfForAccountingDocument(estimation, DocumentType.ESTIMATION);
+		estimation.setDocumentPDFPath(pdfPath);
 		estimation.persist();
 		estimation.flush();
 		return estimation.getId();
@@ -119,6 +126,8 @@ public class EstimationService {
 			persistedEstimation.getAccountingDocumentItems().add(item);
 		}
 		validator.validate(Estimation.class, persistedEstimation);
+		String pdfPath = pdfStorageService.generateAndStorePdfForAccountingDocument(persistedEstimation, DocumentType.ESTIMATION);
+		persistedEstimation.setDocumentPDFPath(pdfPath);
 	}
 
 	public Long getNextEstimationId() throws NotAuthenticatedException {

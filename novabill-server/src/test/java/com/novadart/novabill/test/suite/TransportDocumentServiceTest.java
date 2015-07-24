@@ -7,6 +7,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -16,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.novadart.novabill.service.PDFStorageService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -80,6 +83,9 @@ public class TransportDocumentServiceTest extends ServiceTest {
 	
 	@Autowired
 	private ClientGwtService clientService;
+
+	@Autowired
+	private PDFStorageService pdfStorageService;
 	
 	@Override
 	@Before
@@ -442,6 +448,27 @@ public class TransportDocumentServiceTest extends ServiceTest {
 		assertTrue(TransportDocument.findTransportDocument(transDoc.getId()).getInvoice() == null);
 		assertTrue(!Invoice.findInvoice(invoice.getId()).getTransportDocuments().contains(TransportDocument.findTransportDocument(transDoc.getId())));
 		assertTrue(transportDocService.get(transDoc.getId()).getInvoice() == null);
+	}
+
+	@Test
+	public void purgeOrghanCrednotesPdfsTest() throws IllegalAccessException, InstantiationException, NotAuthenticatedException, FreeUserAccessForbiddenException, DataIntegrityException, DataAccessException, ValidationException, NoSuchObjectException {
+		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
+		TransportDocumentDTO transDocDTO = TransportDocumentDTOTransformer.toDTO(TestUtils.createTransportDocument(authenticatedPrincipal.getBusiness().getNextInvoiceDocumentID(null)), true);
+		transDocDTO.setClient(ClientDTOTransformer.toDTO(client));
+		transDocDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
+		Long id = transportDocService.add(transDocDTO);
+		TransportDocument.entityManager().flush();
+		String oldPdfPath = TransportDocument.findTransportDocument(id).getDocumentPDFPath();
+		TransportDocument expectedTransDoc = TransportDocument.findTransportDocument(id);
+		expectedTransDoc.setNote("Temporary note for this estimation");
+		transportDocService.update(TransportDocumentDTOTransformer.toDTO(expectedTransDoc, true));
+		TransportDocument.entityManager().flush();
+		String currPdfPath = TransportDocument.findTransportDocument(id).getDocumentPDFPath();
+		assertTrue(Files.exists(FileSystems.getDefault().getPath(oldPdfPath)));
+		assertTrue(Files.exists(FileSystems.getDefault().getPath(currPdfPath)));
+		pdfStorageService.purgeOrphanPDFs();
+		assertTrue(!Files.exists(FileSystems.getDefault().getPath(oldPdfPath)));
+		assertTrue(Files.exists(FileSystems.getDefault().getPath(currPdfPath)));
 	}
 	
 }

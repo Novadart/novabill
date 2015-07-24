@@ -18,7 +18,7 @@ public aspect ClientUIAspect extends AbstractLogEventEmailSenderAspect {
 	private UtilsService utilsService;
 	
 	pointcut postClientUIError():
-		execution(public void com.novadart.novabill.web.mvc.ajax.ClientUIErrorController.postError(..));
+		call(public void com.novadart.novabill.web.mvc.ajax.ClientUIErrorController.postError(..));
 	
 	after() throwing(ClientUIException ex): postClientUIError() {
 		Map<String, Object> vars = new HashMap<String, Object>();
