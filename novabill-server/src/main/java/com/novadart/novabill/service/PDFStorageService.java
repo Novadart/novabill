@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.io.File;
@@ -46,6 +47,13 @@ public class PDFStorageService {
                 (document.getDocumentIDSuffix() == null? "": document.getDocumentIDSuffix());
         String filename = Joiner.on('_').skipNulls().join(new String[]{docType, businessId, year, docId, uniquePathID});
         return mergePaths(pdfStoragePath, filename) + ".pdf";
+    }
+
+    @PostConstruct
+    public void init() throws IOException {
+        Path path = Paths.get(pdfStoragePath);
+        if(!Files.exists(path))
+            Files.createDirectories(path);
     }
 
     public String generateAndStorePdfForAccountingDocument(AccountingDocument document, DocumentType documentType) {

@@ -251,6 +251,7 @@
 			<property name="minEvictableIdleTimeMillis" value="1800000" />
 			<property name="validationQuery" value="SELECT version();" />
 		</bean>
+		<bean class="com.novadart.novabill.service.DevProfilePDFGeneratorService"/>
 	</beans>
 	
 	<beans profile="production">

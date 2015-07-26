@@ -33,7 +33,7 @@ import com.novadart.novabill.shared.client.exception.PremiumUpgradeException;
 import com.novadart.novabill.web.mvc.command.Registration;
 
 
-@Service
+//@Service
 public class DBUtilitiesService {
 	
 //	private String blmDBPath = "/tmp/DATI.mdb";
