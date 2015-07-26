@@ -81,4 +81,8 @@ public class PDFStorageService {
         }
     }
 
+    public static byte[] pdfFileToByteArray(String path) throws IOException {
+        return Files.readAllBytes(Paths.get(path));
+    }
+
 }

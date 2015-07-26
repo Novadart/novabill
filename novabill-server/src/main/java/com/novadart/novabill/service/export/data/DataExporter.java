@@ -5,12 +5,9 @@ import com.novadart.novabill.domain.AccountingDocument;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.Logo;
 import com.novadart.novabill.report.DocumentType;
-import com.novadart.novabill.report.JRDataSourceFactory;
-import com.novadart.novabill.report.JasperReportService;
 import com.novadart.novabill.report.ReportUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.io.IOUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
@@ -18,6 +15,9 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -31,9 +31,6 @@ public class DataExporter {
 	public static final String[] CLIENT_FIELDS = new String[]{"name", "address", "postcode", "city", "province", "country", "email", "phone",	"mobile", "fax", "web", "vatID", "ssn"};
 	
 	public static final String[] CLIENT_CONTACT_FIELDS = new String[]{"firstName", "lastName", "email", "phone", "fax", "mobile"};
-	
-	@Autowired
-	private JasperReportService jrService;
 	
 	@PostConstruct
 	protected void init(){
@@ -74,7 +71,7 @@ public class DataExporter {
 	private <T extends AccountingDocument> File exportAccountingDocument(File outDir, T doc, Logo logo, Long businessID, DocumentType docType, Boolean putWatermark) throws IOException {
 		File docFile = File.createTempFile("doc", ".pdf", outDir);
 		docFile.deleteOnExit();
-		jrService.exportReportToPdfFile(JRDataSourceFactory.createDataSource(doc, businessID), docType, doc.getLayoutType(), docFile.getPath());
+		Files.copy(Paths.get(doc.getDocumentPDFPath()), docFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 		return docFile;
 	}
 	
