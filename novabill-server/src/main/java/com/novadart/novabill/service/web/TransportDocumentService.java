@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.novadart.novabill.report.DocumentType;
+import com.novadart.novabill.service.PDFStorageService;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -49,6 +51,9 @@ public class TransportDocumentService {
 	
 	@Autowired
 	private SimpleValidator simpleValidator;
+
+	@Autowired
+	private PDFStorageService pdfStorageService;
 	
 	@PreAuthorize("T(com.novadart.novabill.domain.TransportDocument).findTransportDocument(#id)?.business?.id == principal.business.id")
 	public TransportDocumentDTO get(Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
@@ -94,6 +99,8 @@ public class TransportDocumentService {
 		Business business = Business.findBusiness(transportDocDTO.getBusiness().getId());
 		transportDoc.setBusiness(business);
 		business.getTransportDocuments().add(transportDoc);
+		String pdfPath = pdfStorageService.generateAndStorePdfForAccountingDocument(transportDoc, DocumentType.TRANSPORT_DOCUMENT);
+		transportDoc.setDocumentPDFPath(pdfPath);
 		transportDoc.persist();
 		transportDoc.flush();
 		return transportDoc.getId();
@@ -133,7 +140,8 @@ public class TransportDocumentService {
 			persistedTransportDoc.getAccountingDocumentItems().add(item);
 		}
 		validator.validate(TransportDocument.class, persistedTransportDoc);
-		
+		String pdfPath = pdfStorageService.generateAndStorePdfForAccountingDocument(persistedTransportDoc, DocumentType.TRANSPORT_DOCUMENT);
+		persistedTransportDoc.setDocumentPDFPath(pdfPath);
 	}
 
 	public Long getNextTransportDocId() throws NotAuthenticatedException {

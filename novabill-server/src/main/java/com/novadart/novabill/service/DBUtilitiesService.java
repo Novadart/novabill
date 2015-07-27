@@ -6,9 +6,11 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import com.novadart.novabill.report.DocumentType;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.novadart.novabill.domain.Business;
@@ -41,7 +43,10 @@ public class DBUtilitiesService {
 	
 	@Autowired
 	private PremiumEnablerService premiumEnabledService;
-	
+
+	@Autowired
+	private PDFStorageService pdfStorageService;
+
 	private PaymentType[] paymentTypes = new PaymentType[]{
 			new PaymentType("Rimessa Diretta", "Pagamento in Rimessa Diretta", PaymentDateType.IMMEDIATE, 0, PaymentDeltaType.COMMERCIAL_MONTH, 0),
 			new PaymentType("Bonifico Bancario 30GG", "Pagamento con bonifico bancario entro 30 giorni", PaymentDateType.IMMEDIATE, 1, PaymentDeltaType.COMMERCIAL_MONTH, 0),
@@ -495,6 +500,27 @@ public class DBUtilitiesService {
 			tran.setLayoutType(LayoutType.DENSE);
 			
 	}
+
+	public void migrate4_0(){
+		for(Business business: Business.findAllBusinesses()){
+			for(Invoice invoice: business.getInvoices()){
+				String path = pdfStorageService.generateAndStorePdfForAccountingDocument(invoice, DocumentType.INVOICE);
+				invoice.setDocumentPDFPath(path);
+			}
+			for(Estimation estimation: business.getEstimations()){
+				String path = pdfStorageService.generateAndStorePdfForAccountingDocument(estimation, DocumentType.ESTIMATION);
+				estimation.setDocumentPDFPath(path);
+			}
+			for(CreditNote creditNote: business.getCreditNotes()){
+				String path = pdfStorageService.generateAndStorePdfForAccountingDocument(creditNote, DocumentType.CREDIT_NOTE);
+				creditNote.setDocumentPDFPath(path);
+			}
+			for(TransportDocument transportDocument: business.getTransportDocuments()){
+				String path = pdfStorageService.generateAndStorePdfForAccountingDocument(transportDocument, DocumentType.TRANSPORT_DOCUMENT);
+				transportDocument.setDocumentPDFPath(path);
+			}
+		}
+	}
 	
 	@Scheduled(fixedDelay = 31_536_000_730l)
 	@Transactional(readOnly = false)
@@ -515,7 +541,8 @@ public class DBUtilitiesService {
 		//migrate2_5();
 		//migrate3_0();
 		//migrate3_3();
-		resetMBDocsToDense();
+//		resetMBDocsToDense();
+		migrate4_0();
 	}
 	
 }

@@ -7,12 +7,16 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.novadart.novabill.service.PDFStorageService;
+import com.novadart.novabill.shared.client.exception.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,11 +43,6 @@ import com.novadart.novabill.shared.client.data.OperationType;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
-import com.novadart.novabill.shared.client.exception.DataAccessException;
-import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
-import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
-import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
-import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.facade.EstimationGwtService;
 import com.novadart.novabill.shared.client.validation.ErrorObject;
 import com.novadart.novabill.shared.client.validation.Field;
@@ -56,6 +55,9 @@ public class EstimationServiceTest extends ServiceTest {
 	
 	@Autowired
 	private EstimationGwtService estimationService;
+
+	@Autowired
+	private PDFStorageService pdfStorageService;
 	
 	@Override
 	@Before
@@ -204,6 +206,7 @@ public class EstimationServiceTest extends ServiceTest {
 		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
 		assertEquals(expectedEstimation.getClient().getName(), details.get(DBLoggerAspect.CLIENT_NAME));
 		assertEquals(expectedEstimation.getDocumentID().toString(), details.get(DBLoggerAspect.DOCUMENT_ID));
+		assertTrue(Files.exists(FileSystems.getDefault().getPath(actualEstimation.getDocumentPDFPath())));
 	}
 	
 	@Test(expected = DataAccessException.class)
@@ -235,6 +238,7 @@ public class EstimationServiceTest extends ServiceTest {
 		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
 		assertEquals(client.getName(), details.get(DBLoggerAspect.CLIENT_NAME));
 		assertEquals(estDTO.getDocumentID().toString(), details.get(DBLoggerAspect.DOCUMENT_ID));
+		assertTrue(Files.exists(FileSystems.getDefault().getPath(Estimation.findEstimation(id).getDocumentPDFPath())));
 	}
 	
 	@Test(expected = DataAccessException.class)
@@ -279,6 +283,28 @@ public class EstimationServiceTest extends ServiceTest {
 				actual.add(error.getField());
 			assertEquals(expected, actual);
 		}
+	}
+
+
+	@Test
+	public void purgeOrghanCrednotesPdfsTest() throws IllegalAccessException, InstantiationException, NotAuthenticatedException, FreeUserAccessForbiddenException, DataIntegrityException, DataAccessException, ValidationException, NoSuchObjectException {
+		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
+		EstimationDTO estimationDTO = EstimationDTOTransformer.toDTO(TestUtils.createEstimation(authenticatedPrincipal.getBusiness().getNextInvoiceDocumentID(null)), true);
+		estimationDTO.setClient(ClientDTOTransformer.toDTO(client));
+		estimationDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
+		Long id = estimationService.add(estimationDTO);
+		Estimation.entityManager().flush();
+		String oldPdfPath = Estimation.findEstimation(id).getDocumentPDFPath();
+		Estimation expectedEstimation = Estimation.findEstimation(id);
+		expectedEstimation.setNote("Temporary note for this estimation");
+		estimationService.update(EstimationDTOTransformer.toDTO(expectedEstimation, true));
+		Estimation.entityManager().flush();
+		String currPdfPath = Estimation.findEstimation(id).getDocumentPDFPath();
+		assertTrue(Files.exists(FileSystems.getDefault().getPath(oldPdfPath)));
+		assertTrue(Files.exists(FileSystems.getDefault().getPath(currPdfPath)));
+		pdfStorageService.purgeOrphanPDFs();
+		assertTrue(!Files.exists(FileSystems.getDefault().getPath(oldPdfPath)));
+		assertTrue(Files.exists(FileSystems.getDefault().getPath(currPdfPath)));
 	}
 	
 }

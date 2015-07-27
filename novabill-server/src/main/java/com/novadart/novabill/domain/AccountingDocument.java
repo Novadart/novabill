@@ -89,6 +89,9 @@ public abstract class AccountingDocument {
     @OrderBy("id")
     @Valid
     protected List<AccountingDocumentItem> accountingDocumentItems = new LinkedList<AccountingDocumentItem>();
+
+    @Size(max = 1024)
+    protected String documentPDFPath;
     
     @AttributeOverrides({
 		@AttributeOverride(name = "companyName", column = @Column(name = "to_company_name")),
@@ -137,6 +140,8 @@ public abstract class AccountingDocument {
 	 */
 	
 	public abstract Client getClient();
+
+    public abstract Business getBusiness();
 	
 	public Long getDocumentID() {
         return this.documentID;
@@ -223,7 +228,15 @@ public abstract class AccountingDocument {
 		this.layoutType = layoutType;
 	}
 
-	public List<AccountingDocumentItem> getAccountingDocumentItems() {
+    public String getDocumentPDFPath() {
+        return documentPDFPath;
+    }
+
+    public void setDocumentPDFPath(String documentPDFPath) {
+        this.documentPDFPath = documentPDFPath;
+    }
+
+    public List<AccountingDocumentItem> getAccountingDocumentItems() {
         return this.accountingDocumentItems;
     }
     
@@ -249,6 +262,11 @@ public abstract class AccountingDocument {
 			public Client getClient() {
 				return null;
 			}
+
+            @Override
+            public Business getBusiness() {
+                return null;
+            }
         }.entityManager;
         if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
         return em;
