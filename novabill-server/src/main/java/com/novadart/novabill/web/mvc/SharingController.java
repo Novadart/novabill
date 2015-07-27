@@ -8,10 +8,13 @@ import com.novadart.novabill.report.ReportUtils;
 import com.novadart.novabill.service.SharingService;
 import com.novadart.novabill.service.export.data.DataExporter;
 import com.novadart.novabill.service.export.data.ExportDataBundle;
+import com.novadart.novabill.service.web.BusinessStatsService;
+import com.novadart.novabill.shared.client.dto.BIClientStatsDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
+import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.web.mvc.command.SharingRequest;
 import org.apache.commons.io.IOUtils;
@@ -54,6 +57,9 @@ public class SharingController {
 	
 	@Autowired
 	private DataExporter dataExporter;
+
+	@Autowired
+	private BusinessStatsService businessStatsService;
 	
 	@RequestMapping(value = Urls.PUBLIC_SHARE_REQUEST, method = RequestMethod.GET)
 	public String setupRequestForm(Model model){
@@ -179,6 +185,17 @@ public class SharingController {
 					ReportUtils.convertToASCII(Business.findBusiness(businessID).getName())));
 			downloadSharedDocs(businessID, token, startDate, endDate, response, locale, exportFileName, exportDataBundle);
 		}
+	}
+
+	@RequestMapping(value = "/share/{businessID}/bizintel/clientstats/{clientID}/{year}", method = RequestMethod.GET)
+	@ResponseBody
+	public ResponseEntity<BIClientStatsDTO> getClientBIStats(@PathVariable Long businessID, @PathVariable Long clientID,
+											 @PathVariable Integer year, @RequestParam(value = "token", required = true) String token)
+			throws NotAuthenticatedException, FreeUserAccessForbiddenException, NoSuchObjectException, DataAccessException {
+		if(sharingService.isValidRequest(businessID, token)){
+			return new ResponseEntity<>(businessStatsService.getClientBIStats(businessID, clientID, year), HttpStatus.OK);
+		} else
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 	
 }

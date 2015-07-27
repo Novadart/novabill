@@ -19,6 +19,9 @@ import java.io.IOException;
 import java.util.Locale;
 
 
+/*
+ * This controller makes the pdfs accessible to agents that have been granted access right via access token.
+ */
 @Controller
 @RequestMapping("/pdf")
 public class PublicPDFController extends PDFController {
