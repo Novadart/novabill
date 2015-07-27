@@ -6,7 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 
-
+/*
+ * This bean is used to create the pdfs for the accounting documents. It is instantiated only when the spring 'dev'
+ * profile is active i.e. in development mode.
+ */
 public class DevProfilePDFGeneratorService {
 
     @Autowired
