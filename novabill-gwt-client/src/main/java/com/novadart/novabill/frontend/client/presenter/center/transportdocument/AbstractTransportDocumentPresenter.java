@@ -28,6 +28,7 @@ import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.EndpointDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.dto.TransporterDTO;
+import com.novadart.novabill.shared.client.util.AccountingCalcUtils;
 
 public abstract class AbstractTransportDocumentPresenter extends DocumentPresenter<TransportDocumentView> implements TransportDocumentView.Presenter {
 
@@ -116,7 +117,7 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 	public void onTotalWeightCalcClicked() {
 		List<AccountingDocumentItemDTO> items = getView().getItemInsertionForm().getItems();
 
-		BigDecimal total = CalcUtils.calculateTotalWeight(items);
+		BigDecimal total = AccountingCalcUtils.calculateTotalWeight(items);
 		BigDecimal roundedTotal = total.setScale(3, RoundingMode.HALF_UP);
 		getView().getTotalWeight().setText(NumberFormat.getDecimalFormat().format(roundedTotal));
 	}
