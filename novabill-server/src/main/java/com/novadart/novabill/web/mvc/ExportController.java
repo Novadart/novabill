@@ -1,19 +1,11 @@
 package com.novadart.novabill.web.mvc;
 
-import java.io.File;
-
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.security.NoSuchAlgorithmException;
-import java.util.Locale;
-
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import net.sf.jasperreports.engine.JRException;
-
+import com.novadart.novabill.domain.Business;
+import com.novadart.novabill.domain.Logo;
+import com.novadart.novabill.service.UtilsService;
+import com.novadart.novabill.service.XsrfTokenService;
+import com.novadart.novabill.service.export.data.DataExporter;
+import com.novadart.novabill.service.export.data.ExportDataBundle;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
@@ -24,13 +16,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.novadart.novabill.domain.Business;
-import com.novadart.novabill.domain.Logo;
-import com.novadart.novabill.report.JasperReportKeyResolutionException;
-import com.novadart.novabill.service.UtilsService;
-import com.novadart.novabill.service.XsrfTokenService;
-import com.novadart.novabill.service.export.data.DataExporter;
-import com.novadart.novabill.service.export.data.ExportDataBundle;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Locale;
 
 @Controller
 @RequestMapping(Urls.PRIVATE_EXPORT)
@@ -64,7 +58,7 @@ public class ExportController {
 			@RequestParam(value = ESTIMATIONS_REQUEST_PARAM, required = false) boolean estimations,
 			@RequestParam(value = CREDITNOTES_REQUEST_PARAM, required = false) boolean creditnotes,
 			@RequestParam(value = TRANSPORTDOCS_REQUEST_PARAM, required = false) boolean transportdocs,
-			HttpServletResponse response, Locale locale, HttpSession session) throws IOException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, JRException, JasperReportKeyResolutionException{
+			HttpServletResponse response, Locale locale, HttpSession session) throws IOException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 		Business business = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId());
 		ExportDataBundle exportDataBundle = new ExportDataBundle();
 		if(clients)

@@ -19,7 +19,7 @@ privileged aspect LoginLogoutAspect {
 	pointcut login(): execution(public void com.novadart.novabill.springsecurity.AuthenticationSuccessHandler.onAuthenticationSuccess(..));
 	
 	pointcut logout(Authentication authentication):
-		execution(public void org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler.onLogoutSuccess(..)) && args(.., authentication);
+		call(public void org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler.onLogoutSuccess(..)) && args(.., authentication);
 	
 	after() returning: login(){
 		Principal business = utilsService.getAuthenticatedPrincipalDetails();

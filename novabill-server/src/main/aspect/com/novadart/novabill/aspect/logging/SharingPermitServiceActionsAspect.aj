@@ -24,10 +24,10 @@ public aspect SharingPermitServiceActionsAspect extends DBLoggerAspect {
 	private UtilsService utilsService;
 	
 	pointcut add(Long businessID, SharingPermitDTO sharingPermitDTO):
-		execution(public Long com.novadart.novabill.service.web.SharingPermitService.add(..)) && args(businessID, sharingPermitDTO);
+		call(public Long com.novadart.novabill.service.web.SharingPermitService.add(..)) && args(businessID, sharingPermitDTO);
 	
 	pointcut remove(Long businessID, Long id):
-		execution(public void com.novadart.novabill.service.web.SharingPermitService.remove(..)) && args(businessID, id);
+		call(public void com.novadart.novabill.service.web.SharingPermitService.remove(..)) && args(businessID, id);
 	
 	after(Long businessID, SharingPermitDTO sharingPermitDTO) returning (Long id): add(businessID, sharingPermitDTO) {
 		Long time = System.currentTimeMillis();

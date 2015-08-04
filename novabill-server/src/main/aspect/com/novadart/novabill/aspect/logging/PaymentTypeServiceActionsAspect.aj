@@ -23,13 +23,13 @@ public aspect PaymentTypeServiceActionsAspect extends DBLoggerAspect {
 	private UtilsService utilsService;
 	
 	pointcut add(PaymentTypeDTO paymentTypeDTO) :
-		execution(public Long com.novadart.novabill.service.web.PaymentTypeService.add(..)) && args(paymentTypeDTO);
+		call(public Long com.novadart.novabill.service.web.PaymentTypeService.add(..)) && args(paymentTypeDTO);
 	
 	pointcut remove(Long businessID, Long id) :
-		execution(public void com.novadart.novabill.service.web.PaymentTypeService.remove(..)) && args(businessID, id);
+		call(public void com.novadart.novabill.service.web.PaymentTypeService.remove(..)) && args(businessID, id);
 	
 	pointcut update(PaymentTypeDTO paymentTypeDTO) :
-		execution(public void com.novadart.novabill.service.web.PaymentTypeService.update(..)) && args(paymentTypeDTO);
+		call(public void com.novadart.novabill.service.web.PaymentTypeService.update(..)) && args(paymentTypeDTO);
 	
 	after(PaymentTypeDTO paymentTypeDTO) returning (Long id) : add(paymentTypeDTO){
 		Long time = System.currentTimeMillis();

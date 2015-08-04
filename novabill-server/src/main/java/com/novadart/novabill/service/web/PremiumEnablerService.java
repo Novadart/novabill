@@ -1,16 +1,22 @@
 package com.novadart.novabill.service.web;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-
-import net.sf.jasperreports.engine.JRException;
-
-import org.apache.commons.io.IOUtils;
+import com.novadart.novabill.annotation.MailMixin;
+import com.novadart.novabill.domain.*;
+import com.novadart.novabill.domain.dto.transformer.BusinessDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.ClientDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.InvoiceDTOTransformer;
+import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.domain.security.RoleType;
+import com.novadart.novabill.paypal.PaymentPlanDescriptor;
+import com.novadart.novabill.paypal.PaymentPlansLoader;
+import com.novadart.novabill.service.PrincipalDetailsService;
+import com.novadart.novabill.service.UtilsService;
+import com.novadart.novabill.shared.client.data.LayoutType;
+import com.novadart.novabill.shared.client.dto.InvoiceDTO;
+import com.novadart.novabill.shared.client.dto.NotificationType;
+import com.novadart.novabill.shared.client.dto.PaymentDateType;
+import com.novadart.novabill.shared.client.dto.PaymentDeltaType;
+import com.novadart.novabill.shared.client.exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,38 +28,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.novadart.novabill.annotation.MailMixin;
-import com.novadart.novabill.domain.AccountingDocumentItem;
-import com.novadart.novabill.domain.Business;
-import com.novadart.novabill.domain.Client;
-import com.novadart.novabill.domain.Endpoint;
-import com.novadart.novabill.domain.Invoice;
-import com.novadart.novabill.domain.Notification;
-import com.novadart.novabill.domain.dto.transformer.BusinessDTOTransformer;
-import com.novadart.novabill.domain.dto.transformer.ClientDTOTransformer;
-import com.novadart.novabill.domain.dto.transformer.InvoiceDTOTransformer;
-import com.novadart.novabill.domain.security.Principal;
-import com.novadart.novabill.domain.security.RoleType;
-import com.novadart.novabill.paypal.PaymentPlanDescriptor;
-import com.novadart.novabill.paypal.PaymentPlansLoader;
-import com.novadart.novabill.report.DocumentType;
-import com.novadart.novabill.report.JRDataSourceFactory;
-import com.novadart.novabill.report.JasperReportKeyResolutionException;
-import com.novadart.novabill.report.JasperReportService;
-import com.novadart.novabill.service.PrincipalDetailsService;
-import com.novadart.novabill.service.UtilsService;
-import com.novadart.novabill.shared.client.data.LayoutType;
-import com.novadart.novabill.shared.client.dto.InvoiceDTO;
-import com.novadart.novabill.shared.client.dto.NotificationType;
-import com.novadart.novabill.shared.client.dto.PaymentDateType;
-import com.novadart.novabill.shared.client.dto.PaymentDeltaType;
-import com.novadart.novabill.shared.client.exception.DataAccessException;
-import com.novadart.novabill.shared.client.exception.DataIntegrityException;
-import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
-import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
-import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
-import com.novadart.novabill.shared.client.exception.PremiumUpgradeException;
-import com.novadart.novabill.shared.client.exception.ValidationException;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+
+import static com.novadart.novabill.service.PDFStorageService.pdfFileToByteArray;
 
 @MailMixin
 @Service
@@ -76,9 +57,6 @@ public class PremiumEnablerService {
 	
 	@Autowired
 	private PaymentPlansLoader paymentPlansLoader;
-	
-	@Autowired
-	private JasperReportService jasperReportService;
 	
 	@Autowired
 	private SessionRegistry sessionRegistry;
@@ -212,18 +190,10 @@ public class PremiumEnablerService {
 		return invoiceService.add(invoiceDTO);
 	}
 	
-	private void exportAndEmailInvoicePdf(Long invoiceID, Long businessID, String email) throws IOException, JRException, JasperReportKeyResolutionException{
-		File invFile = null;
-		try{
-			invFile = File.createTempFile("premiumInvoce", ".pdf");
-			jasperReportService.exportReportToPdfFile(JRDataSourceFactory.createDataSource(Invoice.findInvoice(invoiceID), businessID),
-					DocumentType.INVOICE, LayoutType.TIDY, invFile.getPath());
-			sendMessage(email, "Conferma attivazione Novabill Premium", new HashMap<String, Object>(), "mail-templates/upgrade-notification.vm",
-					IOUtils.toByteArray(new FileInputStream(invFile)), "Fattura.pdf");
-		} finally {
-			if(invFile != null)
-				invFile.delete();
-		}
+	private void exportAndEmailInvoicePdf(Long invoiceID, Long businessID, String email) throws IOException {
+		byte[] pdfBytes = pdfFileToByteArray(Invoice.findInvoice(invoiceID).getDocumentPDFPath());
+		sendMessage(email, "Conferma attivazione Novabill Premium", new HashMap<String, Object>(),
+				"mail-templates/upgrade-notification.vm", pdfBytes, "Fattura.pdf");
 	}
 	
 	/* (non-Javadoc)
