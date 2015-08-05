@@ -168,8 +168,8 @@ public class InvoiceServiceImpl implements InvoiceService {
 		client.getInvoices().add(invoice);
 		invoice.setBusiness(business);
 		business.getInvoices().add(invoice);
-		String pdfPath = pdfStorageService.generateAndStorePdfForAccountingDocument(invoice, DocumentType.INVOICE);
-		invoice.setDocumentPDFPath(pdfPath);
+		String docPath = pdfStorageService.generateAndStorePdfForAccountingDocument(invoice, DocumentType.INVOICE);
+		invoice.setDocumentPath(docPath);
 		invoice.persist();
 		invoice.flush();
 		Long businessID = invoiceDTO.getBusiness().getId();
@@ -204,8 +204,8 @@ public class InvoiceServiceImpl implements InvoiceService {
 			}
 		}
 		validator.validate(Invoice.class, persistedInvoice);
-		String pdfPath = pdfStorageService.generateAndStorePdfForAccountingDocument(persistedInvoice, DocumentType.INVOICE);
-		persistedInvoice.setDocumentPDFPath(pdfPath);
+		String docPath = pdfStorageService.generateAndStorePdfForAccountingDocument(persistedInvoice, DocumentType.INVOICE);
+		persistedInvoice.setDocumentPath(docPath);
 	}
 	
 	@Override

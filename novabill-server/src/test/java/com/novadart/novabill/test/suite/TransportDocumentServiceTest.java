@@ -458,12 +458,12 @@ public class TransportDocumentServiceTest extends ServiceTest {
 		transDocDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		Long id = transportDocService.add(transDocDTO);
 		TransportDocument.entityManager().flush();
-		String oldPdfPath = TransportDocument.findTransportDocument(id).getDocumentPDFPath();
+		String oldPdfPath = TransportDocument.findTransportDocument(id).getDocumentPath();
 		TransportDocument expectedTransDoc = TransportDocument.findTransportDocument(id);
 		expectedTransDoc.setNote("Temporary note for this estimation");
 		transportDocService.update(TransportDocumentDTOTransformer.toDTO(expectedTransDoc, true));
 		TransportDocument.entityManager().flush();
-		String currPdfPath = TransportDocument.findTransportDocument(id).getDocumentPDFPath();
+		String currPdfPath = TransportDocument.findTransportDocument(id).getDocumentPath();
 		assertTrue(Files.exists(FileSystems.getDefault().getPath(oldPdfPath)));
 		assertTrue(Files.exists(FileSystems.getDefault().getPath(currPdfPath)));
 		pdfStorageService.purgeOrphanPDFs();

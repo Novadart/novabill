@@ -21,19 +21,19 @@ public class DevProfilePDFGeneratorService {
         for(Business business: Business.findAllBusinesses()){
             for(Invoice invoice: business.getInvoices()){
                 String path = pdfStorageService.generateAndStorePdfForAccountingDocument(invoice, DocumentType.INVOICE);
-                invoice.setDocumentPDFPath(path);
+                invoice.setDocumentPath(path);
             }
             for(Estimation estimation: business.getEstimations()){
                 String path = pdfStorageService.generateAndStorePdfForAccountingDocument(estimation, DocumentType.ESTIMATION);
-                estimation.setDocumentPDFPath(path);
+                estimation.setDocumentPath(path);
             }
             for(CreditNote creditNote: business.getCreditNotes()){
                 String path = pdfStorageService.generateAndStorePdfForAccountingDocument(creditNote, DocumentType.CREDIT_NOTE);
-                creditNote.setDocumentPDFPath(path);
+                creditNote.setDocumentPath(path);
             }
             for(TransportDocument transportDocument: business.getTransportDocuments()){
                 String path = pdfStorageService.generateAndStorePdfForAccountingDocument(transportDocument, DocumentType.TRANSPORT_DOCUMENT);
-                transportDocument.setDocumentPDFPath(path);
+                transportDocument.setDocumentPath(path);
             }
         }
     }

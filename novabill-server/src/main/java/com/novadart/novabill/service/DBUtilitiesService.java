@@ -10,7 +10,6 @@ import com.novadart.novabill.report.DocumentType;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.novadart.novabill.domain.Business;
@@ -505,19 +504,19 @@ public class DBUtilitiesService {
 		for(Business business: Business.findAllBusinesses()){
 			for(Invoice invoice: business.getInvoices()){
 				String path = pdfStorageService.generateAndStorePdfForAccountingDocument(invoice, DocumentType.INVOICE);
-				invoice.setDocumentPDFPath(path);
+				invoice.setDocumentPath(path);
 			}
 			for(Estimation estimation: business.getEstimations()){
 				String path = pdfStorageService.generateAndStorePdfForAccountingDocument(estimation, DocumentType.ESTIMATION);
-				estimation.setDocumentPDFPath(path);
+				estimation.setDocumentPath(path);
 			}
 			for(CreditNote creditNote: business.getCreditNotes()){
 				String path = pdfStorageService.generateAndStorePdfForAccountingDocument(creditNote, DocumentType.CREDIT_NOTE);
-				creditNote.setDocumentPDFPath(path);
+				creditNote.setDocumentPath(path);
 			}
 			for(TransportDocument transportDocument: business.getTransportDocuments()){
 				String path = pdfStorageService.generateAndStorePdfForAccountingDocument(transportDocument, DocumentType.TRANSPORT_DOCUMENT);
-				transportDocument.setDocumentPDFPath(path);
+				transportDocument.setDocumentPath(path);
 			}
 		}
 	}

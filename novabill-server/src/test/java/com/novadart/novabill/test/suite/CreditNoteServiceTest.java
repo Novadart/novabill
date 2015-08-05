@@ -211,7 +211,7 @@ public class CreditNoteServiceTest extends ServiceTest {
 		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
 		assertEquals(client.getName(), details.get(DBLoggerAspect.CLIENT_NAME));
 		assertEquals(creditNoteDTO.getDocumentID().toString(), details.get(DBLoggerAspect.DOCUMENT_ID));
-		assertTrue(Files.exists(FileSystems.getDefault().getPath(CreditNote.findCreditNote(id).getDocumentPDFPath())));
+		assertTrue(Files.exists(FileSystems.getDefault().getPath(CreditNote.findCreditNote(id).getDocumentPath())));
 	}
 	
 	@Test(expected = ValidationException.class)
@@ -266,7 +266,7 @@ public class CreditNoteServiceTest extends ServiceTest {
 		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
 		assertEquals(expectedCreditNote.getClient().getName(), details.get(DBLoggerAspect.CLIENT_NAME));
 		assertEquals(expectedCreditNote.getDocumentID().toString(), details.get(DBLoggerAspect.DOCUMENT_ID));
-		assertTrue(Files.exists(FileSystems.getDefault().getPath(actualCreditNote.getDocumentPDFPath())));
+		assertTrue(Files.exists(FileSystems.getDefault().getPath(actualCreditNote.getDocumentPath())));
 	}
 	
 	@Test(expected = DataAccessException.class)
@@ -311,12 +311,12 @@ public class CreditNoteServiceTest extends ServiceTest {
 		credNoteDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		Long id = creditNoteService.add(credNoteDTO);
 		CreditNote.entityManager().flush();
-		String oldPdfPath = CreditNote.findCreditNote(id).getDocumentPDFPath();
+		String oldPdfPath = CreditNote.findCreditNote(id).getDocumentPath();
 		CreditNote expectedCredNote = CreditNote.findCreditNote(id);
 		expectedCredNote.setNote("Temporary note for this credit note");
 		creditNoteService.update(CreditNoteDTOTransformer.toDTO(expectedCredNote, true));
 		CreditNote.entityManager().flush();
-		String currPdfPath = CreditNote.findCreditNote(id).getDocumentPDFPath();
+		String currPdfPath = CreditNote.findCreditNote(id).getDocumentPath();
 		assertTrue(Files.exists(FileSystems.getDefault().getPath(oldPdfPath)));
 		assertTrue(Files.exists(FileSystems.getDefault().getPath(currPdfPath)));
 		pdfStorageService.purgeOrphanPDFs();

@@ -206,7 +206,7 @@ public class EstimationServiceTest extends ServiceTest {
 		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
 		assertEquals(expectedEstimation.getClient().getName(), details.get(DBLoggerAspect.CLIENT_NAME));
 		assertEquals(expectedEstimation.getDocumentID().toString(), details.get(DBLoggerAspect.DOCUMENT_ID));
-		assertTrue(Files.exists(FileSystems.getDefault().getPath(actualEstimation.getDocumentPDFPath())));
+		assertTrue(Files.exists(FileSystems.getDefault().getPath(actualEstimation.getDocumentPath())));
 	}
 	
 	@Test(expected = DataAccessException.class)
@@ -238,7 +238,7 @@ public class EstimationServiceTest extends ServiceTest {
 		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
 		assertEquals(client.getName(), details.get(DBLoggerAspect.CLIENT_NAME));
 		assertEquals(estDTO.getDocumentID().toString(), details.get(DBLoggerAspect.DOCUMENT_ID));
-		assertTrue(Files.exists(FileSystems.getDefault().getPath(Estimation.findEstimation(id).getDocumentPDFPath())));
+		assertTrue(Files.exists(FileSystems.getDefault().getPath(Estimation.findEstimation(id).getDocumentPath())));
 	}
 	
 	@Test(expected = DataAccessException.class)
@@ -294,12 +294,12 @@ public class EstimationServiceTest extends ServiceTest {
 		estimationDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		Long id = estimationService.add(estimationDTO);
 		Estimation.entityManager().flush();
-		String oldPdfPath = Estimation.findEstimation(id).getDocumentPDFPath();
+		String oldPdfPath = Estimation.findEstimation(id).getDocumentPath();
 		Estimation expectedEstimation = Estimation.findEstimation(id);
 		expectedEstimation.setNote("Temporary note for this estimation");
 		estimationService.update(EstimationDTOTransformer.toDTO(expectedEstimation, true));
 		Estimation.entityManager().flush();
-		String currPdfPath = Estimation.findEstimation(id).getDocumentPDFPath();
+		String currPdfPath = Estimation.findEstimation(id).getDocumentPath();
 		assertTrue(Files.exists(FileSystems.getDefault().getPath(oldPdfPath)));
 		assertTrue(Files.exists(FileSystems.getDefault().getPath(currPdfPath)));
 		pdfStorageService.purgeOrphanPDFs();

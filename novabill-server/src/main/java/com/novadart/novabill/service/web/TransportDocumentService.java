@@ -99,8 +99,8 @@ public class TransportDocumentService {
 		Business business = Business.findBusiness(transportDocDTO.getBusiness().getId());
 		transportDoc.setBusiness(business);
 		business.getTransportDocuments().add(transportDoc);
-		String pdfPath = pdfStorageService.generateAndStorePdfForAccountingDocument(transportDoc, DocumentType.TRANSPORT_DOCUMENT);
-		transportDoc.setDocumentPDFPath(pdfPath);
+		String docPath = pdfStorageService.generateAndStorePdfForAccountingDocument(transportDoc, DocumentType.TRANSPORT_DOCUMENT);
+		transportDoc.setDocumentPath(docPath);
 		transportDoc.persist();
 		transportDoc.flush();
 		return transportDoc.getId();
@@ -140,8 +140,8 @@ public class TransportDocumentService {
 			persistedTransportDoc.getAccountingDocumentItems().add(item);
 		}
 		validator.validate(TransportDocument.class, persistedTransportDoc);
-		String pdfPath = pdfStorageService.generateAndStorePdfForAccountingDocument(persistedTransportDoc, DocumentType.TRANSPORT_DOCUMENT);
-		persistedTransportDoc.setDocumentPDFPath(pdfPath);
+		String docPath = pdfStorageService.generateAndStorePdfForAccountingDocument(persistedTransportDoc, DocumentType.TRANSPORT_DOCUMENT);
+		persistedTransportDoc.setDocumentPath(docPath);
 	}
 
 	public Long getNextTransportDocId() throws NotAuthenticatedException {

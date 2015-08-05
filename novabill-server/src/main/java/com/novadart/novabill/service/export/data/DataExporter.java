@@ -71,7 +71,7 @@ public class DataExporter {
 	private <T extends AccountingDocument> File exportAccountingDocument(File outDir, T doc, Logo logo, Long businessID, DocumentType docType, Boolean putWatermark) throws IOException {
 		File docFile = File.createTempFile("doc", ".pdf", outDir);
 		docFile.deleteOnExit();
-		Files.copy(Paths.get(doc.getDocumentPDFPath()), docFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+		Files.copy(Paths.get(doc.getDocumentPath()), docFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 		return docFile;
 	}
 	

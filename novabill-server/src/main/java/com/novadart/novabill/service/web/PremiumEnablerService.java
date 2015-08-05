@@ -191,7 +191,7 @@ public class PremiumEnablerService {
 	}
 	
 	private void exportAndEmailInvoicePdf(Long invoiceID, Long businessID, String email) throws IOException {
-		byte[] pdfBytes = pdfFileToByteArray(Invoice.findInvoice(invoiceID).getDocumentPDFPath());
+		byte[] pdfBytes = pdfFileToByteArray(Invoice.findInvoice(invoiceID).getDocumentPath());
 		sendMessage(email, "Conferma attivazione Novabill Premium", new HashMap<String, Object>(),
 				"mail-templates/upgrade-notification.vm", pdfBytes, "Fattura.pdf");
 	}

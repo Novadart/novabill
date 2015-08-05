@@ -44,7 +44,7 @@ public class PDFController{
 		String pdfName = ReportUtils.cutFileName( String.format(messageSource.getMessage("export.invoices.name.pattern", null, "invoice_%d_%d_%s.pdf", locale),  
 				invoice.getAccountingDocumentYear(), invoice.getDocumentID(), ReportUtils.convertToASCII(invoice.getClient().getName())) );
 		response.setHeader("Content-Disposition", String.format("%s; filename=%s", print? "inline": "attachment", pdfName));
-		return new ResponseEntity<>(pdfFileToByteArray(invoice.getDocumentPDFPath()), HttpStatus.OK);
+		return new ResponseEntity<>(pdfFileToByteArray(invoice.getDocumentPath()), HttpStatus.OK);
 	}
 
 	protected ResponseEntity<byte[]> getEstimationPDF(Long id, String token, boolean print,
@@ -55,7 +55,7 @@ public class PDFController{
 		String pdfName = ReportUtils.cutFileName( String.format(messageSource.getMessage("export.estimations.name.pattern", null, "estimation_%d_%d_%s.pdf", locale),
 				estimation.getAccountingDocumentYear(), estimation.getDocumentID(), ReportUtils.convertToASCII(estimation.getClient().getName())) );
 		response.setHeader("Content-Disposition", String.format("%s; filename=%s", print? "inline": "attachment", pdfName));
-		return new ResponseEntity<>(pdfFileToByteArray(estimation.getDocumentPDFPath()), HttpStatus.OK);
+		return new ResponseEntity<>(pdfFileToByteArray(estimation.getDocumentPath()), HttpStatus.OK);
 	}
 
 	protected ResponseEntity<byte[]> getCreditNotePDF(Long id, String token, boolean print,
@@ -66,7 +66,7 @@ public class PDFController{
 		String pdfName = ReportUtils.cutFileName( String.format(messageSource.getMessage("export.creditnotes.name.pattern", null, "creditnote_%d_%d_%s.pdf", locale),
 				creditNote.getAccountingDocumentYear(), creditNote.getDocumentID(), ReportUtils.convertToASCII(creditNote.getClient().getName())) );
 		response.setHeader("Content-Disposition", String.format("%s; filename=%s", print? "inline": "attachment", pdfName));
-		return new ResponseEntity<>(pdfFileToByteArray(creditNote.getDocumentPDFPath()), HttpStatus.OK);
+		return new ResponseEntity<>(pdfFileToByteArray(creditNote.getDocumentPath()), HttpStatus.OK);
 	}
 
 	protected ResponseEntity<byte[]> getTransportDocumentPDF(Long id, String token, boolean print,
@@ -77,7 +77,7 @@ public class PDFController{
 		String pdfName = ReportUtils.cutFileName( String.format(messageSource.getMessage("export.transportdocs.name.pattern", null, "transportdoc_%d_%d_%s.pdf", locale),
 				transportDocument.getAccountingDocumentYear(), transportDocument.getDocumentID(), ReportUtils.convertToASCII(transportDocument.getClient().getName())) );
 		response.setHeader("Content-Disposition", String.format("%s; filename=%s", print? "inline": "attachment", pdfName));
-		return new ResponseEntity<>(pdfFileToByteArray(transportDocument.getDocumentPDFPath()), HttpStatus.OK);
+		return new ResponseEntity<>(pdfFileToByteArray(transportDocument.getDocumentPath()), HttpStatus.OK);
 	}
 
 	protected ResponseEntity<byte[]> getPaymentsProspectPaymentDueDatePDF(Date startDate, Date endDate, FilteringDateType filteringDateType, String token,

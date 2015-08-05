@@ -68,7 +68,7 @@ public class PDFStorageService {
 
 
     public void purgeOrphanPDFs(){
-        String query = "select d.documentPDFPath from AccountingDocument d";
+        String query = "select d.documentPath from AccountingDocument d";
         Set<String> pdfPaths = new HashSet<>(entityManager.createQuery(query, String.class).getResultList());
         try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(Paths.get(pdfStoragePath))) {
             for (Path path : directoryStream) {

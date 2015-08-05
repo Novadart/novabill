@@ -89,8 +89,8 @@ public class EstimationService {
 		Business business = Business.findBusiness(estimationDTO.getBusiness().getId());
 		estimation.setBusiness(business);
 		business.getEstimations().add(estimation);
-		String pdfPath = pdfStorageService.generateAndStorePdfForAccountingDocument(estimation, DocumentType.ESTIMATION);
-		estimation.setDocumentPDFPath(pdfPath);
+		String docPath = pdfStorageService.generateAndStorePdfForAccountingDocument(estimation, DocumentType.ESTIMATION);
+		estimation.setDocumentPath(docPath);
 		estimation.persist();
 		estimation.flush();
 		return estimation.getId();
@@ -126,8 +126,8 @@ public class EstimationService {
 			persistedEstimation.getAccountingDocumentItems().add(item);
 		}
 		validator.validate(Estimation.class, persistedEstimation);
-		String pdfPath = pdfStorageService.generateAndStorePdfForAccountingDocument(persistedEstimation, DocumentType.ESTIMATION);
-		persistedEstimation.setDocumentPDFPath(pdfPath);
+		String docPath = pdfStorageService.generateAndStorePdfForAccountingDocument(persistedEstimation, DocumentType.ESTIMATION);
+		persistedEstimation.setDocumentPath(docPath);
 	}
 
 	public Long getNextEstimationId() throws NotAuthenticatedException {

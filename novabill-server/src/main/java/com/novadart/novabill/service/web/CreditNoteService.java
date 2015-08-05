@@ -99,8 +99,8 @@ public class CreditNoteService {
 		client.getCreditNotes().add(creditNote);
 		creditNote.setBusiness(business);
 		business.getCreditNotes().add(creditNote);
-		String pdfPath = pdfStorageService.generateAndStorePdfForAccountingDocument(creditNote, DocumentType.CREDIT_NOTE);
-		creditNote.setDocumentPDFPath(pdfPath);
+		String docPath = pdfStorageService.generateAndStorePdfForAccountingDocument(creditNote, DocumentType.CREDIT_NOTE);
+		creditNote.setDocumentPath(docPath);
 		creditNote.persist();
 		creditNote.flush();
 		return creditNote.getId();
@@ -136,8 +136,8 @@ public class CreditNoteService {
 			persistedCreditNote.getAccountingDocumentItems().add(item);
 		}
 		validator.validate(CreditNote.class, persistedCreditNote);
-		String pdfPath = pdfStorageService.generateAndStorePdfForAccountingDocument(persistedCreditNote, DocumentType.CREDIT_NOTE);
-		persistedCreditNote.setDocumentPDFPath(pdfPath);
+		String docPath = pdfStorageService.generateAndStorePdfForAccountingDocument(persistedCreditNote, DocumentType.CREDIT_NOTE);
+		persistedCreditNote.setDocumentPath(docPath);
 	}
 
 	public Long getNextCreditNoteDocumentID() throws NotAuthenticatedException {

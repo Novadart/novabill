@@ -272,7 +272,7 @@ public class InvoiceServiceTest extends ServiceTest {
 		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
 		assertEquals(expectedInvoice.getClient().getName(), details.get(DBLoggerAspect.CLIENT_NAME));
 		assertEquals(expectedInvoice.getDocumentID().toString(), details.get(DBLoggerAspect.DOCUMENT_ID));
-		assertTrue(Files.exists(FileSystems.getDefault().getPath(actualInvoice.getDocumentPDFPath())));
+		assertTrue(Files.exists(FileSystems.getDefault().getPath(actualInvoice.getDocumentPath())));
 	}
 	
 	@Test(expected = DataAccessException.class)
@@ -305,7 +305,7 @@ public class InvoiceServiceTest extends ServiceTest {
 		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
 		assertEquals(client.getName(), details.get(DBLoggerAspect.CLIENT_NAME));
 		assertEquals(invDTO.getDocumentID().toString(), details.get(DBLoggerAspect.DOCUMENT_ID));
-		assertTrue(Files.exists(FileSystems.getDefault().getPath(Invoice.findInvoice(id).getDocumentPDFPath())));
+		assertTrue(Files.exists(FileSystems.getDefault().getPath(Invoice.findInvoice(id).getDocumentPath())));
 	}
 	
 	@Test
@@ -498,12 +498,12 @@ public class InvoiceServiceTest extends ServiceTest {
 		invDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		Long id = invoiceService.add(invDTO);
 		Invoice.entityManager().flush();
-		String oldPdfPath = Invoice.findInvoice(id).getDocumentPDFPath();
+		String oldPdfPath = Invoice.findInvoice(id).getDocumentPath();
 		Invoice expectedInvoice = Invoice.findInvoice(id);
 		expectedInvoice.setNote("Temporary note for this invoice");
 		invoiceService.update(InvoiceDTOTransformer.toDTO(expectedInvoice, true));
 		Invoice.entityManager().flush();
-		String currPdfPath = Invoice.findInvoice(id).getDocumentPDFPath();
+		String currPdfPath = Invoice.findInvoice(id).getDocumentPath();
 		assertTrue(Files.exists(FileSystems.getDefault().getPath(oldPdfPath)));
 		assertTrue(Files.exists(FileSystems.getDefault().getPath(currPdfPath)));
 		pdfStorageService.purgeOrphanPDFs();

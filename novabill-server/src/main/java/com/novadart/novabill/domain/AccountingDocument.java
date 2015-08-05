@@ -91,7 +91,7 @@ public abstract class AccountingDocument {
     protected List<AccountingDocumentItem> accountingDocumentItems = new LinkedList<AccountingDocumentItem>();
 
     @Size(max = 1024)
-    protected String documentPDFPath;
+    protected String documentPath;
     
     @AttributeOverrides({
 		@AttributeOverride(name = "companyName", column = @Column(name = "to_company_name")),
@@ -228,12 +228,12 @@ public abstract class AccountingDocument {
 		this.layoutType = layoutType;
 	}
 
-    public String getDocumentPDFPath() {
-        return documentPDFPath;
+    public String getDocumentPath() {
+        return documentPath;
     }
 
-    public void setDocumentPDFPath(String documentPDFPath) {
-        this.documentPDFPath = documentPDFPath;
+    public void setDocumentPath(String documentPDFPath) {
+        this.documentPath = documentPDFPath;
     }
 
     public List<AccountingDocumentItem> getAccountingDocumentItems() {
