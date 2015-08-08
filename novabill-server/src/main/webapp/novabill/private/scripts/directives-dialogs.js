@@ -8,6 +8,53 @@ angular.module('novabill.directives.dialogs',
 	/*
 	 * Edit Price List Dialog
 	 */
+	.factory('nEditClientDialog', ['nConstants', '$modal', function (nConstants, $modal){
+
+		return {
+			open : function( client ) {
+
+				return $modal.open({
+
+					templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-edit-client-dialog.html'),
+
+					size : 'lg',
+
+					controller: ['$scope', '$modalInstance', 'nAjax', '$filter',
+						function($scope, $modalInstance, nAjax, $filter){
+
+							$scope.client = angular.copy(client);
+                            $scope.splitPaymentOptions = [{ label: $filter('translate')('NO'), val: false }, { label: $filter('translate')('YES'), val: true }];
+							var DocumentIDClass = nAjax.DocumentIDClass();
+                            var PriceList = nAjax.PriceList();
+                            //var PaymentTypes = nAjax.PaymentTypes();
+
+                            DocumentIDClass.query(function(docIdClasses){
+                                $scope.docIdClasses = docIdClasses;
+                            });
+                            PriceList.query(function(priceLists){
+                                $scope.priceLists = priceLists;
+                            });
+
+							$scope.save = function(){
+								$modalInstance.close($scope.client);
+							};
+
+							$scope.cancel = function(){
+								$modalInstance.dismiss();
+							};
+						}]
+				});
+			}
+		};
+	}])
+
+
+
+
+
+	/*
+	 * Edit Price List Dialog
+	 */
 	.factory('nAlertDialog', ['nConstants', '$modal', function (nConstants, $modal){
 
 		return {

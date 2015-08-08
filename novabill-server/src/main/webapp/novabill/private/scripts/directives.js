@@ -693,6 +693,62 @@ angular.module('novabill.directives',
 	}])
 
 
+    /*
+     * Country selector
+     */
+    .directive('nCountrySelector', ['nConstants', function(nConstants) {
+        return {
+            templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-country-selector.html'),
+            scope: {
+                //callback : '&',
+                selectedCountry : '='
+            },
+            controller : ['$scope', function($scope){
+                //$scope.onChange = function(){
+                //	$scope.callback({ year : String($scope.selectedYear) });
+                //};
+
+            }],
+            restrict: 'E',
+            replace: true
+        };
+    }])
+
+
+    /*
+     * Document ID Class selector
+     */
+    .directive('nDocumentIdSelector', ['nConstants', function(nConstants) {
+        return {
+            templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-document-id-class-selector.html'),
+            controller : ['$scope', function($scope){
+                var years = documentYears[$scope.documentType];
+                var currentYear = new Date().getFullYear();
+                if(years.indexOf(currentYear) == -1){
+                    years.push(currentYear);
+                }
+                years.sort(function(a,b){
+                    return b-a;
+                });
+
+                $scope.years = years;
+                $scope.selectedYear = $scope.years.length > 0 ?  $scope.years[0] : null;
+
+                $scope.onChange = function(){
+                    $scope.callback({ year : String($scope.selectedYear) });
+                };
+
+                if($scope.selectedYear){
+                    $scope.callback({ year : String($scope.selectedYear) });
+                }
+
+            }],
+            restrict: 'E',
+            replace: true
+        };
+    }])
+
+
 	/*
 	 * Suffix selector
 	 */

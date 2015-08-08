@@ -159,6 +159,26 @@ angular.module('novabill.ajax', ['ngResource', 'angularFileUpload', 'novabill.lo
 
 
 		/*
+		 * Client resource
+		 */
+		Client : function(){
+			return $resource(
+				baseUrl + 'businesses/:businessId/clients/:id',
+				{
+					businessId: businessId,
+					id : '@id'
+				},
+				{
+
+					'update': {
+						method:'PUT'
+					}
+				}
+			);
+		},
+
+
+		/*
 		 * Commodity resource
 		 */
 		Commodity : function(){
