@@ -6,8 +6,10 @@ import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.Logo;
 import com.novadart.novabill.report.DocumentType;
 import com.novadart.novabill.report.ReportUtils;
+import com.novadart.novabill.service.PDFStorageService;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
@@ -16,18 +18,23 @@ import javax.annotation.PostConstruct;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+
+import static com.novadart.novabill.service.PDFStorageService.getStoredFileExtension;
+import static com.novadart.novabill.service.PDFStorageService.handleFile;
 
 @Service
 public class DataExporter {
 	
 	@Value("${path.tmpdir.data_export}")
 	private String dataOutLocation;
-	
+
+	@Autowired
+	private PDFStorageService documentStorageService;
+
 	public static final String[] CLIENT_FIELDS = new String[]{"name", "address", "postcode", "city", "province", "country", "email", "phone",	"mobile", "fax", "web", "vatID", "ssn"};
 	
 	public static final String[] CLIENT_CONTACT_FIELDS = new String[]{"firstName", "lastName", "email", "phone", "fax", "mobile"};
@@ -69,9 +76,19 @@ public class DataExporter {
 	}
 	
 	private <T extends AccountingDocument> File exportAccountingDocument(File outDir, T doc, Logo logo, Long businessID, DocumentType docType, Boolean putWatermark) throws IOException {
-		File docFile = File.createTempFile("doc", ".pdf", outDir);
+		File docFile = File.createTempFile("doc", getStoredFileExtension(doc.getDocumentPath()), outDir);
 		docFile.deleteOnExit();
-		Files.copy(Paths.get(doc.getDocumentPath()), docFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+		handleFile(doc.getDocumentPath(), new PDFStorageService.Handler<Void>() {
+			@Override
+			public Void handle(InputStream inputStream) {
+				try {
+					Files.copy(inputStream, docFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
+				return null;
+			}
+		});
 		return docFile;
 	}
 	

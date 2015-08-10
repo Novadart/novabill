@@ -97,13 +97,6 @@ public class BusinessController {
 		return businessService.getClients(businessID);
 	}
 	
-	@RequestMapping(value = "/{businessID}/paymenttypes", method = RequestMethod.GET)
-	@ResponseBody
-	@ResponseStatus(value = HttpStatus.OK)
-	public List<PaymentTypeDTO> getPaymentTypes(@PathVariable Long businessID) throws NotAuthenticatedException, DataAccessException {
-		return businessService.getPaymentTypes(businessID);
-	}
-	
 	@RequestMapping(value = "/{businessID}/clients/count", method = RequestMethod.GET)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)

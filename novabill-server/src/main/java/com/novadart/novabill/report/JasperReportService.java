@@ -1,6 +1,7 @@
 package com.novadart.novabill.report;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashMap;
@@ -167,9 +168,9 @@ public class JasperReportService implements ResourceLoaderAware{
 		}
 	}
 	
-	public void exportReportToPdfFile(JRBeanCollectionDataSource dataSource, DocumentType docType, LayoutType layoutType, String destFileName) {
+	public void exportReportToPdfFile(JRBeanCollectionDataSource dataSource, DocumentType docType, LayoutType layoutType, OutputStream destination) {
 		try {
-			JasperExportManager.exportReportToPdfFile(createJasperPrint(dataSource, docType, layoutType), destFileName);
+			JasperExportManager.exportReportToPdfStream(createJasperPrint(dataSource, docType, layoutType), destination);
 		} catch (JRException ex) {
 			throw new ReportException(ex);
 		}
