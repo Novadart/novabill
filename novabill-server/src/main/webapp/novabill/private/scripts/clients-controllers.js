@@ -187,16 +187,14 @@ angular.module('novabill.clients.controllers',
 
 
             $scope.editClient = function() {
-                GWT_UI.modifyClientDialog(nConstants.conf.businessId, $scope.client.id, {
-
-                    onSuccess : function(){
-                        $scope.$apply(function(){
-                            $route.reload();
+                var instance = nEditClientDialog.open($scope.client);
+                instance.result.then(
+                    function(client){
+                        client.$update(function(){
+                            $scope.client = client;
                         });
-                    },
-
-                    onFailure : function() {}
-                });
+                    }
+                );
             };
 
 
@@ -205,19 +203,27 @@ angular.module('novabill.clients.controllers',
                 var instance = nConfirmDialog.open( $filter('translate')('REMOVAL_QUESTION',{data : $scope.client.name}) );
                 instance.result.then(function(value){
                     if(value){
-                        GWT_Server.client.remove(nConstants.conf.businessId, $scope.client.id, {
-                            onSuccess : function(data){
-                                if(data === 'true') {
-                                    $scope.$apply(function(){
-                                        $location.path('/');
-                                    });
-                                } else {
-                                    nAlertDialog.open($filter('translate')('CLIENT_DELETION_ALERT'));
-                                }
-                            },
-
-                            onFailure : function(error){}
+                        $scope.client.$delete(function(data){
+                            if(data === 'true') {
+                                $location.path('/');
+                            } else {
+                                nAlertDialog.open($filter('translate')('CLIENT_DELETION_ALERT'));
+                            }
+                            //$location.path('/');
                         });
+                        //GWT_Server.client.remove(nConstants.conf.businessId, $scope.client.id, {
+                        //    onSuccess : function(data){
+                        //        if(data === 'true') {
+                        //            $scope.$apply(function(){
+                        //                $location.path('/');
+                        //            });
+                        //        } else {
+                        //            nAlertDialog.open($filter('translate')('CLIENT_DELETION_ALERT'));
+                        //        }
+                        //    },
+                        //
+                        //    onFailure : function(error){}
+                        //});
                     }
                 });
             };
@@ -403,12 +409,6 @@ angular.module('novabill.clients.controllers',
             Client.get({id: $routeParams.clientId}, function(client){
                 $scope.client = client;
                 $scope.updateClientDetails();
-
-
-                var instance = nEditClientDialog.open(client);
-                instance.result.then(function(client){
-
-                });
             });
 
 

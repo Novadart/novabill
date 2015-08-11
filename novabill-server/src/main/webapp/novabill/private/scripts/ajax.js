@@ -264,7 +264,21 @@ angular.module('novabill.ajax', ['ngResource', 'angularFileUpload', 'novabill.lo
 				
 			};
 		},
-		
+
+
+		/*
+		 * Document ID Class resource
+		 */
+		PaymentType : function(){
+			return $resource(
+				baseUrl + 'businesses/:businessId/paymenttypes/:id',
+				{
+					businessId: businessId,
+					id : '@id'
+				}
+			);
+		},
+
 		
 		/*
 		 * PriceList resource

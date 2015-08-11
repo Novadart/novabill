@@ -26,7 +26,7 @@ angular.module('novabill.directives.dialogs',
                             $scope.splitPaymentOptions = [{ label: $filter('translate')('NO'), val: false }, { label: $filter('translate')('YES'), val: true }];
 							var DocumentIDClass = nAjax.DocumentIDClass();
                             var PriceList = nAjax.PriceList();
-                            //var PaymentTypes = nAjax.PaymentTypes();
+							var PaymentType = nAjax.PaymentType();
 
                             DocumentIDClass.query(function(docIdClasses){
                                 $scope.docIdClasses = docIdClasses;
@@ -34,6 +34,9 @@ angular.module('novabill.directives.dialogs',
                             PriceList.query(function(priceLists){
                                 $scope.priceLists = priceLists;
                             });
+							PaymentType.query(function(paymentTypes){
+								$scope.paymentTypes = paymentTypes;
+							});
 
 							$scope.save = function(){
 								$modalInstance.close($scope.client);

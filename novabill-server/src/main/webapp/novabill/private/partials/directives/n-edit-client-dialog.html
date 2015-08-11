@@ -175,13 +175,14 @@
 
                         <div class="col-md-6">
                             <div  class="form-group" ng-class="{'has-error': form.defaultDocIdClass.$dirty && form.defaultDocIdClass.$invalid, 'has-success': form.defaultDocIdClass.$dirty && form.defaultDocIdClass.$valid}">
-                                <label class="col-md-4 control-label" for="defaultDocIdClass">{{'DEFAULT_DOC_ID_CLASS' | translate}}</label>
+                                <label class="col-md-4 control-label" for="defaultDocIdClass">{{'DOCUMENT_ID_CLASS' | translate}}</label>
                                 <div class="col-md-8">
                                     <select id="defaultDocIdClass"
                                             class="form-control"
                                             name="defaultDocIdClass"
                                             ng-model="client.defaultDocumentIDClassID"
                                             ng-options="d.id as d.suffix for d in docIdClasses">
+                                        <option value="">{{'SUFFIX_STANDARD'|translate}}</option>
                                     </select>
                                 </div>
                             </div>
