@@ -13,7 +13,7 @@ public aspect RegistrationAspect extends AbstractLogEventEmailSenderAspect {
 	private static final Logger LOGGER = LoggerFactory.getLogger(RegistrationAspect.class);
 	
 	pointcut registration(Registration registration, BindingResult result) :
-		call(public String com.novadart.novabill.web.mvc.RegistrationController.processSubmit(..)) && args(registration, result, ..);
+		execution(public String com.novadart.novabill.web.mvc.RegistrationController.processSubmit(..)) && args(registration, result, ..);
 	
 	after(Registration registration, BindingResult result) returning: registration(registration, result){
 		if(!result.hasErrors())

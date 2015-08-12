@@ -22,6 +22,7 @@ import org.hibernate.annotations.Index;
 import org.hibernate.annotations.Table;
 import org.hibernate.annotations.Type;
 import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.novadart.novabill.shared.client.data.EntityType;
@@ -81,7 +82,7 @@ public class LogRecord {
 	}
 	
 	@Transactional(readOnly = false)
-	public static void markAsReferringToDeletedEntity(Long businessID, Long entityID, EntityType entityType, List<Long> excludeIDs) {
+	public void markAsReferringToDeletedEntity(Long businessID, Long entityID, EntityType entityType, List<Long> excludeIDs) {
 		String sql = "update LogRecord lr set lr.referringToDeletedEntity = true where lr.business.id = :bid and lr.entityID = :eid and lr.entityType = :et and lr.id not in (:exids)";
 		entityManager().createQuery(sql).
 			setParameter("bid", businessID).

@@ -23,13 +23,13 @@ public aspect DocumentIDClassServiceActionsAspect extends DBLoggerAspect{
     private UtilsService utilsService;
 
     pointcut add(Long businessID, DocumentIDClassDTO docIDClassDTO):
-            call(public Long com.novadart.novabill.service.web.DocumentIDClassService.add(..)) && args(businessID, docIDClassDTO);
+            execution(public Long com.novadart.novabill.service.web.DocumentIDClassService.add(..)) && args(businessID, docIDClassDTO);
 
     pointcut remove(Long businessID, Long id):
-            call(public boolean com.novadart.novabill.service.web.DocumentIDClassService.remove(..)) && args(businessID, id);
+            execution(public boolean com.novadart.novabill.service.web.DocumentIDClassService.remove(..)) && args(businessID, id);
 
     pointcut update(Long businessID, DocumentIDClassDTO docIDClassDTO) :
-            call(public void com.novadart.novabill.service.web.DocumentIDClassService.update(..)) && args(businessID, docIDClassDTO);
+            execution(public void com.novadart.novabill.service.web.DocumentIDClassService.update(..)) && args(businessID, docIDClassDTO);
 
     after(Long businessID, DocumentIDClassDTO docIDClassDTO) returning (Long id): add(businessID, docIDClassDTO) {
         Long time = System.currentTimeMillis();
