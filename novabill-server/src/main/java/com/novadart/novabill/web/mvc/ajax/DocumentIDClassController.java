@@ -1,8 +1,8 @@
 package com.novadart.novabill.web.mvc.ajax;
 
+import com.google.common.collect.ImmutableMap;
 import com.novadart.novabill.annotation.RestExceptionProcessingMixin;
 import com.novadart.novabill.service.web.DocumentIDClassService;
-import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.DocumentIDClassDTO;
 import com.novadart.novabill.shared.client.exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RestExceptionProcessingMixin
@@ -48,8 +49,8 @@ public class DocumentIDClassController {
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
-    public boolean remove(@PathVariable Long businessID, @PathVariable Long id) throws NotAuthenticatedException, DataAccessException{
-        return docidclassesService.remove(businessID, id);
+    public Map<String, Object> remove(@PathVariable Long businessID, @PathVariable Long id) throws NotAuthenticatedException, DataAccessException{
+        return ImmutableMap.of(JsonConst.VALUE, docidclassesService.remove(businessID, id));
     }
 
 }

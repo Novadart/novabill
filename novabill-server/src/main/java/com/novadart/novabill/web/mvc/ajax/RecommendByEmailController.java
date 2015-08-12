@@ -3,6 +3,7 @@ package com.novadart.novabill.web.mvc.ajax;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.common.collect.ImmutableMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -37,12 +38,15 @@ public class RecommendByEmailController {
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
-	public boolean recommendByEmail(@RequestBody RecommendByMailDTO recommendByMailDTO) throws ValidationException{
+	public Map<String, Object> recommendByEmail(@RequestBody RecommendByMailDTO recommendByMailDTO) throws ValidationException{
 		validator.validate(recommendByMailDTO);
 		Map<String, Object> templateVars = new HashMap<String, Object>();
 		String businessName = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()).getName();
 		templateVars.put("businessName", businessName);
-		return sendMessage(recommendByMailDTO.getTo(), businessName + " ti invita a provare Novabill", templateVars, EMAIL_TEMPLATE_LOCATION, false);
+		return ImmutableMap.of(
+				JsonConst.VALUE,
+				sendMessage(recommendByMailDTO.getTo(), businessName + " ti invita a provare Novabill", templateVars, EMAIL_TEMPLATE_LOCATION, false)
+		);
 	}
 
 }

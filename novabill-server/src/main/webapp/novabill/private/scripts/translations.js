@@ -123,6 +123,7 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 			HELLO_DIALOG_SHOW_ALL : 'Mostra altri campi (opzionale)',
 			HELLO_DIALOG_TITLE : 'Benvenuto! Grazie per esserti registrato',
 			HIDE : 'Nascondi',
+			INCOMPLETE_CLIENT_ALERT : 'Le informazioni sul cliente sono incomplete',
 			INFO : 'Informazioni',
 			INSERT_CLIENT_NAME : 'Ragione sociale del nuovo cliente',
 			INVOICE_REF_TITLE : 'Questo Documento di Trasporto è stato incluso in una fattura.\nClicca per vederla.',

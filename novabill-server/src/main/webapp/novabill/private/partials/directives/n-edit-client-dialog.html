@@ -7,7 +7,12 @@
 
         <div class="row">
 
-            <form name="form" role="form" class="form-horizontal" novalidate>
+            <div class="col-md-offset-2 col-md-8 text-center" ng-if="isClientIncomplete">
+                <alert type="danger">{{'INCOMPLETE_CLIENT_ALERT' | translate}}</alert>
+            </div>
+
+            <div class="col-md-12">
+                <form name="form" role="form" class="form-horizontal" novalidate>
 
                 <tabset>
                     <!--
@@ -38,8 +43,8 @@
                             <div class="form-group" ng-class="{'has-error': form.ssn.$dirty && form.ssn.$invalid, 'has-success': form.ssn.$dirty && form.ssn.$valid}">
                                 <label class="col-md-4 control-label" for="ssn">{{'SSN_EXTENDED' | translate}} **</label>
                                 <div class="col-md-8">
-                                    <input id="ssn" n-ssn-or-vat-id n-optional-value class="form-control" type="text" name="ssn" maxlength="25" ng-model="client.ssn"
-                                           placeholder="{{'SSN_PLACEHOLDER' | translate}}" ng-required="fieldsToShow!=='companyName' && !client.vatID">
+                                    <input id="ssn" n-ssn-or-vat-id n-optional-value n-disable-validation="client.country !== 'IT'" class="form-control" type="text" name="ssn" maxlength="25" ng-model="client.ssn"
+                                           placeholder="{{'SSN_PLACEHOLDER' | translate}}" ng-required="!client.vatID">
                                     <div ng-show="form.ssn.$dirty && form.ssn.$invalid">
                                         <span class="text-danger">{{'VALIDATION_INVALID_VALUE' | translate}}</span>
                                     </div>
@@ -49,8 +54,8 @@
                             <div class="form-group" ng-class="{'has-error': form.vatId.$dirty && form.vatId.$invalid, 'has-success': form.vatId.$dirty && form.vatId.$valid}">
                                 <label class="col-md-4 control-label" for="vatId">{{'VATID' | translate}} **</label>
                                 <div class="col-md-8">
-                                    <input id="vatId" n-vat-id n-optional-value class="form-control" type="text" name="vatId" maxlength="25" ng-model="client.vatID"
-                                           placeholder="{{'VATID_PLACEHOLDER' | translate}}" ng-required="fieldsToShow!=='companyName' && !client.ssn">
+                                    <input id="vatId" n-vat-id n-optional-value n-disable-validation="client.country !== 'IT'" class="form-control" type="text" name="vatId" maxlength="25" ng-model="client.vatID"
+                                           placeholder="{{'VATID_PLACEHOLDER' | translate}}" ng-required="!client.ssn">
                                     <div ng-show="form.vatId.$dirty && form.vatId.$invalid">
                                         <span class="text-danger">{{'VALIDATION_INVALID_VALUE' | translate}}</span>
                                     </div>
@@ -61,7 +66,7 @@
                                 <label class="col-md-4 control-label" for="address">{{'ADDRESS' | translate}} *</label>
                                 <div class="col-md-8">
                                     <input id="address" class="form-control" type="text" name="address" maxlength="255" ng-model="client.address"
-                                           placeholder="{{'ADDRESS_PLACEHOLDER' | translate}}" ng-required="fieldsToShow!=='companyName'">
+                                           placeholder="{{'ADDRESS_PLACEHOLDER' | translate}}" >
                                     <div ng-show="form.address.$dirty && form.address.$invalid">
                                         <span class="text-danger">{{'VALIDATION_REQUIRED' | translate}}</span>
                                     </div>
@@ -72,7 +77,7 @@
                                 <label class="col-md-4 control-label" for="city">{{'CITY' | translate}} *</label>
                                 <div class="col-md-8">
                                     <input id="city" class="form-control" type="text" name="city" maxlength="60" ng-model="client.city"
-                                           placeholder="{{'CITY_PLACEHOLDER' | translate}}" ng-required="fieldsToShow!=='companyName'">
+                                           placeholder="{{'CITY_PLACEHOLDER' | translate}}" >
                                     <div ng-show="form.city.$dirty && form.city.$invalid">
                                         <span class="text-danger">{{'VALIDATION_REQUIRED' | translate}}</span>
                                     </div>
@@ -83,7 +88,7 @@
                                 <label class="col-md-4 control-label" for="postcode">{{'POSTCODE' | translate}} *</label>
                                 <div class="col-md-8">
                                     <input id="postcode" class="form-control" type="text" name="postcode" maxlength="10" ng-model="client.postcode"
-                                           placeholder="{{'POSTCODE_PLACEHOLDER' | translate}}" ng-required="fieldsToShow!=='companyName'">
+                                           placeholder="{{'POSTCODE_PLACEHOLDER' | translate}}" >
                                     <div ng-show="form.postcode.$dirty && form.postcode.$invalid">
                                         <span class="text-danger">{{'VALIDATION_REQUIRED' | translate}}</span>
                                     </div>
@@ -94,7 +99,7 @@
                                 <label class="col-md-4 control-label" for="province">{{'PROVINCE' | translate}} *</label>
                                 <div class="col-md-8">
                                     <input id="province" class="form-control" type="text" name="province" maxlength="100" ng-model="client.province"
-                                           placeholder="{{'PROVINCE_PLACEHOLDER' | translate}}" ng-required="fieldsToShow!=='companyName'">
+                                           placeholder="{{'PROVINCE_PLACEHOLDER' | translate}}" >
                                     <div ng-show="form.province.$dirty && form.province.$invalid">
                                         <span class="text-danger">{{'VALIDATION_REQUIRED' | translate}}</span>
                                     </div>
@@ -307,6 +312,7 @@
                 </tabset>
 
             </form>
+            </div>
 
         </div>
     </div>

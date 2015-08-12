@@ -129,7 +129,7 @@ angular.module('novabill.invoices.controllers',
 				instance.result.then(function(value){
 					if(value){
 						docIdClass.$delete(function(result){
-							if(result[0] === "f"){ // checking like this because of angularjs bug
+							if(result.value){
 								nAlertDialog.open( $filter('translate')('DOCUMENT_ID_CLASS_DELETION_ALERT') );
 							}
 							$scope.loadDocIDClasses();

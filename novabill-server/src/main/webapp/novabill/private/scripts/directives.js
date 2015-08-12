@@ -102,8 +102,8 @@ angular.module('novabill.directives',
 							var instance = nSendEmailDialog.open($scope.invoice);
 							instance.result.then(function(data){
 								var InvoiceUtils = nAjax.InvoiceUtils();
-								InvoiceUtils.email(data, function(result){
-									nAlertDialog.open($filter('translate')(result==='true' ? 'SEND_EMAIL_TO_CLIENT_SUCCESS' : 'SEND_EMAIL_TO_CLIENT_FAILURE'));
+								InvoiceUtils.email(data, function(data){
+									nAlertDialog.open($filter('translate')(data.value==='true' ? 'SEND_EMAIL_TO_CLIENT_SUCCESS' : 'SEND_EMAIL_TO_CLIENT_FAILURE'));
 								}, function(){
 									nAlertDialog.open($filter('translate')('SEND_EMAIL_TO_CLIENT_FAILURE'));
 								});
@@ -559,9 +559,9 @@ angular.module('novabill.directives',
 
 							$scope.save = function(){
 								CommodityUtils.addOrUpdatePrice($scope.price,
-									function(newPriceId){
+									function(data){
 										//set the id, needed if the price was freshly added
-										$scope.price.id = newPriceId;
+										$scope.price.id = data.value;
 
 										// and update the model
 										$scope.commodity.prices[$scope.priceListName] = $scope.price;
