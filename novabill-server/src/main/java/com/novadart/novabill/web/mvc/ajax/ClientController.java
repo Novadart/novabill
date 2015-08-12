@@ -10,7 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RestExceptionProcessingMixin
@@ -31,8 +33,10 @@ public class ClientController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
-    public Long add(@PathVariable Long businessID, @RequestBody ClientDTO clientDTO) throws FreeUserAccessForbiddenException, ValidationException {
-        return clientService.add(businessID, clientDTO);
+    public Map<String, Long> add(@PathVariable Long businessID, @RequestBody ClientDTO clientDTO) throws FreeUserAccessForbiddenException, ValidationException {
+        Map<String, Long> r = new HashMap<>();
+        r.put("id", clientService.add(businessID, clientDTO));
+        return r;
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
@@ -59,8 +63,10 @@ public class ClientController {
     @RequestMapping(value = "/{id}/addresses", method = RequestMethod.POST)
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
-    public Long addClientAddress(@RequestBody ClientAddressDTO clientAddressDTO) throws NotAuthenticatedException, FreeUserAccessForbiddenException, ValidationException, DataAccessException {
-        return clientService.addClientAddress(clientAddressDTO);
+    public Map<String, Long> addClientAddress(@RequestBody ClientAddressDTO clientAddressDTO) throws NotAuthenticatedException, FreeUserAccessForbiddenException, ValidationException, DataAccessException {
+        Map<String, Long> r = new HashMap<>();
+        r.put("id", clientService.addClientAddress(clientAddressDTO));
+        return r;
     }
 
     @RequestMapping(value = "/{clientID}/addresses/{id}", method = RequestMethod.DELETE)

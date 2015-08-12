@@ -25,13 +25,13 @@ public privileged aspect TransportDocumentServiceActionsAspect extends DBLoggerA
 	private static final Logger LOGGER = LoggerFactory.getLogger(TransportDocumentServiceActionsAspect.class);
 	
 	pointcut add(TransportDocumentDTO transportDocDTO) :
-		call(public Long com.novadart.novabill.service.web.TransportDocumentService.add(..)) && args(transportDocDTO);
+		execution(public Long com.novadart.novabill.service.web.TransportDocumentService.add(..)) && args(transportDocDTO);
 	
 	pointcut remove(Long businessID, Long clientID, Long id) : 
-		call(public void com.novadart.novabill.service.web.TransportDocumentService.remove(..)) && args(businessID, clientID, id);
+		execution(public void com.novadart.novabill.service.web.TransportDocumentService.remove(..)) && args(businessID, clientID, id);
 	
 	pointcut update(TransportDocumentDTO transportDocDTO) : 
-		call(public void com.novadart.novabill.service.web.TransportDocumentService.update(..)) && args(transportDocDTO);
+		execution(public void com.novadart.novabill.service.web.TransportDocumentService.update(..)) && args(transportDocDTO);
 	
 	
 	after(TransportDocumentDTO transportDocDTO) returning (Long id) : add(transportDocDTO){

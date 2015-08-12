@@ -17,13 +17,13 @@ privileged aspect PremiumUpgradeAspect extends AbstractLogEventEmailSenderAspect
 	private ThreadLocal<Throwable> lastLoggedException = new ThreadLocal<Throwable>();
 	
 	pointcut upgrade(Business business, int numberOfMonths):
-		call(public void com.novadart.novabill.service.web.PremiumEnablerService.enablePremiumForNMonths(..)) && args(business, numberOfMonths);
+		execution(public void com.novadart.novabill.service.web.PremiumEnablerService.enablePremiumForNMonths(..)) && args(business, numberOfMonths);
 	
 	pointcut premiumUpgradeError():
-		call(public void com.novadart.novabill.paypal.PayPalIPNHandlerService+.handle(..));
+		execution(public void com.novadart.novabill.paypal.PayPalIPNHandlerService+.handle(..));
 	
 	pointcut upgradeError(String email, String message):
-		call(private void com.novadart.novabill.paypal.OneTimePaymentIPNHandlerService.handleError(..)) && args(email, message);
+		execution(private void com.novadart.novabill.paypal.OneTimePaymentIPNHandlerService.handleError(..)) && args(email, message);
 	
 	after(Business business, int numberOfMonths) returning: upgrade(business, numberOfMonths){
 		Map<String, Object> vars = new HashMap<>();

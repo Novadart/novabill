@@ -18,7 +18,7 @@ public aspect DeleteAccountAspect extends AbstractLogEventEmailSenderAspect {
 	private static final Logger LOGGER = LoggerFactory.getLogger(DeleteAccountAspect.class);
 	
 	pointcut deleteAccount(DeleteAccount deleteAccount, BindingResult result) :
-		call(public String com.novadart.novabill.web.mvc.DeleteAccountController.processSubmit(..)) && args(deleteAccount, result, ..);
+		execution(public String com.novadart.novabill.web.mvc.DeleteAccountController.processSubmit(..)) && args(deleteAccount, result, ..);
 	
 	after (DeleteAccount deleteAccount, BindingResult result) returning : deleteAccount(deleteAccount, result) {
 		if(!result.hasErrors())
