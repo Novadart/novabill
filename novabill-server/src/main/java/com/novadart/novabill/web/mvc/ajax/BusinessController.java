@@ -1,37 +1,21 @@
 package com.novadart.novabill.web.mvc.ajax;
 
-import java.math.BigDecimal;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-
+import com.google.common.collect.ImmutableMap;
 import com.novadart.novabill.annotation.RestExceptionProcessingMixin;
 import com.novadart.novabill.service.web.BusinessService;
 import com.novadart.novabill.shared.client.data.LayoutType;
-import com.novadart.novabill.shared.client.dto.BusinessDTO;
-import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
-import com.novadart.novabill.shared.client.dto.ClientDTO;
-import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
-import com.novadart.novabill.shared.client.dto.EstimationDTO;
-import com.novadart.novabill.shared.client.dto.LogRecordDTO;
-import com.novadart.novabill.shared.client.dto.NotificationDTO;
-import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
-import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
+import com.novadart.novabill.shared.client.dto.*;
 import com.novadart.novabill.shared.client.exception.CloneNotSupportedException;
-import com.novadart.novabill.shared.client.exception.DataAccessException;
-import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
-import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
-import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
-import com.novadart.novabill.shared.client.exception.ValidationException;
+import com.novadart.novabill.shared.client.exception.*;
 import com.novadart.novabill.shared.client.tuple.Pair;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RestExceptionProcessingMixin
@@ -51,8 +35,8 @@ public class BusinessController {
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
-	public String add(@RequestBody BusinessDTO businessDTO) throws NotAuthenticatedException, FreeUserAccessForbiddenException, ValidationException, DataAccessException, CloneNotSupportedException {
-		return businessService.add(businessDTO).toString();
+	public Map<String, Object> add(@RequestBody BusinessDTO businessDTO) throws NotAuthenticatedException, FreeUserAccessForbiddenException, ValidationException, DataAccessException, CloneNotSupportedException {
+		return ImmutableMap.of(JsonConst.VALUE, businessService.add(businessDTO).toString());
 	}
 	
 	@RequestMapping(value = "/{businessID}", method = RequestMethod.PUT)
@@ -100,15 +84,15 @@ public class BusinessController {
 	@RequestMapping(value = "/{businessID}/clients/count", method = RequestMethod.GET)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
-	public Integer countClients(@PathVariable Long businessID) throws NotAuthenticatedException, DataAccessException {
-		return businessService.countClients(businessID);
+	public Map<String, Object> countClients(@PathVariable Long businessID) throws NotAuthenticatedException, DataAccessException {
+		return ImmutableMap.of(JsonConst.VALUE, businessService.countClients(businessID));
 	}
 	
 	@RequestMapping(value = "/{businessID}/invoices/{year}/count", method = RequestMethod.GET)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
-	public Integer countInvoicesForYear(@PathVariable Long businessID, @PathVariable Integer year) throws NotAuthenticatedException, DataAccessException {
-		return businessService.countInvoicesForYear(businessID, year);
+	public Map<String, Object> countInvoicesForYear(@PathVariable Long businessID, @PathVariable Integer year) throws NotAuthenticatedException, DataAccessException {
+		return ImmutableMap.of(JsonConst.VALUE, businessService.countInvoicesForYear(businessID, year));
 	}
 	
 	@RequestMapping(value = "/{businessID}/invoices/{year}/totals", method = RequestMethod.GET)

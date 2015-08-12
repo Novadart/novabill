@@ -51,10 +51,6 @@ public class UiBridge implements ApiBridge {
 			// payments
 			showPaymentsPage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showPaymentsPage(Ljava/lang/String;),
 			
-			// clients			
-			clientDialog : @com.novadart.novabill.frontend.client.bridge.UiBridge::showNewClientDialog(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
-			modifyClientDialog : @com.novadart.novabill.frontend.client.bridge.UiBridge::showModifyClientDialog(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
-			
 			// invoices
 			showNewInvoicePage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showNewInvoicePage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 			showModifyInvoicePage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showModifyInvoicePage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
@@ -91,27 +87,7 @@ public class UiBridge implements ApiBridge {
 		pa.start(panel, null);
 	}
 	
-	
-	/*
-	 * CLIENTS
-	 */
-	public static void showNewClientDialog(String businessId, JavaScriptObject callback){
-		ClientDialog clientDialog = new ClientDialog(Long.parseLong(businessId), callback);
-		clientDialog.center();
-	}
-	
-	public static void showModifyClientDialog(final String businessId, String clientId, final JavaScriptObject callback){
-		ServerFacade.INSTANCE.getClientService().get(Long.parseLong(clientId), new ManagedAsyncCallback<ClientDTO>() {
-			@Override
-			public void onSuccess(ClientDTO result) {
-				ClientDialog clientDialog = new ClientDialog(Long.parseLong(businessId), callback);
-				clientDialog.setClient(result);
-				clientDialog.center();
-			}
-		});
-	}
-	
-	
+
 	/*
 	 * INVOICES
 	 */

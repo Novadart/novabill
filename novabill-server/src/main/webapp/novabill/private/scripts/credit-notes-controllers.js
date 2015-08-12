@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('novabill.creditNotes.controllers', 
-		['novabill.utils', 'novabill.directives', 'novabill.directives.dialogs', 'novabill.translations'])
+		['novabill.utils', 'novabill.directives', 'novabill.directives.dialogs', 'novabill.translations', 'novabill.gwtbridge'])
 
 
 		/**

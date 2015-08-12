@@ -13,17 +13,26 @@ angular.module('novabill.directives.validation',
 			require: 'ngModel',
 			restrict: 'A',
 			scope : {
-				nOptionalValue : '='
+				nOptionalValue : '=',
+				nDisableValidation : '='
 			},
 			link: function(scope, elm, attrs, ctrl) {
 				ctrl.$parsers.unshift(function(viewValue) {
-					if ((attrs.nOptionalValue !== undefined && viewValue === '') || nRegExp.vatId.test(viewValue)) {
+					var optional = attrs.nOptionalValue === undefined || scope.$parent.$eval(attrs.nOptionalValue);
+					var validationIsDisabled = attrs.nDisableValidation !== undefined && scope.$parent.$eval(attrs.nDisableValidation);
+
+					if (
+						(optional && viewValue === '') ||
+						(!optional && validationIsDisabled && viewValue !== '') ||
+						nRegExp.vatId.test(viewValue)
+					) {
 						ctrl.$setValidity('vatId', true);
 						return viewValue;
 					} else {
 						ctrl.$setValidity('vatId', false);
 						return undefined;
 					}
+
 				});
 			}
 		};
@@ -39,17 +48,26 @@ angular.module('novabill.directives.validation',
 			require: 'ngModel',
 			restrict: 'A',
 			scope : {
-				nOptionalValue : '='
+				nOptionalValue : '=',
+				nDisableValidation : '='
 			},
 			link: function(scope, elm, attrs, ctrl) {
 				ctrl.$parsers.unshift(function(viewValue) {
-					if ((attrs.nOptionalValue !== undefined && viewValue === '') || nRegExp.ssn.test(viewValue)) {
+					var optional = attrs.nOptionalValue === undefined || scope.$parent.$eval(attrs.nOptionalValue);
+					var validationIsDisabled = attrs.nDisableValidation !== undefined && scope.$parent.$eval(attrs.nDisableValidation);
+
+					if (
+						(optional && viewValue === '') ||
+						(!optional && validationIsDisabled && viewValue !== '') ||
+						nRegExp.ssn.test(viewValue)
+					) {
 						ctrl.$setValidity('ssn', true);
 						return viewValue;
 					} else {
 						ctrl.$setValidity('ssn', false);
 						return undefined;
 					}
+
 				});
 			}
 		};
@@ -65,11 +83,19 @@ angular.module('novabill.directives.validation',
 			require: 'ngModel',
 			restrict: 'A',
 			scope : {
-				nOptionalValue : '='
+				nOptionalValue : '=',
+				nDisableValidation : '='
 			},
 			link: function(scope, elm, attrs, ctrl) {
 				ctrl.$parsers.unshift(function(viewValue) {
-					if ((attrs.nOptionalValue !== undefined && viewValue === '') || nRegExp.ssn.test(viewValue) || nRegExp.vatId.test(viewValue)) {
+					var optional = attrs.nOptionalValue === undefined || scope.$parent.$eval(attrs.nOptionalValue);
+					var validationIsDisabled = attrs.nDisableValidation !== undefined && scope.$parent.$eval(attrs.nDisableValidation);
+
+					if (
+						(optional && viewValue === '') ||
+						(!optional && validationIsDisabled && viewValue !== '') ||
+						nRegExp.ssn.test(viewValue) || nRegExp.vatId.test(viewValue)
+					) {
 						ctrl.$setValidity('ssnOrVatId', true);
 						return viewValue;
 					} else {

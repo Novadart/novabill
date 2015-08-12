@@ -26,6 +26,7 @@
 <script src="${novabillCoreUrl}/scripts/constants.js?v=${project.version}" type="text/javascript"></script>
 <script src="${novabillCoreUrl}/scripts/calc.js?v=${project.version}" type="text/javascript"></script>
 <script src="${novabillCoreUrl}/scripts/utils.js?v=${project.version}" type="text/javascript"></script>
+<script src="${novabillCoreUrl}/scripts/gwt-bridge.js?v=${project.version}" type="text/javascript"></script>
 <script src="${novabillCoreUrl}/scripts/directives-validation.js?v=${project.version}" type="text/javascript"></script>
 <script src="${novabillCoreUrl}/scripts/directives-forms.js?v=${project.version}" type="text/javascript"></script>
 <script src="${novabillCoreUrl}/scripts/directives-dialogs.js?v=${project.version}" type="text/javascript"></script>

@@ -8,6 +8,57 @@ angular.module('novabill.directives.dialogs',
 	/*
 	 * Edit Price List Dialog
 	 */
+	.factory('nEditClientDialog', ['nConstants', '$modal', function (nConstants, $modal){
+
+		return {
+			open : function( client, isClientIncomplete ) {
+
+				return $modal.open({
+
+					templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-edit-client-dialog.html'),
+
+					size : 'lg',
+
+					controller: ['$scope', '$modalInstance', 'nAjax', '$filter',
+						function($scope, $modalInstance, nAjax, $filter){
+
+							$scope.isClientIncomplete = isClientIncomplete;
+							$scope.client = angular.copy(client);
+                            $scope.splitPaymentOptions = [{ label: $filter('translate')('NO'), val: false }, { label: $filter('translate')('YES'), val: true }];
+							var DocumentIDClass = nAjax.DocumentIDClass();
+                            var PriceList = nAjax.PriceList();
+							var PaymentType = nAjax.PaymentType();
+
+                            DocumentIDClass.query(function(docIdClasses){
+                                $scope.docIdClasses = docIdClasses;
+                            });
+                            PriceList.query(function(priceLists){
+                                $scope.priceLists = priceLists;
+                            });
+							PaymentType.query(function(paymentTypes){
+								$scope.paymentTypes = paymentTypes;
+							});
+
+							$scope.save = function(){
+								$modalInstance.close($scope.client);
+							};
+
+							$scope.cancel = function(){
+								$modalInstance.dismiss();
+							};
+						}]
+				});
+			}
+		};
+	}])
+
+
+
+
+
+	/*
+	 * Edit Price List Dialog
+	 */
 	.factory('nAlertDialog', ['nConstants', '$modal', function (nConstants, $modal){
 
 		return {
@@ -549,12 +600,12 @@ angular.module('novabill.directives.dialogs',
 
 					templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-select-client-dialog.html'),
 
-					controller: ['$scope', 'nConstants', 'nSorting', '$filter', '$modalInstance', 'nAjax',
-						function($scope, nConstants, nSorting, $filter, $modalInstance, nAjax){
+					controller: ['$scope', 'nConstants', 'nSorting', '$filter', '$modalInstance', 'nAjax', 'nEditClientDialog',
+						function($scope, nConstants, nSorting, $filter, $modalInstance, nAjax, nEditClientDialog){
 
-							var loadedClients = new Array();
+							var loadedClients = [];
 							$scope.loadedClientsCount = -1;
-							var filteredClients = new Array();
+							var filteredClients = [];
 							$scope.allowNewClient = allowNewClient;
 
 							function updateFilteredClients(){
@@ -597,32 +648,28 @@ angular.module('novabill.directives.dialogs',
 							};
 
 							$scope.addClientClick = function(){
-								GWT_UI.clientDialog(nConstants.conf.businessId, {
+                                var client = new (nAjax.Client());
+                                client.country = 'IT';
+                                client.contact = {};
 
-									onSuccess : function() {
-										$scope.loadClients();
-									},
-
-									onFailure : function() {}
-								});
+                                var instance = nEditClientDialog.open(client);
+                                instance.result.then(
+                                    function(client){
+                                        client.$save(function(){
+                                            $scope.loadClients();
+                                        });
+                                    }
+                                );
 							};
 
 							$scope.createNewClient = function(){
-								var newClient = {
-									name : $scope.query,
-									contact : {}
-								};
-								GWT_Server.client.add(nConstants.conf.businessId, angular.toJson(newClient), {
+                                var client = new (nAjax.Client());
+                                client.contact = {};
+                                client.name = $scope.query;
 
-									onSuccess : function(newId){
-										$scope.$apply(function(){
-											$modalInstance.close(newId);
-										});
-									},
-
-									onFailure : function(){}
-
-								});
+                                client.$save(function(data){
+                                    $modalInstance.close(data.value);
+                                });
 							};
 
 							$scope.cancelNewClientClick = function(){
