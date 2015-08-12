@@ -60,6 +60,7 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 			CITY : 'Città',
 			CITY_PLACEHOLDER : 'esempio: Cittadella',
 			CLEAR : 'Ripulisci',
+            CLIENT_DETAIL : 'Dettaglio Cliente',
 			CLIENT_DELETION_ALERT : 'Non è possibile cancellare questo cliente, in quanto esistono ancora dei documenti ad esso associati',
 			CLIENTS : 'Clienti',
 			CLONE : 'Crea simile',

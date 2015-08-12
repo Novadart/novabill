@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('novabill.invoices.controllers',
-	['novabill.utils', 'novabill.directives', 'novabill.directives.dialogs', 'novabill.translations', 'infinite-scroll'])
+	['novabill.utils', 'novabill.directives', 'novabill.directives.dialogs', 'novabill.translations', 'infinite-scroll', 'novabill.gwtbridge'])
 
 
 /**

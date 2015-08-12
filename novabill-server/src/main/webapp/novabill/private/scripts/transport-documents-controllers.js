@@ -2,7 +2,7 @@
 
 angular.module('novabill.transportDocuments.controllers',
 	['novabill.utils', 'novabill.directives', 'novabill.directives.dialogs', 'novabill.ajax',
-		'novabill.translations', 'novabill.constants', 'infinite-scroll'])
+		'novabill.translations', 'novabill.constants', 'infinite-scroll', 'novabill.gwtbridge'])
 
 
 /**
