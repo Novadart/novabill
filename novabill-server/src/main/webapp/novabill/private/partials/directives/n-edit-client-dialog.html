@@ -104,7 +104,7 @@
                             <div class="form-group" ng-class="{'has-error': form.country.$dirty && form.country.$invalid, 'has-success': form.country.$dirty && form.country.$valid}">
                                 <label class="col-md-4 control-label" for="country">{{'COUNTRY' | translate}} *</label>
                                 <div class="col-md-8">
-                                    <n-country-selector id="country" selected-country="client.country" ng-required="fieldsToShow!=='companyName'"></n-country-selector>
+                                    <n-country-selector id="country" name="country" selected-country="client.country" ></n-country-selector>
                                     <div ng-show="form.country.$dirty && form.country.$invalid">
                                         <span class="text-danger">{{'VALIDATION_REQUIRED' | translate}}</span>
                                     </div>
@@ -210,7 +210,9 @@
                                             class="form-control"
                                             name="defaultPaymentTypeID"
                                             ng-model="client.defaultPaymentTypeID"
-                                            ng-options="pt.id as pt.name for pt in paymentTypes"></select>
+                                            ng-options="pt.id as pt.name for pt in paymentTypes">
+                                        <option value=""></option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -251,7 +253,7 @@
                                 </div>
                             </div>
 
-                            <div  class="form-group" ng-class="{'has-error': form.mobile.$dirty && form.mobile.$invalid, 'has-success': form.mobile.$dirty && form.mobile.$valid}">
+                            <div  class="form-group" ng-class="{'has-error': form.contactsurname.$dirty && form.contactsurname.$invalid, 'has-success': form.contactsurname.$dirty && form.contactsurname.$valid}">
                                 <label class="col-md-4 control-label" for="mobile">{{'MOBILE' | translate}}</label>
                                 <div class="col-md-8">
                                     <input id="contactsurname" class="form-control" type="text" name="contactsurname" maxlength="50" ng-model="client.contact.lastName"
@@ -259,7 +261,7 @@
                                 </div>
                             </div>
 
-                            <div  class="form-group" ng-class="{'has-error': form.web.$dirty && form.web.$invalid, 'has-success': form.web.$dirty && form.web.$valid}">
+                            <div  class="form-group" ng-class="{'has-error': form.contactphone.$dirty && form.contactphone.$invalid, 'has-success': form.contactphone.$dirty && form.contactphone.$valid}">
                                 <label class="col-md-4 control-label" for="web">{{'WEBSITE' | translate}}</label>
                                 <div class="col-md-8">
                                     <input id="contactphone" class="form-control" type="text" name="contactphone" maxlength="25" ng-model="client.contact.phone"
@@ -267,7 +269,7 @@
                                 </div>
                             </div>
 
-                            <div  class="form-group" ng-class="{'has-error': form.mobile.$dirty && form.mobile.$invalid, 'has-success': form.mobile.$dirty && form.mobile.$valid}">
+                            <div  class="form-group" ng-class="{'has-error': form.contactmobile.$dirty && form.contactmobile.$invalid, 'has-success': form.contactmobile.$dirty && form.contactmobile.$valid}">
                                 <label class="col-md-4 control-label" for="mobile">{{'MOBILE' | translate}}</label>
                                 <div class="col-md-8">
                                     <input id="contactmobile" class="form-control" type="text" name="contactmobile" maxlength="25" ng-model="client.contact.mobile"
@@ -275,23 +277,23 @@
                                 </div>
                             </div>
 
-                            <div  class="form-group" ng-class="{'has-error': form.email.$dirty && form.email.$invalid, 'has-success': form.email.$dirty && form.email.$valid}">
+                            <div  class="form-group" ng-class="{'has-error': form.contactemail.$dirty && form.contactemail.$invalid, 'has-success': form.contactemail.$dirty && form.contactemail.$valid}">
                                 <label class="col-md-4 control-label" for="email">{{'EMAIL' | translate}}</label>
                                 <div class="col-md-8">
                                     <input id="contactemail" class="form-control" type="email" name="contactemail" maxlength="255" ng-model="client.contact.email"
                                            placeholder="{{'EMAIL_PLACEHOLDER' | translate}}">
-                                    <div ng-show="form.email.$dirty && form.email.$invalid">
+                                    <div ng-show="form.contactemail.$dirty && form.contactemail.$invalid">
                                         <span class="text-danger">{{'VALIDATION_INVALID_VALUE' | translate}}</span>
                                     </div>
                                 </div>
                             </div>
 
-                            <div  class="form-group" ng-class="{'has-error': form.fax.$dirty && form.fax.$invalid, 'has-success': form.fax.$dirty && form.fax.$valid}">
+                            <div  class="form-group" ng-class="{'has-error': form.contactfax.$dirty && form.contactfax.$invalid, 'has-success': form.contactfax.$dirty && form.contactfax.$valid}">
                                 <label class="col-md-4 control-label" for="fax">{{'FAX' | translate}}</label>
                                 <div class="col-md-8">
                                     <input id="contactfax" class="form-control" type="text" name="contactfax" maxlength="25" ng-model="client.contact.fax"
                                            placeholder="{{'FAX_PLACEHOLDER' | translate}}">
-                                    <div ng-show="form.fax.$dirty && form.fax.$invalid">
+                                    <div ng-show="form.contactfax.$dirty && form.contactfax.$invalid">
                                         <span class="text-danger">{{'VALIDATION_INVALID_VALUE' | translate}}</span>
                                     </div>
                                 </div>

@@ -8,8 +8,8 @@ angular.module('novabill.clients.controllers',
 /**
  * CLIENTS PAGE CONTROLLER
  */
-    .controller('ClientsCtrl', ['$scope', 'nSorting', '$location', 'nConstants', 'nAjax',
-        function($scope, nSorting, $location, nConstants, nAjax){
+    .controller('ClientsCtrl', ['$scope', 'nSorting', '$location', 'nConstants', 'nAjax', 'nEditClientDialog',
+        function($scope, nSorting, $location, nConstants, nAjax, nEditClientDialog){
 
             var loadedClients = [];
             var filteredClients = [];
@@ -126,14 +126,18 @@ angular.module('novabill.clients.controllers',
 
             // fired when new client button is clicked
             $scope.newClientClick = function() {
-                GWT_UI.clientDialog(nConstants.conf.businessId, {
+                var client = new (nAjax.Client());
+                //client.business = { id : nConstants.conf.businessId };
+                client.contact = {};
 
-                    onSuccess : function(){
-                        $scope.loadClients();
-                    },
-
-                    onFailure : function() {}
-                });
+                var instance = nEditClientDialog.open(client);
+                instance.result.then(
+                    function(client){
+                        client.$save(function(){
+                            $scope.loadClients();
+                        });
+                    }
+                );
             };
 
             $scope.scrollTo = function(letter, index){
@@ -211,19 +215,7 @@ angular.module('novabill.clients.controllers',
                             }
                             //$location.path('/');
                         });
-                        //GWT_Server.client.remove(nConstants.conf.businessId, $scope.client.id, {
-                        //    onSuccess : function(data){
-                        //        if(data === 'true') {
-                        //            $scope.$apply(function(){
-                        //                $location.path('/');
-                        //            });
-                        //        } else {
-                        //            nAlertDialog.open($filter('translate')('CLIENT_DELETION_ALERT'));
-                        //        }
-                        //    },
-                        //
-                        //    onFailure : function(error){}
-                        //});
+
                     }
                 });
             };
