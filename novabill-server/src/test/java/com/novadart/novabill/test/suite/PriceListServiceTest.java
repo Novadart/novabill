@@ -1,10 +1,5 @@
 package com.novadart.novabill.test.suite;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -53,6 +48,8 @@ import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.facade.PriceListGwtService;
 import com.novadart.novabill.shared.client.validation.ErrorObject;
 import com.novadart.novabill.shared.client.validation.Field;
+
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath*:gwt-pricelist-test-config.xml")
@@ -251,12 +248,18 @@ public class PriceListServiceTest extends ServiceTest {
 		priceListService.get(priceList.getId());
 	}
 	
-	@Test(expected = ValidationException.class)
-	public void duplicateNameTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException{
+	@Test(expected = Exception.class)
+	public void duplicateNameTest() throws NotAuthenticatedException, FreeUserAccessForbiddenException, DataAccessException, ValidationException {
 		PriceListDTO priceListDTO = PriceListDTOTransformer.toDTO(TestUtils.createPriceList(), null);
 		priceListDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		priceListService.add(priceListDTO);
-		priceListService.add(priceListDTO);
+		try {
+			priceListService.add(priceListDTO);
+		} catch (ValidationException e) {
+			assertTrue(true);
+			throw e;
+		}
+		fail();
 	}
 	
 	@Test
@@ -296,11 +299,17 @@ public class PriceListServiceTest extends ServiceTest {
 		priceListService.clonePriceList(businessID, null, "Cloned price list" + System.currentTimeMillis());
 	}
 	
-	@Test(expected = ValidationException.class)
-	public void clonePriceListNameNUllTest() throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, ValidationException{
+	@Test(expected = Exception.class)
+	public void clonePriceListNameNUllTest() throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, ValidationException {
 		Long id = Long.parseLong(testPL.get(authenticatedPrincipal.getUsername()));
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
-		priceListService.clonePriceList(businessID, id, null);
+		try {
+			priceListService.clonePriceList(businessID, id, null);
+		} catch (ValidationException e) {
+			assertTrue(true);
+			throw e;
+		}
+		fail();
 	}
 	
 }

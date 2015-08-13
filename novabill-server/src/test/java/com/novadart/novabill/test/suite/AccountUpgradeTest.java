@@ -2,6 +2,7 @@ package com.novadart.novabill.test.suite;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -108,7 +109,7 @@ public class AccountUpgradeTest extends AuthenticatedTest {
 		authenticatedPrincipal = Principal.findByUsername("giordano.battilana@novadart.com");
 		authenticatePrincipal(authenticatedPrincipal);
 	}
-	
+
 	public void accountExpirationInNDaysNotificationTest(int days){
 		Business business = Business.findBusiness(authenticatedPrincipal.getBusiness().getId());
 		business.getSettings().setNonFreeAccountExpirationTime(getNDaysFromNowInMillis(days));
@@ -325,9 +326,8 @@ public class AccountUpgradeTest extends AuthenticatedTest {
 		
 	}
 	
-	@Test(expected = PremiumUpgradeException.class)
-	@DirtiesContext
-	public void notifyIfPremiumUpgradeFail() throws PremiumUpgradeException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, ClassNotFoundException{
+	@Test(expected = Exception.class)
+	public void notifyIfPremiumUpgradeFail() throws PremiumUpgradeException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, ClassNotFoundException {
 		ExceptionTraceAspect.aspectOf().setIgnoreExceptions(new String[]{"java.lang.RuntimeException"});
 		Long businessID = getUnathorizedBusinessID();
 		Business business = Business.findBusiness(businessID);
@@ -341,15 +341,17 @@ public class AccountUpgradeTest extends AuthenticatedTest {
 		Map<String, String> parametersMap = new HashMap<>();
 		parametersMap.put("custom", "risto.gligorov@novadart.com");
 		parametersMap.put("item_name", "Piano Novabill Premium - 1 Anno");
-		
+
 		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
-		try{
+		try {
 			mockIPNService.handle("", parametersMap, new Transaction());
+		} catch (PremiumUpgradeException e) {
+			assertEquals(2, smtpServer.getReceivedEmailSize());
+			throw e;
 		}finally {
 			smtpServer.stop();
-			assertEquals(2, smtpServer.getReceivedEmailSize());
 		}
-		
+		fail();
 	}
 	
 	

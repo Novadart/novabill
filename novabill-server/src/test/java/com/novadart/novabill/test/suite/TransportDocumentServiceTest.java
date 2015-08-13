@@ -1,10 +1,5 @@
 package com.novadart.novabill.test.suite;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.FileSystems;
@@ -61,6 +56,8 @@ import com.novadart.novabill.shared.client.facade.TransportDocumentGwtService;
 import com.novadart.novabill.shared.client.tuple.Triple;
 import com.novadart.novabill.shared.client.validation.ErrorObject;
 import com.novadart.novabill.shared.client.validation.Field;
+
+import static org.junit.Assert.*;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -275,8 +272,8 @@ public class TransportDocumentServiceTest extends ServiceTest {
 		assertEquals(transDocDTO.getDocumentID().toString(), details.get(DBLoggerAspect.DOCUMENT_ID));
 	}
 	
-	@Test(expected = ValidationException.class)
-	public void addAuthorizedForThinClientValidationErrorTest() throws InstantiationException, IllegalAccessException, NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException{
+	@Test(expected = Exception.class)
+	public void addAuthorizedForThinClientValidationErrorTest() throws InstantiationException, IllegalAccessException, NotAuthenticatedException, FreeUserAccessForbiddenException, DataAccessException, ValidationException {
 		Client client = new Client();
 		client.setName("John Doe");
 		client.setBusiness(authenticatedPrincipal.getBusiness());
@@ -285,7 +282,13 @@ public class TransportDocumentServiceTest extends ServiceTest {
 		TransportDocumentDTO transDocDTO = TransportDocumentDTOTransformer.toDTO(TestUtils.createTransportDocument(authenticatedPrincipal.getBusiness().getNextInvoiceDocumentID(null)), true);
 		transDocDTO.setClient(ClientDTOTransformer.toDTO(Client.findClient(clientID)));
 		transDocDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
-		transportDocService.add(transDocDTO);
+		try {
+			transportDocService.add(transDocDTO);
+		} catch (ValidationException e) {
+			assertTrue(true);
+			throw e;
+		}
+		fail();
 	}
 	
 	@Test(expected = DataAccessException.class)
@@ -312,8 +315,8 @@ public class TransportDocumentServiceTest extends ServiceTest {
 		transportDocService.add(transDocDTO);
 	}
 	
-	@Test
-	public void updateAuthorizedValidationFieldMappingTest() throws IllegalAccessException, InvocationTargetException, NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException, InstantiationException{
+	@Test(expected = Exception.class)
+	public void updateAuthorizedValidationFieldMappingTest() throws IllegalAccessException, InvocationTargetException, NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException, InstantiationException, ValidationException {
 		try{
 			TransportDocumentDTO transDocDTO = TransportDocumentDTOTransformer.toDTO(TestUtils.createInvalidTransportDocument(authenticatedPrincipal.getBusiness().getNextTransportDocDocumentID()), true);
 			transDocDTO.setClient(ClientDTOTransformer.toDTO(authenticatedPrincipal.getBusiness().getClients().iterator().next()));
@@ -330,7 +333,9 @@ public class TransportDocumentServiceTest extends ServiceTest {
 			for(ErrorObject error: e.getErrors())
 				actual.add(error.getField());
 			assertEquals(expected, actual);
+			throw e;
 		}
+		fail();
 	}
 	
 	@Test

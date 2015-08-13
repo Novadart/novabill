@@ -303,14 +303,20 @@ public class CommodityServiceTest extends ServiceTest {
     		 assertTrue(prices.containsKey(pl.getName()));
      }
      
-     @Test(expected = ValidationException.class)
-     public void duplicateSkuTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException{
+     @Test(expected = Exception.class)
+     public void duplicateSkuTest() throws NotAuthenticatedException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException, ValidationException {
     	CommodityDTO commodityDTO = CommodityDTOTransformer.toDTO(TestUtils.createCommodity());
     	TestUtils.setDefaultPrice(commodityDTO, new BigDecimal("5.00"));
  		commodityDTO.setSku("12345");
  		commodityDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
  		commodityGwtService.add(commodityDTO);
- 		commodityGwtService.add(commodityDTO);
-     }
+		 try {
+			 commodityGwtService.add(commodityDTO);
+		 } catch (ValidationException e) {
+			 assertTrue(true);
+			 throw e;
+		 }
+		 fail();
+	 }
      
 }

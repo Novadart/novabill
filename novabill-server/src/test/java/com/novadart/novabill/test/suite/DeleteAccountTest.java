@@ -1,6 +1,7 @@
 package com.novadart.novabill.test.suite;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -66,6 +67,8 @@ public class DeleteAccountTest extends AuthenticatedTest {
 	public void defaultDeleteAccountFlow() throws NoSuchAlgorithmException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, UnsupportedEncodingException{
 		String username = userPasswordMap.keySet().iterator().next(), password = userPasswordMap.get(username);
 		Long businessID = Principal.findByUsername(username).getBusiness().getId();
+		long businessCount = Business.countBusinesses();
+		long princiopalCount = Principal.findAllPrincipals().size();
 		DeleteAccountController deleteAccountController = initDeleteAccountController(username, password, password);
 		String deleteAccountView = deleteAccountController.setupForm(mock(Model.class), mock(HttpSession.class));
 		DeleteAccount deleteAccount = new DeleteAccount();
@@ -79,8 +82,8 @@ public class DeleteAccountTest extends AuthenticatedTest {
 		Principal.entityManager().flush();
 		assertEquals("private.deleteAccount", deleteAccountView);
 		assertEquals("forward:/resources/logout", redirectLogoutView);
-		assertEquals(null, Principal.findByUsername(username));
-		assertEquals(null, Business.findBusiness(businessID));
+		assertEquals(princiopalCount - 1 , Principal.findAllPrincipals().size());
+		assertEquals(businessCount - 1,  Business.countBusinesses());
 	}
 	
 	private void invalidPasswordValue(String username, String passValue) throws NoSuchAlgorithmException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException{

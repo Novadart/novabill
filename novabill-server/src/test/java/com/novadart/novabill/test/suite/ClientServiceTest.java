@@ -1,21 +1,23 @@
 package com.novadart.novabill.test.suite;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.annotation.Resource;
-
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.novadart.novabill.aspect.logging.DBLoggerAspect;
 import com.novadart.novabill.domain.*;
+import com.novadart.novabill.domain.dto.transformer.ClientAddressDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.ClientDTOTransformer;
+import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.service.validator.SimpleValidator;
+import com.novadart.novabill.shared.client.data.EntityType;
+import com.novadart.novabill.shared.client.data.OperationType;
+import com.novadart.novabill.shared.client.data.PriceListConstants;
+import com.novadart.novabill.shared.client.dto.ClientAddressDTO;
+import com.novadart.novabill.shared.client.dto.ClientDTO;
+import com.novadart.novabill.shared.client.exception.*;
+import com.novadart.novabill.shared.client.facade.BusinessGwtService;
+import com.novadart.novabill.shared.client.facade.ClientGwtService;
+import com.novadart.novabill.shared.client.validation.ErrorObject;
+import com.novadart.novabill.shared.client.validation.Field;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -28,28 +30,12 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.novadart.novabill.aspect.logging.DBLoggerAspect;
-import com.novadart.novabill.domain.dto.transformer.ClientAddressDTOTransformer;
-import com.novadart.novabill.domain.dto.transformer.ClientDTOTransformer;
-import com.novadart.novabill.domain.security.Principal;
-import com.novadart.novabill.service.validator.SimpleValidator;
-import com.novadart.novabill.shared.client.data.EntityType;
-import com.novadart.novabill.shared.client.data.OperationType;
-import com.novadart.novabill.shared.client.data.PriceListConstants;
-import com.novadart.novabill.shared.client.dto.ClientAddressDTO;
-import com.novadart.novabill.shared.client.dto.ClientDTO;
-import com.novadart.novabill.shared.client.exception.DataAccessException;
-import com.novadart.novabill.shared.client.exception.DataIntegrityException;
-import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
-import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
-import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
-import com.novadart.novabill.shared.client.exception.ValidationException;
-import com.novadart.novabill.shared.client.facade.BusinessGwtService;
-import com.novadart.novabill.shared.client.facade.ClientGwtService;
-import com.novadart.novabill.shared.client.validation.ErrorObject;
-import com.novadart.novabill.shared.client.validation.Field;
+import javax.annotation.Resource;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
+
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath*:gwt-client-test-config.xml")
@@ -238,8 +224,8 @@ public class ClientServiceTest extends ServiceTest {
 		clientService.add(authenticatedPrincipal.getBusiness().getId(), ClientDTOTransformer.toDTO(client));
 	}
 	
-	@Test
-	public void addAuthorizedValidationFieldMappingTest() throws IllegalAccessException, InvocationTargetException, NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException{
+	@Test(expected = Exception.class)
+	public void addAuthorizedValidationFieldMappingTest() throws IllegalAccessException, InvocationTargetException, NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException, ValidationException {
 		Client client = TestUtils.createClient();
 		for(String key: validationFieldsMap.keySet()){
 			BeanUtils.setProperty(client, key, StringUtils.leftPad("1", 1000, '1'));
@@ -252,7 +238,9 @@ public class ClientServiceTest extends ServiceTest {
 			for(ErrorObject error: e.getErrors())
 				actual.add(error.getField());
 			assertEquals(expected, actual);
+			throw e;
 		}
+		fail();
 	}
 	
 	@Test
@@ -272,12 +260,18 @@ public class ClientServiceTest extends ServiceTest {
 		assertEquals(expectedClient.getName(), details.get(DBLoggerAspect.CLIENT_NAME));
 	}
 	
-	@Test(expected = ValidationException.class)
-	public void updateAuthenticatedValidationErrorTest() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ValidationException, JsonParseException, JsonMappingException, IOException{
+	@Test(expected = Exception.class)
+	public void updateAuthenticatedValidationErrorTest() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, IOException, ValidationException {
 		Long clientID = authenticatedPrincipal.getBusiness().getClients().iterator().next().getId();
 		Client expectedClient = Client.findClient(clientID);
 		expectedClient.setAddress("");
-		clientService.update(authenticatedPrincipal.getBusiness().getId(), ClientDTOTransformer.toDTO(expectedClient));
+		try {
+			clientService.update(authenticatedPrincipal.getBusiness().getId(), ClientDTOTransformer.toDTO(expectedClient));
+		} catch (ValidationException e) {
+			assertTrue(true);
+			throw e;
+		}
+		fail();
 	}
 	
 	@Test(expected = DataAccessException.class)
@@ -285,9 +279,15 @@ public class ClientServiceTest extends ServiceTest {
 		clientService.update(authenticatedPrincipal.getBusiness().getId(), ClientDTOTransformer.toDTO(TestUtils.createClient()));
 	}
 	
-	@Test(expected = DataAccessException.class)
-	public void updateAuthenticatedClientNull() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ValidationException{
-		clientService.update(authenticatedPrincipal.getBusiness().getId(), null);
+	@Test(expected = Exception.class)
+	public void updateAuthenticatedClientNull() throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException {
+		try {
+			clientService.update(authenticatedPrincipal.getBusiness().getId(), null);
+		} catch (DataAccessException e) {
+			assertTrue(true);
+			throw e;
+		}
+		fail();
 	}
 	
 	@Test(expected = DataAccessException.class)
@@ -297,8 +297,8 @@ public class ClientServiceTest extends ServiceTest {
 		clientService.update(getUnathorizedBusinessID(), ClientDTOTransformer.toDTO(client));
 	}
 	
-	@Test
-	public void updateAuthorizedValidationFieldMappingTest() throws IllegalAccessException, InvocationTargetException, NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	@Test(expected = Exception.class)
+	public void updateAuthorizedValidationFieldMappingTest() throws IllegalAccessException, InvocationTargetException, NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException {
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
 		for(String key: validationFieldsMap.keySet()){
 			BeanUtils.setProperty(client, key, StringUtils.leftPad("1", 1000, '1'));
@@ -311,7 +311,9 @@ public class ClientServiceTest extends ServiceTest {
 			for(ErrorObject error: e.getErrors())
 				actual.add(error.getField());
 			assertEquals(expected, actual);
+			throw e;
 		}
+		fail();
 	}
 	
 	@Test

@@ -19,11 +19,13 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.novadart.novabill.domain.security.Principal;
+import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath*:authenticate-test-config.xml")
 @ActiveProfiles("dev")
-public class AuthenticatedTest {
+@Transactional
+public class AuthenticatedTest extends BaseTest{
 
 	@Resource(name = "userPasswordMap")
 	protected HashMap<String, String> userPasswordMap;

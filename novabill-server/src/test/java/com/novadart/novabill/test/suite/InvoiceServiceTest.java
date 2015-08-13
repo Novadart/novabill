@@ -324,8 +324,8 @@ public class InvoiceServiceTest extends ServiceTest {
 		assertEquals(Invoice.findInvoice(id).getId(), TransportDocument.findTransportDocument(transportDocID).getInvoice().getId());
 	}
 	
-	@Test(expected = ValidationException.class)
-	public void addAuthorizedForThinClientValidationErrorTest() throws InstantiationException, IllegalAccessException, NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, DataIntegrityException{
+	@Test(expected = Exception.class)
+	public void addAuthorizedForThinClientValidationErrorTest() throws InstantiationException, IllegalAccessException, NotAuthenticatedException, FreeUserAccessForbiddenException, DataAccessException, DataIntegrityException, ValidationException {
 		Client client = new Client();
 		client.setName("John Doe");
 		client.setBusiness(authenticatedPrincipal.getBusiness());
@@ -334,7 +334,13 @@ public class InvoiceServiceTest extends ServiceTest {
 		InvoiceDTO invDTO = InvoiceDTOTransformer.toDTO(TestUtils.createInvOrCredNote(authenticatedPrincipal.getBusiness().getNextInvoiceDocumentID(null), Invoice.class), true);
 		invDTO.setClient(ClientDTOTransformer.toDTO(Client.findClient(clientID)));
 		invDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
-		invoiceService.add(invDTO);
+		try {
+			invoiceService.add(invDTO);
+		} catch (ValidationException e) {
+			assertTrue(true);
+			throw e;
+		}
+		fail();
 	}
 	
 	@Test(expected = DataAccessException.class)
@@ -351,18 +357,24 @@ public class InvoiceServiceTest extends ServiceTest {
 		invoiceService.add(null);
 	}
 	
-	@Test(expected = DataAccessException.class)
-	public void addAuthorizedInvoiceDTOIDNotNull() throws NotAuthenticatedException, DataAccessException, ValidationException, FreeUserAccessForbiddenException, InstantiationException, IllegalAccessException, DataIntegrityException{
+	@Test(expected = Exception.class)
+	public void addAuthorizedInvoiceDTOIDNotNull() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, InstantiationException, IllegalAccessException, DataIntegrityException, DataAccessException {
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
 		InvoiceDTO invDTO = InvoiceDTOTransformer.toDTO(TestUtils.createInvOrCredNote(authenticatedPrincipal.getBusiness().getNextInvoiceDocumentID(null), Invoice.class), true);
 		invDTO.setClient(ClientDTOTransformer.toDTO(client));
 		invDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		invDTO.setId(1l);
-		invoiceService.add(invDTO);
+		try {
+			invoiceService.add(invDTO);
+		} catch (DataAccessException e) {
+			assertTrue(true);
+			throw e;
+		}
+		fail();
 	}
 	
-	@Test
-	public void updateAuthorizedValidationFieldMappingTest() throws IllegalAccessException, InvocationTargetException, NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException, InstantiationException, DataIntegrityException{
+	@Test(expected = Exception.class)
+	public void updateAuthorizedValidationFieldMappingTest() throws IllegalAccessException, InvocationTargetException, NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException, InstantiationException, DataIntegrityException, ValidationException {
 		try{
 			InvoiceDTO invDTO = InvoiceDTOTransformer.toDTO(TestUtils.createInvalidInvOrCredNote(authenticatedPrincipal.getBusiness().getNextInvoiceDocumentID(null), Invoice.class), true);
 			invDTO.setClient(ClientDTOTransformer.toDTO(authenticatedPrincipal.getBusiness().getClients().iterator().next()));
@@ -379,7 +391,9 @@ public class InvoiceServiceTest extends ServiceTest {
 			for(ErrorObject error: e.getErrors())
 				actual.add(error.getField());
 			assertEquals(expected, actual);
+			throw e;
 		}
+		fail();
 	}
 	
 	private Set<Long> invoiceIDSet(Collection<InvoiceDTO> invDTOs){
