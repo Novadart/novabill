@@ -1,5 +1,6 @@
 package com.novadart.novabill.web.mvc.ajax;
 
+import com.google.common.collect.ImmutableMap;
 import com.novadart.novabill.annotation.RestExceptionProcessingMixin;
 import com.novadart.novabill.service.web.PaymentTypeService;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RestExceptionProcessingMixin
@@ -36,8 +38,8 @@ public class PaymentTypeController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
-    public Long add(@RequestBody PaymentTypeDTO paymentTypeDTO) throws NotAuthenticatedException, FreeUserAccessForbiddenException, DataAccessException, ValidationException {
-        return paymentTypeService.add(paymentTypeDTO);
+    public Map<String, Object> add(@RequestBody PaymentTypeDTO paymentTypeDTO) throws NotAuthenticatedException, FreeUserAccessForbiddenException, DataAccessException, ValidationException {
+        return ImmutableMap.of(JsonConst.VALUE, paymentTypeService.add(paymentTypeDTO));
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)

@@ -1,0 +1,324 @@
+<div class="n-edit-address-dialog" >
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="cancel()">&times;</button>
+        <h4 class="modal-title">{{'CLIENT_DETAIL' | translate}}</h4>
+    </div>
+    <div class="modal-body">
+
+        <div class="row">
+
+            <div class="col-md-offset-2 col-md-8 text-center" ng-if="isClientIncomplete">
+                <alert type="danger">{{'INCOMPLETE_CLIENT_ALERT' | translate}}</alert>
+            </div>
+
+            <div class="col-md-12">
+                <form name="form" role="form" class="form-horizontal" novalidate>
+
+                <tabset>
+                    <!--
+
+                        BASE DATA
+
+                    -->
+                    <tab>
+                        <tab-heading>
+                            <i class="glyphicon glyphicon-home"></i> Dati di Base
+                        </tab-heading>
+
+
+                        <div class="col-md-6">
+
+                            <div class="form-group" ng-class="{'has-error': form.name.$dirty && form.name.$invalid, 'has-success': form.name.$dirty && form.name.$valid}">
+                                <label class="col-md-4 control-label" for="name">{{'COMPANY_NAME' | translate}} *</label>
+                                <div class="col-md-8">
+		                    <textarea id="name" rows="2" class="form-control" name="name" maxlength="255" ng-model="client.name"
+                                      placeholder="{{'COMPANY_NAME_PLACEHOLDER' | translate}}" required ></textarea>
+                                    <div ng-show="form.name.$dirty && form.name.$invalid">
+                                        <span class="text-danger">{{'VALIDATION_REQUIRED' | translate}}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group" ng-class="{'has-error': form.ssn.$dirty && form.ssn.$invalid, 'has-success': form.ssn.$dirty && form.ssn.$valid}">
+                                <label class="col-md-4 control-label" for="ssn">{{'SSN_EXTENDED' | translate}} **</label>
+                                <div class="col-md-8">
+                                    <input id="ssn" n-ssn-or-vat-id n-optional-value n-disable-validation="client.country !== 'IT'" class="form-control" type="text" name="ssn" maxlength="25" ng-model="client.ssn"
+                                           placeholder="{{'SSN_PLACEHOLDER' | translate}}" ng-required="!client.vatID">
+                                    <div ng-show="form.ssn.$dirty && form.ssn.$invalid">
+                                        <span class="text-danger">{{'VALIDATION_INVALID_VALUE' | translate}}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-class="{'has-error': form.vatId.$dirty && form.vatId.$invalid, 'has-success': form.vatId.$dirty && form.vatId.$valid}">
+                                <label class="col-md-4 control-label" for="vatId">{{'VATID' | translate}} **</label>
+                                <div class="col-md-8">
+                                    <input id="vatId" n-vat-id n-optional-value n-disable-validation="client.country !== 'IT'" class="form-control" type="text" name="vatId" maxlength="25" ng-model="client.vatID"
+                                           placeholder="{{'VATID_PLACEHOLDER' | translate}}" ng-required="!client.ssn">
+                                    <div ng-show="form.vatId.$dirty && form.vatId.$invalid">
+                                        <span class="text-danger">{{'VALIDATION_INVALID_VALUE' | translate}}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-class="{'has-error': form.address.$dirty && form.address.$invalid, 'has-success': form.address.$dirty && form.address.$valid}">
+                                <label class="col-md-4 control-label" for="address">{{'ADDRESS' | translate}} *</label>
+                                <div class="col-md-8">
+                                    <input id="address" class="form-control" type="text" name="address" maxlength="255" ng-model="client.address"
+                                           placeholder="{{'ADDRESS_PLACEHOLDER' | translate}}" required>
+                                    <div ng-show="form.address.$dirty && form.address.$invalid">
+                                        <span class="text-danger">{{'VALIDATION_REQUIRED' | translate}}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-class="{'has-error': form.city.$dirty && form.city.$invalid, 'has-success': form.city.$dirty && form.city.$valid}">
+                                <label class="col-md-4 control-label" for="city">{{'CITY' | translate}} *</label>
+                                <div class="col-md-8">
+                                    <input id="city" class="form-control" type="text" name="city" maxlength="60" ng-model="client.city"
+                                           placeholder="{{'CITY_PLACEHOLDER' | translate}}" required>
+                                    <div ng-show="form.city.$dirty && form.city.$invalid">
+                                        <span class="text-danger">{{'VALIDATION_REQUIRED' | translate}}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-class="{'has-error': form.postcode.$dirty && form.postcode.$invalid, 'has-success': form.postcode.$dirty && form.postcode.$valid}">
+                                <label class="col-md-4 control-label" for="postcode">{{'POSTCODE' | translate}} *</label>
+                                <div class="col-md-8">
+                                    <input id="postcode" class="form-control" type="text" name="postcode" maxlength="10" ng-model="client.postcode"
+                                           placeholder="{{'POSTCODE_PLACEHOLDER' | translate}}" required>
+                                    <div ng-show="form.postcode.$dirty && form.postcode.$invalid">
+                                        <span class="text-danger">{{'VALIDATION_REQUIRED' | translate}}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-class="{'has-error': form.province.$dirty && form.province.$invalid, 'has-success': form.province.$dirty && form.province.$valid}">
+                                <label class="col-md-4 control-label" for="province">{{'PROVINCE' | translate}} *</label>
+                                <div class="col-md-8">
+                                    <input id="province" class="form-control" type="text" name="province" maxlength="100" ng-model="client.province"
+                                           placeholder="{{'PROVINCE_PLACEHOLDER' | translate}}" required>
+                                    <div ng-show="form.province.$dirty && form.province.$invalid">
+                                        <span class="text-danger">{{'VALIDATION_REQUIRED' | translate}}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-class="{'has-error': form.country.$dirty && form.country.$invalid, 'has-success': form.country.$dirty && form.country.$valid}">
+                                <label class="col-md-4 control-label" for="country">{{'COUNTRY' | translate}} *</label>
+                                <div class="col-md-8">
+                                    <n-country-selector id="country" name="country" selected-country="client.country" required></n-country-selector>
+                                    <div ng-show="form.country.$dirty && form.country.$invalid">
+                                        <span class="text-danger">{{'VALIDATION_REQUIRED' | translate}}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div  class="form-group" ng-class="{'has-error': form.phone.$dirty && form.phone.$invalid, 'has-success': form.phone.$dirty && form.phone.$valid}">
+                                <label class="col-md-4 control-label" for="phone">{{'TELEPHONE' | translate}}</label>
+                                <div class="col-md-8">
+                                    <input id="phone" class="form-control" type="text" name="phone" maxlength="25" ng-model="client.phone"
+                                           placeholder="{{'TELEPHONE_PLACEHOLDER' | translate}}">
+                                    <div ng-show="form.phone.$dirty && form.phone.$invalid">
+                                        <span class="text-danger">{{'VALIDATION_INVALID_VALUE' | translate}}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div  class="form-group" ng-class="{'has-error': form.mobile.$dirty && form.mobile.$invalid, 'has-success': form.mobile.$dirty && form.mobile.$valid}">
+                                <label class="col-md-4 control-label" for="mobile">{{'MOBILE' | translate}}</label>
+                                <div class="col-md-8">
+                                    <input id="mobile" class="form-control" type="text" name="mobile" maxlength="25" ng-model="client.mobile"
+                                           placeholder="{{'MOBILE_PLACEHOLDER' | translate}}">
+                                    <div ng-show="form.mobile.$dirty && form.mobile.$invalid">
+                                        <span class="text-danger">{{'VALIDATION_INVALID_VALUE' | translate}}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div  class="form-group" ng-class="{'has-error': form.email.$dirty && form.email.$invalid, 'has-success': form.email.$dirty && form.email.$valid}">
+                                <label class="col-md-4 control-label" for="email">{{'EMAIL' | translate}}</label>
+                                <div class="col-md-8">
+                                    <input id="email" class="form-control" type="email" name="email" maxlength="255" ng-model="client.email"
+                                           placeholder="{{'EMAIL_PLACEHOLDER' | translate}}">
+                                    <div ng-show="form.email.$dirty && form.email.$invalid">
+                                        <span class="text-danger">{{'VALIDATION_INVALID_VALUE' | translate}}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div  class="form-group" ng-class="{'has-error': form.fax.$dirty && form.fax.$invalid, 'has-success': form.fax.$dirty && form.fax.$valid}">
+                                <label class="col-md-4 control-label" for="fax">{{'FAX' | translate}}</label>
+                                <div class="col-md-8">
+                                    <input id="fax" class="form-control" type="text" name="fax" maxlength="25" ng-model="client.fax"
+                                           placeholder="{{'FAX_PLACEHOLDER' | translate}}">
+                                    <div ng-show="form.fax.$dirty && form.fax.$invalid">
+                                        <span class="text-danger">{{'VALIDATION_INVALID_VALUE' | translate}}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div  class="form-group" ng-class="{'has-error': form.web.$dirty && form.web.$invalid, 'has-success': form.web.$dirty && form.web.$valid}">
+                                <label class="col-md-4 control-label" for="web">{{'WEBSITE' | translate}}</label>
+                                <div class="col-md-8">
+                                    <input id="web" class="form-control" type="text" name="web" maxlength="255" ng-model="client.web"
+                                           placeholder="{{'WEBSITE_PLACEHOLDER' | translate}}">
+                                    <div ng-show="form.web.$dirty && form.web.$invalid">
+                                        <span class="text-danger">{{'VALIDATION_INVALID_VALUE' | translate}}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br>
+                            <span>* {{'VALIDATION_REQUIRED' | translate}}</span>
+                            <br>
+                            <span>** {{'VALIDATION_AT_LEAST_ONE_REQUIRED' | translate}}</span>
+
+                        </div>
+
+                        <div class="col-md-6">
+                            <div  class="form-group" ng-class="{'has-error': form.defaultDocIdClass.$dirty && form.defaultDocIdClass.$invalid, 'has-success': form.defaultDocIdClass.$dirty && form.defaultDocIdClass.$valid}">
+                                <label class="col-md-4 control-label" for="defaultDocIdClass">{{'DOCUMENT_ID_CLASS' | translate}}</label>
+                                <div class="col-md-8">
+                                    <select id="defaultDocIdClass"
+                                            class="form-control"
+                                            name="defaultDocIdClass"
+                                            ng-model="client.defaultDocumentIDClassID"
+                                            ng-options="d.id as d.suffix for d in docIdClasses">
+                                        <option value="">{{'SUFFIX_STANDARD'|translate}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div  class="form-group" ng-class="{'has-error': form.splitPaymentClient.$dirty && form.splitPaymentClient.$invalid, 'has-success': form.splitPaymentClient.$dirty && form.splitPaymentClient.$valid}">
+                                <label class="col-md-4 control-label" for="splitPaymentClient">{{'SPLIT_PAYMENT_CLIENT' | translate}}</label>
+                                <div class="col-md-8">
+                                    <select id="splitPaymentClient"
+                                            class="form-control"
+                                            name="splitPaymentClient"
+                                            ng-model="client.splitPaymentClient"
+                                            ng-options="spc.val as spc.label for spc in splitPaymentOptions"></select>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-6">
+                            <div  class="form-group" ng-class="{'has-error': form.defaultPaymentTypeID.$dirty && form.defaultPaymentTypeID.$invalid, 'has-success': form.defaultPaymentTypeID.$dirty && form.defaultPaymentTypeID.$valid}">
+                                <label class="col-md-4 control-label" for="defaultPaymentTypeID">{{'DEFAULT_PAYMENT_TYPE_ID' | translate}}</label>
+                                <div class="col-md-8">
+                                    <select id="defaultPaymentTypeID"
+                                            class="form-control"
+                                            name="defaultPaymentTypeID"
+                                            ng-model="client.defaultPaymentTypeID"
+                                            ng-options="pt.id as pt.name for pt in paymentTypes">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div  class="form-group" ng-class="{'has-error': form.defaultPriceListID.$dirty && form.defaultPriceListID.$invalid, 'has-success': form.defaultPriceListID.$dirty && form.defaultPriceListID.$valid}">
+                                <label class="col-md-4 control-label" for="defaultPriceListID">{{'DEFAULT_PRICE_LIST_ID' | translate}}</label>
+                                <div class="col-md-8">
+                                    <select id="defaultPriceListID"
+                                            class="form-control"
+                                            name="defaultPriceListID"
+                                            ng-model="client.defaultPriceListID"
+                                            ng-options="pl.id as (pl.name | nReplaceReservedWord:'DEFAULT_PRICE_LIST') for pl in priceLists"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </tab>
+
+
+
+                    <!--
+
+                        CONTACT PERSON
+
+                    -->
+                    <tab>
+                        <tab-heading>
+                            <i class="glyphicon glyphicon-user"></i> Persona di Riferimento
+                        </tab-heading>
+
+                        <div class="col-md-6">
+
+                            <div  class="form-group" ng-class="{'has-error': form.contactname.$dirty && form.contactname.$invalid, 'has-success': form.contactname.$dirty && form.contactname.$valid}">
+                                <label class="col-md-4 control-label" for="phone">{{'TELEPHONE' | translate}}</label>
+                                <div class="col-md-8">
+                                    <input id="contactname" class="form-control" type="text" name="contactname" maxlength="50" ng-model="client.contact.firstName"
+                                           placeholder="{{'TELEPHONE_PLACEHOLDER' | translate}}">
+                                </div>
+                            </div>
+
+                            <div  class="form-group" ng-class="{'has-error': form.contactsurname.$dirty && form.contactsurname.$invalid, 'has-success': form.contactsurname.$dirty && form.contactsurname.$valid}">
+                                <label class="col-md-4 control-label" for="mobile">{{'MOBILE' | translate}}</label>
+                                <div class="col-md-8">
+                                    <input id="contactsurname" class="form-control" type="text" name="contactsurname" maxlength="50" ng-model="client.contact.lastName"
+                                           placeholder="{{'MOBILE_PLACEHOLDER' | translate}}">
+                                </div>
+                            </div>
+
+                            <div  class="form-group" ng-class="{'has-error': form.contactphone.$dirty && form.contactphone.$invalid, 'has-success': form.contactphone.$dirty && form.contactphone.$valid}">
+                                <label class="col-md-4 control-label" for="web">{{'WEBSITE' | translate}}</label>
+                                <div class="col-md-8">
+                                    <input id="contactphone" class="form-control" type="text" name="contactphone" maxlength="25" ng-model="client.contact.phone"
+                                           placeholder="{{'WEBSITE_PLACEHOLDER' | translate}}">
+                                </div>
+                            </div>
+
+                            <div  class="form-group" ng-class="{'has-error': form.contactmobile.$dirty && form.contactmobile.$invalid, 'has-success': form.contactmobile.$dirty && form.contactmobile.$valid}">
+                                <label class="col-md-4 control-label" for="mobile">{{'MOBILE' | translate}}</label>
+                                <div class="col-md-8">
+                                    <input id="contactmobile" class="form-control" type="text" name="contactmobile" maxlength="25" ng-model="client.contact.mobile"
+                                           placeholder="{{'MOBILE_PLACEHOLDER' | translate}}">
+                                </div>
+                            </div>
+
+                            <div  class="form-group" ng-class="{'has-error': form.contactemail.$dirty && form.contactemail.$invalid, 'has-success': form.contactemail.$dirty && form.contactemail.$valid}">
+                                <label class="col-md-4 control-label" for="email">{{'EMAIL' | translate}}</label>
+                                <div class="col-md-8">
+                                    <input id="contactemail" class="form-control" type="email" name="contactemail" maxlength="255" ng-model="client.contact.email"
+                                           placeholder="{{'EMAIL_PLACEHOLDER' | translate}}">
+                                    <div ng-show="form.contactemail.$dirty && form.contactemail.$invalid">
+                                        <span class="text-danger">{{'VALIDATION_INVALID_VALUE' | translate}}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div  class="form-group" ng-class="{'has-error': form.contactfax.$dirty && form.contactfax.$invalid, 'has-success': form.contactfax.$dirty && form.contactfax.$valid}">
+                                <label class="col-md-4 control-label" for="fax">{{'FAX' | translate}}</label>
+                                <div class="col-md-8">
+                                    <input id="contactfax" class="form-control" type="text" name="contactfax" maxlength="25" ng-model="client.contact.fax"
+                                           placeholder="{{'FAX_PLACEHOLDER' | translate}}">
+                                    <div ng-show="form.contactfax.$dirty && form.contactfax.$invalid">
+                                        <span class="text-danger">{{'VALIDATION_INVALID_VALUE' | translate}}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                    </tab>
+
+                </tabset>
+
+            </form>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn green" ng-disabled="form.$invalid" ng-click="save()">{{'CONTINUE' | translate}}</button>
+        <button type="button" class="btn" data-dismiss="modal" ng-click="cancel()">{{'CANCEL' | translate}}</button>
+    </div>
+</div>

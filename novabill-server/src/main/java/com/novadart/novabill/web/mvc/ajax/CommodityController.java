@@ -1,27 +1,19 @@
 package com.novadart.novabill.web.mvc.ajax;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-
+import com.google.common.collect.ImmutableMap;
 import com.novadart.novabill.annotation.RestExceptionProcessingMixin;
 import com.novadart.novabill.service.web.CommodityService;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.PriceDTO;
-import com.novadart.novabill.shared.client.exception.DataAccessException;
-import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
-import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
-import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
-import com.novadart.novabill.shared.client.exception.ValidationException;
+import com.novadart.novabill.shared.client.exception.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RestExceptionProcessingMixin
@@ -74,8 +66,8 @@ public class CommodityController {
 	@RequestMapping(value = "/{commodityID}/pricelists/{priceListID}/prices", method = {RequestMethod.PUT, RequestMethod.POST})
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
-	public String addOrUpdatePrice(@PathVariable Long businessID, @RequestBody PriceDTO priceDTO) throws ValidationException{
-		return commodityService.addOrUpdatePrice(businessID, priceDTO).toString();
+	public Map<String, Object> addOrUpdatePrice(@PathVariable Long businessID, @RequestBody PriceDTO priceDTO) throws ValidationException{
+		return ImmutableMap.of(JsonConst.VALUE, commodityService.addOrUpdatePrice(businessID, priceDTO));
 	}
 	
 	@RequestMapping(value = "/{commodityID}/pricelists/{priceListID}/prices", method = RequestMethod.DELETE)

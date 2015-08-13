@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import com.google.common.collect.ImmutableMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
@@ -72,12 +73,12 @@ public class SharingPermitController {
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.CREATED)
 	@Restrictions(checkers = {PremiumChecker.class})
-	public Long add(@PathVariable Long businessID, @RequestParam(required=false, defaultValue="false") boolean sendEmail, @RequestBody SharingPermitDTO sharingPermitDTO,
+	public Map<String, Object> add(@PathVariable Long businessID, @RequestParam(required=false, defaultValue="false") boolean sendEmail, @RequestBody SharingPermitDTO sharingPermitDTO,
 			Locale locale) throws ValidationException, NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		Long id = sharingPermitService.add(businessID, sharingPermitDTO);
 		if(sendEmail)
 			sendMessage(sharingPermitDTO.getEmail(), businessID, locale);
-		return id;
+		return ImmutableMap.of(JsonConst.VALUE, id);
 	}
 
 	@RequestMapping(value = "/{id}/email", method = RequestMethod.POST)
