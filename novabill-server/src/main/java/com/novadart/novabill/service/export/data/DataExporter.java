@@ -99,7 +99,8 @@ public class DataExporter {
 			File docFile;
 				docFile = exportAccountingDocument(outDir, doc, logo, businessID, docType, putWatermark);
 			String clientName = doc.getClient().getName();
-			zipStream.putNextEntry(new ZipEntry(String.format(entryFormat, doc.getAccountingDocumentYear(), doc.getDocumentID(), ReportUtils.convertToASCII(clientName))));
+			zipStream.putNextEntry(new ZipEntry(String.format(entryFormat, doc.getAccountingDocumentYear(),
+					doc.getExpandedDocumentId(), ReportUtils.convertToASCII(clientName))));
 			FileInputStream invStream = new FileInputStream(docFile);
 			IOUtils.copy(invStream, zipStream);
 			invStream.close();
@@ -131,16 +132,16 @@ public class DataExporter {
 			Logo logo = exportDataBundle.getLogo();
 			if(exportDataBundle.getInvoices() != null)
 				invoicesFiles = exportAccountingDocumentsData(outDir, zipStream, exportDataBundle.getInvoices(), logo, DocumentType.INVOICE, businessID, putWatermark,
-						messageSource.getMessage("export.invoices.zipentry.pattern", null, "invoices/invoice_%d_%d_%s.pdf", locale));
+						messageSource.getMessage("export.invoices.zipentry.pattern", null, "invoices/invoice_%d_%s_%s.pdf", locale));
 			if(exportDataBundle.getEstimations() != null)
 				estimationFiles = exportAccountingDocumentsData(outDir, zipStream, exportDataBundle.getEstimations(), logo, DocumentType.ESTIMATION, businessID, putWatermark,
-						messageSource.getMessage("export.estimations.zipentry.pattern", null, "estimations/estimation_%d_%d_%s.pdf", locale));
+						messageSource.getMessage("export.estimations.zipentry.pattern", null, "estimations/estimation_%d_%s_%s.pdf", locale));
 			if(exportDataBundle.getCreditNotes() != null)
 				creditNoteFiles = exportAccountingDocumentsData(outDir, zipStream, exportDataBundle.getCreditNotes(), logo, DocumentType.CREDIT_NOTE, businessID, putWatermark,
-						messageSource.getMessage("export.creditnotes.zipentry.pattern", null, "creditnotes/creditnotes_%d_%d_%s.pdf", locale));
+						messageSource.getMessage("export.creditnotes.zipentry.pattern", null, "creditnotes/creditnotes_%d_%s_%s.pdf", locale));
 			if(exportDataBundle.getTransportDocuments() != null)
 				transportDocsFiles = exportAccountingDocumentsData(outDir, zipStream, exportDataBundle.getTransportDocuments(), logo, DocumentType.TRANSPORT_DOCUMENT, businessID, putWatermark,
-						messageSource.getMessage("export.transportdoc.zipentry.pattern", null, "transportdocs/transportdocs_%d_%d_%s.pdf", locale));
+						messageSource.getMessage("export.transportdoc.zipentry.pattern", null, "transportdocs/transportdocs_%d_%s_%s.pdf", locale));
 				
 			zipStream.close();
 			return zipFile;
