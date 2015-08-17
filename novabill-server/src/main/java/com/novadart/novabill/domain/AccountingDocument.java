@@ -36,6 +36,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.Type;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -133,6 +134,11 @@ public abstract class AccountingDocument {
 		String sql = String.format("select distinct d from %s d join fetch d.accountingDocumentItems where d.id in (:ids) order by d.accountingDocumentDate asc", cls.getSimpleName());
 		return entityManager().createQuery(sql, cls).setParameter("ids", ids).getResultList();
 	}
+
+    public String getExpandedDocumentId(){
+        return String.valueOf(getDocumentID()) + (StringUtils.isEmpty(getDocumentIDSuffix())? "": getDocumentIDSuffix());
+
+    }
 	
 	/*
 	 * Getters and setters

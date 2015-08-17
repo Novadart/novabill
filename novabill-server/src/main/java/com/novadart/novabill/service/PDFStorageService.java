@@ -56,8 +56,7 @@ public class PDFStorageService {
         String docType = documentType.name();
         String businessId = String.valueOf(document.getBusiness().getId());
         String year = String.valueOf(document.getAccountingDocumentYear());
-        String docId = String.valueOf(document.getDocumentID()) +
-                (document.getDocumentIDSuffix() == null? "": document.getDocumentIDSuffix());
+        String docId = document.getExpandedDocumentId();
         String filename = Joiner.on('_').skipNulls().join(new String[]{docType, businessId, year, docId, uniquePathID});
         return mergePaths(pdfStoragePath, filename) + PDF_EXT;
     }
