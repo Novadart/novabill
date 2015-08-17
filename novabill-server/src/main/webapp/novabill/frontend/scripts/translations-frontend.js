@@ -15,7 +15,8 @@ angular.module("novabill-frontend.translations", ['pascalprecht.translate'])
 		NO_DATA : 'Nessun dato',
 		PAYMENTS_STATUS_END_DATE : 'Fine Intervallo',
 		PAYMENTS_STATUS_PRINT : 'Stampa',
-		PAYMENTS_STATUS_START_DATE : 'Inizio Intervallo'
+		PAYMENTS_STATUS_START_DATE : 'Inizio Intervallo',
+		STATISTICS : 'Statistiche'
 	  });
 
 	$translateProvider.preferredLanguage('it_IT');
