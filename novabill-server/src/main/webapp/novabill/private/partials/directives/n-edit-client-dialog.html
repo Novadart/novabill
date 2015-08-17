@@ -43,7 +43,7 @@
                             <div class="form-group" ng-class="{'has-error': form.ssn.$dirty && form.ssn.$invalid, 'has-success': form.ssn.$dirty && form.ssn.$valid}">
                                 <label class="col-md-4 control-label" for="ssn">{{'SSN_EXTENDED' | translate}} **</label>
                                 <div class="col-md-8">
-                                    <input id="ssn" n-ssn-or-vat-id n-optional-value n-disable-validation="client.country !== 'IT'" class="form-control" type="text" name="ssn" maxlength="25" ng-model="client.ssn"
+                                    <input id="ssn" n-ssn-or-vat-id n-optional n-country="client.country" class="form-control" type="text" name="ssn" maxlength="25" ng-model="client.ssn"
                                            placeholder="{{'SSN_PLACEHOLDER' | translate}}" ng-required="!client.vatID">
                                     <div ng-show="form.ssn.$dirty && form.ssn.$invalid">
                                         <span class="text-danger">{{'VALIDATION_INVALID_VALUE' | translate}}</span>
@@ -54,7 +54,7 @@
                             <div class="form-group" ng-class="{'has-error': form.vatId.$dirty && form.vatId.$invalid, 'has-success': form.vatId.$dirty && form.vatId.$valid}">
                                 <label class="col-md-4 control-label" for="vatId">{{'VATID' | translate}} **</label>
                                 <div class="col-md-8">
-                                    <input id="vatId" n-vat-id n-optional-value n-disable-validation="client.country !== 'IT'" class="form-control" type="text" name="vatId" maxlength="25" ng-model="client.vatID"
+                                    <input id="vatId" n-vat-id n-optional n-country="client.country" class="form-control" type="text" name="vatId" maxlength="25" ng-model="client.vatID"
                                            placeholder="{{'VATID_PLACEHOLDER' | translate}}" ng-required="!client.ssn">
                                     <div ng-show="form.vatId.$dirty && form.vatId.$invalid">
                                         <span class="text-danger">{{'VALIDATION_INVALID_VALUE' | translate}}</span>

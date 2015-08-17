@@ -98,6 +98,7 @@
 							<execution>
 								<phase>compile</phase>
 								<configuration>
+                                    <!--<style>PRETTY</style>-->
 									<modules>
 										<module>com.novadart.novabill.frontend.Novabill</module>
 									</modules>

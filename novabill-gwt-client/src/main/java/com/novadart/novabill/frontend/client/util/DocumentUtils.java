@@ -96,8 +96,8 @@ public class DocumentUtils {
 
 
 	private static native void showClientDialogIfClientInformationNotComplete(Long id, AsyncCallback<String> callback)/*-{
-		$wnd.Angular_openClientDialog(id, true, function(){
-			callback.@com.google.gwt.user.client.rpc.AsyncCallback::onSuccess(*)(null);
+		$wnd.Angular_openClientDialog(id, true, function(clientJson){
+			callback.@com.google.gwt.user.client.rpc.AsyncCallback::onSuccess(*)(clientJson);
 		});
 	}-*/;
 
