@@ -8,11 +8,9 @@ import com.novadart.novabill.report.ReportUtils;
 import com.novadart.novabill.service.SharingService;
 import com.novadart.novabill.service.export.data.DataExporter;
 import com.novadart.novabill.service.export.data.ExportDataBundle;
+import com.novadart.novabill.service.web.BusinessService;
 import com.novadart.novabill.service.web.BusinessStatsService;
-import com.novadart.novabill.shared.client.dto.BIClientStatsDTO;
-import com.novadart.novabill.shared.client.dto.BIGeneralStatsDTO;
-import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
-import com.novadart.novabill.shared.client.dto.InvoiceDTO;
+import com.novadart.novabill.shared.client.dto.*;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
@@ -61,6 +59,9 @@ public class SharingController {
 
 	@Autowired
 	private BusinessStatsService businessStatsService;
+
+	@Autowired
+	private BusinessService businessService;
 	
 	@RequestMapping(value = Urls.PUBLIC_SHARE_REQUEST, method = RequestMethod.GET)
 	public String setupRequestForm(Model model){
@@ -118,7 +119,17 @@ public class SharingController {
 			@RequestParam(value = "startDate", required = false) @DateTimeFormat(iso = ISO.DATE) Date startDate,
 			@RequestParam(value = "endDate", required = false) @DateTimeFormat(iso = ISO.DATE) Date endDate){
 		if(sharingService.isValidRequest(businessID, token))
-			return new ResponseEntity<List<InvoiceDTO>>(DTOUtils.toDTOList(Business.getAllInvoicesCreationDateInRange(businessID, startDate, endDate), DTOUtils.invoiceDTOConverter, false), HttpStatus.OK);
+			return new ResponseEntity<>(DTOUtils.toDTOList(Business.getAllInvoicesCreationDateInRange(businessID, startDate, endDate), DTOUtils.invoiceDTOConverter, false), HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	}
+
+
+	@RequestMapping(value = "/share/{businessID}/clients", method = RequestMethod.GET)
+	@ResponseBody
+	@ResponseStatus(value = HttpStatus.OK)
+	public ResponseEntity<List<ClientDTO>> getClients(@PathVariable Long businessID, @RequestParam(value = "token", required = true) String token) throws NotAuthenticatedException, DataAccessException {
+		if(sharingService.isValidRequest(businessID, token))
+			return new ResponseEntity<>(businessService.getClients(businessID), HttpStatus.OK);
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 	
@@ -129,7 +140,7 @@ public class SharingController {
 			@RequestParam(value = "startDate", required = false) @DateTimeFormat(iso = ISO.DATE) Date startDate,
 			@RequestParam(value = "endDate", required = false) @DateTimeFormat(iso = ISO.DATE) Date endDate){
 		if(sharingService.isValidRequest(businessID, token))
-			return new ResponseEntity<List<CreditNoteDTO>>(DTOUtils.toDTOList(Business.getAllCreditNotesCreationDateInRange(businessID, startDate, endDate), DTOUtils.creditNoteDTOConverter, false), HttpStatus.OK);
+			return new ResponseEntity<>(DTOUtils.toDTOList(Business.getAllCreditNotesCreationDateInRange(businessID, startDate, endDate), DTOUtils.creditNoteDTOConverter, false), HttpStatus.OK);
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 	

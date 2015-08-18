@@ -82,6 +82,8 @@ angular.module('novabill-frontend.share',
     .controller('InvoicesCtrl', ['$scope', 'nCommons', '$document', 'nQueryParams', 'nAjaxFrontend',
         function($scope, nCommons, $document, nQueryParams, nAjaxFrontend){
 
+            var Sharing = nAjaxFrontend.Sharing();
+
             $scope.dateOptions = nCommons.DATE_OPTIONS;
             var loadedInvoices = [];
             var firstLoad = true;
@@ -94,7 +96,7 @@ angular.module('novabill-frontend.share',
                 $scope.loadingInvoices = true;
                 $scope.invoices = null;
 
-                nAjaxFrontend.getInvoices(nQueryParams.businessID, nQueryParams.token,
+                Sharing.getInvoices(nQueryParams.businessID, nQueryParams.token,
                     startDate != null ? nCommons.formatDate(startDate) : '',
                     endDate != null ? nCommons.formatDate(endDate) : '',
                     function(invoices){
@@ -157,310 +159,344 @@ angular.module('novabill-frontend.share',
     .controller('CreditNotesCtrl', ['$scope', '$document', 'nQueryParams', 'nAjaxFrontend', 'nCommons',
         function($scope, $document, nQueryParams, nAjaxFrontend, nCommons){
 
-            $scope.dateOptions = nCommons.DATE_OPTIONS;
-
-            var loadedCreditNotes = [];
-            var firstLoad = true;
-
-            $scope.isLoading = function(){
-                return $scope.loadingCreditNotes;
-            };
-
-            $scope.loadCreditNotes = function(startDate, endDate){
-                $scope.loadingCreditNotes = true;
-                $scope.creditNotes = null;
-
-                nAjaxFrontend.getCreditNotes(nQueryParams.businessID, nQueryParams.token,
-                    startDate != null ? nCommons.formatDate(startDate) : '',
-                    endDate != null ? nCommons.formatDate(endDate) : '',
-                    function(notes){
-
-                        firstLoad = false;
-                        loadedCreditNotes = notes;
-                        $scope.creditNotes = loadedCreditNotes.slice(0, 15);
-                        $scope.loadingCreditNotes = false;
-
-                    });
-            };
-
-            $scope.loadMoreCreditNotes = function(){
-                if($scope.creditNotes){
-                    var currentIndex = $scope.creditNotes.length;
-                    $scope.creditNotes = $scope.creditNotes.concat(loadedCreditNotes.slice(currentIndex, currentIndex+nCommons.PARTITION));
+            var loaded = false;
+            $scope.load = function() {
+                if (loaded) {
+                    return;
                 }
-            };
+                loaded = true;
 
-            $scope.openStartDate = function($event) {
-                $event.preventDefault();
-                $event.stopPropagation();
-                $scope.openSD = true;
-            };
+                var Sharing = nAjaxFrontend.Sharing();
 
-            $scope.openEndDate = function($event) {
-                $event.preventDefault();
-                $event.stopPropagation();
-                $scope.openED = true;
-            };
+                $scope.dateOptions = nCommons.DATE_OPTIONS;
 
-            $scope.download = function(){
-                nCommons.downloadCreditNotes($scope.startDate, $scope.endDate);
-            };
+                var loadedCreditNotes = [];
+                var firstLoad = true;
 
-            $scope.clear = function(){
-                $scope.startDate = nCommons.DEFAULT_START_DATE;
-                $scope.endDate = nCommons.DEFAULT_END_DATE;
-                $scope.creditNotes = null;
-                $scope.loadCreditNotes(nCommons.DEFAULT_START_DATE, nCommons.DEFAULT_END_DATE);
-            };
+                $scope.isLoading = function () {
+                    return $scope.loadingCreditNotes;
+                };
 
-            $scope.$watch('startDate', function(newValue, oldValue){
-                if(!firstLoad){
-                    $scope.loadCreditNotes(newValue, $scope.endDate);
-                }
-            });
+                $scope.loadCreditNotes = function (startDate, endDate) {
+                    $scope.loadingCreditNotes = true;
+                    $scope.creditNotes = null;
 
-            $scope.$watch('endDate', function(newValue, oldValue){
-                if(!firstLoad){
-                    $scope.loadCreditNotes($scope.startDate, newValue);
-                }
-            });
+                    Sharing.getCreditNotes(nQueryParams.businessID, nQueryParams.token,
+                        startDate != null ? nCommons.formatDate(startDate) : '',
+                        endDate != null ? nCommons.formatDate(endDate) : '',
+                        function (notes) {
 
-            $scope.clear();
+                            firstLoad = false;
+                            loadedCreditNotes = notes;
+                            $scope.creditNotes = loadedCreditNotes.slice(0, 15);
+                            $scope.loadingCreditNotes = false;
+
+                        });
+                };
+
+                $scope.loadMoreCreditNotes = function () {
+                    if ($scope.creditNotes) {
+                        var currentIndex = $scope.creditNotes.length;
+                        $scope.creditNotes = $scope.creditNotes.concat(loadedCreditNotes.slice(currentIndex, currentIndex + nCommons.PARTITION));
+                    }
+                };
+
+                $scope.openStartDate = function ($event) {
+                    $event.preventDefault();
+                    $event.stopPropagation();
+                    $scope.openSD = true;
+                };
+
+                $scope.openEndDate = function ($event) {
+                    $event.preventDefault();
+                    $event.stopPropagation();
+                    $scope.openED = true;
+                };
+
+                $scope.download = function () {
+                    nCommons.downloadCreditNotes($scope.startDate, $scope.endDate);
+                };
+
+                $scope.clear = function () {
+                    $scope.startDate = nCommons.DEFAULT_START_DATE;
+                    $scope.endDate = nCommons.DEFAULT_END_DATE;
+                    $scope.creditNotes = null;
+                    $scope.loadCreditNotes(nCommons.DEFAULT_START_DATE, nCommons.DEFAULT_END_DATE);
+                };
+
+                $scope.$watch('startDate', function (newValue, oldValue) {
+                    if (!firstLoad) {
+                        $scope.loadCreditNotes(newValue, $scope.endDate);
+                    }
+                });
+
+                $scope.$watch('endDate', function (newValue, oldValue) {
+                    if (!firstLoad) {
+                        $scope.loadCreditNotes($scope.startDate, newValue);
+                    }
+                });
+
+                $scope.clear();
+            }
         }])
 
 
     .controller('StatsGeneralCtrl', ['$scope', 'nCommons', 'nAjaxFrontend', '$filter', 'nQueryParams',
         function($scope, nCommons, nAjaxFrontend, $filter, nQueryParams){
 
-            var Stats = nAjaxFrontend.Stats();
-            $scope.year = new Date().getFullYear();
-            $scope.years = [$scope.year, $scope.year-1, $scope.year-2, $scope.year-3, $scope.year-4];
+            var loaded = false;
+            $scope.load = function() {
+                if(loaded){
+                    return;
+                }
+                loaded = true;
 
+                var Sharing = nAjaxFrontend.Sharing();
+                $scope.year = new Date().getFullYear();
+                $scope.years = [$scope.year, $scope.year - 1, $scope.year - 2, $scope.year - 3, $scope.year - 4];
 
-            $scope.loadStats = function(year){
+                $scope.loadStats = function (year) {
 
-                Stats.getGeneralBIStats(nQueryParams.businessID, $scope.year, nQueryParams.token, function(stats){
+                    Sharing.getGeneralBIStats(nQueryParams.businessID, $scope.year, nQueryParams.token, function (stats) {
 
-                    $scope.prevYear = $scope.year-1;
+                        $scope.prevYear = $scope.year - 1;
 
-                    // calculate totals per months
-                    var rows = [];
-                    var prevYearStr = $scope.prevYear.toString();
-                    for(var i=0; i<12; i++){
-                        rows.push({
-                            c : [
-                                {v: $filter('translate')(nCommons.months[i])},
-                                {v: stats.totalsPerMonths[year][i]},
-                                {v: stats.totalsPerMonths[prevYearStr][i]}
-                            ]
-                        });
-                    }
+                        // calculate totals per months
+                        var rows = [];
+                        var prevYearStr = $scope.prevYear.toString();
+                        for (var i = 0; i < 12; i++) {
+                            rows.push({
+                                c: [
+                                    {v: $filter('translate')(nCommons.months[i])},
+                                    {v: stats.totalsPerMonths[year][i]},
+                                    {v: stats.totalsPerMonths[prevYearStr][i]}
+                                ]
+                            });
+                        }
 
-                    $scope.totalsPerMonthsChart = {
-                        type: "ColumnChart",
-                        displayed: true,
-                        data: {
-                            cols: [
-                                { id: 'month', label: $filter('translate')('MONTH'), type: 'string'},
-                                { id: 'invoicing-cur', label: $scope.year, type: 'number'},
-                                { id: 'invoicing-past', label: prevYearStr, type: 'number'}
-                            ],
-                            rows: rows
-                        },
-                        options: {
-                            title: $filter('translate')('INVOICING_PER_MONTH'),
-                            displayExactValues: true,
-                            vAxis: {
-                                title: $filter('translate')('TOTAL_INVOICING_BEFORE_TAXES'),
-                                viewWindow:{
-                                    min: 0
-                                }
+                        $scope.totalsPerMonthsChart = {
+                            type: "ColumnChart",
+                            displayed: true,
+                            data: {
+                                cols: [
+                                    {id: 'month', label: $filter('translate')('MONTH'), type: 'string'},
+                                    {id: 'invoicing-cur', label: $scope.year, type: 'number'},
+                                    {id: 'invoicing-past', label: prevYearStr, type: 'number'}
+                                ],
+                                rows: rows
                             },
-                            hAxis: {
-                                title: $filter('translate')('MONTH')
+                            options: {
+                                title: $filter('translate')('INVOICING_PER_MONTH'),
+                                displayExactValues: true,
+                                vAxis: {
+                                    title: $filter('translate')('TOTAL_INVOICING_BEFORE_TAXES'),
+                                    viewWindow: {
+                                        min: 0
+                                    }
+                                },
+                                hAxis: {
+                                    title: $filter('translate')('MONTH')
+                                }
+                            }
+                        };
+
+                        // calculate totals
+                        var totalBeforeTaxes = stats.totals.totalBeforeTax;
+                        var totalAfterTaxes = stats.totals.totalAfterTax;
+                        var totalTaxes = ( new BigNumber(totalAfterTaxes).minus(new BigNumber(totalBeforeTaxes)) ).toString();
+
+
+                        $scope.totals = {
+                            totalBeforeTaxes: totalBeforeTaxes,
+                            totalTaxes: totalTaxes,
+                            totalAfterTaxes: totalAfterTaxes
+                        };
+
+                        // calculate clients stats
+                        $scope.clientsChart = {
+                            type: "PieChart",
+                            displayed: true,
+                            data: {
+                                cols: [
+                                    {id: 'set', label: 'Clients Set', type: 'string'},
+                                    {id: 'value', label: 'Value', type: 'number'}
+                                ],
+                                rows: [
+                                    {
+                                        c: [{v: $filter('translate')('STATS_CLIENTS_RETURNING', {year: $scope.year})},
+                                            {v: stats.clientsVsReturningClients.numberOfReturningClients}]
+                                    },
+                                    {
+                                        c: [{v: $filter('translate')('STATS_CLIENTS_NOT_RETURNING', {year: $scope.year})},
+                                            {v: stats.clientsVsReturningClients.numberOfClients - stats.clientsVsReturningClients.numberOfReturningClients}]
+                                    }
+                                ]
+                            },
+                            options: {}
+                        };
+
+                        $scope.clients = {
+                            totalCount: stats.clientsVsReturningClients.numberOfClients
+                        };
+
+                        // calculate commodities stats
+                        var servicesCount = 0;
+                        var commoditiesCount = stats.commodityRankingByRevenue.length;
+                        for (var j = 0; j < commoditiesCount; j++) {
+                            if (stats.commodityRankingByRevenue[j].service) {
+                                servicesCount++;
                             }
                         }
-                    };
 
-                    // calculate totals
-                    var totalBeforeTaxes = stats.totals.totalBeforeTax;
-                    var totalAfterTaxes = stats.totals.totalAfterTax;
-                    var totalTaxes = ( new BigNumber(totalAfterTaxes).minus(new BigNumber(totalBeforeTaxes)) ).toString();
+                        $scope.commoditiesChart = {
+                            type: "PieChart",
+                            displayed: true,
+                            data: {
+                                cols: [
+                                    {id: 'set', label: 'Commodities Set', type: 'string'},
+                                    {id: 'value', label: 'Value', type: 'number'}
+                                ],
+                                rows: [
+                                    {
+                                        c: [{v: $filter('translate')('SERVICES')},
+                                            {v: servicesCount}]
+                                    },
+                                    {
+                                        c: [{v: $filter('translate')('PRODUCTS')},
+                                            {v: commoditiesCount - servicesCount}]
+                                    }
+                                ]
+                            },
+                            options: {}
+                        };
+                        $scope.commodities = {
+                            totalCount: commoditiesCount
+                        };
 
+                        // rankings
+                        $scope.ranks = {
+                            clients: stats.clientRankingByRevenue,
+                            commodities: stats.commodityRankingByRevenue
+                        };
 
-                    $scope.totals = {
-                        totalBeforeTaxes : totalBeforeTaxes,
-                        totalTaxes : totalTaxes,
-                        totalAfterTaxes : totalAfterTaxes
-                    };
+                    });
+                };
 
-                    // calculate clients stats
-                    $scope.clientsChart = {
-                        type: "PieChart",
-                        displayed: true,
-                        data: {
-                            cols: [
-                                { id: 'set', label: 'Clients Set', type: 'string'},
-                                { id: 'value', label: 'Value', type: 'number'}
-                            ],
-                            rows: [
-                                { c: [{v: $filter('translate')('STATS_CLIENTS_RETURNING', {year : $scope.year})},
-                                    {v: stats.clientsVsReturningClients.numberOfReturningClients}] },
-                                { c: [{v: $filter('translate')('STATS_CLIENTS_NOT_RETURNING', {year : $scope.year})},
-                                    {v: stats.clientsVsReturningClients.numberOfClients - stats.clientsVsReturningClients.numberOfReturningClients}] }
-                            ]
-                        },
-                        options : {
-
-                        }
-                    };
-
-                    $scope.clients = {
-                        totalCount : stats.clientsVsReturningClients.numberOfClients
-                    };
-
-                    // calculate commodities stats
-                    var servicesCount = 0;
-                    var commoditiesCount = stats.commodityRankingByRevenue.length;
-                    for(var j=0; j<commoditiesCount; j++){
-                        if(stats.commodityRankingByRevenue[j].service){
-                            servicesCount++;
-                        }
+                $scope.$watch('year', function (newValue, oldValue) {
+                    if (newValue !== undefined) {
+                        $scope.loadStats(newValue);
                     }
-
-                    $scope.commoditiesChart = {
-                        type: "PieChart",
-                        displayed: true,
-                        data: {
-                            cols: [
-                                { id: 'set', label: 'Commodities Set', type: 'string'},
-                                { id: 'value', label: 'Value', type: 'number'}
-                            ],
-                            rows: [
-                                { c: [{v: $filter('translate')('SERVICES')},
-                                    {v: servicesCount}] },
-                                { c: [{v: $filter('translate')('PRODUCTS')},
-                                    {v: commoditiesCount - servicesCount}] }
-                            ]
-                        },
-                        options : {
-
-                        }
-                    };
-                    $scope.commodities = {
-                        totalCount : commoditiesCount
-                    };
-
-                    // rankings
-                    $scope.ranks = {
-                        clients : stats.clientRankingByRevenue,
-                        commodities : stats.commodityRankingByRevenue
-                    };
-
                 });
             };
 
-            $scope.$watch('year', function(newValue, oldValue){
-                $scope.loadStats( newValue );
-            });
+        }])
+
+
+    .controller('StatsClientsCtrl', ['$scope', 'nCommons', 'nAjaxFrontend', '$filter', 'nQueryParams',
+        function($scope, nCommons, nAjaxFrontend, $filter, nQueryParams){
+
+            var loaded = false;
+            $scope.load = function() {
+                if (loaded) {
+                    return;
+                }
+                loaded = true;
+
+                var Sharing = nAjaxFrontend.Sharing();
+                $scope.year = new Date().getFullYear();
+                $scope.years = [$scope.year, $scope.year - 1, $scope.year - 2, $scope.year - 3, $scope.year - 4];
+
+                $scope.commodities = [];
+
+                $scope.loadStats = function (clientID, year) {
+
+                    $scope.prevYear = $scope.year - 1;
+
+                    Sharing.getClientBIStats(nQueryParams.businessID, clientID, year, nQueryParams.token, function (stats) {
+
+                        // calculate totals per months
+                        var rows = [];
+                        var prevYearStr = $scope.prevYear.toString();
+                        for (var i = 0; i < 12; i++) {
+                            rows.push({
+                                c: [
+                                    {v: $filter('translate')(nCommons.months[i])},
+                                    {v: stats.totalsPerMonths[year][i]},
+                                    {v: stats.totalsPerMonths[prevYearStr][i]}
+                                ]
+                            });
+                        }
+
+                        $scope.totalsPerMonthsChart = {
+                            type: "ColumnChart",
+                            displayed: true,
+                            data: {
+                                cols: [
+                                    {id: 'month', label: $filter('translate')('MONTH'), type: 'string'},
+                                    {id: 'invoicing-cur', label: $scope.year, type: 'number'},
+                                    {id: 'invoicing-past', label: prevYearStr, type: 'number'}
+                                ],
+                                rows: rows
+                            },
+                            options: {
+                                title: $filter('translate')('INVOICING_PER_MONTH'),
+                                displayExactValues: true,
+                                vAxis: {
+                                    title: $filter('translate')('TOTAL_INVOICING_BEFORE_TAXES'),
+                                    viewWindow: {
+                                        min: 0
+                                    }
+                                },
+                                hAxis: {
+                                    title: $filter('translate')('MONTH')
+                                }
+                            }
+                        };
+
+
+                        // calculate totals
+                        $scope.clientDetails = {
+                            timestamp: stats.creationTime,
+                            totalBeforeTaxes: stats.totalBeforeTaxes,
+                            totalBeforeTaxesCurrentYear: stats.totalBeforeTaxesCurrentYear
+                        };
+
+                        // commodities ranking
+                        $scope.commodities = stats.commodityStatsForCurrentYear;
+
+                    });
+                };
+
+                // if clientID is provided we can load the stats already, otherwise we'll load them once we got the clients list
+
+                Sharing.getClients(nQueryParams.businessID, nQueryParams.token, function (clients) {
+                    $scope.clients = clients.sort(nCommons.clientsComparator);
+
+                    if ($scope.clients.length > 0) {
+
+                        // if user didn't select any client, pick the first one in the row
+                        $scope.selectedClient = $scope.clients[0].id;
+
+                    } else {
+
+                        // in this case there are no clients and we can't load anything
+                        //TODO display some message
+                        return;
+                    }
+                });
+
+
+                $scope.$watch('year', function (newValue, oldValue) {
+                    if ($scope.selectedClient !== undefined && newValue !== undefined) {
+                        $scope.loadStats($scope.selectedClient, newValue);
+                    }
+                });
+
+                $scope.$watch('selectedClient', function (newValue, oldValue) {
+                    if (newValue !== undefined) {
+                        $scope.loadStats(newValue, $scope.year);
+                    }
+                });
+            };
 
         }]);
-
-
-    //.controller('StatsClientsCtrl', ['$scope', 'nConstants', 'nAjax', '$location', '$routeParams', 'nSorting', '$filter',
-    //    function($scope, nConstants, nAjax, $location, $routeParams, nSorting, $filter){
-    //
-    //        var year = parseInt( $routeParams.year );
-    //        var prevYear = year-1;
-    //        $scope.year = year.toString();
-    //        $scope.commodities = [];
-    //
-    //        var clientID = $routeParams.clientID;
-    //
-    //        var Stats = nAjax.Stats();
-    //        var Business = nAjax.Business();
-    //
-    //        $scope.loadStats = function(clientID, year){
-    //            Stats.getClientBIStats({clientID : clientID, year : year}, function(stats){
-    //
-    //                // calculate totals per months
-    //                var rows = [];
-    //                var prevYearStr = prevYear.toString();
-    //                for(var i=0; i<12; i++){
-    //                    rows.push({
-    //                        c : [
-    //                            {v: $filter('translate')(nConstants.months[i])},
-    //                            {v: stats.totalsPerMonths[year][i]},
-    //                            {v: stats.totalsPerMonths[prevYearStr][i]}
-    //                        ]
-    //                    });
-    //                }
-    //
-    //                $scope.totalsPerMonthsChart = {
-    //                    type: "ColumnChart",
-    //                    displayed: true,
-    //                    data: {
-    //                        cols: [
-    //                            { id: 'month', label: $filter('translate')('MONTH'), type: 'string'},
-    //                            { id: 'invoicing-cur', label: $scope.year, type: 'number'},
-    //                            { id: 'invoicing-past', label: prevYearStr, type: 'number'}
-    //                        ],
-    //                        rows: rows
-    //                    },
-    //                    options: {
-    //                        title: $filter('translate')('INVOICING_PER_MONTH'),
-    //                        displayExactValues: true,
-    //                        vAxis: {
-    //                            title: $filter('translate')('TOTAL_INVOICING_BEFORE_TAXES'),
-    //                            viewWindow:{
-    //                                min: 0
-    //                            }
-    //                        },
-    //                        hAxis: {
-    //                            title: $filter('translate')('MONTH')
-    //                        }
-    //                    }
-    //                };
-    //
-    //
-    //                // calculate totals
-    //                $scope.clientDetails = {
-    //                    timestamp : stats.creationTime,
-    //                    totalBeforeTaxes : stats.totalBeforeTaxes,
-    //                    totalBeforeTaxesCurrentYear : stats.totalBeforeTaxesCurrentYear
-    //                };
-    //
-    //                // commodities ranking
-    //                $scope.commodities = stats.commodityStatsForCurrentYear;
-    //
-    //            });
-    //        };
-    //
-    //        // if clientID is provided we can load the stats already, otherwise we'll load them once we got the clients list
-    //
-    //        Business.getClients(function(clients){
-    //            $scope.clients = clients.sort( nSorting.clientsComparator );
-    //
-    //            if(clientID !== '0'){
-    //
-    //                $scope.selectedClient = parseInt( clientID );
-    //
-    //            } else {
-    //                if($scope.clients.length > 0){
-    //
-    //                    // if user didn't select any client, pick the first one in the row
-    //                    $scope.selectedClient = $scope.clients[0].id;
-    //
-    //                } else {
-    //
-    //                    // in this case there are no clients and we can't load anything
-    //                    //TODO display some message
-    //                    return;
-    //                }
-    //            }
-    //
-    //            $scope.loadStats( $scope.selectedClient, $scope.year );
-    //
-    //        });
-    //
-    //    }]);
