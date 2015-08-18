@@ -10,6 +10,7 @@ import com.novadart.novabill.service.export.data.DataExporter;
 import com.novadart.novabill.service.export.data.ExportDataBundle;
 import com.novadart.novabill.service.web.BusinessStatsService;
 import com.novadart.novabill.shared.client.dto.BIClientStatsDTO;
+import com.novadart.novabill.shared.client.dto.BIGeneralStatsDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
@@ -187,15 +188,27 @@ public class SharingController {
 		}
 	}
 
+	@RequestMapping(value = "/share/{businessID}/bizintel/genstats/{year}", method = RequestMethod.GET)
+	@ResponseBody
+	public ResponseEntity<BIGeneralStatsDTO> getGeneralBIStats(@PathVariable Long businessID,
+											 @PathVariable Integer year, @RequestParam(value = "token", required = true) String token)
+			throws NotAuthenticatedException, FreeUserAccessForbiddenException, NoSuchObjectException, DataAccessException {
+		if(sharingService.isValidRequest(businessID, token)){
+			return new ResponseEntity<>(businessStatsService.getGeneralBIStats(businessID, year), HttpStatus.OK);
+		} else
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	}
+
 	@RequestMapping(value = "/share/{businessID}/bizintel/clientstats/{clientID}/{year}", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<BIClientStatsDTO> getClientBIStats(@PathVariable Long businessID, @PathVariable Long clientID,
-											 @PathVariable Integer year, @RequestParam(value = "token", required = true) String token)
+															 @PathVariable Integer year, @RequestParam(value = "token", required = true) String token)
 			throws NotAuthenticatedException, FreeUserAccessForbiddenException, NoSuchObjectException, DataAccessException {
 		if(sharingService.isValidRequest(businessID, token)){
 			return new ResponseEntity<>(businessStatsService.getClientBIStats(businessID, clientID, year), HttpStatus.OK);
 		} else
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
-	
+
+
 }

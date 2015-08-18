@@ -28,6 +28,33 @@ angular.module('novabill-frontend.ajax', ['novabill-frontend.constants'])
 				.replace('{startDate}', startDate)
 				.replace('{endDate}', endDate);
 			$http.get(url).success( onSuccess );
+		},
+
+		/*
+		 * Stats resource
+		 */
+		Stats : function() {
+
+			return {
+
+				getGeneralBIStats: function(businessId, year, token, successFn){
+                    var url = baseUrl + 'share/{businessID}/bizintel/genstats/{year}?token={token}'
+                            .replace('{businessID}', businessId)
+                            .replace('{year}', year)
+                            .replace('{token}', token);
+					$http.get(url).success( successFn );
+				},
+
+				getClientBIStats: function(businessId, clientId, year, token, successFn){
+                    var url = baseUrl + 'share/{businessID}/bizintel/clientstats/{clientId}/{year}?token={token}'
+                            .replace('{businessID}', businessId)
+                            .replace('{clientId}', clientId)
+                            .replace('{year}', year)
+                            .replace('{token}', token);
+                    $http.get(url).success( successFn );
+				}
+
+			};
 		}
 
 	};

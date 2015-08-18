@@ -102,8 +102,8 @@ angular.module('novabill.stats.controllers', ['novabill.directives', 'novabill.t
 					// calculate commodities stats
 					var servicesCount = 0;
 					var commoditiesCount = stats.commodityRankingByRevenue.length;
-					for(var i=0; i<commoditiesCount; i++){
-						if(stats.commodityRankingByRevenue[i].service){
+					for(var j=0; j<commoditiesCount; j++){
+						if(stats.commodityRankingByRevenue[j].service){
 							servicesCount++;
 						}
 					}
