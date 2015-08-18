@@ -31,6 +31,7 @@ angular.module("novabill-frontend.translations", ['pascalprecht.translate'])
         DESCRIPTION : 'Descrizione',
 		DOWNLOAD : 'Scarica',
 		INVOICES : 'Fatture',
+        INVOICING_PER_MONTH : 'Fatturato per mese',
         NAME : 'Nome',
 		NO_DATA : 'Nessun dato',
 		PAYMENTS_STATUS_END_DATE : 'Fine Intervallo',
