@@ -43,7 +43,7 @@
 								<div class="invoices">
 									<img class="spinner" ng-show="invoices==null" src="../../private_assets/img/ajax-loading.gif">
 									<p class="no-data-message text-center text-info" ng-show="invoices && invoices.length===0">{{'NO_DATA' | translate}}</p>
-									<n-invoice invoice="inv" bottom-up-menu="!$first && $last && invoices.length > 2" ng-repeat="inv in invoices"></n-invoice>
+									<n-invoice invoice="inv" bottom-up-menu="!$first && ($last || $index>4)" ng-repeat="inv in invoices"></n-invoice>
 								</div>
 
 							</div>
