@@ -130,9 +130,15 @@ public class SharingController {
 	@RequestMapping(value = "/share/{businessID}/clients", method = RequestMethod.GET)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
-	public ResponseEntity<List<ClientDTO>> getClients(@PathVariable Long businessID, @RequestParam(value = "token", required = true) String token) throws NotAuthenticatedException, DataAccessException {
+	public ResponseEntity<List<ClientDTO>> getClients(@PathVariable Long businessID, @RequestParam(value = "token", required = true) String token){
 		if(sharingService.isValidRequest(businessID, token))
-			return new ResponseEntity<>(businessService.getClients(businessID), HttpStatus.OK);
+			return utilsService.executeActionAsBusiness(()->{
+				try {
+					return new ResponseEntity<>(businessService.getClients(businessID), HttpStatus.OK);
+				} catch (Throwable t) {
+					throw new RuntimeException(t);
+				}
+			}, businessID);
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 	
@@ -210,8 +216,8 @@ public class SharingController {
 			return utilsService.executeActionAsBusiness(()-> {
 				try {
 					return new ResponseEntity<>(businessStatsService.getGeneralBIStats(businessID, year), HttpStatus.OK);
-				} catch (Exception e) {
-					throw new RuntimeException(e);
+				} catch (Throwable t) {
+					throw new RuntimeException(t);
 				}
 			}, businessID);
 		} else
@@ -227,8 +233,8 @@ public class SharingController {
 			return utilsService.executeActionAsBusiness(()-> {
 				try {
 					return new ResponseEntity<>(businessStatsService.getClientBIStats(businessID, clientID, year), HttpStatus.OK);
-				} catch (Throwable e) {
-					throw new RuntimeException(e);
+				} catch (Throwable t) {
+					throw new RuntimeException(t);
 				}
 			}, businessID);
 		} else
