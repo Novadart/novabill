@@ -6,6 +6,7 @@ import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.domain.dto.DTOUtils;
 import com.novadart.novabill.report.ReportUtils;
 import com.novadart.novabill.service.SharingService;
+import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.export.data.DataExporter;
 import com.novadart.novabill.service.export.data.ExportDataBundle;
 import com.novadart.novabill.service.web.BusinessService;
@@ -13,7 +14,6 @@ import com.novadart.novabill.service.web.BusinessStatsService;
 import com.novadart.novabill.shared.client.dto.*;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
-import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.web.mvc.command.SharingRequest;
 import org.apache.commons.io.IOUtils;
@@ -62,6 +62,9 @@ public class SharingController {
 
 	@Autowired
 	private BusinessService businessService;
+
+	@Autowired
+	private UtilsService utilsService;
 	
 	@RequestMapping(value = Urls.PUBLIC_SHARE_REQUEST, method = RequestMethod.GET)
 	public String setupRequestForm(Model model){
@@ -202,10 +205,15 @@ public class SharingController {
 	@RequestMapping(value = "/share/{businessID}/bizintel/genstats/{year}", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<BIGeneralStatsDTO> getGeneralBIStats(@PathVariable Long businessID,
-											 @PathVariable Integer year, @RequestParam(value = "token", required = true) String token)
-			throws NotAuthenticatedException, FreeUserAccessForbiddenException, NoSuchObjectException, DataAccessException {
+											 @PathVariable Integer year, @RequestParam(value = "token", required = true) String token) {
 		if(sharingService.isValidRequest(businessID, token)){
-			return new ResponseEntity<>(businessStatsService.getGeneralBIStats(businessID, year), HttpStatus.OK);
+			return utilsService.executeActionAsBusiness(()-> {
+				try {
+					return new ResponseEntity<>(businessStatsService.getGeneralBIStats(businessID, year), HttpStatus.OK);
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				}
+			}, businessID);
 		} else
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
@@ -213,10 +221,16 @@ public class SharingController {
 	@RequestMapping(value = "/share/{businessID}/bizintel/clientstats/{clientID}/{year}", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<BIClientStatsDTO> getClientBIStats(@PathVariable Long businessID, @PathVariable Long clientID,
-															 @PathVariable Integer year, @RequestParam(value = "token", required = true) String token)
-			throws NotAuthenticatedException, FreeUserAccessForbiddenException, NoSuchObjectException, DataAccessException {
+															 @PathVariable Integer year,
+															 @RequestParam(value = "token", required = true) String token){
 		if(sharingService.isValidRequest(businessID, token)){
-			return new ResponseEntity<>(businessStatsService.getClientBIStats(businessID, clientID, year), HttpStatus.OK);
+			return utilsService.executeActionAsBusiness(()-> {
+				try {
+					return new ResponseEntity<>(businessStatsService.getClientBIStats(businessID, clientID, year), HttpStatus.OK);
+				} catch (Throwable e) {
+					throw new RuntimeException(e);
+				}
+			}, businessID);
 		} else
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
