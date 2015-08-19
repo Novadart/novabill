@@ -1,6 +1,5 @@
 package com.novadart.novabill.service.web;
 
-import com.novadart.novabill.annotation.MailMixin;
 import com.novadart.novabill.domain.*;
 import com.novadart.novabill.domain.dto.transformer.BusinessDTOTransformer;
 import com.novadart.novabill.domain.dto.transformer.ClientDTOTransformer;
@@ -11,6 +10,8 @@ import com.novadart.novabill.paypal.PaymentPlanDescriptor;
 import com.novadart.novabill.paypal.PaymentPlansLoader;
 import com.novadart.novabill.service.PrincipalDetailsService;
 import com.novadart.novabill.service.UtilsService;
+import com.novadart.novabill.service.mail.EmailBuilder;
+import com.novadart.novabill.service.mail.MailHandlingType;
 import com.novadart.novabill.shared.client.data.LayoutType;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.NotificationType;
@@ -32,11 +33,9 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 
 import static com.novadart.novabill.service.PDFStorageService.pdfFileToByteArray;
 
-@MailMixin
 @Service
 public class PremiumEnablerService {
 
@@ -192,8 +191,13 @@ public class PremiumEnablerService {
 	
 	private void exportAndEmailInvoicePdf(Long invoiceID, Long businessID, String email) throws IOException {
 		byte[] pdfBytes = pdfFileToByteArray(Invoice.findInvoice(invoiceID).getDocumentPath());
-		sendMessage(email, "Conferma attivazione Novabill Premium", new HashMap<String, Object>(),
-				"mail-templates/upgrade-notification.vm", pdfBytes, "Fattura.pdf");
+		new EmailBuilder().to(email)
+				.subject("Conferma attivazione Novabill Premium")
+				.template("mail-templates/upgrade-notification.vm")
+				.attachment(pdfBytes)
+				.attachmentName("Fattura.pdf")
+				.handlingType(MailHandlingType.EXTERNAL_UNACKNOWLEDGED)
+				.build().send();
 	}
 	
 	/* (non-Javadoc)

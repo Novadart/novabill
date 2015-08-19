@@ -1,37 +1,16 @@
 package com.novadart.novabill.service.web;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
-
-import com.novadart.novabill.report.DocumentType;
-import com.novadart.novabill.service.PDFStorageService;
-import org.hibernate.Hibernate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.novadart.novabill.annotation.MailMixin;
-import com.novadart.novabill.domain.AccountingDocumentItem;
-import com.novadart.novabill.domain.Business;
-import com.novadart.novabill.domain.Client;
-import com.novadart.novabill.domain.DocumentAccessToken;
-import com.novadart.novabill.domain.Invoice;
-import com.novadart.novabill.domain.TransportDocument;
+import com.novadart.novabill.domain.*;
 import com.novadart.novabill.domain.dto.DTOUtils;
 import com.novadart.novabill.domain.dto.DTOUtils.Predicate;
 import com.novadart.novabill.domain.dto.transformer.AccountingDocumentItemDTOTransformer;
 import com.novadart.novabill.domain.dto.transformer.InvoiceDTOTransformer;
+import com.novadart.novabill.report.DocumentType;
+import com.novadart.novabill.service.PDFStorageService;
 import com.novadart.novabill.service.TokenGenerator;
 import com.novadart.novabill.service.UtilsService;
+import com.novadart.novabill.service.mail.EmailBuilder;
+import com.novadart.novabill.service.mail.MailHandlingType;
 import com.novadart.novabill.service.validator.AccountingDocumentValidator;
 import com.novadart.novabill.service.validator.Groups.HeavyClient;
 import com.novadart.novabill.service.validator.SimpleValidator;
@@ -39,15 +18,23 @@ import com.novadart.novabill.shared.client.data.FilteringDateType;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
-import com.novadart.novabill.shared.client.exception.DataAccessException;
-import com.novadart.novabill.shared.client.exception.DataIntegrityException;
-import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
-import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
-import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
-import com.novadart.novabill.shared.client.exception.ValidationException;
+import com.novadart.novabill.shared.client.exception.*;
 import com.novadart.novabill.web.mvc.ajax.dto.EmailDTO;
+import org.hibernate.Hibernate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-@MailMixin
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.NoSuchElementException;
+
 @Service
 public class InvoiceServiceImpl implements InvoiceService {
 
@@ -247,21 +234,26 @@ public class InvoiceServiceImpl implements InvoiceService {
 	public boolean email(Long businessID, Long id, EmailDTO emailDTO) throws NoSuchAlgorithmException, UnsupportedEncodingException, ValidationException {
 		simpleValidator.validate(emailDTO);
 		String token = tokenGenerator.generateToken();
-		Map<String, Object> templateVars = new HashMap<String, Object>();
-		templateVars.put("message", emailDTO.getMessage().replaceAll("\n", "<br>"));
 		String url = String.format(invoicePdfUrl, id, URLEncoder.encode(token, "UTF-8"));
 		Business business = Business.findBusiness(businessID);
 		String from = String.format("%s via %s", business.getName(), this.from);
-		templateVars.put("invoiceUrl", url);
-		templateVars.put("businessReplyTo", emailDTO.getReplyTo());
-		if(sendMessage(emailDTO.getTo(), from, emailDTO.getReplyTo(), emailDTO.getSubject(), templateVars, EMAIL_TEMPLATE_LOCATION, false)){
-			Invoice invoice = Invoice.findInvoice(id);
-			invoice.setEmailedToClient(true);
-			invoice.merge();
-			new DocumentAccessToken(id, token).persist();
-			return true;
-		} else
-			return false;
+		return new EmailBuilder().to(emailDTO.getTo())
+				.from(from)
+				.replyTo(emailDTO.getReplyTo())
+				.subject(emailDTO.getSubject())
+				.template(EMAIL_TEMPLATE_LOCATION)
+				.templateVar("message", emailDTO.getMessage().replaceAll("\n", "<br>"))
+				.templateVar("invoiceUrl", url)
+				.templateVar("businessReplyTo", emailDTO.getReplyTo())
+				.handlingType(MailHandlingType.EXTERNAL_UNACKNOWLEDGED) //TODO change this to acknowledged
+				.build().send(
+					messageId->{ //On success
+						Invoice invoice = Invoice.findInvoice(id);
+						invoice.setEmailedToClient(true);
+						invoice.merge();
+						new DocumentAccessToken(id, token).persist();
+					},
+					throwable->{});
 	}
 
 	@Override

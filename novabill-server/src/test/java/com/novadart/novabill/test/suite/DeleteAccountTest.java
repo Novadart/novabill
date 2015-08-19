@@ -1,16 +1,12 @@
 package com.novadart.novabill.test.suite;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
-
-import javax.servlet.http.HttpSession;
-
+import com.dumbster.smtp.SimpleSmtpServer;
+import com.novadart.novabill.domain.Business;
+import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.service.UtilsService;
+import com.novadart.novabill.web.mvc.BusinessLogoController;
+import com.novadart.novabill.web.mvc.DeleteAccountController;
+import com.novadart.novabill.web.mvc.command.DeleteAccount;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,13 +22,14 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 import org.springframework.web.bind.support.SessionStatus;
 
-import com.dumbster.smtp.SimpleSmtpServer;
-import com.novadart.novabill.domain.Business;
-import com.novadart.novabill.domain.security.Principal;
-import com.novadart.novabill.service.UtilsService;
-import com.novadart.novabill.web.mvc.BusinessLogoController;
-import com.novadart.novabill.web.mvc.DeleteAccountController;
-import com.novadart.novabill.web.mvc.command.DeleteAccount;
+import javax.servlet.http.HttpSession;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -47,7 +44,7 @@ public class DeleteAccountTest extends AuthenticatedTest {
 	
 	@Autowired
 	private UtilsService utilsService;
-	
+
 	@Override
 	@Before
 	public void authenticate() {

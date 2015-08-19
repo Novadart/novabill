@@ -1,43 +1,35 @@
 package com.novadart.novabill.web.mvc.ajax;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
 import com.google.common.collect.ImmutableMap;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.MessageSource;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-
-import com.novadart.novabill.annotation.MailMixin;
 import com.novadart.novabill.annotation.RestExceptionProcessingMixin;
 import com.novadart.novabill.annotation.Restrictions;
 import com.novadart.novabill.authorization.PremiumChecker;
 import com.novadart.novabill.domain.SharingPermit;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.UtilsService;
+import com.novadart.novabill.service.mail.EmailBuilder;
+import com.novadart.novabill.service.mail.MailHandlingType;
 import com.novadart.novabill.service.web.SharingPermitService;
 import com.novadart.novabill.shared.client.dto.SharingPermitDTO;
-import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/private/ajax/businesses/{businessID}/sharepermits")
 @RestExceptionProcessingMixin
-@MailMixin
 public class SharingPermitController {
 
 	private static final String EMAIL_TEMPLATE_LOCATION = "mail-templates/sharing-permit-notification.vm";
@@ -61,12 +53,15 @@ public class SharingPermitController {
 		return sharingPermitService.getAll(businessID);
 	}
 
-	private void sendMessage(String email, Long businessID, Locale locale){
-		Map<String, Object> templateVars = new HashMap<String, Object>();
-		templateVars.put("shareRequestUrl", sharingRequestUrl);
+	private void sendMessage(String email, Locale locale){
 		Principal principal = (Principal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		templateVars.put("businessName", principal.getBusiness().getName());
-		sendMessage(email, messageSource.getMessage("sharing.permit.notification", null, locale), templateVars, EMAIL_TEMPLATE_LOCATION);
+		new EmailBuilder().to(email)
+				.subject(messageSource.getMessage("sharing.permit.notification", null, locale))
+				.template(EMAIL_TEMPLATE_LOCATION)
+				.templateVar("shareRequestUrl", sharingRequestUrl)
+				.templateVar("businessName", principal.getBusiness().getName())
+				.handlingType(MailHandlingType.EXTERNAL_UNACKNOWLEDGED)
+				.build().send();
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
@@ -77,7 +72,7 @@ public class SharingPermitController {
 			Locale locale) throws ValidationException, NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		Long id = sharingPermitService.add(businessID, sharingPermitDTO);
 		if(sendEmail)
-			sendMessage(sharingPermitDTO.getEmail(), businessID, locale);
+			sendMessage(sharingPermitDTO.getEmail(), locale);
 		return ImmutableMap.of(JsonConst.VALUE, id);
 	}
 
@@ -88,7 +83,7 @@ public class SharingPermitController {
 		SharingPermit sharingPermit = SharingPermit.findSharingPermit(id);
 		if(!sharingPermit.getBusiness().getId().equals(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()))
 			throw new DataAccessException();
-		sendMessage(sharingPermit.getEmail(), sharingPermit.getBusiness().getId(), locale);
+		sendMessage(sharingPermit.getEmail(), locale);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)

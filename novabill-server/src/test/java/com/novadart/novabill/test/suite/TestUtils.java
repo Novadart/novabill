@@ -1,45 +1,25 @@
 package com.novadart.novabill.test.suite;
 
+import com.novadart.novabill.domain.*;
+import com.novadart.novabill.domain.dto.DTOUtils;
+import com.novadart.novabill.shared.client.data.LayoutType;
+import com.novadart.novabill.shared.client.data.PriceListConstants;
+import com.novadart.novabill.shared.client.data.PriceType;
+import com.novadart.novabill.shared.client.dto.*;
+import com.novadart.novabill.shared.client.validation.Field;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.novadart.novabill.domain.DocumentIDClass;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-
-import com.novadart.novabill.domain.AbstractInvoice;
-import com.novadart.novabill.domain.AccountingDocument;
-import com.novadart.novabill.domain.AccountingDocumentItem;
-import com.novadart.novabill.domain.Business;
-import com.novadart.novabill.domain.Client;
-import com.novadart.novabill.domain.ClientAddress;
-import com.novadart.novabill.domain.Commodity;
-import com.novadart.novabill.domain.Endpoint;
-import com.novadart.novabill.domain.Estimation;
-import com.novadart.novabill.domain.Invoice;
-import com.novadart.novabill.domain.PriceList;
-import com.novadart.novabill.domain.Settings;
-import com.novadart.novabill.domain.SharingPermit;
-import com.novadart.novabill.domain.TransportDocument;
-import com.novadart.novabill.domain.dto.DTOUtils;
-import com.novadart.novabill.shared.client.data.LayoutType;
-import com.novadart.novabill.shared.client.data.PriceListConstants;
-import com.novadart.novabill.shared.client.data.PriceType;
-import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
-import com.novadart.novabill.shared.client.dto.CommodityDTO;
-import com.novadart.novabill.shared.client.dto.PaymentDateType;
-import com.novadart.novabill.shared.client.dto.PaymentDeltaType;
-import com.novadart.novabill.shared.client.dto.PriceDTO;
-import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
-import com.novadart.novabill.shared.client.validation.Field;
-
 @SuppressWarnings("serial")
 public class TestUtils {
 	
-	public static Map<String, Field> accountingDocumentValidationFieldsMap; 
+	public static Map<String, Field> accountingDocumentValidationFieldsMap;
 	
 	public static Map<String, Field> abstractInvoiceValidationFieldsMap;
 	

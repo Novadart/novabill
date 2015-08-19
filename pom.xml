@@ -44,6 +44,7 @@
 		<spring-security.version>3.2.4.RELEASE</spring-security.version>
 		<gwt.version>2.5.1</gwt.version>
 		<jackson.version>2.3.3</jackson.version>
+		<jersey.version>1.19</jersey.version>
 	</properties>
 
 	<scm>
@@ -453,6 +454,23 @@
 				<groupId>javax.servlet</groupId>
 				<artifactId>servlet-api</artifactId>
 				<version>2.5</version>
+			</dependency>
+
+			<!-- Jersey-->
+			<dependency>
+				<groupId>com.sun.jersey</groupId>
+				<artifactId>jersey-client</artifactId>
+				<version>${jersey.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.sun.jersey</groupId>
+				<artifactId>jersey-core</artifactId>
+				<version>${jersey.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.sun.jersey.contribs</groupId>
+				<artifactId>jersey-multipart</artifactId>
+				<version>${jersey.version}</version>
 			</dependency>
 
 		</dependencies>
