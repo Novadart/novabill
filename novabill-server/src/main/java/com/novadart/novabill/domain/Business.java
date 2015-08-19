@@ -46,10 +46,10 @@ import java.util.*;
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @NamedQueries({
-	@NamedQuery(name = "business.allUnpaidInvoicesDueDateInDateRange", query = "select i from Invoice i where i.payed = false and :startDate <= i.paymentDueDate and i.paymentDueDate <= :endDate and i.business.id = :bizID order by i.paymentDueDate, i.documentID"),
-	@NamedQuery(name = "business.allUnpaidInvoicesCreationDateInDateRange", query = "select i from Invoice i where i.payed = false and :startDate <= i.accountingDocumentDate and i.accountingDocumentDate <= :endDate and i.business.id = :bizID order by i.accountingDocumentDate, i.documentID"),
-	@NamedQuery(name = "business.allInvoicesCreationDateInDateRange", query = "select i from Invoice i where :startDate <= i.accountingDocumentDate and i.accountingDocumentDate <= :endDate and i.business.id = :bizID order by i.accountingDocumentDate, i.documentID"),
-	@NamedQuery(name = "business.allCreditNotesCreationDateInDateRange", query = "select c from CreditNote c where :startDate <= c.accountingDocumentDate and c.accountingDocumentDate <= :endDate and c.business.id = :bizID order by c.accountingDocumentDate, c.documentID")
+	@NamedQuery(name = "business.allUnpaidInvoicesDueDateInDateRange", query = "select i from Invoice i where i.payed = false and :startDate <= i.paymentDueDate and i.paymentDueDate <= :endDate and i.business.id = :bizID order by i.documentIDSuffix asc nulls first, i.documentID"),
+	@NamedQuery(name = "business.allUnpaidInvoicesCreationDateInDateRange", query = "select i from Invoice i where i.payed = false and :startDate <= i.accountingDocumentDate and i.accountingDocumentDate <= :endDate and i.business.id = :bizID order by i.documentIDSuffix asc nulls first, i.documentID"),
+	@NamedQuery(name = "business.allInvoicesCreationDateInDateRange", query = "select i from Invoice i where :startDate <= i.accountingDocumentDate and i.accountingDocumentDate <= :endDate and i.business.id = :bizID order by i.documentIDSuffix asc nulls first, i.documentID"),
+	@NamedQuery(name = "business.allCreditNotesCreationDateInDateRange", query = "select c from CreditNote c where :startDate <= c.accountingDocumentDate and c.accountingDocumentDate <= :endDate and c.business.id = :bizID order by c.documentIDSuffix asc nulls first, c.documentID")
 })
 public class Business implements Serializable, Taxable {
 
