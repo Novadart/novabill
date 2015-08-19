@@ -1,14 +1,13 @@
 package com.novadart.novabill.aspect.logging;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
+import com.novadart.novabill.service.mail.EmailBuilder;
+import com.novadart.novabill.service.mail.MailHandlingType;
 import org.slf4j.Logger;
 
-import com.novadart.novabill.annotation.MailMixin;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Map;
 
-@MailMixin
 public abstract aspect AbstractLogEventEmailSenderAspect {
 
 	protected boolean sendEmail;
@@ -25,13 +24,15 @@ public abstract aspect AbstractLogEventEmailSenderAspect {
 	
 	protected void sendEmailMessage(String eventType, String principal, Date time, Map<String, Object> otherTemplateVars, String templatePath){
 		if(sendEmail){
-			Map<String, Object> templateVars = new HashMap<String, Object>();
-			templateVars.put("eventType", eventType);
-			templateVars.put("principal", principal);
-			templateVars.put("time", time);
-			if(otherTemplateVars != null)
-				templateVars.put("otherVars", otherTemplateVars);
-			sendMessage(emailAddresses, eventType, templateVars, templatePath);
+			new EmailBuilder().to(emailAddresses)
+					.subject(eventType)
+					.template(templatePath)
+					.templateVar("eventType", eventType)
+					.templateVar("principal", principal)
+					.templateVar("time", time)
+					.templateVar("otherVars", otherTemplateVars == null? Collections.emptyMap(): otherTemplateVars)
+					.handlingType(MailHandlingType.INTERNAL)
+					.build().send();
 		}
 	}
 	

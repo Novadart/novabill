@@ -1,12 +1,13 @@
 package com.novadart.novabill.service.periodic;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
+import com.novadart.novabill.domain.Business;
+import com.novadart.novabill.domain.Notification;
+import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.domain.security.RoleType;
+import com.novadart.novabill.service.mail.EmailBuilder;
+import com.novadart.novabill.service.mail.MailHandlingType;
+import com.novadart.novabill.shared.client.data.LayoutType;
+import com.novadart.novabill.shared.client.dto.NotificationType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
@@ -14,17 +15,12 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.novadart.novabill.annotation.MailMixin;
-import com.novadart.novabill.domain.Business;
-import com.novadart.novabill.domain.Notification;
-import com.novadart.novabill.domain.security.Principal;
-import com.novadart.novabill.domain.security.RoleType;
-import com.novadart.novabill.shared.client.data.LayoutType;
-import com.novadart.novabill.shared.client.dto.NotificationType;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.util.List;
 
 
 @Service
-@MailMixin
 public class PremiumDisablerService implements PeriodicService {
 	
 	private static final Logger logger = LoggerFactory.getLogger(PremiumDisablerService.class);
@@ -73,10 +69,13 @@ public class PremiumDisablerService implements PeriodicService {
 				.setParameter("role", RoleType.ROLE_BUSINESS_PREMIUM).getResultList();
 		for(Principal principal: soonToExpirePrincipals){
 			createPendingPremiumDowngradeNotification(principal.getBusiness(), days);
-			Map<String, Object> model = new HashMap<String, Object>();
-			model.put("expired", false);
-			model.put("days", days);
-			sendMessage(principal.getUsername(), "Il tuo piano Premium sta per scadere", model, "mail-templates/premium-expiration-notification.vm");
+			new EmailBuilder().to(principal.getUsername())
+					.subject("Il tuo piano Premium sta per scadere")
+					.template("mail-templates/premium-expiration-notification.vm")
+					.templateVar("expired", false)
+					.templateVar("days", days)
+					.handlingType(MailHandlingType.EXTERNAL_UNACKNOWLEDGED)
+					.build().send();
 			logger.info("Send {}-days expiration notification to principal {}", days, principal.getUsername());
 		}
 	}
@@ -97,9 +96,12 @@ public class PremiumDisablerService implements PeriodicService {
 				.setParameter("role", RoleType.ROLE_BUSINESS_PREMIUM).getResultList();
 		for(Principal principal: expiredPrincipals){
 			disableExpiredAccount(principal);
-			Map<String, Object> model = new HashMap<String, Object>();
-			model.put("expired", true);
-			sendMessage(principal.getUsername(), "Il tuo piano Premium è scaduto", model, "mail-templates/premium-expiration-notification.vm");
+			new EmailBuilder().to(principal.getUsername())
+					.subject("Il tuo piano Premium è scaduto")
+					.template("mail-templates/premium-expiration-notification.vm")
+					.templateVar("expired", true)
+					.handlingType(MailHandlingType.EXTERNAL_UNACKNOWLEDGED)
+					.build().send();
 			createPremiumDowngradeNotification(principal.getBusiness());
 			logger.info("Disabled expired account of principal {} with VATID {}", principal.getUsername(), principal.getBusiness().getVatID());
 		}

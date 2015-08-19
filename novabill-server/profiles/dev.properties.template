@@ -34,6 +34,12 @@ mvn.smtp.password=
 mvn.default.sender=Novabill <no-reply@novabill.it>
 
 #
+# Email - MailGun
+#
+mvn.mailgun.api.key=key-f1711526fbd68da446e5440bf24ffa2e
+mvn.mailgun.api.base.url=https://api.mailgun.net/v3/sandboxc230e96b848f4a6c925baa26ec2db731.mailgun.org
+
+#
 # Email Notifications
 #
 mvn.notification.registration=true

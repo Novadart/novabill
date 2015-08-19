@@ -1,36 +1,24 @@
 package com.novadart.novabill.test.suite;
 
-import static org.junit.Assert.assertEquals;
-
+import com.google.common.base.Strings;
+import com.novadart.novabill.domain.*;
+import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.domain.security.RoleType;
+import com.novadart.novabill.web.mvc.command.Registration;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.google.common.base.Strings;
-import com.novadart.novabill.domain.AccountingDocumentItem;
-import com.novadart.novabill.domain.BankAccount;
-import com.novadart.novabill.domain.Business;
-import com.novadart.novabill.domain.Client;
-import com.novadart.novabill.domain.ClientAddress;
-import com.novadart.novabill.domain.Commodity;
-import com.novadart.novabill.domain.Invoice;
-import com.novadart.novabill.domain.LogRecord;
-import com.novadart.novabill.domain.Logo;
-import com.novadart.novabill.domain.PaymentType;
-import com.novadart.novabill.domain.PesistentLogin;
-import com.novadart.novabill.domain.Price;
-import com.novadart.novabill.domain.PriceList;
-import com.novadart.novabill.domain.Transporter;
-import com.novadart.novabill.domain.security.Principal;
-import com.novadart.novabill.domain.security.RoleType;
-import com.novadart.novabill.web.mvc.command.Registration;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath*:empty-context.xml")
 @Transactional
+@DirtiesContext
 @ActiveProfiles("dev")
 public class ToStringMethodsTest {
 

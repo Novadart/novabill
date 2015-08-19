@@ -1,62 +1,43 @@
 package com.novadart.novabill.test.suite;
 
-import static org.junit.Assert.assertTrue;
-
-import java.io.UnsupportedEncodingException;
-import java.math.BigDecimal;
-import java.security.NoSuchAlgorithmException;
-import java.text.ParseException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.annotation.Resource;
-
+import com.novadart.novabill.aspect.CachingAspect;
 import com.novadart.novabill.domain.*;
 import com.novadart.novabill.domain.dto.transformer.*;
+import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.service.web.BusinessService;
 import com.novadart.novabill.service.web.DocumentIDClassService;
+import com.novadart.novabill.service.web.InvoiceService;
+import com.novadart.novabill.shared.client.data.PriceListConstants;
 import com.novadart.novabill.shared.client.dto.*;
+import com.novadart.novabill.shared.client.exception.*;
+import com.novadart.novabill.shared.client.facade.*;
+import com.novadart.novabill.web.mvc.ajax.dto.EmailDTO;
 import net.sf.ehcache.CacheManager;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.novadart.novabill.aspect.CachingAspect;
-import com.novadart.novabill.domain.security.Principal;
-import com.novadart.novabill.service.web.BusinessService;
-import com.novadart.novabill.service.web.InvoiceService;
-import com.novadart.novabill.shared.client.data.PriceListConstants;
-import com.novadart.novabill.shared.client.exception.DataAccessException;
-import com.novadart.novabill.shared.client.exception.DataIntegrityException;
-import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
-import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
-import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
-import com.novadart.novabill.shared.client.exception.ValidationException;
-import com.novadart.novabill.shared.client.facade.BusinessGwtService;
-import com.novadart.novabill.shared.client.facade.ClientGwtService;
-import com.novadart.novabill.shared.client.facade.CommodityGwtService;
-import com.novadart.novabill.shared.client.facade.CreditNoteGwtService;
-import com.novadart.novabill.shared.client.facade.EstimationGwtService;
-import com.novadart.novabill.shared.client.facade.InvoiceGwtService;
-import com.novadart.novabill.shared.client.facade.PaymentTypeGwtService;
-import com.novadart.novabill.shared.client.facade.PriceListGwtService;
-import com.novadart.novabill.shared.client.facade.TransportDocumentGwtService;
-import com.novadart.novabill.shared.client.facade.TransporterGwtService;
-import com.novadart.novabill.web.mvc.ajax.dto.EmailDTO;
+import javax.annotation.Resource;
+import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
+import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
+import java.util.*;
+
+import static org.junit.Assert.assertTrue;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath*:caching-test-config.xml")
 @Transactional
 @ActiveProfiles("dev")
+@DirtiesContext
 public class CachingTest extends ServiceTest {
 	
 	@Resource(name = "testPL")

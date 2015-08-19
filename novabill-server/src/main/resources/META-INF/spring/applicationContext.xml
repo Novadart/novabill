@@ -88,12 +88,6 @@
 		</property>
 	</bean>
 
-	<bean class="com.novadart.novabill.aspect.MailAspect"
-		factory-method="aspectOf">
-		<property name="velocityEngine" ref="velocityEngine" />
-		<property name="from" value="${default.sender}" />
-	</bean>
-
 	<bean class="com.novadart.novabill.aspect.logging.LoginLogoutAspect"
 		factory-method="aspectOf">
 	</bean>

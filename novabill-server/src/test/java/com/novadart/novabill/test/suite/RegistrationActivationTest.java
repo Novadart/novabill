@@ -1,15 +1,12 @@
 package com.novadart.novabill.test.suite;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.dumbster.smtp.SimpleSmtpServer;
+import com.novadart.novabill.domain.EmailPasswordHolder;
+import com.novadart.novabill.service.TokenGenerator;
+import com.novadart.novabill.service.validator.RegistrationValidator;
+import com.novadart.novabill.web.mvc.RegistrationController;
+import com.novadart.novabill.web.mvc.Urls;
+import com.novadart.novabill.web.mvc.command.Registration;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,13 +21,14 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.web.bind.support.SessionStatus;
 
-import com.dumbster.smtp.SimpleSmtpServer;
-import com.novadart.novabill.domain.EmailPasswordHolder;
-import com.novadart.novabill.service.TokenGenerator;
-import com.novadart.novabill.service.validator.RegistrationValidator;
-import com.novadart.novabill.web.mvc.RegistrationController;
-import com.novadart.novabill.web.mvc.Urls;
-import com.novadart.novabill.web.mvc.command.Registration;
+import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath*:mvc-test-config.xml")
@@ -42,7 +40,7 @@ public class RegistrationActivationTest extends AuthenticatedTest{
 
 	@Autowired
 	private RegistrationValidator validator;
-	
+
 	private RegistrationController initRegisterController(String token, String activationUrlPattern, int activationPeriod) throws NoSuchAlgorithmException, SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException{
 		RegistrationController controller = new RegistrationController();
 		TokenGenerator tokenGenerator = mock(TokenGenerator.class);

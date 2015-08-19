@@ -1,17 +1,15 @@
 package com.novadart.novabill.test.suite;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
-import java.util.Date;
-import java.util.HashMap;
-
-import javax.annotation.Resource;
-
+import com.dumbster.smtp.SimpleSmtpServer;
+import com.novadart.novabill.domain.EmailPasswordHolder;
+import com.novadart.novabill.domain.ForgotPassword;
+import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.service.TokenGenerator;
+import com.novadart.novabill.service.UtilsService;
+import com.novadart.novabill.service.validator.ForgotPasswordValidator;
+import com.novadart.novabill.web.mvc.ForgotPasswordController;
+import com.novadart.novabill.web.mvc.PasswordRecoveryController;
+import com.novadart.novabill.web.mvc.Urls;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,16 +24,16 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.web.bind.support.SessionStatus;
 
-import com.dumbster.smtp.SimpleSmtpServer;
-import com.novadart.novabill.domain.EmailPasswordHolder;
-import com.novadart.novabill.domain.ForgotPassword;
-import com.novadart.novabill.domain.security.Principal;
-import com.novadart.novabill.service.TokenGenerator;
-import com.novadart.novabill.service.UtilsService;
-import com.novadart.novabill.service.validator.ForgotPasswordValidator;
-import com.novadart.novabill.web.mvc.ForgotPasswordController;
-import com.novadart.novabill.web.mvc.PasswordRecoveryController;
-import com.novadart.novabill.web.mvc.Urls;
+import javax.annotation.Resource;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Date;
+import java.util.HashMap;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -53,7 +51,7 @@ public class ForgotPasswordRecoveryTest extends AuthenticatedTest{
 	
 	@Autowired
 	private UtilsService utilsService;
-	
+
 	private ForgotPasswordController initForgotPasswordController(String token, String passwordRecoveryUrlPattern, int passwordRecoveryPeriod) throws SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException, NoSuchAlgorithmException{
 		ForgotPasswordController controller = new ForgotPasswordController();
 		TokenGenerator tokenGenerator = mock(TokenGenerator.class);
