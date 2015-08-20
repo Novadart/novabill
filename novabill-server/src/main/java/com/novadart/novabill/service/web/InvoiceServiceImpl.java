@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
+import static com.novadart.novabill.service.mail.mailgun.InvoiceMailAcknowledgeHandlerService.*;
 
 @Service
 public class InvoiceServiceImpl implements InvoiceService {
@@ -245,11 +246,13 @@ public class InvoiceServiceImpl implements InvoiceService {
 				.templateVar("message", emailDTO.getMessage().replaceAll("\n", "<br>"))
 				.templateVar("invoiceUrl", url)
 				.templateVar("businessReplyTo", emailDTO.getReplyTo())
-				.handlingType(MailHandlingType.EXTERNAL_UNACKNOWLEDGED) //TODO change this to acknowledged
+				.variable(BUSINESS_ID, String.valueOf(businessID))
+				.variable(INVOICE_ID, String.valueOf(id))
+				.handlingType(MailHandlingType.EXTERNAL_ACKNOWLEDGED)
 				.build().send(
 					messageId->{ //On success
 						Invoice invoice = Invoice.findInvoice(id);
-						invoice.setEmailedToClient(true);
+						invoice.setEmailedToClient(true); //TODO change this to status value
 						invoice.merge();
 						new DocumentAccessToken(id, token).persist();
 					},

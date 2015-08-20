@@ -1,6 +1,7 @@
 package com.novadart.novabill.service.mail;
 
 import com.novadart.novabill.domain.Email;
+import com.novadart.novabill.service.mail.mailgun.MailGunService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ public class MailDispatcherService {
             case INTERNAL:
                 return javaMailSender.send(email, onSuccess, onFailure);
             case EXTERNAL_UNACKNOWLEDGED:
+            case EXTERNAL_ACKNOWLEDGED:
                 return mailGunSender.send(email, onSuccess, onFailure);
             default: throw new IllegalArgumentException("No such email handling type");
         }

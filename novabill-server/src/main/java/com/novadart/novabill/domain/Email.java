@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Configurable;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 @Configurable
@@ -51,11 +52,13 @@ public class Email {
 	private String attachmentName;
 	
 	private MailHandlingType handlingType;
+
+	private Map<String, String> variables;
 	
 	public Email(){}
 	
 	public Email(String[] to, String from, String subject, String text, String replyTo, byte[] attachment, String attachmentName,
-				 MailHandlingType handlingType) {
+				 MailHandlingType handlingType, Map<String, String> variables) {
 		this.setTo(to);
 		this.from = from;
 		this.subject = subject;
@@ -64,14 +67,15 @@ public class Email {
 		this.attachment = attachment;
 		this.attachmentName = attachmentName;
 		this.handlingType = handlingType;
+		this.variables = variables;
 	}
 	
 	public Email(String[] to, String from, String subject, String text, String replyTo, MailHandlingType handlingType) {
-		this(to, from, subject, text, replyTo, null, null, handlingType);
+		this(to, from, subject, text, replyTo, null, null, handlingType, null);
 	}
 	
 	public Email(String[] to, String from, String subject, String text, MailHandlingType handlingType) {
-		this(to, from, subject, text, null, null, null, handlingType);
+		this(to, from, subject, text, null, null, null, handlingType, null);
 	}
 
 	public boolean send() {
@@ -149,8 +153,16 @@ public class Email {
 		this.handlingType = handlingType;
 	}
 
-    public String toString() {
+	public Map<String, String> getVariables() {
+		return variables;
+	}
+
+	public void setVariables(Map<String, String> variables) {
+		this.variables = variables;
+	}
+
+	public String toString() {
         return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
-	
+
 }

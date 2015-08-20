@@ -1,8 +1,11 @@
-package com.novadart.novabill.service.mail;
+package com.novadart.novabill.service.mail.mailgun;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.novadart.novabill.domain.Email;
+import com.novadart.novabill.service.mail.MailHandlingType;
+import com.novadart.novabill.service.mail.MailSender;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -12,6 +15,7 @@ import com.sun.jersey.multipart.FormDataMultiPart;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -28,9 +32,15 @@ import java.util.function.Consumer;
 
 @Qualifier(MailGunService.QUALIFIER)
 @Service
-public class MailGunService implements MailSender{
+public class MailGunService implements MailSender {
 
     public static final String QUALIFIER = "MailGunSender";
+
+    public static final String ACKNOWLEDGED = "ACKNOWLEDGED";
+
+    public static final String VARIABLES = "variables";
+
+    public static final String HASH = "hash";
 
     private static final String ID = "id";
 
@@ -41,6 +51,9 @@ public class MailGunService implements MailSender{
 
     @Value("${mailgun.api.base.url}")
     private String apiBaseUrl;
+
+    @Autowired
+    private IntegrityValidationService integrityValidationService;
 
     private Map<String, String> parseResponse(String jsonStr) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
@@ -83,6 +96,17 @@ public class MailGunService implements MailSender{
             form.bodyPart(prepareAttachment(email));
         if(!StringUtils.isEmpty(email.getReplyTo()))
             form.field("h:Reply-To", email.getReplyTo());
+        if(MailHandlingType.EXTERNAL_ACKNOWLEDGED.equals(email.getHandlingType())) {
+            form.field("o:tag", ACKNOWLEDGED);
+            Map<String, Object> vars = new HashMap<>();
+            vars.put(VARIABLES, email.getVariables());
+            vars.put(HASH, integrityValidationService.produceHash(email.getVariables()));
+            try {
+                form.field("v:my-custom-data", new ObjectMapper().writeValueAsString(vars));
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+        }
         try {
             ClientResponse response = webResource.type(MediaType.MULTIPART_FORM_DATA_TYPE)
                     .post(ClientResponse.class, form);

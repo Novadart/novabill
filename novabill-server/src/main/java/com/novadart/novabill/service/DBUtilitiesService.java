@@ -519,6 +519,7 @@ public class DBUtilitiesService {
 				transportDocument.setDocumentPath(path);
 			}
 		}
+		em.createNativeQuery("DROP TABLE IF EXISTS email").executeUpdate();
 	}
 	
 	@Scheduled(fixedDelay = 31_536_000_730l)

@@ -40,6 +40,8 @@ public class EmailBuilder {
 
     private MailHandlingType handlingType;
 
+    private Map<String, String> variables = new HashMap<>();
+
     public EmailBuilder to(String email){
         to.add(email);
         return this;
@@ -98,6 +100,11 @@ public class EmailBuilder {
         return this;
     }
 
+    public EmailBuilder variable(String name, String value){
+        this.variables.put(name, value);
+        return this;
+    }
+
     public Email build() {
         if(to.size() == 0 || subject == null || template == null || handlingType == null)
             throw new IllegalStateException();
@@ -105,7 +112,8 @@ public class EmailBuilder {
                 CharEncoding.UTF_8, model);
         String[] toArray = new String[to.size()];
         to.toArray(toArray);
-        return new Email(toArray, from == null? defaultSender: from, subject, text, replyTo, attachment, attachmentName, handlingType);
+        return new Email(toArray, from == null? defaultSender: from, subject, text, replyTo, attachment, attachmentName,
+                handlingType, variables);
     }
 
 }
