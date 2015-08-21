@@ -42,7 +42,7 @@ insert into client (address, city, country, email, fax, mobile, name, phone, pos
 --creating invoice with many items
 insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, layout_type, version, to_company_name, to_street, to_city, to_postcode, to_province, to_country) values (31, '2015-1-20', 2015, 1, '', '', 6050.0, 5000.0, 1050.0, 0, 1, 'The mighty company from this Young Entrepreneur', 'via Qualche Strada con Nome Lungo, 12', 'Nervesa della Battaglia', '42837', 'PD', 'IT');
 insert into abstract_invoice (payed, payment_due_date, id) values ('f', '2015-2-20', 31);
-insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, business, client) values (31, 0, 0, 'default', 1, 1, 3);
+insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, emailed_to_client, business, client) values (31, 0, 0, 'default', 1, 1, 3);
 insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (32, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 31);
 insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (33, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 31);
 insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (34, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 31);
@@ -97,118 +97,118 @@ insert into accounting_document_item (id, description, price, quantity, tax, tot
 -- creating many invoices
 insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, layout_type, version, to_company_name, to_street, to_city, to_postcode, to_province, to_country) values (82, '2015-1-1', 2015, 3, '', '', 121.0, 100.0, 21.0, 1, 1, 'The mighty company from this Young Entrepreneur', 'via Qualche Strada con Nome Lungo, 12', 'Nervesa della Battaglia', '42837', 'PD', 'IT');
 insert into abstract_invoice (payed, payment_due_date, id) values ('f', '2015-2-1', 82);
-insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, business, client) values (82, 0, 0, 'default', 1, 1, 3);
+insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, emailed_to_client, business, client) values (82, 0, 0, 'default', 1, 0, 1, 3);
 insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (83, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 82);
 
 insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, layout_type, version, to_company_name, to_street, to_city, to_postcode, to_province, to_country) values (84, '2015-1-2', 2015, 4, '', '', 121.0, 100.0, 21.0, 1, 1, 'The mighty company from this Young Entrepreneur', 'via Qualche Strada con Nome Lungo, 12', 'Nervesa della Battaglia', '42837', 'PD', 'IT');
 insert into abstract_invoice (payed, payment_due_date, id) values ('f', '2015-10-2', 84);
-insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, business, client) values (84, 0, 0, 'default', 1, 1, 3);
+insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, emailed_to_client, business, client) values (84, 0, 0, 'default', 1, 0, 1, 3);
 insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (85, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 84);
 
 insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, layout_type, version, to_company_name, to_street, to_city, to_postcode, to_province, to_country) values (86, '2015-2-1', 2015, 5, '', '', 121.0, 100.0, 21.0, 1, 1, 'The mighty company from this Young Entrepreneur', 'via Qualche Strada con Nome Lungo, 12', 'Nervesa della Battaglia', '42837', 'PD', 'IT');
 insert into abstract_invoice (payed, payment_due_date, id) values ('f', '2015-3-1', 86);
-insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, business, client) values (86, 0, 0, 'default', 1, 1, 3);
+insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, emailed_to_client, business, client) values (86, 0, 0, 'default', 1, 0, 1, 3);
 insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (87, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 86);
 
 insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, layout_type, version, to_company_name, to_street, to_city, to_postcode, to_province, to_country) values (88, '2015-2-2', 2015, 6, '', '', 121.0, 100.0, 21.0, 1, 1, 'The mighty company from this Young Entrepreneur', 'via Qualche Strada con Nome Lungo, 12', 'Nervesa della Battaglia', '42837', 'PD', 'IT');
 insert into abstract_invoice (payed, payment_due_date, id) values ('f', '2015-3-2', 88);
-insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, business, client) values (88, 0, 0, 'default', 1, 1, 3);
+insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, emailed_to_client, business, client) values (88, 0, 0, 'default', 1, 0, 1, 3);
 insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (89, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 88);
 
 insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, layout_type, version, to_company_name, to_street, to_city, to_postcode, to_province, to_country) values (90, '2015-3-1', 2015, 7, '', '', 121.0, 100.0, 21.0, 1, 1, 'The mighty company from this Young Entrepreneur', 'via Qualche Strada con Nome Lungo, 12', 'Nervesa della Battaglia', '42837', 'PD', 'IT');
 insert into abstract_invoice (payed, payment_due_date, id) values ('f', '2015-4-1', 90);
-insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, business, client) values (90, 0, 0, 'default', 1, 1, 3);
+insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, emailed_to_client, business, client) values (90, 0, 0, 'default', 1, 0, 1, 3);
 insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (91, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 90);
 
 insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, layout_type, version, to_company_name, to_street, to_city, to_postcode, to_province, to_country) values (92, '2015-3-2', 2015, 8, '', '', 121.0, 100.0, 21.0, 1, 1, 'The mighty company from this Young Entrepreneur', 'via Qualche Strada con Nome Lungo, 12', 'Nervesa della Battaglia', '42837', 'PD', 'IT');
 insert into abstract_invoice (payed, payment_due_date, id) values ('f', '2015-4-2', 92);
-insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, business, client) values (92, 0, 0, 'default', 1, 1, 3);
+insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, emailed_to_client, business, client) values (92, 0, 0, 'default', 1, 0, 1, 3);
 insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (93, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 92);
 
 insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, layout_type, version, to_company_name, to_street, to_city, to_postcode, to_province, to_country) values (94, '2015-3-3', 2015, 9, '', '', 121.0, 100.0, 21.0, 1, 1, 'The mighty company from this Young Entrepreneur', 'via Qualche Strada con Nome Lungo, 12', 'Nervesa della Battaglia', '42837', 'PD', 'IT');
 insert into abstract_invoice (payed, payment_due_date, id) values ('f', '2015-3-3', 94);
-insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, business, client) values (94, 0, 0, 'default', 1, 1, 3);
+insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, emailed_to_client, business, client) values (94, 0, 0, 'default', 1, 0, 1, 3);
 insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (95, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 94);
 
 insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, layout_type, version, to_company_name, to_street, to_city, to_postcode, to_province, to_country) values (96, '2015-3-11', 2015, 10, '', '', 121.0, 100.0, 21.0, 1, 1, 'The mighty company from this Young Entrepreneur', 'via Qualche Strada con Nome Lungo, 12', 'Nervesa della Battaglia', '42837', 'PD', 'IT');
 insert into abstract_invoice (payed, payment_due_date, id) values ('f', '2015-4-11', 96);
-insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, business, client) values (96, 0, 0, 'default', 1, 1, 3);
+insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, emailed_to_client, business, client) values (96, 0, 0, 'default', 1, 0, 1, 3);
 insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (97, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 96);
 
 insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, layout_type, version, to_company_name, to_street, to_city, to_postcode, to_province, to_country) values (98, '2015-4-15', 2015, 11, '', '', 121.0, 100.0, 21.0, 1, 1, 'The mighty company from this Young Entrepreneur', 'via Qualche Strada con Nome Lungo, 12', 'Nervesa della Battaglia', '42837', 'PD', 'IT');
 insert into abstract_invoice (payed, payment_due_date, id) values ('f', '2015-5-15', 98);
-insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, business, client) values (98, 0, 0, 'default', 1, 1, 3);
+insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, emailed_to_client, business, client) values (98, 0, 0, 'default', 1, 0, 1, 3);
 insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (99, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 98);
 
 insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, layout_type, version, to_company_name, to_street, to_city, to_postcode, to_province, to_country) values (100, '2015-4-16', 2015, 12, '', '', 121.0, 100.0, 21.0, 1, 1, 'The mighty company from this Young Entrepreneur', 'via Qualche Strada con Nome Lungo, 12', 'Nervesa della Battaglia', '42837', 'PD', 'IT');
 insert into abstract_invoice (payed, payment_due_date, id) values ('f', '2015-5-16', 100);
-insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, business, client) values (100, 0, 0, 'default', 1, 1, 3);
+insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, emailed_to_client, business, client) values (100, 0, 0, 'default', 1, 0, 1, 3);
 insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (101, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 100);
 
 insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, layout_type, version, to_company_name, to_street, to_city, to_postcode, to_province, to_country) values (102, '2015-4-20', 2015, 13, '', '', 121.0, 100.0, 21.0, 1, 1, 'The mighty company from this Young Entrepreneur', 'via Qualche Strada con Nome Lungo, 12', 'Nervesa della Battaglia', '42837', 'PD', 'IT');
 insert into abstract_invoice (payed, payment_due_date, id) values ('f', '2015-5-20', 102);
-insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, business, client) values (102, 0, 0, 'default', 1, 1, 3);
+insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, emailed_to_client, business, client) values (102, 0, 0, 'default', 1, 0, 1, 3);
 insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (103, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 102);
 
 insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, layout_type, version, to_company_name, to_street, to_city, to_postcode, to_province, to_country) values (104, '2015-4-25', 2015, 14, '', '', 121.0, 100.0, 21.0, 1, 1, 'The mighty company from this Young Entrepreneur', 'via Qualche Strada con Nome Lungo, 12', 'Nervesa della Battaglia', '42837', 'PD', 'IT');
 insert into abstract_invoice (payed, payment_due_date, id) values ('f', '2015-5-25', 104);
-insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, business, client) values (104, 0, 0, 'default', 1, 1, 3);
+insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, emailed_to_client, business, client) values (104, 0, 0, 'default', 1, 0, 1, 3);
 insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (105, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 104);
 
 insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, layout_type, version, to_company_name, to_street, to_city, to_postcode, to_province, to_country) values (106, '2015-5-18', 2015, 15, '', '', 121.0, 100.0, 21.0, 1, 1, 'The mighty company from this Young Entrepreneur', 'via Qualche Strada con Nome Lungo, 12', 'Nervesa della Battaglia', '42837', 'PD', 'IT');
 insert into abstract_invoice (payed, payment_due_date, id) values ('f', '2015-6-18', 106);
-insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, business, client) values (106, 0, 0, 'default', 1, 1, 3);
+insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, emailed_to_client, business, client) values (106, 0, 0, 'default', 1, 0, 1, 3);
 insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (107, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 106);
 
 insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, layout_type, version, to_company_name, to_street, to_city, to_postcode, to_province, to_country) values (108, '2015-5-20', 2015, 16, '', '', 121.0, 100.0, 21.0, 1, 1, 'The mighty company from this Young Entrepreneur', 'via Qualche Strada con Nome Lungo, 12', 'Nervesa della Battaglia', '42837', 'PD', 'IT');
 insert into abstract_invoice (payed, payment_due_date, id) values ('f', '2015-6-20', 108);
-insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, business, client) values (108, 0, 0, 'default', 1, 1, 3);
+insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, emailed_to_client, business, client) values (108, 0, 0, 'default', 1, 0, 1, 3);
 insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (109, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 108);
 
 insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, layout_type, version, to_company_name, to_street, to_city, to_postcode, to_province, to_country) values (110, '2015-5-29', 2015, 17, '', '', 121.0, 100.0, 21.0, 1, 1, 'The mighty company from this Young Entrepreneur', 'via Qualche Strada con Nome Lungo, 12', 'Nervesa della Battaglia', '42837', 'PD', 'IT');
 insert into abstract_invoice (payed, payment_due_date, id) values ('f', '2015-6-29', 110);
-insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, business, client) values (110, 0, 0, 'default', 1, 1, 3);
+insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, emailed_to_client, business, client) values (110, 0, 0, 'default', 1, 0, 1, 3);
 insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (111, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 110);
 
 insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, layout_type, version, to_company_name, to_street, to_city, to_postcode, to_province, to_country) values (112, '2015-6-11', 2015, 18, '', '', 121.0, 100.0, 21.0, 1, 1, 'The mighty company from this Young Entrepreneur', 'via Qualche Strada con Nome Lungo, 12', 'Nervesa della Battaglia', '42837', 'PD', 'IT');
 insert into abstract_invoice (payed, payment_due_date, id) values ('f', '2015-7-11', 112);
-insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, business, client) values (112, 0, 0, 'default', 1, 1, 3);
+insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, emailed_to_client, business, client) values (112, 0, 0, 'default', 1, 0, 1, 3);
 insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (113, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 112);
 
 insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, layout_type, version, to_company_name, to_street, to_city, to_postcode, to_province, to_country) values (114, '2015-6-15', 2015, 19, '', '', 121.0, 100.0, 21.0, 1, 1, 'The mighty company from this Young Entrepreneur', 'via Qualche Strada con Nome Lungo, 12', 'Nervesa della Battaglia', '42837', 'PD', 'IT');
 insert into abstract_invoice (payed, payment_due_date, id) values ('f', '2015-7-15', 114);
-insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, business, client) values (114, 0, 0, 'default', 1, 1, 3);
+insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, emailed_to_client, business, client) values (114, 0, 0, 'default', 1, 0, 1, 3);
 insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (115, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 114);
 
 insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, layout_type, version, to_company_name, to_street, to_city, to_postcode, to_province, to_country) values (116, '2015-6-20', 2015, 20, '', '', 121.0, 100.0, 21.0, 1, 1, 'The mighty company from this Young Entrepreneur', 'via Qualche Strada con Nome Lungo, 12', 'Nervesa della Battaglia', '42837', 'PD', 'IT');
 insert into abstract_invoice (payed, payment_due_date, id) values ('f', '2015-7-20', 116);
-insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, business, client) values (116, 0, 0, 'default', 1, 1, 3);
+insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, emailed_to_client, business, client) values (116, 0, 0, 'default', 1, 0, 1, 3);
 insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (117, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 116);
 
 
 insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, layout_type, version, to_company_name, to_street, to_city, to_postcode, to_province, to_country) values (118, '2015-7-1', 2015, 21, '', '', 121.0, 100.0, 21.0, 1, 1, 'The mighty company from this Young Entrepreneur', 'via Qualche Strada con Nome Lungo, 12', 'Nervesa della Battaglia', '42837', 'PD', 'IT');
 insert into abstract_invoice (payed, payment_due_date, id) values ('f', '2015-8-1', 118);
-insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, business, client) values (118, 0, 0, 'default', 1, 1, 3);
+insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, emailed_to_client, business, client) values (118, 0, 0, 'default', 1, 0, 1, 3);
 insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (119, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 118);
 
 insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, layout_type, version, to_company_name, to_street, to_city, to_postcode, to_province, to_country) values (120, '2015-7-5', 2015, 22, '', '', 121.0, 100.0, 21.0, 1, 1, 'The mighty company from this Young Entrepreneur', 'via Qualche Strada con Nome Lungo, 12', 'Nervesa della Battaglia', '42837', 'PD', 'IT');
 insert into abstract_invoice (payed, payment_due_date, id) values ('f', '2015-8-5', 120);
-insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, business, client) values (120, 0, 0, 'default', 1, 1, 3);
+insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, emailed_to_client, business, client) values (120, 0, 0, 'default', 1, 0, 1, 3);
 insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (121, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 120);
 
 insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, layout_type, version, to_company_name, to_street, to_city, to_postcode, to_province, to_country) values (122, '2015-7-10', 2015, 23, '', '', 121.0, 100.0, 21.0, 1, 1, 'The mighty company from this Young Entrepreneur', 'via Qualche Strada con Nome Lungo, 12', 'Nervesa della Battaglia', '42837', 'PD', 'IT');
 insert into abstract_invoice (payed, payment_due_date, id) values ('f', '2015-8-10', 122);
-insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, business, client) values (122, 0, 0, 'default', 1, 1, 3);
+insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, emailed_to_client, business, client) values (122, 0, 0, 'default', 1, 0, 1, 3);
 insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (123, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 122);
 
 insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, layout_type, version, to_company_name, to_street, to_city, to_postcode, to_province, to_country) values (124, '2015-7-20', 2015, 24, '', '', 121.0, 100.0, 21.0, 1, 1, 'The mighty company from this Young Entrepreneur', 'via Qualche Strada con Nome Lungo, 12', 'Nervesa della Battaglia', '42837', 'PD', 'IT');
 insert into abstract_invoice (payed, payment_due_date, id) values ('f', '2015-8-20', 124);
-insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, business, client) values (124, 0, 0, 'default', 1, 1, 3);
+insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, emailed_to_client, business, client) values (124, 0, 0, 'default', 1, 0, 1, 3);
 insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (125, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 124);
 
 insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, layout_type, version, to_company_name, to_street, to_city, to_postcode, to_province, to_country) values (126, '2015-10-20', 2015, 25, '', '', 121.0, 100.0, 21.0, 1, 1, 'The mighty company from this Young Entrepreneur', 'via Qualche Strada con Nome Lungo, 12', 'Nervesa della Battaglia', '42837', 'PD', 'IT');
 insert into abstract_invoice (payed, payment_due_date, id) values ('f', '2015-11-20', 126);
-insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, business, client) values (126, 0, 0, 'default', 1, 1, 3);
+insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, emailed_to_client, business, client) values (126, 0, 0, 'default', 1, 0, 1, 3);
 insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (127, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 126);
 
 --creating one client for second registered business
@@ -217,7 +217,7 @@ insert into client (address, city, country, email, fax, mobile, name, phone, pos
 --creating one invoice for second registered business
 insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, layout_type, version, to_company_name, to_street, to_city, to_postcode, to_province, to_country) values (129, '2015-10-20', 2015, 25, '', '', 121.0, 100.0, 21.0, 0, 1, 'The mighty company from this Young Entrepreneur', 'via Qualche Strada con Nome Lungo, 12', 'Nervesa della Battaglia', '42837', 'PD', 'IT');
 insert into abstract_invoice (payed, payment_due_date, id) values ('f', '2015-11-20', 129);
-insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, business, client) values (129, 0, 0, 'default', 1, 2, 128);
+insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, emailed_to_client, business, client) values (129, 0, 0, 'default', 1, 0, 2, 128);
 insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (129, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 129);
 
 --creating creditnote for first registered business
@@ -301,22 +301,22 @@ insert into price (id, price_type, price_value, version, commodity, price_list) 
 --creatint accounting documents for previous years
 insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, layout_type, version, to_company_name, to_street, to_city, to_postcode, to_province, to_country) values (175, '2014-10-20', 2014, 3, '', '', 121.0, 100.0, 21.0, 1, 1, 'The mighty company from this Young Entrepreneur', 'via Qualche Strada con Nome Lungo, 12', 'Nervesa della Battaglia', '42837', 'PD', 'IT');
 insert into abstract_invoice (payed, payment_due_date, id) values ('f', '2014-11-20', 175);
-insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, business, client) values (175, 0, 0, 'default', 1, 1, 3);
+insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, emailed_to_client, business, client) values (175, 0, 0, 'default', 1, 0, 1, 3);
 insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (176, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 175);
 
 insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, layout_type, version, to_company_name, to_street, to_city, to_postcode, to_province, to_country) values (177, '2013-10-20', 2013, 4, '', '', 121.0, 100.0, 21.0, 1, 1, 'The mighty company from this Young Entrepreneur', 'via Qualche Strada con Nome Lungo, 12', 'Nervesa della Battaglia', '42837', 'PD', 'IT');
 insert into abstract_invoice (payed, payment_due_date, id) values ('f', '2013-11-20', 177);
-insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, business, client) values (177, 0, 0, 'default', 1, 1, 3);
+insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, emailed_to_client, business, client) values (177, 0, 0, 'default', 1, 0, 1, 3);
 insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (178, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 177);
 
 insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, layout_type, version, to_company_name, to_street, to_city, to_postcode, to_province, to_country) values (179, '2011-10-20', 2011, 5, '', '', 121.0, 100.0, 21.0, 1, 1, 'The mighty company from this Young Entrepreneur', 'via Qualche Strada con Nome Lungo, 12', 'Nervesa della Battaglia', '42837', 'PD', 'IT');
 insert into abstract_invoice (payed, payment_due_date, id) values ('f', '2011-11-20', 179);
-insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, business, client) values (179, 0, 0, 'default', 1, 1, 3);
+insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, emailed_to_client, business, client) values (179, 0, 0, 'default', 1, 0, 1, 3);
 insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (180, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 179);
 
 insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, layout_type, version, to_company_name, to_street, to_city, to_postcode, to_province, to_country) values (181, '2010-10-20', 2010, 6, '', '', 121.0, 100.0, 21.0, 1, 1, 'The mighty company from this Young Entrepreneur', 'via Qualche Strada con Nome Lungo, 12', 'Nervesa della Battaglia', '42837', 'PD', 'IT');
 insert into abstract_invoice (payed, payment_due_date, id) values ('f', '2010-11-20', 181);
-insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, business, client) values (181, 0, 0, 'default', 1, 1, 3);
+insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, emailed_to_client, business, client) values (181, 0, 0, 'default', 1, 0, 1, 3);
 insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (182, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 181);
 
 --creating transporters
