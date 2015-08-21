@@ -3,6 +3,8 @@ package com.novadart.novabill.service.mail.mailgun;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.novadart.novabill.service.web.InvoiceService;
+import com.novadart.novabill.shared.client.dto.MailDeliveryStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import static com.novadart.novabill.service.mail.mailgun.MailGunService.HASH;
 import static com.novadart.novabill.service.mail.mailgun.MailGunService.VARIABLES;
+import static com.novadart.novabill.service.mail.mailgun.MailGunPollingService.*;
 
 @Service
 public class InvoiceMailAcknowledgeHandlerService implements MailAcknowledgeHandler {
@@ -21,9 +24,13 @@ public class InvoiceMailAcknowledgeHandlerService implements MailAcknowledgeHand
 
     private static final String USER_VARIABLES = "user-variables";
     private static final String MY_CUSTOM_DATA = "my-custom-data";
+    private static final String EVENT = "event";
 
     @Autowired
     private IntegrityValidationService integrityValidationService;
+
+    @Autowired
+    private InvoiceService invoiceService;
 
     @Override
     public void accept(List<Map<String, Object>> events) {
@@ -40,7 +47,13 @@ public class InvoiceMailAcknowledgeHandlerService implements MailAcknowledgeHand
                 if(integrityValidationService.isValid(variables, hash)){
                     Long businessID = Long.valueOf(variables.get(BUSINESS_ID));
                     Long invoiceID = Long.valueOf(variables.get(INVOICE_ID));
-                    //TODO update invoice status;
+                    String eventType = event.get(EVENT).toString();
+                    if(DELIVERED.equals(eventType))
+                        invoiceService.setEmailedToClientStatus(businessID, invoiceID, MailDeliveryStatus.DELIVERED);
+                    else if(REJECTED.equals(eventType))
+                        invoiceService.setEmailedToClientStatus(businessID, invoiceID, MailDeliveryStatus.FAILURE);
+                    else if(FAILDED.equals(eventType))
+                        invoiceService.setEmailedToClientStatus(businessID, invoiceID, MailDeliveryStatus.FAILURE);
                 }
 
             } catch (IOException e) {

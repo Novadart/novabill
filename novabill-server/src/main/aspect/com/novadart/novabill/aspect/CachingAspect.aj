@@ -172,6 +172,9 @@ public privileged aspect CachingAspect {
 	
 	declare @method : public void com.novadart.novabill.service.web.InvoiceServiceImpl.markViewedByClient(..):
 		@CacheEvict(value = INVOICE_CACHE, key = "#businessID.toString().concat('-').concat(T(com.novadart.novabill.domain.Invoice).findInvoice(#id).accountingDocumentYear.toString())");
+
+	declare @method : public void com.novadart.novabill.service.web.InvoiceServiceImpl.setEmailedToClientStatus(..):
+	@CacheEvict(value = INVOICE_CACHE, key = "#businessID.toString().concat('-').concat(T(com.novadart.novabill.domain.Invoice).findInvoice(#id).accountingDocumentYear.toString())");
 	
 	declare @method : public boolean com.novadart.novabill.service.web.InvoiceServiceImpl.email(..):
 		@CacheEvict(value = INVOICE_CACHE, key = "#businessID.toString().concat('-').concat(T(com.novadart.novabill.domain.Invoice).findInvoice(#id).accountingDocumentYear.toString())");

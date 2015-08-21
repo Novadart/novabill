@@ -17,6 +17,7 @@ import com.novadart.novabill.service.validator.SimpleValidator;
 import com.novadart.novabill.shared.client.data.FilteringDateType;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
+import com.novadart.novabill.shared.client.dto.MailDeliveryStatus;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.exception.*;
 import com.novadart.novabill.web.mvc.ajax.dto.EmailDTO;
@@ -252,7 +253,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 				.build().send(
 					messageId->{ //On success
 						Invoice invoice = Invoice.findInvoice(id);
-						invoice.setEmailedToClient(true); //TODO change this to status value
+						invoice.setEmailedToClient(MailDeliveryStatus.PENDING);
 						invoice.merge();
 						new DocumentAccessToken(id, token).persist();
 					},
@@ -263,6 +264,13 @@ public class InvoiceServiceImpl implements InvoiceService {
 	public void markViewedByClient(Long businessID, Long id, Long viewingTime) {
 		Invoice invoice = Invoice.findInvoice(id);
 		invoice.setSeenByClientTime(System.currentTimeMillis());
+		invoice.merge();
+	}
+
+	@Override
+	public void setEmailedToClientStatus(Long businessID, Long id, MailDeliveryStatus status){
+		Invoice invoice = Invoice.findInvoice(id);
+		invoice.setEmailedToClient(status);
 		invoice.merge();
 	}
 	

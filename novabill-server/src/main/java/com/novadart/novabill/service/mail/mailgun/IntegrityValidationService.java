@@ -12,7 +12,7 @@ public class IntegrityValidationService {
     @Value("${mailgun.api.key}")
     private String apiKey;
 
-    private BCryptPasswordEncoder bcryptEncoder = new BCryptPasswordEncoder();
+    private BCryptPasswordEncoder bcryptEncoder = new BCryptPasswordEncoder(7);
 
     private String stringifyVars(Map<String, String> vars){
         return vars.entrySet().stream().map(e->e.getKey() + ":" + e.getValue()).sorted().reduce("", String::concat) + "#" + apiKey;

@@ -18,6 +18,7 @@ import com.novadart.novabill.shared.client.data.FilteringDateType;
 import com.novadart.novabill.shared.client.data.OperationType;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
+import com.novadart.novabill.shared.client.dto.MailDeliveryStatus;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.exception.*;
 import com.novadart.novabill.shared.client.facade.BusinessGwtService;
@@ -307,7 +308,9 @@ public class InvoiceServiceTest extends ServiceTest {
 		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
 		assertEquals(client.getName(), details.get(DBLoggerAspect.CLIENT_NAME));
 		assertEquals(invDTO.getDocumentID().toString(), details.get(DBLoggerAspect.DOCUMENT_ID));
-		assertTrue(Files.exists(FileSystems.getDefault().getPath(Invoice.findInvoice(id).getDocumentPath())));
+		Invoice inv = Invoice.findInvoice(id);
+		assertTrue(Files.exists(FileSystems.getDefault().getPath(inv.getDocumentPath())));
+		assertEquals(MailDeliveryStatus.NOT_SENT, inv.getEmailedToClient());
 	}
 	
 	@Test
@@ -447,7 +450,7 @@ public class InvoiceServiceTest extends ServiceTest {
 		assertEquals("foo@bar.it", details.get(DBLoggerAspect.REPLY_TO));
 		assertEquals(1l, DocumentAccessToken.countDocumentAccessTokens());
 		assertEquals(1l, DocumentAccessToken.findDocumentAccessTokens(inv.getId(), token).size());
-		assertTrue(Invoice.findInvoice(inv.getId()).isEmailedToClient());
+		assertTrue(MailDeliveryStatus.PENDING.equals(Invoice.findInvoice(inv.getId()).getEmailedToClient()));
 	}
 	
 	@Test(expected = ValidationException.class)
