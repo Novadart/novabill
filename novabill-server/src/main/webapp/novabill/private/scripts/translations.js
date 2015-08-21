@@ -97,6 +97,7 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 			DOCUMENTS : 'Documenti',
 			EDIT : 'Modifica',
 			EMAIL : 'E-Mail',
+			EMAIL_FAILURE : 'Non è stato possibile recapitare l\'email.\nForse l\'indirizzo è sbagliato o la casella di posta non attiva',
 			EMAIL_KEYWORD_CHOOSER : 'Inserisci...',
 			EMAIL_KEYWORD_BUSINESS_NAME : 'Ragione Sociale azienda',
 			EMAIL_KEYWORD_CLIENT_NAME : 'Ragione Sociale cliente',

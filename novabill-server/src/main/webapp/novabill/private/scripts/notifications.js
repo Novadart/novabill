@@ -22,6 +22,20 @@ angular.module('novabill.notifications', ['novabill.ajax', 'toaster'])
 					}
 			);
 			break;
+
+		case 'INVOICE_EMAIL_FAILURE':
+			toaster.pop(
+					'warning',
+					not.message,
+					'',
+					0,
+					'trustedHtml',
+					function(){
+						Business.markNotificationAsSeen({notificationId : not.id});
+						return true;
+					}
+			);
+			break;
 		
 		case 'PREMIUM_DOWNGRADE':
 			toaster.pop(
