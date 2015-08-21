@@ -46,6 +46,10 @@
 	<security:global-method-security pre-post-annotations="enabled" order="1"/>
 		
 	<cache:annotation-driven cache-manager="cacheManager" mode="proxy" order="2" />
+
+	<bean class="org.springframework.context.support.ReloadableResourceBundleMessageSource"
+		  id="messageSource" p:basenames="WEB-INF/i18n/messages,WEB-INF/i18n/application"
+		  p:fallbackToSystemLocale="false" />
 	
 	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
 		<property name="cacheManager" ref="ehcache" />

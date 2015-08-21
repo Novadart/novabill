@@ -253,7 +253,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 				.build().send(
 					messageId->{ //On success
 						Invoice invoice = Invoice.findInvoice(id);
-						invoice.setEmailedToClient(MailDeliveryStatus.PENDING);
+						invoice.setEmailedToClient(MailDeliveryStatus.SENT);
 						invoice.merge();
 						new DocumentAccessToken(id, token).persist();
 					},
@@ -264,6 +264,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 	public void markViewedByClient(Long businessID, Long id, Long viewingTime) {
 		Invoice invoice = Invoice.findInvoice(id);
 		invoice.setSeenByClientTime(System.currentTimeMillis());
+		invoice.setEmailedToClient(MailDeliveryStatus.READ);
 		invoice.merge();
 	}
 

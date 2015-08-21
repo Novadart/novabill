@@ -3,9 +3,14 @@ package com.novadart.novabill.service.mail.mailgun;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.novadart.novabill.domain.Invoice;
+import com.novadart.novabill.domain.Notification;
 import com.novadart.novabill.service.web.InvoiceService;
 import com.novadart.novabill.shared.client.dto.MailDeliveryStatus;
+import com.novadart.novabill.shared.client.dto.NotificationType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -32,6 +37,18 @@ public class InvoiceMailAcknowledgeHandlerService implements MailAcknowledgeHand
     @Autowired
     private InvoiceService invoiceService;
 
+    @Autowired
+    private ReloadableResourceBundleMessageSource messageSource;
+
+    private void createInvoiceEmailFailureNotification(Invoice invoice, String message){
+        Notification notification = new Notification();
+        notification.setType(NotificationType.INVOICE_EMAIL_FAILURE);
+        notification.setMessage(message);
+        notification.setBusiness(invoice.getBusiness());
+        invoice.getBusiness().getNotifications().add(notification);
+        notification.persist();
+    }
+
     @Override
     public void accept(List<Map<String, Object>> events) {
         events.stream().forEach(event->{
@@ -48,12 +65,16 @@ public class InvoiceMailAcknowledgeHandlerService implements MailAcknowledgeHand
                     Long businessID = Long.valueOf(variables.get(BUSINESS_ID));
                     Long invoiceID = Long.valueOf(variables.get(INVOICE_ID));
                     String eventType = event.get(EVENT).toString();
-                    if(DELIVERED.equals(eventType))
-                        invoiceService.setEmailedToClientStatus(businessID, invoiceID, MailDeliveryStatus.DELIVERED);
-                    else if(REJECTED.equals(eventType))
+                    if(REJECTED.equals(eventType) || FAILDED.equals(eventType)) {
+                        Invoice invoice = Invoice.findInvoice(invoiceID);
+                        if(MailDeliveryStatus.READ.equals(invoice.getEmailedToClient()))
+                            return;
                         invoiceService.setEmailedToClientStatus(businessID, invoiceID, MailDeliveryStatus.FAILURE);
-                    else if(FAILDED.equals(eventType))
-                        invoiceService.setEmailedToClientStatus(businessID, invoiceID, MailDeliveryStatus.FAILURE);
+                        String messagePattern = messageSource.getMessage("invoices.email.failure.notification", null,
+                                LocaleContextHolder.getLocale());
+                        createInvoiceEmailFailureNotification(invoice, String.format(messagePattern,
+                                invoice.getDocumentID(), invoice.getClient().getName()));
+                    }
                 }
 
             } catch (IOException e) {

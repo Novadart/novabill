@@ -450,7 +450,7 @@ public class InvoiceServiceTest extends ServiceTest {
 		assertEquals("foo@bar.it", details.get(DBLoggerAspect.REPLY_TO));
 		assertEquals(1l, DocumentAccessToken.countDocumentAccessTokens());
 		assertEquals(1l, DocumentAccessToken.findDocumentAccessTokens(inv.getId(), token).size());
-		assertTrue(MailDeliveryStatus.PENDING.equals(Invoice.findInvoice(inv.getId()).getEmailedToClient()));
+		assertTrue(MailDeliveryStatus.SENT.equals(Invoice.findInvoice(inv.getId()).getEmailedToClient()));
 	}
 	
 	@Test(expected = ValidationException.class)
