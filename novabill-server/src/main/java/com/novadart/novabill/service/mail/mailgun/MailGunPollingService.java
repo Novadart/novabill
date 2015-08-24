@@ -23,7 +23,7 @@ import static com.novadart.novabill.service.mail.mailgun.MailGunService.ACKNOWLE
 public class MailGunPollingService {
 
     public static final String DELIVERED = "delivered";
-    public static final String FAILDED = "failed";
+    public static final String FAILED = "failed";
     public static final String REJECTED = "rejected";
 
     private static final ZoneId EDT = TimeZone.getTimeZone("GMT-04:00").toZoneId();
@@ -42,9 +42,13 @@ public class MailGunPollingService {
     @Autowired
     private List<MailAcknowledgeHandler> mailAcknowledgeHandlers;
 
-    private final ZonedDateTime begin = ZonedDateTime.now(EDT).minusMinutes(840);
+    public static final long STARTING_OFFSET = 30l;
 
-    private static final long THRESHOLD_INTERVAL = 30l;
+    private final ZonedDateTime begin = ZonedDateTime.now(EDT).minusMinutes(STARTING_OFFSET);
+
+    public static final long THRESHOLD_AGE = 10l;
+
+    private static final long THRESHOLD_AGE_IN_MILLIS = THRESHOLD_AGE * 60 * 1000;
 
     private volatile Optional<String> nextPageUrl = Optional.empty();
 
@@ -57,7 +61,7 @@ public class MailGunPollingService {
             queryParams.add("begin", begin.toEpochSecond());
         queryParams.add("ascending", "yes");
         queryParams.add("tags", ACKNOWLEDGED);
-        queryParams.add("event", new StringJoiner(" OR ").add(DELIVERED).add(FAILDED).add(REJECTED).toString());
+        queryParams.add("event", new StringJoiner(" OR ").add(DELIVERED).add(FAILED).add(REJECTED).toString());
         ClientResponse response = webResource.queryParams(queryParams).get(ClientResponse.class);
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(response.getEntity(String.class), new TypeReference<HashMap<String, Object>>(){});
@@ -66,7 +70,7 @@ public class MailGunPollingService {
     private boolean isValidPage(List<Map<String, Object>> items){
         if(items.size() == 0)
             return false;
-        long threshold = ZonedDateTime.now(EDT).minusMinutes(THRESHOLD_INTERVAL).toEpochSecond();
+        long threshold = ZonedDateTime.now(EDT).minusMinutes(THRESHOLD_AGE).toEpochSecond();
         Map<String, Object> lastItem = items.get(items.size() - 1);
         Double timestamp = (Double)lastItem.get(TIMESTAMP);
         return timestamp < threshold;
@@ -76,7 +80,7 @@ public class MailGunPollingService {
         mailAcknowledgeHandlers.stream().forEach(handler->handler.accept(items));
     }
 
-    @Scheduled(fixedDelay = 30_000) //TODO change it back to 300_000
+    @Scheduled(fixedDelay = THRESHOLD_AGE_IN_MILLIS)
     public void poll() throws IOException {
         Map<String, Object> eventsPage   = fetchPage(nextPageUrl.orElse(apiBaseUrl + "/events"), !nextPageUrl.isPresent());
         List<Map<String, Object>> items = (List<Map<String, Object>>)eventsPage.get(ITEMS);

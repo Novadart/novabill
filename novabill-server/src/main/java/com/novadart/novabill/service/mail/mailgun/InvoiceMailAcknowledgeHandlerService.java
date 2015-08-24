@@ -79,7 +79,7 @@ public class InvoiceMailAcknowledgeHandlerService implements MailAcknowledgeHand
                     Long businessID = Long.valueOf(variables.get(BUSINESS_ID));
                     Long invoiceID = Long.valueOf(variables.get(INVOICE_ID));
                     String eventType = event.get(EVENT).toString();
-                    if (REJECTED.equals(eventType) || FAILDED.equals(eventType))
+                    if (REJECTED.equals(eventType) || FAILED.equals(eventType))
                         handleEmailFailure(businessID, invoiceID);
                 }
 
