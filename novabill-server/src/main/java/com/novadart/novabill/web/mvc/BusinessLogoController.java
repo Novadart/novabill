@@ -1,18 +1,14 @@
 package com.novadart.novabill.web.mvc;
 
-import java.awt.Dimension;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
-import javax.annotation.PostConstruct;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.google.common.collect.ImmutableMap;
+import com.novadart.novabill.domain.Business;
+import com.novadart.novabill.domain.Logo;
+import com.novadart.novabill.domain.Logo.LogoFormat;
+import com.novadart.novabill.service.UtilsService;
+import com.novadart.novabill.shared.client.facade.LogoUploadStatus;
+import com.novadart.novabill.web.mvc.ajax.JsonConst;
+import com.novadart.utils.image.ImageUtils;
+import com.novadart.utils.image.UnsupportedImageFormatException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -23,21 +19,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.support.ServletContextResource;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.novadart.novabill.domain.Business;
-import com.novadart.novabill.domain.Logo;
-import com.novadart.novabill.domain.Logo.LogoFormat;
-import com.novadart.novabill.service.UtilsService;
-import com.novadart.novabill.shared.client.facade.LogoUploadStatus;
-import com.novadart.utils.image.ImageUtils;
-import com.novadart.utils.image.UnsupportedImageFormatException;
+import javax.annotation.PostConstruct;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.*;
+import java.io.*;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/private/businesses/logo")
@@ -141,16 +133,16 @@ public class BusinessLogoController {
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
 	@Transactional(readOnly = false)
-	public int uploadLogo(HttpServletRequest request, @RequestParam("file") MultipartFile file) throws UnsupportedImageFormatException {
+	public Map<String, Object> uploadLogo(HttpServletRequest request, @RequestParam("file") MultipartFile file) throws UnsupportedImageFormatException {
 		if(!ServletFileUpload.isMultipartContent(request))
-			return LogoUploadStatus.ILLEGAL_REQUEST.ordinal();
+			return ImmutableMap.of(JsonConst.VALUE, LogoUploadStatus.ILLEGAL_REQUEST);
 		if(file == null)
-			return LogoUploadStatus.ILLEGAL_REQUEST.ordinal();
+			return ImmutableMap.of(JsonConst.VALUE, LogoUploadStatus.ILLEGAL_REQUEST);
 		if(file.getSize() > LOGO_SIZE_LIMIT)
-			return LogoUploadStatus.ILLEGAL_SIZE.ordinal();
+			return ImmutableMap.of(JsonConst.VALUE, LogoUploadStatus.ILLEGAL_SIZE);
 		String contentType = file.getContentType(); 
 		if(!contentType.startsWith("image"))
-			return LogoUploadStatus.ILLEGAL_PAYLOAD.ordinal();
+			return ImmutableMap.of(JsonConst.VALUE, LogoUploadStatus.ILLEGAL_PAYLOAD);
 		String subtype = contentType.substring(contentType.lastIndexOf('/') + 1);
 		Long businessID = utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId();
 		clearLogo(businessID);
@@ -169,17 +161,14 @@ public class BusinessLogoController {
 			logo.setBusinessID(businessID);
 			logo.persist();
 			ImageUtils.resizeConvertImage(inFile, logoThumbnailWidth, logoThumbnailHeight, getThumbnailFile(businessID), logoThumbnailQuality);
-		} catch (IOException e) {
-			return LogoUploadStatus.INTERNAL_ERROR.ordinal();
-		} catch (InterruptedException e) {
-			return LogoUploadStatus.INTERNAL_ERROR.ordinal();
-		} catch (IM4JavaException e) {
-			return LogoUploadStatus.INTERNAL_ERROR.ordinal();
-		}finally{
+		} catch (IOException | InterruptedException | IM4JavaException e) {
+			return ImmutableMap.of(JsonConst.VALUE, LogoUploadStatus.INTERNAL_ERROR);
+		} finally {
 			if(inFile != null) inFile.delete();
 			if(outFile != null) outFile.delete();
 		}
-		return LogoUploadStatus.OK.ordinal();
+
+		return ImmutableMap.of(JsonConst.VALUE, LogoUploadStatus.OK);
 	}
 	
 	public void clearLogo(Long businessID){

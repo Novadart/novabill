@@ -23,10 +23,10 @@ angular.module('novabill.directives.validation',
                 ctrl.$validators.vatId = function(viewValue) {
                     var optional = attrs.nOptional !== undefined && scope.nOptional!=='false';
 
-                    if(viewValue === ''){
-                        return optional;
-                    } else {
+                    if(viewValue){
                         return (scope.nCountry !== undefined && scope.nCountry !== 'IT') || nRegExp.vatId.test(viewValue);
+                    } else {
+                        return optional;
                     }
 
                 };
@@ -61,10 +61,10 @@ angular.module('novabill.directives.validation',
                 ctrl.$validators.ssn = function(viewValue) {
                     var optional = attrs.nOptional !== undefined && scope.nOptional!=='false';
 
-                    if(viewValue === ''){
-                        return optional;
-                    } else {
+                    if(viewValue){
                         return (scope.nCountry !== undefined && scope.nCountry !== 'IT') || nRegExp.ssn.test(viewValue);
+                    } else {
+                        return optional;
                     }
                 };
 
@@ -97,10 +97,10 @@ angular.module('novabill.directives.validation',
                 ctrl.$validators.ssnOrVatId = function(viewValue) {
                     var optional = attrs.nOptional !== undefined && scope.nOptional!=='false';
 
-                    if(viewValue === ''){
-                        return optional;
-                    } else {
+                    if(viewValue){
                         return (scope.nCountry !== undefined && scope.nCountry !== 'IT') || nRegExp.ssn.test(viewValue) || nRegExp.vatId.test(viewValue);
+                    } else {
+                        return optional;
                     }
                 };
 
