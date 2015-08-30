@@ -260,7 +260,7 @@ public class Business implements Serializable, Taxable {
     
     public <T extends AccountingDocument> List<Long> getCurrentYearDocumentsIDs(Class<T> cls, String suffix){
     	String sql = String.format("select o.documentID from %s as o where o.business.id = :businessId and o.accountingDocumentYear = :year and ", cls.getSimpleName());
-        sql += (suffix == null? "o.documentIDSuffix is NULL": "lower(o.documentIDSuffix) = lower(:suffix)") + "order by o.documentID";
+        sql += (suffix == null? "o.documentIDSuffix is NULL": "lower(o.documentIDSuffix) = lower(:suffix)") + " order by o.documentID";
     	TypedQuery<Long> query = entityManager.createQuery(sql, Long.class)
     			.setParameter("businessId", getId())
     			.setParameter("year", Calendar.getInstance().get(Calendar.YEAR));
