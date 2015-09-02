@@ -127,9 +127,6 @@ angular.module('novabill.clients.controllers',
             // fired when new client button is clicked
             $scope.newClientClick = function() {
                 var client = new (nAjax.Client());
-                client.country = 'IT';
-                client.contact = {};
-
                 var instance = nEditClientDialog.open(client);
                 instance.result.then(
                     function(client){

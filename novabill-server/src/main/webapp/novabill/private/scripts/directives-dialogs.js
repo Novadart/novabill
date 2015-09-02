@@ -29,11 +29,27 @@ angular.module('novabill.directives.dialogs',
                             var PriceList = nAjax.PriceList();
 							var PaymentType = nAjax.PaymentType();
 
+                            // happens when the client is new
+                            if(!$scope.client.country) {
+                                $scope.client.country = 'IT';
+                                $scope.client.contact = {};
+                                $scope.client.defaultDocumentIDClassID = null;
+                                $scope.client.splitPaymentClient = false;
+                            }
+
                             DocumentIDClass.query(function(docIdClasses){
                                 $scope.docIdClasses = docIdClasses;
                             });
                             PriceList.query(function(priceLists){
                                 $scope.priceLists = priceLists;
+
+								if(!$scope.client.defaultPriceListID)
+								for(var idx in priceLists){
+                                    if(priceLists[idx].name === nConstants.conf.defaultPriceListName){
+                                        $scope.client.defaultPriceListID = priceLists[idx].id;
+                                    }
+								}
+
                             });
 							PaymentType.query(function(paymentTypes){
 								$scope.paymentTypes = paymentTypes;
