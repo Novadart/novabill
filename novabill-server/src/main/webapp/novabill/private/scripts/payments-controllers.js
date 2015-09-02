@@ -112,8 +112,6 @@ angular.module('novabill.payments.controllers', ['novabill.translations', 'novab
 					}
 				});
 
-				$scope.clear();
-
 			}
 
 		}]);

@@ -4,7 +4,7 @@
 <spring:url var="novabillCoreUrl" value="/novabill/private" />
 <spring:url var="novabillDepsUrl" value="/novabill-deps" />
 
-<link href="${novabillDepsUrl}/AngularJS-Toaster-0.4.7/toaster.css?v=${project.version}" rel="stylesheet" type="text/css" />
+<link href="${novabillDepsUrl}/AngularJS-Toaster-0.4.15/toaster.css?v=${project.version}" rel="stylesheet" type="text/css" />
 
 <link href="${novabillCoreUrl}/css/global.css?v=${project.version}" rel="stylesheet" type="text/css" />
 <link href="${novabillCoreUrl}/css/directives.css?v=${project.version}" rel="stylesheet" type="text/css" />
