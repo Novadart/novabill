@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>novabill</artifactId>
 		<groupId>com.novadart.novabill</groupId>
-		<version>3.8</version>
+		<version>4.0</version>
 	</parent>
 	<artifactId>novabill-gwt-client</artifactId>
 	<packaging>war</packaging>
@@ -98,6 +98,7 @@
 							<execution>
 								<phase>compile</phase>
 								<configuration>
+                                    <!--<style>PRETTY</style>-->
 									<modules>
 										<module>com.novadart.novabill.frontend.Novabill</module>
 									</modules>

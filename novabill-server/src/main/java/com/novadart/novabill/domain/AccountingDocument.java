@@ -36,6 +36,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.Type;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -89,6 +90,9 @@ public abstract class AccountingDocument {
     @OrderBy("id")
     @Valid
     protected List<AccountingDocumentItem> accountingDocumentItems = new LinkedList<AccountingDocumentItem>();
+
+    @Size(max = 1024)
+    protected String documentPath;
     
     @AttributeOverrides({
 		@AttributeOverride(name = "companyName", column = @Column(name = "to_company_name")),
@@ -130,6 +134,11 @@ public abstract class AccountingDocument {
 		String sql = String.format("select distinct d from %s d join fetch d.accountingDocumentItems where d.id in (:ids) order by d.accountingDocumentDate asc", cls.getSimpleName());
 		return entityManager().createQuery(sql, cls).setParameter("ids", ids).getResultList();
 	}
+
+    public String getExpandedDocumentId(){
+        return String.valueOf(getDocumentID()) + (StringUtils.isEmpty(getDocumentIDSuffix())? "": getDocumentIDSuffix());
+
+    }
 	
 	/*
 	 * Getters and setters
@@ -137,6 +146,8 @@ public abstract class AccountingDocument {
 	 */
 	
 	public abstract Client getClient();
+
+    public abstract Business getBusiness();
 	
 	public Long getDocumentID() {
         return this.documentID;
@@ -223,7 +234,15 @@ public abstract class AccountingDocument {
 		this.layoutType = layoutType;
 	}
 
-	public List<AccountingDocumentItem> getAccountingDocumentItems() {
+    public String getDocumentPath() {
+        return documentPath;
+    }
+
+    public void setDocumentPath(String documentPDFPath) {
+        this.documentPath = documentPDFPath;
+    }
+
+    public List<AccountingDocumentItem> getAccountingDocumentItems() {
         return this.accountingDocumentItems;
     }
     
@@ -249,6 +268,11 @@ public abstract class AccountingDocument {
 			public Client getClient() {
 				return null;
 			}
+
+            @Override
+            public Business getBusiness() {
+                return null;
+            }
         }.entityManager;
         if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
         return em;

@@ -22,6 +22,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +36,7 @@ import static org.junit.Assert.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
 @ActiveProfiles("dev")
+@DirtiesContext
 public class DocumentIDClassServiceTest extends ServiceTest{
 
     @Autowired
@@ -223,13 +225,19 @@ public class DocumentIDClassServiceTest extends ServiceTest{
         docIDClassesService.update(getUnathorizedBusinessID(), DocumentIDClassDTOTransformer.toDTO(docIDClass));
     }
 
-    @Test(expected = ValidationException.class)
-    public void duplicateSuffixTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException{
+    @Test(expected = Exception.class)
+    public void duplicateSuffixTest() throws NotAuthenticatedException, FreeUserAccessForbiddenException, DataAccessException, ValidationException {
         Long businessID = authenticatedPrincipal.getBusiness().getId();
         DocumentIDClassDTO priceListDTO = DocumentIDClassDTOTransformer.toDTO(TestUtils.createDocumentIDClass());
         priceListDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
         docIDClassesService.add(businessID, priceListDTO);
-        docIDClassesService.add(businessID, priceListDTO);
+        try {
+            docIDClassesService.add(businessID, priceListDTO);
+        } catch (ValidationException e) {
+            assertTrue(true);
+            throw e;
+        }
+        fail();
     }
 
     @Test
@@ -242,7 +250,7 @@ public class DocumentIDClassServiceTest extends ServiceTest{
         docIDClassesService.update(businessID, docIDClassDTO);
     }
 
-    @Test(expected = ValidationException.class)
+    @Test(expected = Exception.class)
     public void caseInsensitiveSuffixTest() throws ValidationException {
         DocumentIDClassDTO docIDClassDTO = DocumentIDClassDTOTransformer.toDTO(TestUtils.createDocumentIDClass());
         docIDClassDTO.setSuffix("bis");
@@ -253,7 +261,13 @@ public class DocumentIDClassServiceTest extends ServiceTest{
         docIDClassDTO = DocumentIDClassDTOTransformer.toDTO(TestUtils.createDocumentIDClass());
         docIDClassDTO.setSuffix("BIS");
         docIDClassDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
-        docIDClassesService.add(businessID, docIDClassDTO);
+        try {
+            docIDClassesService.add(businessID, docIDClassDTO);
+        } catch (ValidationException e) {
+            assertTrue(true);
+            throw e;
+        }
+        fail();
     }
 
 }

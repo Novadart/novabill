@@ -29,7 +29,7 @@
 			<div class="credit-notes">
 				<img class="spinner" ng-show="creditNotes==null" src="../../private_assets/img/ajax-loading.gif">
 				<p class="no-data-message text-center text-info" ng-show="creditNotes && creditNotes.length===0">{{'NO_DATA' | translate}}</p>
-				<n-credit-note credit-note="note" bottom-up-menu="!$first && $last" ng-repeat="note in creditNotes"></n-credit-note>
+				<n-credit-note credit-note="note" bottom-up-menu="!$first && ($last || $index>4)" ng-repeat="note in creditNotes"></n-credit-note>
 			</div>
 		</div>
 	</div>

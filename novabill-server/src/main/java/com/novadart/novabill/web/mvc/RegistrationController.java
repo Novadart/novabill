@@ -1,31 +1,24 @@
 package com.novadart.novabill.web.mvc;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.domain.security.RoleType;
+import com.novadart.novabill.service.mail.EmailBuilder;
+import com.novadart.novabill.service.mail.MailHandlingType;
+import com.novadart.novabill.service.validator.RegistrationValidator;
+import com.novadart.novabill.web.mvc.command.Registration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 
-import com.novadart.novabill.annotation.MailMixin;
-import com.novadart.novabill.domain.security.Principal;
-import com.novadart.novabill.domain.security.RoleType;
-import com.novadart.novabill.service.validator.RegistrationValidator;
-import com.novadart.novabill.web.mvc.command.Registration;
+import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.security.NoSuchAlgorithmException;
+import java.util.Locale;
 
 /*
  * RegistrationController controller class handles the process of creating registration request.
@@ -35,7 +28,6 @@ import com.novadart.novabill.web.mvc.command.Registration;
  */
 @Controller
 @SessionAttributes("registration")
-@MailMixin
 public class RegistrationController{
 
 	@Autowired
@@ -57,9 +49,12 @@ public class RegistrationController{
 
 
 	private void sendRegistrationCompletedMail(Registration registration, Locale locale) throws UnsupportedEncodingException{
-		Map<String, Object> templateVars = new HashMap<String, Object>();
-		templateVars.put("registrationEmail", registration.getEmail());
-		sendMessage(registration.getEmail(), "Benvenuto in Novabill", templateVars, EMAIL_TEMPLATE_LOCATION);
+		new EmailBuilder().to(registration.getEmail())
+				.subject("Benvenuto in Novabill")
+				.template(EMAIL_TEMPLATE_LOCATION)
+				.templateVar("registrationEmail", registration.getEmail())
+				.handlingType(MailHandlingType.EXTERNAL_UNACKNOWLEDGED)
+				.build().send();
 	}
 
 	@RequestMapping(value = Urls.PUBLIC_REGISTER, method = RequestMethod.POST)

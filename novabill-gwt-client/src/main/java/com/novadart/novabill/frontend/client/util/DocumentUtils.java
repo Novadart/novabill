@@ -5,7 +5,13 @@ import java.util.Date;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.web.bindery.autobean.shared.AutoBean;
+import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.novadart.novabill.frontend.client.Configuration;
+import com.novadart.novabill.frontend.client.bridge.BridgeUtils;
+import com.novadart.novabill.frontend.client.bridge.server.autobean.AutoBeanDecoder;
+import com.novadart.novabill.frontend.client.bridge.server.autobean.AutoBeanMaker;
+import com.novadart.novabill.frontend.client.bridge.server.autobean.Client;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
@@ -65,7 +71,7 @@ public class DocumentUtils {
 		return str == null || str.isEmpty();
 	}
 
-	public static void showClientDialogIfClientInformationNotComplete(ClientDTO client, final AsyncCallback<ClientDTO> callback){
+	public static void showClientDialogIfClientInformationNotComplete(final ClientDTO client, final AsyncCallback<ClientDTO> callback){
 		if( isEmpty(client.getAddress()) 
 				|| isEmpty(client.getAddress())
 				|| isEmpty(client.getCity())
@@ -74,14 +80,28 @@ public class DocumentUtils {
 				|| isEmpty(client.getPostcode())
 				|| (isEmpty(client.getSsn()) && isEmpty(client.getVatID()) ) ){
 			
-			ClientDialog clientDialog = new ClientDialog(Configuration.getBusiness().getId(), true, callback);
-			clientDialog.setClient(client);
-			clientDialog.center();
+			showClientDialogIfClientInformationNotComplete(client.getId(), new ManagedAsyncCallback<String>() {
+                @Override
+                public void onSuccess(String clientJson) {
+                    AutoBean<Client> bean = AutoBeanCodex.decode(AutoBeanMaker.INSTANCE, Client.class, clientJson);
+                    ClientDTO clientDTO = AutoBeanDecoder.decode(bean.as());
+                    callback.onSuccess(clientDTO);
+                }
+            });
 
 		} else {
 			callback.onSuccess(client);
 		}
 	}
+
+
+	private static native void showClientDialogIfClientInformationNotComplete(Long id, AsyncCallback<String> callback)/*-{
+		$wnd.Angular_openClientDialog(id, true, function(clientJson){
+			callback.@com.google.gwt.user.client.rpc.AsyncCallback::onSuccess(*)(clientJson);
+		});
+	}-*/;
+
+
 	
 	public static void showBusinessDialogIfBusinessInformationNotComplete(final AsyncCallback<Void> callback){
 		BusinessDTO b = Configuration.getBusiness();
@@ -94,18 +114,18 @@ public class DocumentUtils {
 				|| isEmpty( b.getCountry() ) ){
 			
 			showBusinessDialog(new BusinessUpdatedCallback() {
-				
+
 				@Override
 				public void onUpdateComplete() {
 					ServerFacade.INSTANCE.getBusinessService().get(Configuration.getBusinessId(), new ManagedAsyncCallback<BusinessDTO>() {
-						
+
 						@Override
 						public void onSuccess(BusinessDTO result) {
 							Configuration.setBusiness(result);
 							callback.onSuccess(null);
 						}
 					});
-					
+
 				}
 			});
 

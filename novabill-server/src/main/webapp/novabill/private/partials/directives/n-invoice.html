@@ -1,7 +1,8 @@
 <div class="well well-small document-well invoice" ng-class="{'payed' : invoice.payed, 'not-payed' : !invoice.payed, 'expired' : expired}" ng-click="openUrl()">
 	<strong class="documentId">{{invoice.documentID}}</strong> 
-	<i ng-if="invoice.emailedToClient && !invoice.seenByClientTime" tooltip="{{'EMAIL_SENT' | translate}}" class="email-status fa fa-envelope-o"></i>
-	<i ng-if="invoice.seenByClientTime" tooltip="{{'EMAIL_SEEN_BY_CLIENT_AT' | translate}} {{invoice.seenByClientTime | date:'dd/MM/yyyy HH:mm'}}" class="email-status fa fa-inbox"></i>
+	<i ng-if="invoice.emailedToClient==='SENT'" tooltip="{{'EMAIL_SENT' | translate}}" class="email-status fa fa-envelope-o"></i>
+	<i ng-if="invoice.emailedToClient==='READ'" tooltip="{{'EMAIL_SEEN_BY_CLIENT_AT' | translate}} {{invoice.seenByClientTime | date:'dd/MM/yyyy HH:mm'}}" class="email-status fa fa-inbox"></i>
+	<i ng-if="invoice.emailedToClient==='FAILURE'" tooltip="{{'EMAIL_FAILURE' | translate}}" class="email-status fa fa-exclamation-circle"></i>
 	<i ng-if="!invoice.emailedToClient && !invoice.seenByClientTime" class="spacer">&nbsp;</i>
 	<span class="date">{{invoice.accountingDocumentDate | date:"dd MMMM yyyy" }}</span> 
 	<span class="clientName">{{invoice.client.name}}</span>

@@ -16,7 +16,6 @@ public class PriceListDTO implements IsSerializable {
 	
 	private List<CommodityDTO> commodities;
 	
-	@JsonSerialize(using=ToStringSerializer.class)
 	public Long getId() {
 		return id;
 	}

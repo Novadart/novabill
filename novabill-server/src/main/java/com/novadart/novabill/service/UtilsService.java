@@ -1,30 +1,34 @@
 package com.novadart.novabill.service;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.io.IOUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.authentication.encoding.PasswordEncoder;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Service;
-
 import com.google.gwt.user.client.rpc.SerializationException;
 import com.google.gwt.user.server.rpc.RPC;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
+import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.encoding.PasswordEncoder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.util.function.Supplier;
 
 @Service("utilsService")
 public class UtilsService {
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+
+	@Autowired
+	private PrincipalDetailsService principalDetailsService;
 
 	private Authentication getAuthentication(){
 		return SecurityContextHolder.getContext().getAuthentication();
@@ -71,5 +75,33 @@ public class UtilsService {
 	public boolean isPasswordValid(String encodedPassword, String rawPassword){
 		return passwordEncoder.isPasswordValid(encodedPassword, rawPassword, null);
 	}
-	
+
+	private void setSecurityContext(String username){
+		UserDetails userDetails = principalDetailsService.loadUserByUsername(username);
+		Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
+		SecurityContextHolder.getContext().setAuthentication(auth);
+	}
+
+	private void clearSecurityContext(){
+		SecurityContextHolder.getContext().setAuthentication(null);
+	}
+
+	/*
+	 * This method executes 'action' on the behalf of the business identified by 'businessID', taking advantage of the
+	 * credentials given to the said business. To be used with care.
+	 */
+	public <T> T executeActionAsBusiness(Supplier<T> action, Long businessID){
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication(); //save authentication
+		try{
+			Business business = Business.findBusiness(businessID);
+			String username = business.getPrincipals().iterator().next().getUsername();
+			setSecurityContext(username);
+			return action.get();
+		} finally {
+			clearSecurityContext();
+			SecurityContextHolder.getContext().setAuthentication(auth); //restore authentication
+		}
+	}
+
+
 }

@@ -1,68 +1,49 @@
 package com.novadart.novabill.test.suite;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.novadart.novabill.aspect.logging.DBLoggerAspect;
-import com.novadart.novabill.domain.Business;
-import com.novadart.novabill.domain.Client;
-import com.novadart.novabill.domain.Invoice;
-import com.novadart.novabill.domain.LogRecord;
-import com.novadart.novabill.domain.TransportDocument;
+import com.novadart.novabill.domain.*;
 import com.novadart.novabill.domain.dto.DTOUtils;
 import com.novadart.novabill.domain.dto.transformer.BusinessDTOTransformer;
 import com.novadart.novabill.domain.dto.transformer.ClientDTOTransformer;
 import com.novadart.novabill.domain.dto.transformer.TransportDocumentDTOTransformer;
 import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.service.PDFStorageService;
 import com.novadart.novabill.shared.client.data.EntityType;
 import com.novadart.novabill.shared.client.data.OperationType;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
-import com.novadart.novabill.shared.client.exception.DataAccessException;
-import com.novadart.novabill.shared.client.exception.DataIntegrityException;
-import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
-import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
-import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
-import com.novadart.novabill.shared.client.exception.ValidationException;
-import com.novadart.novabill.shared.client.facade.BatchDataFetcherGwtService;
-import com.novadart.novabill.shared.client.facade.BusinessGwtService;
-import com.novadart.novabill.shared.client.facade.ClientGwtService;
-import com.novadart.novabill.shared.client.facade.InvoiceGwtService;
-import com.novadart.novabill.shared.client.facade.TransportDocumentGwtService;
+import com.novadart.novabill.shared.client.exception.*;
+import com.novadart.novabill.shared.client.facade.*;
 import com.novadart.novabill.shared.client.tuple.Triple;
 import com.novadart.novabill.shared.client.validation.ErrorObject;
 import com.novadart.novabill.shared.client.validation.Field;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.util.*;
+
+import static org.junit.Assert.*;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath*:gwt-transportdocument-test-config.xml")
 @Transactional
+@DirtiesContext
 @ActiveProfiles("dev")
 public class TransportDocumentServiceTest extends ServiceTest {
 	
@@ -80,6 +61,9 @@ public class TransportDocumentServiceTest extends ServiceTest {
 	
 	@Autowired
 	private ClientGwtService clientService;
+
+	@Autowired
+	private PDFStorageService pdfStorageService;
 	
 	@Override
 	@Before
@@ -269,8 +253,8 @@ public class TransportDocumentServiceTest extends ServiceTest {
 		assertEquals(transDocDTO.getDocumentID().toString(), details.get(DBLoggerAspect.DOCUMENT_ID));
 	}
 	
-	@Test(expected = ValidationException.class)
-	public void addAuthorizedForThinClientValidationErrorTest() throws InstantiationException, IllegalAccessException, NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException{
+	@Test(expected = Exception.class)
+	public void addAuthorizedForThinClientValidationErrorTest() throws InstantiationException, IllegalAccessException, NotAuthenticatedException, FreeUserAccessForbiddenException, DataAccessException, ValidationException {
 		Client client = new Client();
 		client.setName("John Doe");
 		client.setBusiness(authenticatedPrincipal.getBusiness());
@@ -279,7 +263,13 @@ public class TransportDocumentServiceTest extends ServiceTest {
 		TransportDocumentDTO transDocDTO = TransportDocumentDTOTransformer.toDTO(TestUtils.createTransportDocument(authenticatedPrincipal.getBusiness().getNextInvoiceDocumentID(null)), true);
 		transDocDTO.setClient(ClientDTOTransformer.toDTO(Client.findClient(clientID)));
 		transDocDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
-		transportDocService.add(transDocDTO);
+		try {
+			transportDocService.add(transDocDTO);
+		} catch (ValidationException e) {
+			assertTrue(true);
+			throw e;
+		}
+		fail();
 	}
 	
 	@Test(expected = DataAccessException.class)
@@ -306,8 +296,8 @@ public class TransportDocumentServiceTest extends ServiceTest {
 		transportDocService.add(transDocDTO);
 	}
 	
-	@Test
-	public void updateAuthorizedValidationFieldMappingTest() throws IllegalAccessException, InvocationTargetException, NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException, InstantiationException{
+	@Test(expected = Exception.class)
+	public void updateAuthorizedValidationFieldMappingTest() throws IllegalAccessException, InvocationTargetException, NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException, InstantiationException, ValidationException {
 		try{
 			TransportDocumentDTO transDocDTO = TransportDocumentDTOTransformer.toDTO(TestUtils.createInvalidTransportDocument(authenticatedPrincipal.getBusiness().getNextTransportDocDocumentID()), true);
 			transDocDTO.setClient(ClientDTOTransformer.toDTO(authenticatedPrincipal.getBusiness().getClients().iterator().next()));
@@ -324,7 +314,9 @@ public class TransportDocumentServiceTest extends ServiceTest {
 			for(ErrorObject error: e.getErrors())
 				actual.add(error.getField());
 			assertEquals(expected, actual);
+			throw e;
 		}
+		fail();
 	}
 	
 	@Test
@@ -442,6 +434,27 @@ public class TransportDocumentServiceTest extends ServiceTest {
 		assertTrue(TransportDocument.findTransportDocument(transDoc.getId()).getInvoice() == null);
 		assertTrue(!Invoice.findInvoice(invoice.getId()).getTransportDocuments().contains(TransportDocument.findTransportDocument(transDoc.getId())));
 		assertTrue(transportDocService.get(transDoc.getId()).getInvoice() == null);
+	}
+
+	@Test
+	public void purgeOrghanCrednotesPdfsTest() throws IllegalAccessException, InstantiationException, NotAuthenticatedException, FreeUserAccessForbiddenException, DataIntegrityException, DataAccessException, ValidationException, NoSuchObjectException {
+		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
+		TransportDocumentDTO transDocDTO = TransportDocumentDTOTransformer.toDTO(TestUtils.createTransportDocument(authenticatedPrincipal.getBusiness().getNextInvoiceDocumentID(null)), true);
+		transDocDTO.setClient(ClientDTOTransformer.toDTO(client));
+		transDocDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
+		Long id = transportDocService.add(transDocDTO);
+		TransportDocument.entityManager().flush();
+		String oldPdfPath = TransportDocument.findTransportDocument(id).getDocumentPath();
+		TransportDocument expectedTransDoc = TransportDocument.findTransportDocument(id);
+		expectedTransDoc.setNote("Temporary note for this estimation");
+		transportDocService.update(TransportDocumentDTOTransformer.toDTO(expectedTransDoc, true));
+		TransportDocument.entityManager().flush();
+		String currPdfPath = TransportDocument.findTransportDocument(id).getDocumentPath();
+		assertTrue(Files.exists(FileSystems.getDefault().getPath(oldPdfPath)));
+		assertTrue(Files.exists(FileSystems.getDefault().getPath(currPdfPath)));
+		pdfStorageService.purgeOrphanPDFs();
+		assertTrue(!Files.exists(FileSystems.getDefault().getPath(oldPdfPath)));
+		assertTrue(Files.exists(FileSystems.getDefault().getPath(currPdfPath)));
 	}
 	
 }

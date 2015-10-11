@@ -47,7 +47,8 @@ public aspect RestExceptionProcessorAspect {
 	@ExceptionHandler(value = {RuntimeException.class})
 	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
 	@ResponseBody
-	public Map<String, Object> RestExceptionProcessor.runtimeExceptionHandler(){
+	public Map<String, Object> RestExceptionProcessor.runtimeExceptionHandler(RuntimeException ex){
+		ex.printStackTrace();
 		return ImmutableMap.<String, Object>of("error", "INTERNAL SERVER ERROR");
 	}
 	

@@ -34,6 +34,12 @@ mvn.smtp.password=
 mvn.default.sender=Novabill <no-reply@novabill.it>
 
 #
+# Email - MailGun
+#
+mvn.mailgun.api.key=key-f1711526fbd68da446e5440bf24ffa2e
+mvn.mailgun.api.base.url=https://api.mailgun.net/v3/sandboxc230e96b848f4a6c925baa26ec2db731.mailgun.org
+
+#
 # Email Notifications
 #
 mvn.notification.registration=true
@@ -60,8 +66,6 @@ mvn.forgotpassword.expiration=48
 mvn.sharing.expiration=8
 mvn.spring.profiles.active=dev
 mvn.devMode.enabled=true
-mvn.tiles.javascript.definition=expandedJS
-mvn.tiles.css.definition=expandedCSS
 mvn.tiles.minify.html=false
 mvn.invoice.pdf.url=http://localhost:8080/novabill-server/email/invoices?id=%d&token=%s
 mvn.novadart.username=giordano.battilana@novadart.com
@@ -86,3 +90,13 @@ mvn.paypal.hostedButtonIDTwoYears=UC6FAHQL9E5T2
 #mvn.quota.numberOfTransportDocsPerYear=1
 #mvn.quota.numberOfCommodities=1
 #mvn.quota.numberOfPaymentTypes=7
+
+#
+# PDF storage
+#
+mvn.pdf.storage.path=/tmp/novabill/pdf
+
+#
+# Tests
+#
+mvn.test.print.summary=false

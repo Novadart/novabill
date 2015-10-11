@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.novadart.novabill</groupId>
 	<artifactId>novabill</artifactId>
-	<version>3.8</version>
+	<version>4.0</version>
 	<packaging>pom</packaging>
 
 	<name>Novabill</name>
@@ -36,19 +36,20 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java.version>1.7</java.version>
-		<aspectj.version>1.7.4</aspectj.version>
-		<spring.version>3.2.9.RELEASE</spring.version>
+		<java.version>1.8</java.version>
+		<aspectj.version>1.8.1</aspectj.version>
+		<spring.version>4.1.2.RELEASE</spring.version>
 		<hibernate.version>4.2.13.Final</hibernate.version>
 		<hibernate-search.version>4.4.3.Final</hibernate-search.version>
 		<spring-security.version>3.2.4.RELEASE</spring-security.version>
 		<gwt.version>2.5.1</gwt.version>
 		<jackson.version>2.3.3</jackson.version>
+		<jersey.version>1.19</jersey.version>
 	</properties>
 
 	<scm>
-		<connection>scm:git:ssh://gitolite@scm.dev.novadart.com/novadart/novadart-novabill.git</connection>
-		<developerConnection>scm:git:ssh://gitolite@scm.dev.novadart.com/novadart/novadart-novabill.git</developerConnection>
+		<connection>scm:git:ssh://git@gitlab.dev.novadart.com:novadart/novabill.git</connection>
+		<developerConnection>scm:git:ssh://git@gitlab.dev.novadart.com:novadart/novabill.git</developerConnection>
 	</scm>
 
 	<modules>
@@ -58,10 +59,10 @@
 	</modules>
 
 	<dependencyManagement>
-		<dependencies> 
-   
+		<dependencies>
+
 			<!-- Novabill internal dependencies -->
-			<dependency> 
+			<dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>novabill-gwt-shared</artifactId>
 				<version>${project.version}</version>
@@ -171,10 +172,10 @@
 				<version>${spring.version}</version>
 			</dependency>
 			<dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-tx</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-tx</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-core</artifactId>
@@ -200,22 +201,27 @@
 				<artifactId>spring-security-aspects</artifactId>
 				<version>${spring-security.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>javax.cache</groupId>
+				<artifactId>cache-api</artifactId>
+				<version>1.0.0</version>
+			</dependency>
 
 			<!-- Logging -->
 			<dependency>
 				<groupId>ch.qos.logback</groupId>
 				<artifactId>logback-classic</artifactId>
-				<version>1.1.2</version>
+				<version>1.1.3</version>
 			</dependency>
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>jcl-over-slf4j</artifactId>
-				<version>1.7.6</version>
+				<version>1.7.12</version>
 			</dependency>
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>log4j-over-slf4j</artifactId>
-				<version>1.7.6</version>
+				<version>1.7.12</version>
 			</dependency>
 			<dependency>
 				<groupId>commons-logging</groupId>
@@ -294,7 +300,7 @@
 			<dependency>
 				<groupId>net.sf.jasperreports</groupId>
 				<artifactId>jasperreports</artifactId>
-				<version>5.5.1</version>
+				<version>6.0.3</version>
 			</dependency>
 			<dependency>
 				<groupId>com.novadart.jasperreports.fonts</groupId>
@@ -329,7 +335,7 @@
 				<version>${jackson.version}</version>
 			</dependency>
 
-			<!-- Other libs -->
+			<!-- HTML Compressor -->
 			<dependency>
 				<groupId>com.googlecode.htmlcompressor</groupId>
 				<artifactId>htmlcompressor</artifactId>
@@ -346,6 +352,9 @@
 					</exclusion>
 				</exclusions>
 			</dependency>
+
+
+			<!-- Other libs -->
 			<dependency>
 				<groupId>javax.validation</groupId>
 				<artifactId>validation-api</artifactId>
@@ -439,12 +448,29 @@
 			<dependency>
 				<groupId>com.google.guava</groupId>
 				<artifactId>guava</artifactId>
-				<version>17.0</version>
+				<version>18.0</version>
 			</dependency>
 			<dependency>
 				<groupId>javax.servlet</groupId>
 				<artifactId>servlet-api</artifactId>
 				<version>2.5</version>
+			</dependency>
+
+			<!-- Jersey-->
+			<dependency>
+				<groupId>com.sun.jersey</groupId>
+				<artifactId>jersey-client</artifactId>
+				<version>${jersey.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.sun.jersey</groupId>
+				<artifactId>jersey-core</artifactId>
+				<version>${jersey.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.sun.jersey.contribs</groupId>
+				<artifactId>jersey-multipart</artifactId>
+				<version>${jersey.version}</version>
 			</dependency>
 
 		</dependencies>
@@ -454,24 +480,17 @@
 		<pluginManagement>
 			<plugins>
 				<plugin>
-					<groupId>ro.isdc.wro4j</groupId>
-					<artifactId>wro4j-maven-plugin</artifactId>
-					<version>1.7.2</version>
-					<dependencies>
-						<dependency>
-							<groupId>ro.isdc.wro4j</groupId>
-							<artifactId>wro4j-extensions</artifactId>
-							<version>1.7.2</version>
-						</dependency>
-					</dependencies>
-				</plugin>
-				<plugin>
 					<groupId>com.github.searls</groupId>
 					<artifactId>jasmine-maven-plugin</artifactId>
 					<version>1.3.1.4</version>
 					<configuration>
 						<skipTests>true</skipTests>
 					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>build-helper-maven-plugin</artifactId>
+					<version>1.9.1</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.tomcat.maven</groupId>
@@ -494,7 +513,7 @@
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>aspectj-maven-plugin</artifactId>
-					<version>1.6</version>
+					<version>1.7</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -524,7 +543,8 @@
 					<artifactId>maven-surefire-plugin</artifactId>
 					<version>2.17</version>
 					<configuration>
-						<printSummary>false</printSummary>
+						<reuseForks>false</reuseForks>
+						<printSummary>${mvn.test.print.summary}</printSummary>
 						<redirectTestOutputToFile>true</redirectTestOutputToFile>
 						<skipTests>true</skipTests>
 					</configuration>

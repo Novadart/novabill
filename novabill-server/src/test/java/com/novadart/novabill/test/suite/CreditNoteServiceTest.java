@@ -7,16 +7,22 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.novadart.novabill.domain.*;
+import com.novadart.novabill.service.PDFStorageService;
+import com.novadart.novabill.shared.client.exception.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -25,10 +31,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.novadart.novabill.aspect.logging.DBLoggerAspect;
-import com.novadart.novabill.domain.Business;
-import com.novadart.novabill.domain.Client;
-import com.novadart.novabill.domain.CreditNote;
-import com.novadart.novabill.domain.LogRecord;
 import com.novadart.novabill.domain.dto.DTOUtils;
 import com.novadart.novabill.domain.dto.transformer.BusinessDTOTransformer;
 import com.novadart.novabill.domain.dto.transformer.ClientDTOTransformer;
@@ -39,11 +41,6 @@ import com.novadart.novabill.shared.client.data.OperationType;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
-import com.novadart.novabill.shared.client.exception.DataAccessException;
-import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
-import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
-import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
-import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.facade.ClientGwtService;
 import com.novadart.novabill.shared.client.facade.CreditNoteGwtService;
 import com.novadart.novabill.shared.client.validation.ErrorObject;
@@ -53,6 +50,7 @@ import com.novadart.novabill.shared.client.validation.Field;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath*:gwt-creditnote-test-config.xml")
 @Transactional
+@DirtiesContext
 @ActiveProfiles("dev")
 public class CreditNoteServiceTest extends ServiceTest {
 	
@@ -61,6 +59,9 @@ public class CreditNoteServiceTest extends ServiceTest {
 	
 	@Autowired
 	private ClientGwtService clientService;
+
+	@Autowired
+	private PDFStorageService pdfStorageService;
 	
 	@Test
 	public void creditNoteServiceWiringTest(){
@@ -212,6 +213,7 @@ public class CreditNoteServiceTest extends ServiceTest {
 		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
 		assertEquals(client.getName(), details.get(DBLoggerAspect.CLIENT_NAME));
 		assertEquals(creditNoteDTO.getDocumentID().toString(), details.get(DBLoggerAspect.DOCUMENT_ID));
+		assertTrue(Files.exists(FileSystems.getDefault().getPath(CreditNote.findCreditNote(id).getDocumentPath())));
 	}
 	
 	@Test(expected = ValidationException.class)
@@ -266,6 +268,7 @@ public class CreditNoteServiceTest extends ServiceTest {
 		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
 		assertEquals(expectedCreditNote.getClient().getName(), details.get(DBLoggerAspect.CLIENT_NAME));
 		assertEquals(expectedCreditNote.getDocumentID().toString(), details.get(DBLoggerAspect.DOCUMENT_ID));
+		assertTrue(Files.exists(FileSystems.getDefault().getPath(actualCreditNote.getDocumentPath())));
 	}
 	
 	@Test(expected = DataAccessException.class)
@@ -301,5 +304,27 @@ public class CreditNoteServiceTest extends ServiceTest {
 			assertEquals(expected, actual);
 		}
 	}
-	
+
+	@Test
+	public void purgeOrghanCrednotesPdfsTest() throws IllegalAccessException, InstantiationException, NotAuthenticatedException, FreeUserAccessForbiddenException, DataIntegrityException, DataAccessException, ValidationException, NoSuchObjectException {
+		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
+		CreditNoteDTO credNoteDTO = CreditNoteDTOTransformer.toDTO(TestUtils.createInvOrCredNote(authenticatedPrincipal.getBusiness().getNextInvoiceDocumentID(null), CreditNote.class), true);
+		credNoteDTO.setClient(ClientDTOTransformer.toDTO(client));
+		credNoteDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
+		Long id = creditNoteService.add(credNoteDTO);
+		CreditNote.entityManager().flush();
+		String oldPdfPath = CreditNote.findCreditNote(id).getDocumentPath();
+		CreditNote expectedCredNote = CreditNote.findCreditNote(id);
+		expectedCredNote.setNote("Temporary note for this credit note");
+		creditNoteService.update(CreditNoteDTOTransformer.toDTO(expectedCredNote, true));
+		CreditNote.entityManager().flush();
+		String currPdfPath = CreditNote.findCreditNote(id).getDocumentPath();
+		assertTrue(Files.exists(FileSystems.getDefault().getPath(oldPdfPath)));
+		assertTrue(Files.exists(FileSystems.getDefault().getPath(currPdfPath)));
+		pdfStorageService.purgeOrphanPDFs();
+		assertTrue(!Files.exists(FileSystems.getDefault().getPath(oldPdfPath)));
+		assertTrue(Files.exists(FileSystems.getDefault().getPath(currPdfPath)));
+	}
+
+
 }

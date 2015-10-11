@@ -19,6 +19,7 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.novadart.novabill.shared.client.dto.MailDeliveryStatus;
 import org.hibernate.annotations.Index;
 import org.hibernate.annotations.Table;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -60,9 +61,8 @@ public class Invoice extends AbstractInvoice implements Serializable {
 	private boolean createdFromTransportDocuments = false;
 	
 	private Long seenByClientTime;
-	
-	@Column(columnDefinition = "boolean default false")
-	private boolean emailedToClient = false;
+
+	private MailDeliveryStatus emailedToClient = MailDeliveryStatus.NOT_SENT;
 
 	@Column(columnDefinition = "boolean default false")
 	private boolean splitPayment = false;
@@ -89,7 +89,7 @@ public class Invoice extends AbstractInvoice implements Serializable {
 								setParameter("year", year).getResultList();
 		Map<String, BigDecimal> commodityRevenue = new HashMap<>(rows.size());
 		for(Object[] row: rows)
-			commodityRevenue.put((String)row[0], (BigDecimal)row[1]);
+			commodityRevenue.put((String) row[0], (BigDecimal) row[1]);
 		return commodityRevenue;
     }
     
@@ -212,11 +212,11 @@ public class Invoice extends AbstractInvoice implements Serializable {
 		this.seenByClientTime = seenByClientTime;
 	}
 
-	public boolean isEmailedToClient() {
+	public MailDeliveryStatus getEmailedToClient() {
 		return emailedToClient;
 	}
 
-	public void setEmailedToClient(boolean emailedToClient) {
+	public void setEmailedToClient(MailDeliveryStatus emailedToClient) {
 		this.emailedToClient = emailedToClient;
 	}
 

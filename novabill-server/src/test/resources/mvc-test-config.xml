@@ -10,8 +10,6 @@
 						http://www.springframework.org/schema/util
 						http://www.springframework.org/schema/util/spring-util-3.1.xsd">
 
-    <import resource="classpath:/META-INF/spring/applicationContext.xml"/>
-    <import resource="classpath:/META-INF/spring/applicationContext-security.xml"/>
     <import resource="classpath*:webmvc-config.xml"/>
     
 </beans>

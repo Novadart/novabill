@@ -1,5 +1,6 @@
 package com.novadart.novabill.web.mvc.ajax;
 
+import com.google.common.collect.ImmutableMap;
 import com.novadart.novabill.annotation.RestExceptionProcessingMixin;
 import com.novadart.novabill.service.web.ClientService;
 import com.novadart.novabill.shared.client.dto.ClientAddressDTO;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RestExceptionProcessingMixin
@@ -31,15 +33,15 @@ public class ClientController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
-    public Long add(@PathVariable Long businessID, @RequestBody ClientDTO clientDTO) throws FreeUserAccessForbiddenException, ValidationException {
-        return clientService.add(businessID, clientDTO);
+    public Map<String, Object> add(@PathVariable Long businessID, @RequestBody ClientDTO clientDTO) throws FreeUserAccessForbiddenException, ValidationException {
+        return ImmutableMap.of(JsonConst.VALUE, clientService.add(businessID, clientDTO));
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
-    public boolean remove(@PathVariable Long businessID, @PathVariable Long id) throws NoSuchObjectException {
-        return clientService.remove(businessID, id);
+    public Map<String, Object> remove(@PathVariable Long businessID, @PathVariable Long id) throws NoSuchObjectException {
+        return ImmutableMap.of(JsonConst.VALUE, clientService.remove(businessID, id));
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
@@ -59,8 +61,8 @@ public class ClientController {
     @RequestMapping(value = "/{id}/addresses", method = RequestMethod.POST)
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
-    public Long addClientAddress(@RequestBody ClientAddressDTO clientAddressDTO) throws NotAuthenticatedException, FreeUserAccessForbiddenException, ValidationException, DataAccessException {
-        return clientService.addClientAddress(clientAddressDTO);
+    public Map<String, Object> addClientAddress(@RequestBody ClientAddressDTO clientAddressDTO) throws NotAuthenticatedException, FreeUserAccessForbiddenException, ValidationException, DataAccessException {
+        return ImmutableMap.of(JsonConst.VALUE, clientService.addClientAddress(clientAddressDTO));
     }
 
     @RequestMapping(value = "/{clientID}/addresses/{id}", method = RequestMethod.DELETE)

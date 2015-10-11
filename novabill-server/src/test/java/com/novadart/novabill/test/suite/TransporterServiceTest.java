@@ -1,20 +1,5 @@
 package com.novadart.novabill.test.suite;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.io.IOException;
-import java.util.Map;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.novadart.novabill.aspect.logging.DBLoggerAspect;
@@ -26,16 +11,26 @@ import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.shared.client.data.EntityType;
 import com.novadart.novabill.shared.client.data.OperationType;
 import com.novadart.novabill.shared.client.dto.TransporterDTO;
-import com.novadart.novabill.shared.client.exception.DataAccessException;
-import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
-import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
-import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
-import com.novadart.novabill.shared.client.exception.ValidationException;
+import com.novadart.novabill.shared.client.exception.*;
 import com.novadart.novabill.shared.client.facade.TransporterGwtService;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.io.IOException;
+import java.util.Map;
+
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath*:gwt-transporter-test-config.xml")
 @Transactional
+@DirtiesContext
 public class TransporterServiceTest extends ServiceTest{
 
 	
@@ -95,21 +90,33 @@ public class TransporterServiceTest extends ServiceTest{
 		transporterService.add(transporterDTO);
 	}
 	
-	@Test(expected = ValidationException.class)
-	public void addAuthorizedValidationError1Test() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException{
+	@Test(expected = Exception.class)
+	public void addAuthorizedValidationError1Test() throws NotAuthenticatedException, FreeUserAccessForbiddenException, DataAccessException, ValidationException {
 		TransporterDTO transporterDTO = new TransporterDTO();
 		String transporterDesc = " \t";
 		transporterDTO.setDescription(transporterDesc);
 		transporterDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
-		transporterService.add(transporterDTO);
+		try {
+			transporterService.add(transporterDTO);
+		} catch (ValidationException e) {
+			assertTrue(true);
+			throw e;
+		}
+		fail();
 	}
 	
-	@Test(expected = ValidationException.class)
-	public void addAuthorizedValidationError2Test() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException{
+	@Test(expected = Exception.class)
+	public void addAuthorizedValidationError2Test() throws NotAuthenticatedException, FreeUserAccessForbiddenException, DataAccessException, ValidationException {
 		TransporterDTO transporterDTO = new TransporterDTO();
 		transporterDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
 		transporterDTO.setDescription(null);
-		transporterService.add(transporterDTO);
+		try {
+			transporterService.add(transporterDTO);
+		} catch (ValidationException e) {
+			assertTrue(true);
+			throw e;
+		}
+		fail();
 	}
 	
 	@Test
@@ -165,8 +172,8 @@ public class TransporterServiceTest extends ServiceTest{
 		assertEquals("Updated transporter description", Transporter.findTransporter(id).getDescription());
 	}
 	
-	@Test(expected = ValidationException.class)
-	public void updateValidationErrorTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException{
+	@Test(expected = Exception.class)
+	public void updateValidationErrorTest() throws NotAuthenticatedException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException, ValidationException {
 		TransporterDTO transporterDTO = new TransporterDTO();
 		String transporterDesc = "Transporter description";
 		transporterDTO.setDescription(transporterDesc);
@@ -175,7 +182,13 @@ public class TransporterServiceTest extends ServiceTest{
 		Transporter.entityManager().flush();
 		transporterDTO.setId(id);
 		transporterDTO.setDescription(" ");
-		transporterService.update(transporterDTO);
+		try {
+			transporterService.update(transporterDTO);
+		} catch (ValidationException e) {
+			assertTrue(true);
+			throw e;
+		}
+		fail();
 	}
 	
 	@Test

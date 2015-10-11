@@ -1,26 +1,12 @@
 package com.novadart.novabill.service.export.data;
 
-import java.io.BufferedOutputStream;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
-
-import javax.annotation.PostConstruct;
-
-import net.sf.jasperreports.engine.JRException;
-
+import com.google.common.base.Joiner;
+import com.novadart.novabill.domain.AccountingDocument;
+import com.novadart.novabill.domain.Client;
+import com.novadart.novabill.domain.Logo;
+import com.novadart.novabill.report.DocumentType;
+import com.novadart.novabill.report.ReportUtils;
+import com.novadart.novabill.service.PDFStorageService;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,28 +14,30 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
-import com.google.common.base.Joiner;
-import com.novadart.novabill.domain.AccountingDocument;
-import com.novadart.novabill.domain.Client;
-import com.novadart.novabill.domain.Logo;
-import com.novadart.novabill.report.DocumentType;
-import com.novadart.novabill.report.JRDataSourceFactory;
-import com.novadart.novabill.report.JasperReportKeyResolutionException;
-import com.novadart.novabill.report.JasperReportService;
-import com.novadart.novabill.report.ReportUtils;
+import javax.annotation.PostConstruct;
+import java.io.*;
+import java.lang.reflect.InvocationTargetException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.util.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+
+import static com.novadart.novabill.service.PDFStorageService.getStoredFileExtension;
+import static com.novadart.novabill.service.PDFStorageService.handleFile;
 
 @Service
 public class DataExporter {
 	
 	@Value("${path.tmpdir.data_export}")
 	private String dataOutLocation;
-	
+
+	@Autowired
+	private PDFStorageService documentStorageService;
+
 	public static final String[] CLIENT_FIELDS = new String[]{"name", "address", "postcode", "city", "province", "country", "email", "phone",	"mobile", "fax", "web", "vatID", "ssn"};
 	
 	public static final String[] CLIENT_CONTACT_FIELDS = new String[]{"firstName", "lastName", "email", "phone", "fax", "mobile"};
-	
-	@Autowired
-	private JasperReportService jrService;
 	
 	@PostConstruct
 	protected void init(){
@@ -87,21 +75,32 @@ public class DataExporter {
 		return clientsData;
 	}
 	
-	private <T extends AccountingDocument> File exportAccountingDocument(File outDir, T doc, Logo logo, Long businessID, DocumentType docType, Boolean putWatermark) throws IOException, JRException, JasperReportKeyResolutionException{
-		File docFile = File.createTempFile("doc", ".pdf", outDir);
+	private <T extends AccountingDocument> File exportAccountingDocument(File outDir, T doc, Logo logo, Long businessID, DocumentType docType, Boolean putWatermark) throws IOException {
+		File docFile = File.createTempFile("doc", getStoredFileExtension(doc.getDocumentPath()), outDir);
 		docFile.deleteOnExit();
-		jrService.exportReportToPdfFile(JRDataSourceFactory.createDataSource(doc, businessID), docType, doc.getLayoutType(), docFile.getPath());
+		handleFile(doc.getDocumentPath(), new PDFStorageService.Handler<Void>() {
+			@Override
+			public Void handle(InputStream inputStream) {
+				try {
+					Files.copy(inputStream, docFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
+				return null;
+			}
+		});
 		return docFile;
 	}
 	
 	private <T extends AccountingDocument> List<File> exportAccountingDocumentsData(File outDir, ZipOutputStream zipStream, Collection<T> docs, Logo logo,
-			DocumentType docType, Long businessID, Boolean putWatermark, String entryFormat) throws IOException, FileNotFoundException, JRException, JasperReportKeyResolutionException {
+			DocumentType docType, Long businessID, Boolean putWatermark, String entryFormat) throws IOException, FileNotFoundException {
 		List<File> files = new ArrayList<File>();
 		for(T doc: docs){
 			File docFile;
 				docFile = exportAccountingDocument(outDir, doc, logo, businessID, docType, putWatermark);
 			String clientName = doc.getClient().getName();
-			zipStream.putNextEntry(new ZipEntry(String.format(entryFormat, doc.getAccountingDocumentYear(), doc.getDocumentID(), ReportUtils.convertToASCII(clientName))));
+			zipStream.putNextEntry(new ZipEntry(String.format(entryFormat, doc.getAccountingDocumentYear(),
+					doc.getExpandedDocumentId(), ReportUtils.convertToASCII(clientName))));
 			FileInputStream invStream = new FileInputStream(docFile);
 			IOUtils.copy(invStream, zipStream);
 			invStream.close();
@@ -111,7 +110,7 @@ public class DataExporter {
 	}
 	
 	public File exportData(ExportDataBundle exportDataBundle, MessageSource messageSource,
-			Locale locale) throws IOException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, JRException, JasperReportKeyResolutionException {
+			Locale locale) throws IOException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 		File outDir = new File(dataOutLocation);
 		File zipFile = File.createTempFile("export", ".zip", outDir);
 		ZipOutputStream zipStream = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(zipFile)));
@@ -133,16 +132,16 @@ public class DataExporter {
 			Logo logo = exportDataBundle.getLogo();
 			if(exportDataBundle.getInvoices() != null)
 				invoicesFiles = exportAccountingDocumentsData(outDir, zipStream, exportDataBundle.getInvoices(), logo, DocumentType.INVOICE, businessID, putWatermark,
-						messageSource.getMessage("export.invoices.zipentry.pattern", null, "invoices/invoice_%d_%d_%s.pdf", locale));
+						messageSource.getMessage("export.invoices.zipentry.pattern", null, "invoices/invoice_%d_%s_%s.pdf", locale));
 			if(exportDataBundle.getEstimations() != null)
 				estimationFiles = exportAccountingDocumentsData(outDir, zipStream, exportDataBundle.getEstimations(), logo, DocumentType.ESTIMATION, businessID, putWatermark,
-						messageSource.getMessage("export.estimations.zipentry.pattern", null, "estimations/estimation_%d_%d_%s.pdf", locale));
+						messageSource.getMessage("export.estimations.zipentry.pattern", null, "estimations/estimation_%d_%s_%s.pdf", locale));
 			if(exportDataBundle.getCreditNotes() != null)
 				creditNoteFiles = exportAccountingDocumentsData(outDir, zipStream, exportDataBundle.getCreditNotes(), logo, DocumentType.CREDIT_NOTE, businessID, putWatermark,
-						messageSource.getMessage("export.creditnotes.zipentry.pattern", null, "creditnotes/creditnotes_%d_%d_%s.pdf", locale));
+						messageSource.getMessage("export.creditnotes.zipentry.pattern", null, "creditnotes/creditnotes_%d_%s_%s.pdf", locale));
 			if(exportDataBundle.getTransportDocuments() != null)
 				transportDocsFiles = exportAccountingDocumentsData(outDir, zipStream, exportDataBundle.getTransportDocuments(), logo, DocumentType.TRANSPORT_DOCUMENT, businessID, putWatermark,
-						messageSource.getMessage("export.transportdoc.zipentry.pattern", null, "transportdocs/transportdocs_%d_%d_%s.pdf", locale));
+						messageSource.getMessage("export.transportdoc.zipentry.pattern", null, "transportdocs/transportdocs_%d_%s_%s.pdf", locale));
 				
 			zipStream.close();
 			return zipFile;

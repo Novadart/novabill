@@ -15,7 +15,7 @@
 				 ng-class="{'has-error': form.suffix.$dirty && form.suffix.$invalid, 'has-success': form.suffix.$dirty && form.suffix.$valid}">
 				<label class="control-label" for="suffix">{{'SUFFIX' | translate}} *</label>
 				<input type="text" id="suffix" n-doc-id-class
-					   name="suffix" maxlength="50" ng-model="$parent.docIdClass.suffix" class="form-control"
+					   name="suffix" maxlength="50" ng-model="docIdClass.suffix" class="form-control"
 					   placeholder="{{'SUFFIX_PLACEHOLDER' | translate}}" required>
 				<div ng-show="form.suffix.$dirty && form.suffix.$invalid">
 					<span class="text-danger" ng-show="form.suffix.$error.required && !form.suffix.$error.docIdClass">{{'VALIDATION_REQUIRED' | translate}}</span>

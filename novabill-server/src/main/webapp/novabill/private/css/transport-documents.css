@@ -14,11 +14,11 @@
 
 
 .transport-documents div.transport-documents {
-	margin-top: 20px;
+    padding: 20px;
 }
 
 .transport-documents div.transporters {
-    margin-top: 20px;
+    padding: 20px;
 }
 
 .transport-documents .transport-documents .spinner {

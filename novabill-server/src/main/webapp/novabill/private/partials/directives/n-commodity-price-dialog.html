@@ -12,7 +12,7 @@
 		            class="form-control type-input input-medium" 
 		            style="display: inline;" 
 		            name="priceType" 
-		            ng-model="$parent.priceType" 
+		            ng-model="priceType"
 		            required>
 		        <option value="DISCOUNT_PERCENT">{{'PRICE_DISCOUNT_PERCENT' | translate}}</option>
 		        <option value="DISCOUNT_FIXED">{{'PRICE_DISCOUNT_FIXED' | translate}}</option>
@@ -27,7 +27,7 @@
 		           name="priceValue" 
 		           style="display: inline;"  
 		           maxlength="50" 
-		           ng-model="$parent.priceValue" 
+		           ng-model="priceValue"
 		           class="form-control input-small price-input" 
 		           required>
 		

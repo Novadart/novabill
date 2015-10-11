@@ -1,15 +1,12 @@
 package com.novadart.novabill.test.suite;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
-
-import javax.servlet.http.HttpSession;
-
+import com.dumbster.smtp.SimpleSmtpServer;
+import com.novadart.novabill.domain.Business;
+import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.service.UtilsService;
+import com.novadart.novabill.web.mvc.BusinessLogoController;
+import com.novadart.novabill.web.mvc.DeleteAccountController;
+import com.novadart.novabill.web.mvc.command.DeleteAccount;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,13 +22,14 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 import org.springframework.web.bind.support.SessionStatus;
 
-import com.dumbster.smtp.SimpleSmtpServer;
-import com.novadart.novabill.domain.Business;
-import com.novadart.novabill.domain.security.Principal;
-import com.novadart.novabill.service.UtilsService;
-import com.novadart.novabill.web.mvc.BusinessLogoController;
-import com.novadart.novabill.web.mvc.DeleteAccountController;
-import com.novadart.novabill.web.mvc.command.DeleteAccount;
+import javax.servlet.http.HttpSession;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -46,7 +44,7 @@ public class DeleteAccountTest extends AuthenticatedTest {
 	
 	@Autowired
 	private UtilsService utilsService;
-	
+
 	@Override
 	@Before
 	public void authenticate() {
@@ -66,6 +64,8 @@ public class DeleteAccountTest extends AuthenticatedTest {
 	public void defaultDeleteAccountFlow() throws NoSuchAlgorithmException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, UnsupportedEncodingException{
 		String username = userPasswordMap.keySet().iterator().next(), password = userPasswordMap.get(username);
 		Long businessID = Principal.findByUsername(username).getBusiness().getId();
+		long businessCount = Business.countBusinesses();
+		long princiopalCount = Principal.findAllPrincipals().size();
 		DeleteAccountController deleteAccountController = initDeleteAccountController(username, password, password);
 		String deleteAccountView = deleteAccountController.setupForm(mock(Model.class), mock(HttpSession.class));
 		DeleteAccount deleteAccount = new DeleteAccount();
@@ -79,8 +79,8 @@ public class DeleteAccountTest extends AuthenticatedTest {
 		Principal.entityManager().flush();
 		assertEquals("private.deleteAccount", deleteAccountView);
 		assertEquals("forward:/resources/logout", redirectLogoutView);
-		assertEquals(null, Principal.findByUsername(username));
-		assertEquals(null, Business.findBusiness(businessID));
+		assertEquals(princiopalCount - 1 , Principal.findAllPrincipals().size());
+		assertEquals(businessCount - 1,  Business.countBusinesses());
 	}
 	
 	private void invalidPasswordValue(String username, String passValue) throws NoSuchAlgorithmException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException{

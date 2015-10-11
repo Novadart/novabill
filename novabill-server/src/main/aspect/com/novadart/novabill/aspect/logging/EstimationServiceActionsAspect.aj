@@ -27,10 +27,10 @@ public aspect EstimationServiceActionsAspect extends DBLoggerAspect {
 	pointcut add(EstimationDTO estimationDTO) : 
 		execution(public Long com.novadart.novabill.service.web.EstimationService.add(..)) && args(estimationDTO);
 	
-	pointcut remove(Long businessID, Long clientID, Long id) : 
+	pointcut remove(Long businessID, Long clientID, Long id) :
 		execution(public void com.novadart.novabill.service.web.EstimationService.remove(..)) && args(businessID, clientID, id);
 	
-	pointcut update(EstimationDTO estimationDTO) : 
+	pointcut update(EstimationDTO estimationDTO) :
 		execution(public void com.novadart.novabill.service.web.EstimationService.update(..)) && args(estimationDTO);
 	
 	

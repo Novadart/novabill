@@ -43,33 +43,13 @@ public class DTOUtils {
 		public T1 toDTO(T2 doc, boolean copyItems);
 	}
 	
-	public static ToDTOConverter<InvoiceDTO, Invoice> invoiceDTOConverter = new ToDTOConverter<InvoiceDTO, Invoice>(){
-		@Override
-		public InvoiceDTO toDTO(Invoice doc, boolean copyItems){
-			return InvoiceDTOTransformer.toDTO(doc, copyItems);
-		}
-	};
+	public static ToDTOConverter<InvoiceDTO, Invoice> invoiceDTOConverter = InvoiceDTOTransformer::toDTO;
 	
-	public static ToDTOConverter<CreditNoteDTO, CreditNote> creditNoteDTOConverter = new ToDTOConverter<CreditNoteDTO, CreditNote>(){
-		@Override
-		public CreditNoteDTO toDTO(CreditNote doc, boolean copyItems){
-			return CreditNoteDTOTransformer.toDTO(doc, copyItems);
-		}
-	};
+	public static ToDTOConverter<CreditNoteDTO, CreditNote> creditNoteDTOConverter = CreditNoteDTOTransformer::toDTO;
 	
-	public static ToDTOConverter<EstimationDTO, Estimation> estimationDTOConverter = new ToDTOConverter<EstimationDTO, Estimation>() {
-		@Override
-		public EstimationDTO toDTO(Estimation doc, boolean copyItems) {
-			return EstimationDTOTransformer.toDTO(doc, copyItems);
-		}
-	};
+	public static ToDTOConverter<EstimationDTO, Estimation> estimationDTOConverter = EstimationDTOTransformer::toDTO;
 	
-	public static ToDTOConverter<TransportDocumentDTO, TransportDocument> transportDocDTOConverter = new ToDTOConverter<TransportDocumentDTO, TransportDocument>() {
-		@Override
-		public TransportDocumentDTO toDTO(TransportDocument doc, boolean copyItems) {
-			return TransportDocumentDTOTransformer.toDTO((TransportDocument)doc, copyItems);
-		}
-	};
+	public static ToDTOConverter<TransportDocumentDTO, TransportDocument> transportDocDTOConverter = (doc, copyItems) -> TransportDocumentDTOTransformer.toDTO((TransportDocument)doc, copyItems);
 	/*
 	 * 
 	 */

@@ -29,7 +29,7 @@
 			<div class="estimations">
 				<img class="spinner" ng-show="estimations==null" src="../../private_assets/img/ajax-loading.gif">
 				<p class="no-data-message text-center text-info" ng-show="estimations && estimations.length===0">{{'NO_DATA' | translate}}</p>
-				<n-estimation estimation="est" bottom-up-menu="!$first && $last" ng-repeat="est in estimations"></n-estimation>
+				<n-estimation estimation="est" bottom-up-menu="!$first && ($last || $index>4)" ng-repeat="est in estimations"></n-estimation>
 			</div>
 
 		</div>

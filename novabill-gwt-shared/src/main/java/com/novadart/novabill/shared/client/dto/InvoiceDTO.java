@@ -20,7 +20,7 @@ public class InvoiceDTO extends AbstractInvoiceDTO implements IsSerializable {
 	
 	private Long seenByClientTime;
 	
-	private boolean emailedToClient;
+	private MailDeliveryStatus emailedToClient;
 
 	private boolean splitPayment;
 	
@@ -106,13 +106,11 @@ public class InvoiceDTO extends AbstractInvoiceDTO implements IsSerializable {
 		this.seenByClientTime = seenByClientTime;
 	}
 
-
-	public boolean isEmailedToClient() {
+	public MailDeliveryStatus getEmailedToClient() {
 		return emailedToClient;
 	}
 
-
-	public void setEmailedToClient(boolean emailedToClient) {
+	public void setEmailedToClient(MailDeliveryStatus emailedToClient) {
 		this.emailedToClient = emailedToClient;
 	}
 

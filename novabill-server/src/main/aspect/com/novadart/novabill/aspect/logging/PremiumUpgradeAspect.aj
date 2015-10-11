@@ -23,7 +23,7 @@ privileged aspect PremiumUpgradeAspect extends AbstractLogEventEmailSenderAspect
 		execution(public void com.novadart.novabill.paypal.PayPalIPNHandlerService+.handle(..));
 	
 	pointcut upgradeError(String email, String message):
-		call(private void com.novadart.novabill.paypal.OneTimePaymentIPNHandlerService.handleError(..)) && args(email, message);
+		execution(private void com.novadart.novabill.paypal.OneTimePaymentIPNHandlerService.handleError(..)) && args(email, message);
 	
 	after(Business business, int numberOfMonths) returning: upgrade(business, numberOfMonths){
 		Map<String, Object> vars = new HashMap<>();

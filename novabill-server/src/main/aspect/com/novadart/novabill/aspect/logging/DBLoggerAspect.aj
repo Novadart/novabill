@@ -49,7 +49,7 @@ public abstract aspect DBLoggerAspect {
 		record.setBusiness(Business.findBusiness(businessID));
 		Long logRecID = record.merge().getId();
 		if(isDeleteOp)
-			LogRecord.markAsReferringToDeletedEntity(businessID, entityID, entityType, Arrays.asList(logRecID));
+			new LogRecord().markAsReferringToDeletedEntity(businessID, entityID, entityType, Arrays.asList(logRecID));
 	}
 	
 	protected void logActionInDB(Long businessID, EntityType entityType, OperationType opType, Long entityID, Long time){

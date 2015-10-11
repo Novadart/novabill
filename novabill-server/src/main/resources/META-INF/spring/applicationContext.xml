@@ -46,6 +46,10 @@
 	<security:global-method-security pre-post-annotations="enabled" order="1"/>
 		
 	<cache:annotation-driven cache-manager="cacheManager" mode="proxy" order="2" />
+
+	<bean class="org.springframework.context.support.ReloadableResourceBundleMessageSource"
+		  id="messageSource" p:basenames="WEB-INF/i18n/messages,WEB-INF/i18n/application"
+		  p:fallbackToSystemLocale="false" />
 	
 	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
 		<property name="cacheManager" ref="ehcache" />
@@ -86,12 +90,6 @@
 				output.encoding=UTF-8
 			</value>
 		</property>
-	</bean>
-
-	<bean class="com.novadart.novabill.aspect.MailAspect"
-		factory-method="aspectOf">
-		<property name="velocityEngine" ref="velocityEngine" />
-		<property name="from" value="${default.sender}" />
 	</bean>
 
 	<bean class="com.novadart.novabill.aspect.logging.LoginLogoutAspect"
@@ -251,6 +249,7 @@
 			<property name="minEvictableIdleTimeMillis" value="1800000" />
 			<property name="validationQuery" value="SELECT version();" />
 		</bean>
+		<bean class="com.novadart.novabill.service.DevProfilePDFGeneratorService"/>
 	</beans>
 	
 	<beans profile="production">

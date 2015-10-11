@@ -3,6 +3,8 @@ package com.novadart.novabill.service.web;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.novadart.novabill.report.DocumentType;
+import com.novadart.novabill.service.PDFStorageService;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -44,6 +46,9 @@ public class CreditNoteService {
 
 	@Autowired
 	private SimpleValidator simpleValidator;
+
+	@Autowired
+	private PDFStorageService pdfStorageService;
 	
 	@PreAuthorize("T(com.novadart.novabill.domain.CreditNote).findCreditNote(#id)?.business?.id == principal.business.id")
 	public CreditNoteDTO get(Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
@@ -94,6 +99,9 @@ public class CreditNoteService {
 		client.getCreditNotes().add(creditNote);
 		creditNote.setBusiness(business);
 		business.getCreditNotes().add(creditNote);
+		String docPath = pdfStorageService.generateAndStorePdfForAccountingDocument(creditNote, DocumentType.CREDIT_NOTE);
+		creditNote.setDocumentPath(docPath);
+		creditNote.persist();
 		creditNote.flush();
 		return creditNote.getId();
 	}
@@ -128,7 +136,8 @@ public class CreditNoteService {
 			persistedCreditNote.getAccountingDocumentItems().add(item);
 		}
 		validator.validate(CreditNote.class, persistedCreditNote);
-		
+		String docPath = pdfStorageService.generateAndStorePdfForAccountingDocument(persistedCreditNote, DocumentType.CREDIT_NOTE);
+		persistedCreditNote.setDocumentPath(docPath);
 	}
 
 	public Long getNextCreditNoteDocumentID() throws NotAuthenticatedException {

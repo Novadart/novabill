@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('novabill.invoices.controllers',
-	['novabill.utils', 'novabill.directives', 'novabill.directives.dialogs', 'novabill.translations', 'infinite-scroll'])
+	['novabill.utils', 'novabill.directives', 'novabill.directives.dialogs', 'novabill.translations', 'infinite-scroll', 'novabill.gwtbridge'])
 
 
 /**
@@ -24,8 +24,12 @@ angular.module('novabill.invoices.controllers',
 				invoices : false,
 				docIdClasses : false
 			};
-			$scope.activeTab[$location.search().tab] = true;
 
+			if($location.search().tab) {
+				$scope.activeTab[$location.search().tab] = true;
+			} else {
+				$scope.activeTab.invoices = true;
+			}
 
 			function updateFilteredInvoices(){
 				filteredInvoices = $filter('filter')(loadedInvoices, $scope.query);
@@ -125,7 +129,7 @@ angular.module('novabill.invoices.controllers',
 				instance.result.then(function(value){
 					if(value){
 						docIdClass.$delete(function(result){
-							if(result[0] === "f"){ // checking like this because of angularjs bug
+							if(result.value){
 								nAlertDialog.open( $filter('translate')('DOCUMENT_ID_CLASS_DELETION_ALERT') );
 							}
 							$scope.loadDocIDClasses();

@@ -6,7 +6,11 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import com.novadart.novabill.report.DocumentType;
+import com.novadart.novabill.shared.client.dto.MailDeliveryStatus;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,13 +39,18 @@ import com.novadart.novabill.web.mvc.command.Registration;
 public class DBUtilitiesService {
 	
 //	private String blmDBPath = "/tmp/DATI.mdb";
-	
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(DBUtilitiesService.class);
+
 	@PersistenceContext
 	private EntityManager em;
 	
 	@Autowired
 	private PremiumEnablerService premiumEnabledService;
-	
+
+	@Autowired
+	private PDFStorageService pdfStorageService;
+
 	private PaymentType[] paymentTypes = new PaymentType[]{
 			new PaymentType("Rimessa Diretta", "Pagamento in Rimessa Diretta", PaymentDateType.IMMEDIATE, 0, PaymentDeltaType.COMMERCIAL_MONTH, 0),
 			new PaymentType("Bonifico Bancario 30GG", "Pagamento con bonifico bancario entro 30 giorni", PaymentDateType.IMMEDIATE, 1, PaymentDeltaType.COMMERCIAL_MONTH, 0),
@@ -495,6 +504,46 @@ public class DBUtilitiesService {
 			tran.setLayoutType(LayoutType.DENSE);
 			
 	}
+
+	public void migrate4_0(){
+		LOGGER.info("Recreating accounting document pdfs...");
+		int count = 0, prevCount = 0;
+		for(Business business: Business.findAllBusinesses()){
+			LOGGER.info("Business :" + business.getPrincipals().iterator().next().getUsername());
+			for(Invoice invoice: business.getInvoices()){
+				String path = pdfStorageService.generateAndStorePdfForAccountingDocument(invoice, DocumentType.INVOICE);
+				invoice.setDocumentPath(path);
+				count++;
+				if(invoice.getSeenByClientTime() != null)
+					invoice.setEmailedToClient(MailDeliveryStatus.READ);
+			}
+			LOGGER.info(String.format("\tInvoices recreated. %d in total", count - prevCount));
+			prevCount = count;
+			for(Estimation estimation: business.getEstimations()){
+				String path = pdfStorageService.generateAndStorePdfForAccountingDocument(estimation, DocumentType.ESTIMATION);
+				estimation.setDocumentPath(path);
+				count++;
+			}
+			LOGGER.info(String.format("\tEstimations recreated. %d in total", count - prevCount));
+			prevCount = count;
+			for(CreditNote creditNote: business.getCreditNotes()){
+				String path = pdfStorageService.generateAndStorePdfForAccountingDocument(creditNote, DocumentType.CREDIT_NOTE);
+				creditNote.setDocumentPath(path);
+				count++;
+			}
+			LOGGER.info(String.format("\tCredit notes recreated. %d in total", count - prevCount));
+			prevCount = count;
+			for(TransportDocument transportDocument: business.getTransportDocuments()){
+				String path = pdfStorageService.generateAndStorePdfForAccountingDocument(transportDocument, DocumentType.TRANSPORT_DOCUMENT);
+				transportDocument.setDocumentPath(path);
+				count++;
+			}
+			LOGGER.info(String.format("\tTrans docs recreated. %d in total", count - prevCount));
+			prevCount = count;
+		}
+		LOGGER.info(String.format("Accounting documents recreated. %d in total", count));
+		em.createNativeQuery("DROP TABLE IF EXISTS email").executeUpdate();
+	}
 	
 	@Scheduled(fixedDelay = 31_536_000_730l)
 	@Transactional(readOnly = false)
@@ -515,7 +564,8 @@ public class DBUtilitiesService {
 		//migrate2_5();
 		//migrate3_0();
 		//migrate3_3();
-		resetMBDocsToDense();
+//		resetMBDocsToDense();
+		migrate4_0();
 	}
 	
 }

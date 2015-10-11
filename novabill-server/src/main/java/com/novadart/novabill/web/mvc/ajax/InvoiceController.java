@@ -1,17 +1,6 @@
 package com.novadart.novabill.web.mvc.ajax;
 
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
-import java.util.Date;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.DateTimeFormat.ISO;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-
+import com.google.common.collect.ImmutableMap;
 import com.novadart.novabill.annotation.RestExceptionProcessingMixin;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.web.BusinessService;
@@ -19,13 +8,20 @@ import com.novadart.novabill.service.web.InvoiceService;
 import com.novadart.novabill.shared.client.data.FilteringDateType;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
-import com.novadart.novabill.shared.client.exception.DataAccessException;
-import com.novadart.novabill.shared.client.exception.DataIntegrityException;
-import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
-import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
-import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
-import com.novadart.novabill.shared.client.exception.ValidationException;
+import com.novadart.novabill.shared.client.exception.*;
 import com.novadart.novabill.web.mvc.ajax.dto.EmailDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RestExceptionProcessingMixin
@@ -88,8 +84,8 @@ public class InvoiceController {
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
-	public String add(@RequestBody InvoiceDTO invoiceDTO) throws DataAccessException, ValidationException, FreeUserAccessForbiddenException, NotAuthenticatedException, DataIntegrityException {
-		return invoiceService.add(invoiceDTO).toString();
+	public Map<String, Object> add(@RequestBody InvoiceDTO invoiceDTO) throws DataAccessException, ValidationException, FreeUserAccessForbiddenException, NotAuthenticatedException, DataIntegrityException {
+		return ImmutableMap.of(JsonConst.VALUE, invoiceService.add(invoiceDTO));
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
@@ -102,8 +98,8 @@ public class InvoiceController {
 	@RequestMapping(value = "/nextid", method = RequestMethod.GET)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
-	public String getNextInvoiceDocumentID(@RequestParam(value = "suffix", required = false) String suffix) {
-		return invoiceService.getNextInvoiceDocumentID(suffix) + suffix;
+	public Map<String, Object> getNextInvoiceDocumentID(@RequestParam(value = "suffix", required = false) String suffix) {
+		return ImmutableMap.of(JsonConst.VALUE, invoiceService.getNextInvoiceDocumentID(suffix) + suffix);
 	}
 
 	@RequestMapping(value = "/year/{year}/clients/{clientID}/start/{start}/offset/{length}", method = RequestMethod.GET)
@@ -134,8 +130,8 @@ public class InvoiceController {
 	@RequestMapping(value = "/{id}/email", method = RequestMethod.POST)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
-	public boolean email(@PathVariable Long id, @RequestBody EmailDTO emailDTO) throws NoSuchAlgorithmException, UnsupportedEncodingException, ValidationException{
-		return invoiceService.email(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId(), id, emailDTO);
+	public Map<String, Object> email(@PathVariable Long id, @RequestBody EmailDTO emailDTO) throws NoSuchAlgorithmException, UnsupportedEncodingException, ValidationException{
+		return ImmutableMap.of(JsonConst.VALUE, invoiceService.email(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId(), id, emailDTO));
 	}
 
 }

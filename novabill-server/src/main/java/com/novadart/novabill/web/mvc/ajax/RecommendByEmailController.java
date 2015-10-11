@@ -1,27 +1,22 @@
 package com.novadart.novabill.web.mvc.ajax;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-
-import com.novadart.novabill.annotation.MailMixin;
+import com.google.common.collect.ImmutableMap;
 import com.novadart.novabill.annotation.RestExceptionProcessingMixin;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.service.UtilsService;
+import com.novadart.novabill.service.mail.EmailBuilder;
+import com.novadart.novabill.service.mail.MailHandlingType;
 import com.novadart.novabill.service.validator.SimpleValidator;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.web.mvc.ajax.dto.RecommendByMailDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @Controller
-@MailMixin
 @RestExceptionProcessingMixin
 @RequestMapping("/private/ajax/recommend")
 public class RecommendByEmailController {
@@ -37,12 +32,19 @@ public class RecommendByEmailController {
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
-	public boolean recommendByEmail(@RequestBody RecommendByMailDTO recommendByMailDTO) throws ValidationException{
+	public Map<String, Object> recommendByEmail(@RequestBody RecommendByMailDTO recommendByMailDTO) throws ValidationException{
 		validator.validate(recommendByMailDTO);
-		Map<String, Object> templateVars = new HashMap<String, Object>();
 		String businessName = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()).getName();
-		templateVars.put("businessName", businessName);
-		return sendMessage(recommendByMailDTO.getTo(), businessName + " ti invita a provare Novabill", templateVars, EMAIL_TEMPLATE_LOCATION, false);
+		boolean emailSent = new EmailBuilder().to(recommendByMailDTO.getTo())
+				.subject(businessName + " ti invita a provare Novabill")
+				.template(EMAIL_TEMPLATE_LOCATION)
+				.templateVar("businessName", businessName)
+				.handlingType(MailHandlingType.EXTERNAL_UNACKNOWLEDGED)
+				.build().send();
+		return ImmutableMap.of(
+				JsonConst.VALUE,
+				emailSent
+		);
 	}
 
 }

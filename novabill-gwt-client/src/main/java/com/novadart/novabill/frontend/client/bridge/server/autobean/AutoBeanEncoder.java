@@ -256,7 +256,7 @@ public class AutoBeanEncoder {
 		ai.setTotalBeforeTax(invoice.getTotalBeforeTax());
 		ai.setTotalTax(invoice.getTotalTax());
 		ai.setSeenByClientTime(invoice.getSeenByClientTime());
-		ai.setEmailedToClient(invoice.isEmailedToClient());
+		ai.setEmailedToClient(invoice.getEmailedToClient().toString());
 
 		LongList ll = AutoBeanMaker.INSTANCE.makeLongList().as();
 		ll.setList(invoice.getTransportDocumentIDs());

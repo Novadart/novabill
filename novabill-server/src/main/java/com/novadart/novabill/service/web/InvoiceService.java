@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.novadart.novabill.shared.client.data.FilteringDateType;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
+import com.novadart.novabill.shared.client.dto.MailDeliveryStatus;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.DataIntegrityException;
@@ -45,5 +46,7 @@ public interface InvoiceService {
 	boolean email(Long businessID, Long id, EmailDTO emailDTO) throws NoSuchAlgorithmException, UnsupportedEncodingException, ValidationException;
 	
 	void markViewedByClient(Long businessID, Long id, Long viewingTime);
+
+	void setEmailedToClientStatus(Long businessID, Long id, MailDeliveryStatus status);
 
 }

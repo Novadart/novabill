@@ -7,9 +7,6 @@
 						http://www.springframework.org/schema/util
 						http://www.springframework.org/schema/util/spring-util-3.1.xsd">
 
-    <import resource="classpath:/META-INF/spring/applicationContext.xml"/>
-    <import resource="classpath:/META-INF/spring/applicationContext-security.xml"/>
-    
     <util:map map-class="java.util.HashMap" id="userPasswordMap" key-type="java.lang.String" value-type="java.lang.String">
     	<entry key="giordano.battilana@novadart.com" value="novadart"/>
     	<entry key="risto.gligorov@novadart.com" value="novadart"/>

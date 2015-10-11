@@ -1,6 +1,7 @@
 package com.novadart.novabill.report;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashMap;
@@ -115,7 +116,7 @@ public class JasperReportService implements ResourceLoaderAware{
 		loadResourceBundles();
 	}
 
-	private String resolveJasperReportKey(DocumentType docType, LayoutType layoutType) throws JasperReportKeyResolutionException{
+	private String resolveJasperReportKey(DocumentType docType, LayoutType layoutType) {
 		if(DocumentType.INVOICE.equals(docType)){
 			if(LayoutType.TIDY.equals(layoutType))
 				return "tidy.invoice";
@@ -142,25 +143,37 @@ public class JasperReportService implements ResourceLoaderAware{
 		}
 		if(DocumentType.PAYMENTS_PROSPECT.equals(docType))
 			return "paymentsProspect";
-		throw new JasperReportKeyResolutionException(String.format("View could not be resolved; document type: %s, layout type: %s", docType.toString(), layoutType.toString()));
+		throw new ReportException(String.format("View could not be resolved; document type: %s, layout type: %s", docType.toString(), layoutType.toString()));
 	}
 	
-	private JasperPrint createJasperPrint(JRBeanCollectionDataSource dataSource, DocumentType docType, LayoutType layoutType) throws JasperReportKeyResolutionException, JRException{
+	private JasperPrint createJasperPrint(JRBeanCollectionDataSource dataSource, DocumentType docType, LayoutType layoutType) {
 		String key = resolveJasperReportKey(docType, layoutType);
 		JasperReport jasperReport = compiledJasperReports.get(key);
 		Map<String, Object> reportParameters = new HashMap<String, Object>();
 		for(String subreportKey: subreportsMapping.get(key))
 			reportParameters.put(subreportKey, compiledJasperReports.get(subreportKey));
 		reportParameters.put(JRParameter.REPORT_RESOURCE_BUNDLE, resourceBundles.get(layoutType));
-		return JasperFillManager.fillReport(jasperReport, reportParameters, dataSource);
+		try {
+			return JasperFillManager.fillReport(jasperReport, reportParameters, dataSource);
+		} catch (JRException ex) {
+			throw new ReportException(ex);
+		}
 	}
 	
-	public byte[] exportReportToPdf(JRBeanCollectionDataSource dataSource, DocumentType docType, LayoutType layoutType) throws JRException, JasperReportKeyResolutionException{
-		return JasperExportManager.exportReportToPdf(createJasperPrint(dataSource, docType, layoutType));
+	public byte[] exportReportToPdf(JRBeanCollectionDataSource dataSource, DocumentType docType, LayoutType layoutType) {
+		try {
+			return JasperExportManager.exportReportToPdf(createJasperPrint(dataSource, docType, layoutType));
+		} catch (JRException ex) {
+			throw new ReportException(ex);
+		}
 	}
 	
-	public void exportReportToPdfFile(JRBeanCollectionDataSource dataSource, DocumentType docType, LayoutType layoutType, String destFileName) throws JRException, JasperReportKeyResolutionException{
-		JasperExportManager.exportReportToPdfFile(createJasperPrint(dataSource, docType, layoutType), destFileName);
+	public void exportReportToPdfFile(JRBeanCollectionDataSource dataSource, DocumentType docType, LayoutType layoutType, OutputStream destination) {
+		try {
+			JasperExportManager.exportReportToPdfStream(createJasperPrint(dataSource, docType, layoutType), destination);
+		} catch (JRException ex) {
+			throw new ReportException(ex);
+		}
 	}
 	
 }

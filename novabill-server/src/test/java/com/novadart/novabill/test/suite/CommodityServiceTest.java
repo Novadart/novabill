@@ -1,28 +1,5 @@
 package com.novadart.novabill.test.suite;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.novadart.novabill.aspect.logging.DBLoggerAspect;
@@ -43,17 +20,35 @@ import com.novadart.novabill.shared.client.data.PriceType;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.PriceDTO;
 import com.novadart.novabill.shared.client.dto.PriceListDTO;
-import com.novadart.novabill.shared.client.exception.DataAccessException;
-import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
-import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
-import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
-import com.novadart.novabill.shared.client.exception.ValidationException;
+import com.novadart.novabill.shared.client.exception.*;
 import com.novadart.novabill.shared.client.facade.CommodityGwtService;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.Assert.*;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath*:gwt-commodity-test-config.xml")
 @Transactional
+@DirtiesContext
+@ActiveProfiles("dev")
 public class CommodityServiceTest extends ServiceTest {
 	
 	@Autowired
@@ -310,14 +305,20 @@ public class CommodityServiceTest extends ServiceTest {
     		 assertTrue(prices.containsKey(pl.getName()));
      }
      
-     @Test(expected = ValidationException.class)
-     public void duplicateSkuTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException{
+     @Test(expected = Exception.class)
+     public void duplicateSkuTest() throws NotAuthenticatedException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException, ValidationException {
     	CommodityDTO commodityDTO = CommodityDTOTransformer.toDTO(TestUtils.createCommodity());
     	TestUtils.setDefaultPrice(commodityDTO, new BigDecimal("5.00"));
  		commodityDTO.setSku("12345");
  		commodityDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
  		commodityGwtService.add(commodityDTO);
- 		commodityGwtService.add(commodityDTO);
-     }
+		 try {
+			 commodityGwtService.add(commodityDTO);
+		 } catch (ValidationException e) {
+			 assertTrue(true);
+			 throw e;
+		 }
+		 fail();
+	 }
      
 }

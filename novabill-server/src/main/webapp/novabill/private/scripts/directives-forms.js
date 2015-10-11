@@ -228,22 +228,21 @@ angular.module('novabill.directives.forms',
 						return;
 					}
 					
-					var res = result.indexOf('<pre>') != -1 ? result.charAt(5) : result;
-					switch (parseInt(res)) {
-					case 0:
+					switch (result.value) {
+					case 'OK':
 						break;
 
 					default:
-					case 1:
-					case 4:
+					case 'ILLEGAL_REQUEST':
+					case 'INTERNAL_ERROR':
 						$scope.errorMessage = $filter('translate')('LOGO_UPLOAD_ERROR_ILLEGAL_REQUEST');
 						break;
 						
-					case 2:
+					case 'ILLEGAL_PAYLOAD':
 						$scope.errorMessage = $filter('translate')('LOGO_UPLOAD_ERROR_ILLEGAL_PAYLOAD');
 						break;
 						
-					case 3:
+					case 'ILLEGAL_SIZE':
 						$scope.errorMessage = $filter('translate')('LOGO_UPLOAD_ERROR_ILLEGAL_SIZE');
 						break;
 					}
