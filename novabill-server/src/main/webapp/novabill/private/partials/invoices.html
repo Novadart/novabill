@@ -28,8 +28,9 @@
 							<button type="button" class="btn green new-invoice pull-left" ng-click="newInvoiceClick()">{{'NEW_INVOICE' | translate}}</button>
 
 							<div class="docs-filter input-icon left pull-left">
-								<i class="fa fa-search"></i> <input type="text" class="form-control input-large" autofocus="autofocus" type="text"
-																	placeholder="{{'FILTER' | translate}}..." ng-model="query">
+								<i class="fa fa-search"></i>
+								<input type="text" class="form-control input-large" autofocus="autofocus"
+									   placeholder="{{'FILTER' | translate}}..." ng-model="uiBootstrap.query">
 							</div>
 
 							<n-year-selector class="pull-right" document-type="invoices" callback="loadInvoicesByYear(year)"></n-year-selector>

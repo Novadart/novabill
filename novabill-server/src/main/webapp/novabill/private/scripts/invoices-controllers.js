@@ -15,6 +15,9 @@ angular.module('novabill.invoices.controllers',
 			var filteredInvoices = [];
 			var PARTITION = 50;
 			var DocumentIDClass = nAjax.DocumentIDClass();
+			$scope.uiBootstrap = {
+				query : ''
+			};
 
 			$scope.onTabChange = function(token){
 				$location.search('tab',token);
@@ -32,11 +35,11 @@ angular.module('novabill.invoices.controllers',
 			}
 
 			function updateFilteredInvoices(){
-				filteredInvoices = $filter('filter')(loadedInvoices, $scope.query);
+				filteredInvoices = $filter('filter')(loadedInvoices, $scope.uiBootstrap.query);
 				$scope.invoices = filteredInvoices.slice(0, 15);
 			}
 
-			$scope.$watch('query', function(newValue, oldValue){
+			$scope.$watch('uiBootstrap.query', function(newValue, oldValue){
 				updateFilteredInvoices();
 			});
 
