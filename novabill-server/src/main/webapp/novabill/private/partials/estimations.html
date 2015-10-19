@@ -10,11 +10,12 @@
 			<!-- END PAGE TITLE & BREADCRUMB-->
 
 			<button type="button" class="btn green new-estimation pull-left" ng-click="newEstimationClick()">{{'NEW_ESTIMATION' | translate}}</button>
-			
+
 			<div class="docs-filter input-icon left pull-left">
-                <i class="fa fa-search"></i> <input type="text" class="form-control input-large" autofocus="autofocus" type="text"
-                    placeholder="{{'FILTER' | translate}}..." ng-model="query">
-            </div>
+				<i class="fa fa-search"></i>
+				<input type="text" class="form-control input-large" autofocus="autofocus"
+					   placeholder="{{'FILTER' | translate}}..." ng-model="query">
+			</div>
 
 			<n-year-selector class="pull-right" document-type="estimations" callback="loadEstimations(year)"></n-year-selector>
 
@@ -24,6 +25,7 @@
 	<div class="clearfix"></div>
 
 	<div class="row">
+
 		<div class="col-md-12" infinite-scroll="loadMoreEstimations()">
 
 			<div class="estimations">

@@ -1,6 +1,7 @@
 'use strict';
 
-angular.module('novabill.estimations.controllers', ['novabill.utils', 'novabill.directives', 'novabill.directives.dialogs', 'novabill.translations'])
+angular.module('novabill.estimations.controllers', ['novabill.utils', 'novabill.directives', 'novabill.directives.dialogs',
+	'novabill.translations', 'infinite-scroll'])
 
 
 /**

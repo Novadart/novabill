@@ -2,7 +2,7 @@
 
 angular.module('novabill.transportDocuments.controllers',
 	['novabill.utils', 'novabill.directives', 'novabill.directives.dialogs', 'novabill.ajax',
-		'novabill.translations', 'novabill.constants', 'infinite-scroll', 'novabill.gwtbridge'])
+		'novabill.translations', 'novabill.constants', 'infinite-scroll', 'novabill.gwtbridge', 'ui.bootstrap'])
 
 
 /**
@@ -17,6 +17,9 @@ angular.module('novabill.transportDocuments.controllers',
 			var loadedTransportDocuments = [];
 			var filteredTransportDocuments = [];
 			var PARTITION = 50;
+			$scope.uiBootstrap = {
+				query : ''
+			};
 
 			$scope.onTabChange = function(token){
 				$location.search('tab',token);
@@ -40,11 +43,11 @@ angular.module('novabill.transportDocuments.controllers',
 			};
 
 			function updateFilteredTransportDocuments(){
-				filteredTransportDocuments = $filter('filter')(loadedTransportDocuments, $scope.query);
+				filteredTransportDocuments = $filter('filter')(loadedTransportDocuments, $scope.uiBootstrap.query);
 				$scope.transportDocuments = filteredTransportDocuments.slice(0, 15);
 			}
 
-			$scope.$watch('query', function(newValue, oldValue){
+			$scope.$watch('uiBootstrap.query', function(newValue, oldValue){
 				updateFilteredTransportDocuments();
 			});
 
