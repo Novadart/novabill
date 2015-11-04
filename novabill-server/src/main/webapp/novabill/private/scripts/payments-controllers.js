@@ -1,8 +1,7 @@
 'use strict';
 
 angular.module('novabill.payments.controllers', ['novabill.translations', 'novabill.directives',
-	'novabill.directives.dialogs',
-	'infinite-scroll', 'ui.bootstrap'])
+	'novabill.directives.dialogs', 'infinite-scroll', 'ui.bootstrap'])
 
 
 /**
@@ -25,11 +24,11 @@ angular.module('novabill.payments.controllers', ['novabill.translations', 'novab
 				paymenttypes : false
 			};
 
-            if($location.search().tab) {
-                $scope.activeTab[$location.search().tab] = true;
-            } else {
-                $scope.activeTab.paymentsstatus = true;
-            }
+			if($location.search().tab) {
+				$scope.activeTab[$location.search().tab] = true;
+			} else {
+				$scope.activeTab.paymentsstatus = true;
+			}
 
 			$timeout(function(){
 				GWT_UI.showPaymentsPage('payments-page');
@@ -37,7 +36,13 @@ angular.module('novabill.payments.controllers', ['novabill.translations', 'novab
 
 			if(nConstants.conf.premium) {
 
-				$scope.filteringDateType = 'PAYMENT_DUEDATE';
+				$scope.uiBootstrap = {
+					filteringDateType : 'PAYMENT_DUEDATE',
+					startDate : null,
+					endDate : null,
+					openSD : false,
+					openED : false
+				};
 				var loadedInvoices = [];
 				var PARTITION = 50;
 
@@ -74,41 +79,41 @@ angular.module('novabill.payments.controllers', ['novabill.translations', 'novab
 				$scope.openStartDate = function($event) {
 					$event.preventDefault();
 					$event.stopPropagation();
-					$scope.openSD = true;
+					$scope.uiBootstrap.openSD = true;
 				};
 
 				$scope.openEndDate = function($event) {
 					$event.preventDefault();
 					$event.stopPropagation();
-					$scope.openED = true;
+					$scope.uiBootstrap.openED = true;
 				};
 
 				$scope.clear = function(){
-					$scope.startDate = null;
-					$scope.endDate = null;
-					$scope.invoices = null;
+					$scope.uiBootstrap.startDate = null;
+					$scope.uiBootstrap.endDate = null;
+					$scope.uiBootstrap.invoices = null;
 					$scope.loadInvoices('PAYMENT_DUEDATE', null, null);
 				};
 
 				$scope.print = function(){
-					nDownload.downloadPaymentsProspect($scope.filteringDateType, $scope.startDate, $scope.endDate);
+					nDownload.downloadPaymentsProspect($scope.uiBootstrap.filteringDateType, $scope.uiBootstrap.startDate, $scope.uiBootstrap.endDate);
 				};
 
-				$scope.$watch('startDate', function(newValue, oldValue){
+				$scope.$watch('uiBootstrap.startDate', function(newValue, oldValue){
 					if(newValue != null){
-						$scope.loadInvoices($scope.filteringDateType, newValue, $scope.endDate);
+						$scope.loadInvoices($scope.uiBootstrap.filteringDateType, newValue, $scope.uiBootstrap.endDate);
 					}
 				});
 
-				$scope.$watch('endDate', function(newValue, oldValue){
+				$scope.$watch('uiBootstrap.endDate', function(newValue, oldValue){
 					if(newValue != null){
-						$scope.loadInvoices($scope.filteringDateType, $scope.startDate, newValue);
+						$scope.loadInvoices($scope.uiBootstrap.filteringDateType, $scope.uiBootstrap.startDate, newValue);
 					}
 				});
 
-				$scope.$watch('filteringDateType', function(newValue, oldValue){
+				$scope.$watch('uiBootstrap.filteringDateType', function(newValue, oldValue){
 					if(newValue != null){
-						$scope.loadInvoices($scope.filteringDateType, $scope.startDate, $scope.endDate);
+						$scope.loadInvoices($scope.uiBootstrap.filteringDateType, $scope.uiBootstrap.startDate, $scope.uiBootstrap.endDate);
 					}
 				});
 
