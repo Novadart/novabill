@@ -65,7 +65,7 @@
 						  <n-suffix-selector class="pull-right suffix-selector" callback="loadInvoicesForClass(documentIdClass)"></n-suffix-selector>
                           <img class="spinner" ng-show="invoiceData===null" src="../../private_assets/img/ajax-loading.gif">
                           <p class="no-data-message text-center text-info" ng-show="invoiceData && invoiceData.length===0">{{'NO_DATA' | translate}}</p>
-                          <n-invoice invoice="inv" bottom-up-menu="!$first && $last" ng-repeat="inv in invoiceData"></n-invoice>
+                          <n-invoice invoice="inv" bottom-up-menu="!$first && ($last || $index>4)" ng-repeat="inv in invoiceData"></n-invoice>
 				      </div>
 				      
 				      <div collapse="docsView !== 'transportDocuments'">
@@ -75,7 +75,7 @@
                         <img class="spinner" ng-show="!transportDocumentData" src="../../private_assets/img/ajax-loading.gif">
                         <p class="no-data-message text-center text-info"
                             ng-show="transportDocumentData && transportDocumentData.length===0">{{'NO_DATA' | translate}}</p>
-                        <n-transport-document transport-document="td" bottom-up-menu="!$first && $last"
+                        <n-transport-document transport-document="td" bottom-up-menu="!$first && ($last || $index>4)"
                             ng-repeat="td in transportDocumentData"></n-transport-document>
 				      </div>
 				      
@@ -84,7 +84,7 @@
                         <n-year-selector class="pull-right" document-type="estimations" callback="loadEstimations(year)"></n-year-selector>
                         <img class="spinner" ng-show="!estimationData" src="../../private_assets/img/ajax-loading.gif">
                         <p class="no-data-message text-center text-info" ng-show="estimationData && estimationData.length===0">{{'NO_DATA' | translate}}</p>
-                        <n-estimation estimation="est" bottom-up-menu="!$first && $last" ng-repeat="est in estimationData"></n-estimation>
+                        <n-estimation estimation="est" bottom-up-menu="!$first && ($last || $index>4)" ng-repeat="est in estimationData"></n-estimation>
                       </div>
                       
                       <div collapse="docsView !== 'creditNotes'">
@@ -92,7 +92,7 @@
                         <n-year-selector class="pull-right" document-type="creditNotes" callback="loadCreditNotes(year)"></n-year-selector>
                         <img class="spinner" ng-show="!creditNoteData" src="../../private_assets/img/ajax-loading.gif">
                         <p class="no-data-message text-center text-info" ng-show="creditNoteData && creditNoteData.length===0">{{'NO_DATA' | translate}}</p>
-                        <n-credit-note credit-note="cn" bottom-up-menu="!$first && $last" ng-repeat="cn in creditNoteData"></n-credit-note>
+                        <n-credit-note credit-note="cn" bottom-up-menu="!$first && ($last || $index>4)" ng-repeat="cn in creditNoteData"></n-credit-note>
                       </div>
 	                  
 	              </tab>

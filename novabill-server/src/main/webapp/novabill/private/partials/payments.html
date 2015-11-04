@@ -32,23 +32,23 @@
 	                                 <label class="control-label col-md-4">{{'PAYMENTS_STATUS_ORDERING_DATE_TYPE' | translate}}</label>
 	                                 <div class="col-md-8">
 	                                    <p class="input-group input-medium">
-	                                      <select n-premium-check class="form-control" ng-model="$parent.filteringDateType">
+	                                      <select n-premium-check class="form-control" ng-model="uiBootstrap.filteringDateType">
 	                                        <option value="PAYMENT_DUEDATE">{{'PAYMENTS_STATUS_FILTERING_PAYMENT_DUEDATE' | translate}}</option>
 	                                        <option value="CREATION_DATE">{{'PAYMENTS_STATUS_FILTERING_CREATION_DATE' | translate}}</option>
 	                                      </select>
 	                                    </p>
 	                                 </div>
 	                             </div>
-	                             
+
 	                             <div class="form-group">
                                      <label class="control-label col-md-4">{{'PAYMENTS_STATUS_START_DATE' | translate}}</label>
                                      <div class="col-md-8">
                                         <p class="input-group input-medium">
                                           <input type="text" class="form-control"
-                                             readonly="readonly" 
-                                             datepicker-popup="dd MMMM yyyy" 
-                                             ng-model="$parent.startDate" 
-                                             is-open="$parent.openSD" 
+                                             readonly="readonly"
+                                             datepicker-popup="dd MMMM yyyy"
+                                             ng-model="uiBootstrap.startDate"
+                                             is-open="uiBootstrap.openSD"
                                              datepicker-options="dateOptions"
                                              show-button-bar="false" />
                                           <span class="input-group-btn">
@@ -59,16 +59,16 @@
                                         </p>
                                      </div>
                                  </div>
-                             
+
                                  <div class="form-group">
                                      <label class="control-label col-md-4">{{'PAYMENTS_STATUS_END_DATE' | translate}}</label>
                                      <div class="col-md-8">
                                         <p class="input-group input-medium">
                                           <input type="text" class="form-control"
-                                             readonly="readonly" 
-                                             datepicker-popup="dd MMMM yyyy" 
-                                             ng-model="$parent.endDate" 
-                                             is-open="$parent.openED" 
+                                             readonly="readonly"
+                                             datepicker-popup="dd MMMM yyyy"
+                                             ng-model="uiBootstrap.endDate"
+                                             is-open="uiBootstrap.openED"
                                              datepicker-options="dateOptions"
                                              show-button-bar="false" />
                                           <span class="input-group-btn">
@@ -98,7 +98,7 @@
 		                        <div class="col-md-12">
 		                            <img class="spinner" ng-show="loading" src="../../private_assets/img/ajax-loading.gif">
 		                            <p class="no-data-message text-center text-info" ng-show="invoices && invoices.length===0">{{'NO_DATA' | translate}}</p>
-		                            <n-invoice invoice="inv" bottom-up-menu="!$first && $last" ng-repeat="inv in invoices"></n-invoice>
+		                            <n-invoice invoice="inv" bottom-up-menu="!$first && ($last || $index>4)" ng-repeat="inv in invoices"></n-invoice>
 		                        </div>
 	                        </div>
                             
