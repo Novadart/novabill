@@ -78,7 +78,7 @@ public class PremiumEnablerService {
 	private void makePremium(Business business){
 		for(Principal principal: business.getPrincipals()){
 			if(!principal.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_PREMIUM)){
-				principal.getGrantedRoles().remove(RoleType.ROLE_BUSINESS_FREE);
+				principal.getGrantedRoles().clear();
 				principal.getGrantedRoles().add(RoleType.ROLE_BUSINESS_PREMIUM);
 			}
 		}

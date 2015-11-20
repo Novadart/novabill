@@ -14,16 +14,15 @@ import com.novadart.novabill.paypal.PaymentPlansLoader;
 import com.novadart.novabill.service.PrincipalDetailsService;
 import com.novadart.novabill.service.TokenGenerator;
 import com.novadart.novabill.service.UtilsService;
+import com.novadart.novabill.service.periodic.DisablerService;
 import com.novadart.novabill.service.periodic.PremiumDisablerService;
+import com.novadart.novabill.service.periodic.TrialAccountDisablerService;
 import com.novadart.novabill.service.web.BusinessService;
 import com.novadart.novabill.service.web.InvoiceService;
 import com.novadart.novabill.service.web.PremiumEnablerService;
 import com.novadart.novabill.shared.client.data.LayoutType;
 import com.novadart.novabill.shared.client.dto.NotificationType;
-import com.novadart.novabill.shared.client.exception.DataAccessException;
-import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
-import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
-import com.novadart.novabill.shared.client.exception.PremiumUpgradeException;
+import com.novadart.novabill.shared.client.exception.*;
 import com.novadart.novabill.web.mvc.UpgradeAccountController;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.junit.Before;
@@ -67,6 +66,9 @@ public class AccountUpgradeTest extends AuthenticatedTest {
 	
 	@Autowired
 	private PremiumEnablerService premiumEnablerService;
+
+	@Autowired
+	private TrialAccountDisablerService trialAccountDisablerService;
 	
 	@Autowired
 	private PaymentPlansLoader paymentPlansLoader;
@@ -99,41 +101,60 @@ public class AccountUpgradeTest extends AuthenticatedTest {
 		authenticatePrincipal(authenticatedPrincipal);
 	}
 
-	public void accountExpirationInNDaysNotificationTest(int days){
+	public void accountExpirationInNDaysNotificationTest(int days, DisablerService service, RoleType role){
 		Business business = Business.findBusiness(authenticatedPrincipal.getBusiness().getId());
 		business.getSettings().setNonFreeAccountExpirationTime(getNDaysFromNowInMillis(days));
+		Principal principal = business.getPrincipals().iterator().next();
+		principal.getGrantedRoles().clear();
+		principal.getGrantedRoles().add(role);
 		business.flush();
-		
+
 		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
-		accountStatusService.runTasks();
+		service.runTasks();
 		smtpServer.stop();
 		assertEquals(1, smtpServer.getReceivedEmailSize());
-		
+
 		SmtpMessage email = (SmtpMessage)smtpServer.getReceivedEmail().next();
 		assertEquals(business.getPrincipals().iterator().next().getUsername(), email.getHeaderValue("To"));
-		
+
 	}
 	
 	@Test
 	public void accountExpirationIn7DaysNotificationTest(){
-		accountExpirationInNDaysNotificationTest(7);
+		accountExpirationInNDaysNotificationTest(7, accountStatusService, RoleType.ROLE_BUSINESS_PREMIUM);
 		Notification notification = Notification.findAllNotifications().iterator().next();
 		assertEquals(NotificationType.PREMIUM_DOWNGRADE_7_DAYS, notification.getType());
 	}
 	
 	@Test
 	public void accountExpirationIn15DaysNotificationTest(){
-		accountExpirationInNDaysNotificationTest(15);
+		accountExpirationInNDaysNotificationTest(15, accountStatusService, RoleType.ROLE_BUSINESS_PREMIUM);
 		Notification notification = Notification.findAllNotifications().iterator().next();
 		assertEquals(NotificationType.PREMIUM_DOWNGRADE_15_DAYS, notification.getType());
 	}
 	
 	@Test
 	public void accountExpirationIn30DaysNotificationTest(){
-		accountExpirationInNDaysNotificationTest(30);
+		accountExpirationInNDaysNotificationTest(30, accountStatusService, RoleType.ROLE_BUSINESS_PREMIUM);
 		Notification notification = Notification.findAllNotifications().iterator().next();
 		assertEquals(NotificationType.PREMIUM_DOWNGRADE_30_DAYS, notification.getType());
 	}
+
+	@Test
+	public void trialExpirationIn7DaysNotificationTest(){
+		accountExpirationInNDaysNotificationTest(7, trialAccountDisablerService, RoleType.ROLE_BUSINESS_TRIAL);
+		Notification notification = Notification.findAllNotifications().iterator().next();
+		assertEquals(NotificationType.TRIAL_7_DAYS_LEFT, notification.getType());
+	}
+
+	@Test
+	public void trialExpirationIn15DaysNotificationTest(){
+		accountExpirationInNDaysNotificationTest(15, trialAccountDisablerService
+				, RoleType.ROLE_BUSINESS_TRIAL);
+		Notification notification = Notification.findAllNotifications().iterator().next();
+		assertEquals(NotificationType.TRIAL_15_DAYS_LEFT, notification.getType());
+	}
+
 
 
 	@Test
@@ -147,19 +168,45 @@ public class AccountUpgradeTest extends AuthenticatedTest {
 		accountStatusService.runTasks();
 		smtpServer.stop();
 		assertEquals(1, smtpServer.getReceivedEmailSize());
-		
+
 		SmtpMessage email = (SmtpMessage)smtpServer.getReceivedEmail().next();
 		assertEquals(business.getPrincipals().iterator().next().getUsername(), email.getHeaderValue("To"));
-		
-		assertTrue(authenticatedPrincipal.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_FREE));
+
+		assertTrue(authenticatedPrincipal.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_EXPIRED));
 		assertTrue(!authenticatedPrincipal.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_PREMIUM));
+		assertTrue(!authenticatedPrincipal.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_TRIAL));
 		
 		business = Business.findBusiness(business.getId());
 		assertEquals(1, business.getNotifications().size());
 		assertEquals(NotificationType.PREMIUM_DOWNGRADE, business.getNotifications().iterator().next().getType());
-		assertEquals(LayoutType.DENSE, business.getSettings().getDefaultLayoutType());
 	}
-	
+
+	@Test
+	public void disableExpiredTrialAccountsTest(){
+		Business business = Business.findBusiness(authenticatedPrincipal.getBusiness().getId());
+		business.getSettings().setNonFreeAccountExpirationTime(System.currentTimeMillis() - 100); //set in past
+		Principal principal = business.getPrincipals().iterator().next();
+		principal.getGrantedRoles().clear();
+		principal.getGrantedRoles().add(RoleType.ROLE_BUSINESS_TRIAL);
+		business.flush();
+
+		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
+		trialAccountDisablerService.runTasks();
+		smtpServer.stop();
+		assertEquals(1, smtpServer.getReceivedEmailSize());
+
+		SmtpMessage email = (SmtpMessage)smtpServer.getReceivedEmail().next();
+		assertEquals(business.getPrincipals().iterator().next().getUsername(), email.getHeaderValue("To"));
+
+		assertTrue(authenticatedPrincipal.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_EXPIRED));
+		assertTrue(!authenticatedPrincipal.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_PREMIUM));
+		assertTrue(!authenticatedPrincipal.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_TRIAL));
+
+		business = Business.findBusiness(business.getId());
+		assertEquals(1, business.getNotifications().size());
+		assertEquals(NotificationType.TRIAL_FINISHED, business.getNotifications().iterator().next().getType());
+	}
+
 	
 	@Test
 	public void paymentPlansTest(){
@@ -196,7 +243,7 @@ public class AccountUpgradeTest extends AuthenticatedTest {
 	@Test
 	public void enablePremiumFor12MonthsFreeUserTest() throws PremiumUpgradeException{
 		Long businessID = getUnathorizedBusinessID();
-		assertTrue(Business.findBusiness(businessID).getPrincipals().iterator().next().getGrantedRoles().contains(RoleType.ROLE_BUSINESS_FREE));
+		assertTrue(Business.findBusiness(businessID).getPrincipals().iterator().next().getGrantedRoles().contains(RoleType.ROLE_BUSINESS_TRIAL));
 		premiumEnablerService.enablePremiumForNMonths(Business.findBusiness(businessID), 12);
 		assertTrue(Business.findBusiness(businessID).getPrincipals().iterator().next().getGrantedRoles().contains(RoleType.ROLE_BUSINESS_PREMIUM));
 		Calendar calendar = Calendar.getInstance();
@@ -232,7 +279,7 @@ public class AccountUpgradeTest extends AuthenticatedTest {
 	}
 	
 	@Test
-	public void notifyAndInvoiceFreeUserTest() throws PremiumUpgradeException, InterruptedException, DataAccessException, NoSuchObjectException, NotAuthenticatedException{
+	public void notifyAndInvoiceFreeUserTest() throws PremiumUpgradeException, InterruptedException, DataAccessException, NoSuchObjectException, NotAuthenticatedException, FreeUserAccessForbiddenException {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(new Date());
 		int year = calendar.get(Calendar.YEAR);

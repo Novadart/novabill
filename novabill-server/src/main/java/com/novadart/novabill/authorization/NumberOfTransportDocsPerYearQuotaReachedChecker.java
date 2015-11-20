@@ -25,7 +25,7 @@ public class NumberOfTransportDocsPerYearQuotaReachedChecker implements Restrici
 	@Override
 	public void check(Principal principal) throws FreeUserAccessForbiddenException {
 		LOGGER.debug("Number of transport documents per year quota check - quota: {}, roles: {}", new Object[]{numberOfTransportDocsPerYearQuota, principal.getGrantedRoles()});
-		if(principal.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_FREE) && 
+		if(principal.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_TRIAL) &&
 				principal.getBusiness().getTransportDocsForYear(Calendar.getInstance().get(Calendar.YEAR)).size() >= numberOfTransportDocsPerYearQuota)
 			throw new FreeUserAccessForbiddenException(FreeUserAccessErrorType.NUMBER_OF_TRANSPORT_DOCUMENTS_QUOTA_REACHED);
 	}

@@ -196,7 +196,7 @@ public class CachingTest extends ServiceTest {
 	}
 	
 	@Test
-	public void invoiceRemoveCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, DataIntegrityException{
+	public void invoiceRemoveCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, DataIntegrityException, FreeUserAccessForbiddenException {
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		List<Integer> invYears = businessService.getInvoceYears(businessID);
 		Set<InvoiceDTO> result = new HashSet<InvoiceDTO>(businessGwtService.getInvoices(businessID, getYear()));
@@ -223,7 +223,7 @@ public class CachingTest extends ServiceTest {
 	public void invoiceAddCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, FreeUserAccessForbiddenException, InstantiationException, IllegalAccessException, ParseException, DataIntegrityException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		List<Integer> invYears = businessService.getInvoceYears(businessID);
-		Set<InvoiceDTO> result = new HashSet<InvoiceDTO>(businessGwtService.getInvoices(businessID, getYear()));
+		Set<InvoiceDTO> result = new HashSet<>(businessGwtService.getInvoices(businessID, getYear()));
 		Integer countInvsYear = businessGwtService.countInvoicesForYear(businessID, new Integer(testProps.get("year")));
 		BigDecimal totals = businessGwtService.getTotalsForYear(businessID, new Integer(testProps.get("year"))).getSecond();
 		
@@ -233,7 +233,7 @@ public class CachingTest extends ServiceTest {
 		invDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		invoiceService.add(invDTO);
 		
-		Set<InvoiceDTO> nonCachedResult = new HashSet<InvoiceDTO>(businessGwtService.getInvoices(authenticatedPrincipal.getBusiness().getId(), getYear()));
+		Set<InvoiceDTO> nonCachedResult = new HashSet<>(businessGwtService.getInvoices(authenticatedPrincipal.getBusiness().getId(), getYear()));
 		Integer nonCachedCountInvsYear = businessGwtService.countInvoicesForYear(businessID, new Integer(testProps.get("year")));
 		BigDecimal nonCachedTotals = businessGwtService.getTotalsForYear(businessID, new Integer(testProps.get("year"))).getSecond();
 		assertTrue(countInvsYear.equals(nonCachedCountInvsYear - 1));
@@ -247,7 +247,7 @@ public class CachingTest extends ServiceTest {
 	public void invoiceUpdateCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, FreeUserAccessForbiddenException, InstantiationException, IllegalAccessException, DataIntegrityException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		List<Integer> invYears = businessService.getInvoceYears(businessID);
-		Set<InvoiceDTO> result = new HashSet<InvoiceDTO>(businessGwtService.getInvoices(businessID, getYear()));
+		Set<InvoiceDTO> result = new HashSet<>(businessGwtService.getInvoices(businessID, getYear()));
 		Integer countInvsYear = businessGwtService.countInvoicesForYear(businessID, new Integer(testProps.get("year")));
 		BigDecimal totals = businessGwtService.getTotalsForYear(businessID, new Integer(testProps.get("year"))).getSecond();
 		
@@ -256,7 +256,7 @@ public class CachingTest extends ServiceTest {
 		invoiceService.update(InvoiceDTOTransformer.toDTO(inv, true));
 		Invoice.entityManager().flush();
 		
-		Set<InvoiceDTO> nonCachedResult = new HashSet<InvoiceDTO>(businessGwtService.getInvoices(authenticatedPrincipal.getBusiness().getId(), getYear()));
+		Set<InvoiceDTO> nonCachedResult = new HashSet<>(businessGwtService.getInvoices(authenticatedPrincipal.getBusiness().getId(), getYear()));
 		Integer nonCachedCountInvsYear = businessGwtService.countInvoicesForYear(businessID, new Integer(testProps.get("year")));
 		BigDecimal nonCachedTotals = businessGwtService.getTotalsForYear(businessID, new Integer(testProps.get("year"))).getSecond();
 		assertTrue(!result.equals(nonCachedResult));

@@ -40,6 +40,8 @@ public abstract class BusinessServiceImpl implements BusinessService {
 	private MessageSource messageSource;
 	
 	private Map<Locale, PaymentType[]> paymentTypes;
+
+	private int trialPeriodInDays;
 	
 	public static final String EMAIL_SUBJECT = "Invio Fattura n. $NumeroFattura del $DataFattura";
 	
@@ -79,7 +81,11 @@ public abstract class BusinessServiceImpl implements BusinessService {
 	}
 	
 	protected abstract BusinessService self();
-	
+
+	public void setTrialPeriodInDays(int trialPeriodInDays) {
+		this.trialPeriodInDays = trialPeriodInDays;
+	}
+
 	@Override
 	@PreAuthorize("#businessID == principal.business.id")
 	public BusinessStatsDTO getStats(Long businessID) throws NotAuthenticatedException, DataAccessException {
@@ -252,6 +258,7 @@ public abstract class BusinessServiceImpl implements BusinessService {
 		business.getPriceLists().add(publicPriceList);
 		Principal principal = Principal.findPrincipal(utilsService.getAuthenticatedPrincipalDetails().getId());
 		principal.setBusiness(business);
+		business.getSettings().setNonFreeAccountExpirationTime(System.currentTimeMillis() + trialPeriodInDays * 86_400_000);
 		business.getPrincipals().add(principal);
 		Business mergedBusiness = business.merge();
 		utilsService.setBusinessForPrincipal(mergedBusiness);

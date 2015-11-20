@@ -232,6 +232,7 @@
 	
 	<bean id="businessServiceImpl" class="com.novadart.novabill.service.web.BusinessServiceImpl">
 		<lookup-method name="self" bean="businessServiceImpl"/>
+		<property name="trialPeriodInDays" value="${mvn.trial.period}"/>
 	</bean>
 	
 	<beans profile="dev">

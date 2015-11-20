@@ -32,7 +32,7 @@ public class NumberOfInvoicesPerYearQuotaReachedChecker implements RestricionChe
 	@Override
 	public void check(Principal principal) throws FreeUserAccessForbiddenException, NotAuthenticatedException, DataAccessException {
 		LOGGER.debug("Number of invoices per year quota check - quota: {}, roles: {}", new Object[]{numberOfInvoicesPerYearQuota, principal.getGrantedRoles()});
-		if(principal.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_FREE) &&
+		if(principal.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_TRIAL) &&
 				businessService.getInvoices(principal.getBusiness().getId(), Calendar.getInstance().get(Calendar.YEAR)).size() >= numberOfInvoicesPerYearQuota)
 			throw new FreeUserAccessForbiddenException(FreeUserAccessErrorType.NUMBER_OF_INVOICES_QUOTA_REACHED);
 	}
