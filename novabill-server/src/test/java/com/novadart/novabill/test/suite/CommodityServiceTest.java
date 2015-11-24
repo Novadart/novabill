@@ -193,19 +193,19 @@ public class CommodityServiceTest extends ServiceTest {
      }
      
      @Test
-     public void getAllAuthorizedTest() throws NotAuthenticatedException, DataAccessException{
+     public void getAllAuthorizedTest() throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
     	 List<CommodityDTO> commodityDTOs = commodityGwtService.getAll(authenticatedPrincipal.getBusiness().getId());
     	 assertTrue(commodityDTOs.size() == authenticatedPrincipal.getBusiness().getCommodities().size());
      }
      
      
      @Test(expected = DataAccessException.class)
-     public void getAllUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+     public void getAllUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
     	 commodityGwtService.getAll(getUnathorizedBusinessID());
      }
      
      @Test(expected = DataAccessException.class)
-     public void getAllIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+     public void getAllIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
     	 commodityGwtService.getAll(null);
      }
      
@@ -219,23 +219,23 @@ public class CommodityServiceTest extends ServiceTest {
      }
      
      @Test(expected = DataAccessException.class)
-     public void getUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+     public void getUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
     	 CommodityDTO commodityDTO = commodityGwtService.getAll(authenticatedPrincipal.getBusiness().getId()).iterator().next();
     	 commodityGwtService.get(getUnathorizedBusinessID(), commodityDTO.getId());
      }
 
      @Test(expected = DataAccessException.class)
-     public void getAuthorizedNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+     public void getAuthorizedNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
     	 commodityGwtService.get(authenticatedPrincipal.getBusiness().getId(), null);
      }
      
      @Test(expected = DataAccessException.class)
-     public void getUnAuthorizedNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+     public void getUnAuthorizedNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
     	 commodityGwtService.get(getUnathorizedBusinessID(), null);
      }
      
      @Test(expected = DataAccessException.class)
-     public void getNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+     public void getNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
     	 commodityGwtService.get(null, null);
      }
      
@@ -273,7 +273,7 @@ public class CommodityServiceTest extends ServiceTest {
      }
     
      @Test
-     public void removePriceTest() throws NotAuthenticatedException, DataAccessException{
+     public void removePriceTest() throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
     	 Long commodityID = Long.parseLong(testPL.get(authenticatedPrincipal.getUsername() + ":commodityID"));
     	 Long priceListID = Long.parseLong(testPL.get(authenticatedPrincipal.getUsername()));
     	 commodityGwtService.removePrice(authenticatedPrincipal.getBusiness().getId(), priceListID, commodityID);
@@ -282,7 +282,7 @@ public class CommodityServiceTest extends ServiceTest {
      }
      
      @Test(expected = UnsupportedOperationException.class)
-     public void removeDefaultPriceTest() throws NotAuthenticatedException, DataAccessException{
+     public void removeDefaultPriceTest() throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
     	 Long commodityID = Long.parseLong(testPL.get(authenticatedPrincipal.getUsername() + ":commodityID"));
     	 Price defaultPrice = null;
     	 Iterator<Price> iter = Commodity.findCommodity(commodityID).getPrices().iterator();
@@ -296,7 +296,7 @@ public class CommodityServiceTest extends ServiceTest {
      
      
      @Test
-     public void getPricesTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+     public void getPricesTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
     	 Long businessID = authenticatedPrincipal.getBusiness().getId();
     	 Long commodityID = Long.parseLong(testPL.get(authenticatedPrincipal.getUsername() + ":commodityID"));
     	 Map<String, PriceDTO> prices = commodityGwtService.get(businessID, commodityID).getPrices();

@@ -26,14 +26,14 @@ public class CommodityController {
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
-	public List<CommodityDTO> getCommodities(@PathVariable Long businessID) throws NotAuthenticatedException, DataAccessException {
+	public List<CommodityDTO> getCommodities(@PathVariable Long businessID) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		return commodityService.getAll(businessID);
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
-	public CommodityDTO get(@PathVariable Long businessID, @PathVariable Long id) throws NoSuchObjectException, NotAuthenticatedException, DataAccessException{
+	public CommodityDTO get(@PathVariable Long businessID, @PathVariable Long id) throws NoSuchObjectException, NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		CommodityDTO commodityDTO = commodityService.get(businessID, id);
 		commodityDTO.setPrices(commodityService.getPrices(businessID, id));
 		return commodityDTO;
@@ -59,28 +59,28 @@ public class CommodityController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
-	public void remove(@PathVariable Long businessID, @PathVariable Long id) throws NotAuthenticatedException, DataAccessException{
+	public void remove(@PathVariable Long businessID, @PathVariable Long id) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		commodityService.remove(businessID, id);
 	}
 	
 	@RequestMapping(value = "/{commodityID}/pricelists/{priceListID}/prices", method = {RequestMethod.PUT, RequestMethod.POST})
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
-	public Map<String, Object> addOrUpdatePrice(@PathVariable Long businessID, @RequestBody PriceDTO priceDTO) throws ValidationException{
+	public Map<String, Object> addOrUpdatePrice(@PathVariable Long businessID, @RequestBody PriceDTO priceDTO) throws ValidationException, FreeUserAccessForbiddenException, NotAuthenticatedException, DataAccessException {
 		return ImmutableMap.of(JsonConst.VALUE, commodityService.addOrUpdatePrice(businessID, priceDTO));
 	}
 	
 	@RequestMapping(value = "/{commodityID}/pricelists/{priceListID}/prices", method = RequestMethod.DELETE)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
-	public void removePrice(@PathVariable Long businessID, @PathVariable Long priceListID, @PathVariable Long commodityID){
+	public void removePrice(@PathVariable Long businessID, @PathVariable Long priceListID, @PathVariable Long commodityID) throws FreeUserAccessForbiddenException, NotAuthenticatedException, DataAccessException {
 		commodityService.removePrice(businessID, priceListID, commodityID);
 	}
 	
 	@RequestMapping(value = "/prices/batch", method = {RequestMethod.PUT, RequestMethod.POST})
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
-	public List<String> addOrUpdatePrices(@PathVariable Long businessID, @RequestBody List<PriceDTO> priceDTOs) throws ValidationException{
+	public List<String> addOrUpdatePrices(@PathVariable Long businessID, @RequestBody List<PriceDTO> priceDTOs) throws ValidationException, FreeUserAccessForbiddenException, NotAuthenticatedException, DataAccessException {
 		List<String> ids = new ArrayList<>(priceDTOs.size());
 		for(PriceDTO priceDTO: priceDTOs)
 			ids.add(commodityService.addOrUpdatePrice(businessID, priceDTO).toString());
