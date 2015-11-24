@@ -497,7 +497,7 @@ public class CachingTest extends ServiceTest {
 	}
 	
 	@Test
-	public void transDocRemoveCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void transDocRemoveCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		List<Integer> tranYears = businessService.getTransportDocumentYears(businessID);
 		List<TransportDocumentDTO> result = businessGwtService.getTransportDocuments(businessID, getYear());
@@ -547,7 +547,7 @@ public class CachingTest extends ServiceTest {
 	}
 
 	@Test
-	public void transDocSetInvoiceCacheTest() throws NotAuthenticatedException, DataAccessException, DataIntegrityException{
+	public void transDocSetInvoiceCacheTest() throws NotAuthenticatedException, DataAccessException, DataIntegrityException, FreeUserAccessForbiddenException {
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		List<TransportDocumentDTO> result = businessGwtService.getTransportDocuments(businessID, getYear());
 		
@@ -561,7 +561,7 @@ public class CachingTest extends ServiceTest {
 	}
 	
 	@Test
-	public void transDocClearInvoiceCacheTest() throws DataAccessException, NotAuthenticatedException, DataIntegrityException{
+	public void transDocClearInvoiceCacheTest() throws DataAccessException, NotAuthenticatedException, DataIntegrityException, FreeUserAccessForbiddenException {
 		TransportDocument transDoc = authenticatedPrincipal.getBusiness().getTransportDocuments().iterator().next();
 		Invoice invoice = authenticatedPrincipal.getBusiness().getInvoices().iterator().next();
 		transDocService.setInvoice(authenticatedPrincipal.getBusiness().getId(), invoice.getId(), transDoc.getId());
@@ -598,7 +598,7 @@ public class CachingTest extends ServiceTest {
 	}
 	
 	@Test
-	public void paymentTypeRemoveCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, DataIntegrityException{
+	public void paymentTypeRemoveCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, DataIntegrityException, FreeUserAccessForbiddenException {
 		Set<PaymentTypeDTO> paymentTypes = new HashSet<PaymentTypeDTO>(businessGwtService.getPaymentTypes(authenticatedPrincipal.getBusiness().getId()));
 		Set<ClientDTO> clients = new HashSet<ClientDTO>(businessGwtService.getClients(authenticatedPrincipal.getBusiness().getId()));
 		paymentTypeService.remove(authenticatedPrincipal.getBusiness().getId(), authenticatedPrincipal.getBusiness().getPaymentTypes().iterator().next().getId());
@@ -641,7 +641,7 @@ public class CachingTest extends ServiceTest {
 	}
 	
 	@Test
-	public void transporterRemoveCacheTest() throws NotAuthenticatedException, DataAccessException{
+	public void transporterRemoveCacheTest() throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		Set<TransporterDTO> transporters = new HashSet<TransporterDTO>(businessGwtService.getTransporters(authenticatedPrincipal.getBusiness().getId()));
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		Long id = authenticatedPrincipal.getBusiness().getTransporters().iterator().next().getId();
@@ -766,7 +766,7 @@ public class CachingTest extends ServiceTest {
 	}
 	
 	@Test
-	public void priceListGetCacheTest() throws NotAuthenticatedException, NoSuchObjectException, DataAccessException{
+	public void priceListGetCacheTest() throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, FreeUserAccessForbiddenException {
 		Long id = authenticatedPrincipal.getBusiness().getPriceLists().iterator().next().getId();
 		PriceListDTO priceListDTO = priceListService.get(id);
 		PriceListDTO cachedPriceListDTO = priceListService.get(id);
@@ -774,7 +774,7 @@ public class CachingTest extends ServiceTest {
 	}
 	
 	@Test
-	public void priceListGetAllCacheTest() throws NotAuthenticatedException, DataAccessException{
+	public void priceListGetAllCacheTest() throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		List<PriceListDTO> result = priceListService.getAll(businessID);
 		List<PriceListDTO> cachedResult = priceListService.getAll(businessID);

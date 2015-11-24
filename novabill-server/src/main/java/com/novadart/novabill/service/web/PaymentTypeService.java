@@ -2,6 +2,8 @@ package com.novadart.novabill.service.web;
 
 import java.util.List;
 
+import com.novadart.novabill.annotation.Restrictions;
+import com.novadart.novabill.authorization.TrialOrPremiumChecker;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -32,24 +34,26 @@ public class PaymentTypeService {
 
 	@Autowired
 	private UtilsService utilsService;
-	
+
+	@Restrictions(checkers = TrialOrPremiumChecker.class)
 	@PreAuthorize("#businessID == principal.business.id")
-	public List<PaymentTypeDTO> getAll(Long businessID) throws NotAuthenticatedException, DataAccessException {
+	public List<PaymentTypeDTO> getAll(Long businessID) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		return businessService.getPaymentTypes(businessID);
 	}
-	
+
+	@Restrictions(checkers = TrialOrPremiumChecker.class)
 	@PreAuthorize("T(com.novadart.novabill.domain.PaymentType).findPaymentType(#id)?.business?.id == principal.business.id")
-	public PaymentTypeDTO get(Long id) throws NotAuthenticatedException,NoSuchObjectException, DataAccessException {
+	public PaymentTypeDTO get(Long id) throws NotAuthenticatedException,NoSuchObjectException, DataAccessException, FreeUserAccessForbiddenException {
 		for(PaymentTypeDTO paymentTypeDTO: businessService.getPaymentTypes(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()))
 			if(paymentTypeDTO.getId().equals(id))
 				return paymentTypeDTO;
 		throw new NoSuchObjectException();
 	}
 
+	@Restrictions(checkers = TrialOrPremiumChecker.class)
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	@PreAuthorize("#paymentTypeDTO?.business?.id == principal.business.id and " +
 		  	  	  "#paymentTypeDTO != null and #paymentTypeDTO.id == null")
-	//@Restrictions(checkers = {NumberOfPaymentTypesQuotaReachedChecker.class})
 	public Long add(PaymentTypeDTO paymentTypeDTO) throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException {
 		PaymentType paymentType = new PaymentType();
 		PaymentTypeDTOTransformer.copyFromDTO(paymentType, paymentTypeDTO);
@@ -60,9 +64,10 @@ public class PaymentTypeService {
 		paymentType.flush();
 		return paymentType.getId();
 	}
-	
-	
 
+
+
+	@Restrictions(checkers = TrialOrPremiumChecker.class)
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	@PreAuthorize("#paymentTypeDTO?.business?.id == principal.business.id and " +
 	  	  	  	  "#paymentTypeDTO?.id != null")
@@ -76,10 +81,11 @@ public class PaymentTypeService {
 
 
 
+	@Restrictions(checkers = TrialOrPremiumChecker.class)
 	@Transactional(readOnly = false)
 	@PreAuthorize("#businessID == principal.business.id and " +
 		  	  	  "T(com.novadart.novabill.domain.PaymentType).findPaymentType(#id)?.business?.id == #businessID")
-	public void remove(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException {
+	public void remove(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		PaymentType paymentType = PaymentType.findPaymentType(id);
 		for(Client client: paymentType.getClients())
 			client.setDefaultPaymentType(null);

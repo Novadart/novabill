@@ -2,6 +2,9 @@ package com.novadart.novabill.service.web;
 
 import java.util.List;
 
+import com.novadart.novabill.annotation.Restrictions;
+import com.novadart.novabill.authorization.TrialOrPremiumChecker;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,16 +29,18 @@ public class SharingPermitService {
 	
 	@Autowired
 	private BusinessService businessService;
-	
+
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@PreAuthorize("#businessID == principal.business.id")
-	public List<SharingPermitDTO> getAll(Long businessID) throws NotAuthenticatedException, DataAccessException{
+	public List<SharingPermitDTO> getAll(Long businessID) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException{
 		return businessService.getSharingPermits(businessID);
 	}
-	
+
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	@PreAuthorize("#sharingPermitDTO?.business?.id == principal.business.id and " +
 	  	  	      "#sharingPermitDTO != null and #sharingPermitDTO.id == null")
-	public Long add(Long businessID, SharingPermitDTO sharingPermitDTO) throws ValidationException {
+	public Long add(Long businessID, SharingPermitDTO sharingPermitDTO) throws ValidationException, NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		SharingPermit sharingPermit = new SharingPermit();
 		SharingPermitDTOTransformer.copyFromDTO(sharingPermit, sharingPermitDTO);
 		Business business = Business.findBusiness(sharingPermitDTO.getBusiness().getId());
@@ -47,11 +52,12 @@ public class SharingPermitService {
 		sharingPermit.flush();
 		return sharingPermit.getId();
 	}
-	
+
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@Transactional(readOnly = false)
 	@PreAuthorize("#businessID == principal.business.id and " +
 		  	  	  "T(com.novadart.novabill.domain.SharingPermit).findSharingPermit(#id)?.business?.id == #businessID")
-	public void remove(Long businessID, Long id) {
+	public void remove(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		SharingPermit sharingPermit = SharingPermit.findSharingPermit(id);
 		sharingPermit.remove();
 		if(Hibernate.isInitialized(sharingPermit.getBusiness().getSharingPermits()))

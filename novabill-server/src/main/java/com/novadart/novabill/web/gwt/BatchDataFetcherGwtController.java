@@ -60,7 +60,7 @@ public class BatchDataFetcherGwtController extends AbstractGwtController impleme
 	@Autowired
 	private UtilsService utilsService;
 	
-	private PaymentTypeDTO getDefaultPaymentTypeDTO(Long paymentTypeID) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException{
+	private PaymentTypeDTO getDefaultPaymentTypeDTO(Long paymentTypeID) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, FreeUserAccessForbiddenException {
 		return paymentTypeID == null? null: paymentTypeService.get(paymentTypeID);
 	}
 
@@ -78,10 +78,10 @@ public class BatchDataFetcherGwtController extends AbstractGwtController impleme
 
 	@Override
 	public Triple<Long, EstimationDTO, PaymentTypeDTO> fetchNewInvoiceFromEstimationOpData(Long estimationID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
-		EstimationDTO estimationtDTO = estimationService.get(estimationID);
-		String suffix = getInvoiceDocumentIDSuffixForClient(estimationtDTO.getClient().getId());
-		return new Triple<>(invoiceService.getNextInvoiceDocumentID(suffix), estimationtDTO,
-				getDefaultPaymentTypeDTO(estimationtDTO.getClient().getDefaultPaymentTypeID()));
+		EstimationDTO estimationDTO = estimationService.get(estimationID);
+		String suffix = getInvoiceDocumentIDSuffixForClient(estimationDTO.getClient().getId());
+		return new Triple<>(invoiceService.getNextInvoiceDocumentID(suffix), estimationDTO,
+				getDefaultPaymentTypeDTO(estimationDTO.getClient().getDefaultPaymentTypeID()));
 	}
 
 	@Override
@@ -109,12 +109,12 @@ public class BatchDataFetcherGwtController extends AbstractGwtController impleme
 	}
 
 	@Override
-	public Pair<Long, ClientDTO> fetchNewTransportDocumentForClientOpData(Long clientID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+	public Pair<Long, ClientDTO> fetchNewTransportDocumentForClientOpData(Long clientID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		return new Pair<>(transportDocService.getNextTransportDocId(), clientService.get(clientID));
 	}
 
 	@Override
-	public Triple<Long, ClientDTO, TransportDocumentDTO> fetchCloneTransportDocumentOpData(Long transportDocID, Long clientID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+	public Triple<Long, ClientDTO, TransportDocumentDTO> fetchCloneTransportDocumentOpData(Long transportDocID, Long clientID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		return new Triple<>(transportDocService.getNextTransportDocId(), clientService.get(clientID), transportDocService.get(transportDocID));
 	}
 
@@ -142,13 +142,13 @@ public class BatchDataFetcherGwtController extends AbstractGwtController impleme
 	}
 
 	@Override
-	public Pair<PriceListDTO, List<PriceListDTO>> fetchSelectCommodityForDocItemOpData(Long clientID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+	public Pair<PriceListDTO, List<PriceListDTO>> fetchSelectCommodityForDocItemOpData(Long clientID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		return new Pair<>(priceListService.get(Client.findClient(clientID).getDefaultPriceList().getId()),
 				priceListService.getAll(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()));
 	}
 
 	@Override
-	public Pair<Long, EstimationDTO> fetchNewTransportDocumentFromEstimationOpData(Long estimationID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+	public Pair<Long, EstimationDTO> fetchNewTransportDocumentFromEstimationOpData(Long estimationID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		return new Pair<>(transportDocService.getNextTransportDocId(), estimationService.get(estimationID));
 	}
 	

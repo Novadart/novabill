@@ -16,14 +16,14 @@ import com.novadart.novabill.shared.client.exception.ValidationException;
 @RemoteServiceRelativePath("transporter.rpc")
 public interface TransporterGwtService extends RemoteService {
 
-	List<TransporterDTO> getAll(Long businessID) throws NotAuthenticatedException, DataAccessException;
+	List<TransporterDTO> getAll(Long businessID) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException;
 	
-	TransporterDTO get(Long id) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException;
+	TransporterDTO get(Long id) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, FreeUserAccessForbiddenException;
 	
 	Long add(TransporterDTO transporterDTO) throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException;
 	
 	void update(TransporterDTO transporterDTO) throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException;
 	
-	void remove(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException;
+	void remove(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException;
 	
 }

@@ -1,7 +1,5 @@
 package com.novadart.novabill.test.suite;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.novadart.novabill.aspect.logging.DBLoggerAspect;
 import com.novadart.novabill.domain.*;
 import com.novadart.novabill.domain.dto.DTOUtils;
@@ -78,7 +76,7 @@ public class TransportDocumentServiceTest extends ServiceTest {
 	}
 	
 	@Test
-	public void getAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void getAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		Long transportDocID = authenticatedPrincipal.getBusiness().getTransportDocuments().iterator().next().getId();
 		TransportDocumentDTO expectedDTO = TransportDocumentDTOTransformer.toDTO(TransportDocument.findTransportDocument(transportDocID), true);
 		TransportDocumentDTO actualDTO = transportDocService.get(transportDocID);
@@ -86,59 +84,59 @@ public class TransportDocumentServiceTest extends ServiceTest {
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void getUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void getUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		Long transportDocID = Business.findBusiness(getUnathorizedBusinessID()).getTransportDocuments().iterator().next().getId();
 		transportDocService.get(transportDocID);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void getAuthorizedTransportDocIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void getAuthorizedTransportDocIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		transportDocService.get(null);
 	}
 	
 	@Test
-	public void getAllInRangeAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void getAllInRangeAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		PageDTO<TransportDocumentDTO> results = transportDocService.getAllInRange(authenticatedPrincipal.getBusiness().getId(), getYear(), 0, 10);
 		assertTrue(10 == results.getLength() && 0 == results.getOffset() && results.getItems().size() <= 10);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void getAllInRangeUnauthorizedTest() throws NotAuthenticatedException, DataAccessException{
+	public void getAllInRangeUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		transportDocService.getAllInRange(getUnathorizedBusinessID(), getYear(), 0, 10);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void getAllInRangeUnauthorizedBusinessIDNullTest() throws NotAuthenticatedException, DataAccessException{
+	public void getAllInRangeUnauthorizedBusinessIDNullTest() throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		transportDocService.getAllInRange(null, getYear(), 0, 10);
 	}
 	
 	@Test
-	public void getAllForClientAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void getAllForClientAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		Long clientID = new Long(testProps.get("clientWithTransportDocsID"));
-		List<AccountingDocumentDTO> actual = new ArrayList<AccountingDocumentDTO>(transportDocService.getAllForClient(clientID, getYear()));
+		List<AccountingDocumentDTO> actual = new ArrayList<>(transportDocService.getAllForClient(clientID, getYear()));
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		List<AccountingDocumentDTO> expected = DTOUtils.toDTOList(new ArrayList(Client.findClient(clientID).getTransportDocuments()), DTOUtils.transportDocDTOConverter, false); 
 		assertTrue(TestUtils.equal(expected, actual, TestUtils.transportDocumentComparator));
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void getAllForClientUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void getAllForClientUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		Long clientID = Business.findBusiness(getUnathorizedBusinessID()).getClients().iterator().next().getId();
 		transportDocService.getAllForClient(clientID, getYear());
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void getAllForClientAuthorizedClientIDNotExistTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void getAllForClientAuthorizedClientIDNotExistTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		transportDocService.getAllForClient(-1l, getYear());
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void getAllForClientAuthorizedClientIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void getAllForClientAuthorizedClientIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		transportDocService.getAllForClient(null, getYear());
 	}
 	
 	@Test
-	public void removeAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, JsonParseException, JsonMappingException, IOException{
+	public void removeAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, IOException, FreeUserAccessForbiddenException {
 		Long clientID = new Long(testProps.get("clientWithTransportDocsID"));
 		Long transportDocID = Client.findClient(clientID).getTransportDocuments().iterator().next().getId();
 		transportDocService.remove(authenticatedPrincipal.getBusiness().getId(), clientID, transportDocID);
@@ -154,51 +152,51 @@ public class TransportDocumentServiceTest extends ServiceTest {
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void removeUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void removeUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		Long clientID = new Long(testProps.get("clientWithTransportDocsID"));
 		Long transportDocID = Client.findClient(clientID).getTransportDocuments().iterator().next().getId();
 		transportDocService.remove(getUnathorizedBusinessID(), clientID, transportDocID);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void removeUnauthorizedBusinessIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void removeUnauthorizedBusinessIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		Long clientID = new Long(testProps.get("clientWithTransportDocsID"));
 		Long transportDocID = Client.findClient(clientID).getTransportDocuments().iterator().next().getId();
 		transportDocService.remove(null, clientID, transportDocID);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void removeAuthorizedClientIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void removeAuthorizedClientIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		Long transportDocID = authenticatedPrincipal.getBusiness().getTransportDocuments().iterator().next().getId();
 		transportDocService.remove(authenticatedPrincipal.getBusiness().getId(), null, transportDocID);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void removeAauthorizedTransportDocIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void removeAauthorizedTransportDocIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		Long clientID = new Long(testProps.get("clientWithTransportDocsID"));
 		transportDocService.remove(authenticatedPrincipal.getBusiness().getId(), clientID, null);
 	}
 	
 	@Test
-	public void getAllForClientInRangeAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void getAllForClientInRangeAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		Long clientID = new Long(testProps.get("clientWithTransportDocsID"));
 		PageDTO<TransportDocumentDTO> results = transportDocService.getAllForClientInRange(clientID, getYear(), 0, 10);
 		assertTrue(10 == results.getLength() && 0 == results.getOffset() && results.getItems().size() <= 10);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void getAllForClientInRangeUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void getAllForClientInRangeUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		Long clientID = Business.findBusiness(getUnathorizedBusinessID()).getClients().iterator().next().getId();
 		transportDocService.getAllForClientInRange(clientID, getYear(), 0, 10);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void getAllForClientInRangeClientIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void getAllForClientInRangeClientIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		transportDocService.getAllForClientInRange(null, getYear(), 0, 10);
 	}
 	
 	@Test
-	public void updateAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, JsonParseException, JsonMappingException, IOException, DataIntegrityException{
+	public void updateAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, IOException, DataIntegrityException, FreeUserAccessForbiddenException {
 		TransportDocument expected = authenticatedPrincipal.getBusiness().getTransportDocuments().iterator().next();
 		expected.setNote("Temporary note for this transport document");
 		transportDocService.update(TransportDocumentDTOTransformer.toDTO(expected, true));
@@ -215,12 +213,12 @@ public class TransportDocumentServiceTest extends ServiceTest {
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void updateAuthorizedTransportDocNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, DataIntegrityException{
+	public void updateAuthorizedTransportDocNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, DataIntegrityException, FreeUserAccessForbiddenException {
 		transportDocService.update(null);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void updateAuthorizedIDNull() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, DataIntegrityException{
+	public void updateAuthorizedIDNull() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, DataIntegrityException, FreeUserAccessForbiddenException {
 		TransportDocument transportDoc = Business.findBusiness(authenticatedPrincipal.getBusiness().getId()).getTransportDocuments().iterator().next();
 		TransportDocumentDTO transDocDTO = TransportDocumentDTOTransformer.toDTO(transportDoc, true);
 		transDocDTO.setId(null);
@@ -228,7 +226,7 @@ public class TransportDocumentServiceTest extends ServiceTest {
 	}
 	
 	@Test(expected = DataIntegrityException.class)
-	public void updateTransportDocInInvoiceTest() throws DataAccessException, NotAuthenticatedException, DataIntegrityException, NoSuchObjectException, ValidationException{
+	public void updateTransportDocInInvoiceTest() throws DataAccessException, NotAuthenticatedException, DataIntegrityException, NoSuchObjectException, ValidationException, FreeUserAccessForbiddenException {
 		TransportDocument transportDoc = Business.findBusiness(authenticatedPrincipal.getBusiness().getId()).getTransportDocuments().iterator().next();
 		Long invoiceID = authenticatedPrincipal.getBusiness().getInvoices().iterator().next().getId();
 		transportDocService.setInvoice(authenticatedPrincipal.getBusiness().getId(), invoiceID, transportDoc.getId());
@@ -236,7 +234,7 @@ public class TransportDocumentServiceTest extends ServiceTest {
 	}
 	
 	@Test
-	public void addAuthorizedTest() throws NotAuthenticatedException, DataAccessException, ValidationException, FreeUserAccessForbiddenException, InstantiationException, IllegalAccessException, JsonParseException, JsonMappingException, IOException{
+	public void addAuthorizedTest() throws NotAuthenticatedException, DataAccessException, ValidationException, FreeUserAccessForbiddenException, InstantiationException, IllegalAccessException, IOException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
 		TransportDocumentDTO transDocDTO = TransportDocumentDTOTransformer.toDTO(TestUtils.createTransportDocument(authenticatedPrincipal.getBusiness().getNextTransportDocDocumentID()), true);
 		transDocDTO.setClient(ClientDTOTransformer.toDTO(client));
@@ -304,13 +302,13 @@ public class TransportDocumentServiceTest extends ServiceTest {
 			transDocDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 			transportDocService.add(transDocDTO);
 		}catch(ValidationException e){
-			Set<Field> expected = new HashSet<Field>(TestUtils.transportDocValidationFieldsMap.values());
+			Set<Field> expected = new HashSet<>(TestUtils.transportDocValidationFieldsMap.values());
 			expected.remove(Field.accountingDocumentYear);
 			expected.remove(Field.accountingDocumentDate);
 			expected.remove(Field.documentID);
 			expected.remove(Field.transportStartDate);
 			expected.remove(Field.numberOfPackages);
-			Set<Field> actual= new HashSet<Field>();
+			Set<Field> actual= new HashSet<>();
 			for(ErrorObject error: e.getErrors())
 				actual.add(error.getField());
 			assertEquals(expected, actual);
@@ -350,47 +348,47 @@ public class TransportDocumentServiceTest extends ServiceTest {
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void setInvoiceNullArg1Test() throws DataAccessException, NotAuthenticatedException, DataIntegrityException{
+	public void setInvoiceNullArg1Test() throws DataAccessException, NotAuthenticatedException, DataIntegrityException, FreeUserAccessForbiddenException {
 		TransportDocument transDoc = authenticatedPrincipal.getBusiness().getTransportDocuments().iterator().next();
 		Invoice invoice = authenticatedPrincipal.getBusiness().getInvoices().iterator().next();
 		transportDocService.setInvoice(null, invoice.getId(), transDoc.getId());
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void setInvoiceNullArg2Test() throws DataAccessException, NotAuthenticatedException, DataIntegrityException{
+	public void setInvoiceNullArg2Test() throws DataAccessException, NotAuthenticatedException, DataIntegrityException, FreeUserAccessForbiddenException {
 		TransportDocument transDoc = authenticatedPrincipal.getBusiness().getTransportDocuments().iterator().next();
 		transportDocService.setInvoice(authenticatedPrincipal.getBusiness().getId(), null, transDoc.getId());
 	}
 
 	@Test(expected = DataAccessException.class)
-	public void setInvoiceNullArg3Test() throws DataAccessException, NotAuthenticatedException, DataIntegrityException{
+	public void setInvoiceNullArg3Test() throws DataAccessException, NotAuthenticatedException, DataIntegrityException, FreeUserAccessForbiddenException {
 		Invoice invoice = authenticatedPrincipal.getBusiness().getInvoices().iterator().next();
 		transportDocService.setInvoice(authenticatedPrincipal.getBusiness().getId(), invoice.getId(), null);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void setInvoiceUnauthorized1Test() throws DataAccessException, NotAuthenticatedException, DataIntegrityException{
+	public void setInvoiceUnauthorized1Test() throws DataAccessException, NotAuthenticatedException, DataIntegrityException, FreeUserAccessForbiddenException {
 		TransportDocument transDoc = authenticatedPrincipal.getBusiness().getTransportDocuments().iterator().next();
 		Invoice invoice = authenticatedPrincipal.getBusiness().getInvoices().iterator().next();
 		transportDocService.setInvoice(getUnathorizedBusinessID(), invoice.getId(), transDoc.getId());
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void setInvoiceUnauthorized2Test() throws DataAccessException, NotAuthenticatedException, DataIntegrityException{
+	public void setInvoiceUnauthorized2Test() throws DataAccessException, NotAuthenticatedException, DataIntegrityException, FreeUserAccessForbiddenException {
 		TransportDocument transDoc = authenticatedPrincipal.getBusiness().getTransportDocuments().iterator().next();
 		Invoice invoice = Business.findBusiness(getUnathorizedBusinessID()).getInvoices().iterator().next();
 		transportDocService.setInvoice(authenticatedPrincipal.getBusiness().getId(), invoice.getId(), transDoc.getId());
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void setInvoiceUnauthorized3Test() throws DataAccessException, NotAuthenticatedException, DataIntegrityException{
+	public void setInvoiceUnauthorized3Test() throws DataAccessException, NotAuthenticatedException, DataIntegrityException, FreeUserAccessForbiddenException {
 		TransportDocument transDoc = Business.findBusiness(getUnathorizedBusinessID()).getTransportDocuments().iterator().next();
 		Invoice invoice = authenticatedPrincipal.getBusiness().getInvoices().iterator().next();
 		transportDocService.setInvoice(authenticatedPrincipal.getBusiness().getId(), invoice.getId(), transDoc.getId());
 	}
 	
 	@Test
-	public void setInvoiceAuthrizedTest() throws DataAccessException, NotAuthenticatedException, DataIntegrityException, NoSuchObjectException{
+	public void setInvoiceAuthrizedTest() throws DataAccessException, NotAuthenticatedException, DataIntegrityException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		TransportDocument transDoc = authenticatedPrincipal.getBusiness().getTransportDocuments().iterator().next();
 		Invoice invoice = authenticatedPrincipal.getBusiness().getInvoices().iterator().next();
 		transportDocService.setInvoice(authenticatedPrincipal.getBusiness().getId(), invoice.getId(), transDoc.getId());
@@ -401,30 +399,30 @@ public class TransportDocumentServiceTest extends ServiceTest {
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void clearInvoiceNullArg1Test() throws DataAccessException, NotAuthenticatedException, DataIntegrityException{
+	public void clearInvoiceNullArg1Test() throws DataAccessException, NotAuthenticatedException, DataIntegrityException, FreeUserAccessForbiddenException {
 		TransportDocument transDoc = authenticatedPrincipal.getBusiness().getTransportDocuments().iterator().next();
 		transportDocService.clearInvoice(null, transDoc.getId());
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void clearInvoiceNullArg2Test() throws DataAccessException, NotAuthenticatedException, DataIntegrityException{
+	public void clearInvoiceNullArg2Test() throws DataAccessException, NotAuthenticatedException, DataIntegrityException, FreeUserAccessForbiddenException {
 		transportDocService.clearInvoice(authenticatedPrincipal.getBusiness().getId(), null);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void clearInvoiceUnauthrorized1Test() throws DataAccessException, NotAuthenticatedException, DataIntegrityException {
+	public void clearInvoiceUnauthrorized1Test() throws DataAccessException, NotAuthenticatedException, DataIntegrityException, FreeUserAccessForbiddenException {
 		TransportDocument transDoc = Business.findBusiness(authenticatedPrincipal.getBusiness().getId()).getTransportDocuments().iterator().next();
 		transportDocService.clearInvoice(getUnathorizedBusinessID(), transDoc.getId());
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void clearInvoiceUnauthrized2Test() throws DataAccessException, NotAuthenticatedException, DataIntegrityException{
+	public void clearInvoiceUnauthrized2Test() throws DataAccessException, NotAuthenticatedException, DataIntegrityException, FreeUserAccessForbiddenException {
 		TransportDocument transDoc = Business.findBusiness(getUnathorizedBusinessID()).getTransportDocuments().iterator().next();
 		transportDocService.clearInvoice(authenticatedPrincipal.getBusiness().getId(), transDoc.getId());
 	}
 	
 	@Test
-	public void clearInvoiceAuthorizedTest() throws DataAccessException, NotAuthenticatedException, DataIntegrityException, NoSuchObjectException{
+	public void clearInvoiceAuthorizedTest() throws DataAccessException, NotAuthenticatedException, DataIntegrityException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		TransportDocument transDoc = authenticatedPrincipal.getBusiness().getTransportDocuments().iterator().next();
 		Invoice invoice = authenticatedPrincipal.getBusiness().getInvoices().iterator().next();
 		transportDocService.setInvoice(authenticatedPrincipal.getBusiness().getId(), invoice.getId(), transDoc.getId());

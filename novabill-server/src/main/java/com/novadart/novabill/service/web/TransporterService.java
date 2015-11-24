@@ -2,6 +2,7 @@ package com.novadart.novabill.service.web;
 
 import java.util.List;
 
+import com.novadart.novabill.authorization.TrialOrPremiumChecker;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -36,12 +37,14 @@ public class TransporterService {
 	private UtilsService utilsService;
 	
 	@PreAuthorize("#businessID == principal.business.id")
-	public List<TransporterDTO> getAll(Long businessID) throws NotAuthenticatedException, DataAccessException {
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
+	public List<TransporterDTO> getAll(Long businessID) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		return businessService.getTransporters(businessID);
 	}
-	
+
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@PreAuthorize("T(com.novadart.novabill.domain.Transporter).findTransporter(#id)?.business?.id == principal.business.id")
-	public TransporterDTO get(Long id) throws NotAuthenticatedException,NoSuchObjectException, DataAccessException {
+	public TransporterDTO get(Long id) throws NotAuthenticatedException,NoSuchObjectException, DataAccessException, FreeUserAccessForbiddenException {
 		for(TransporterDTO transporterDTO: businessService.getTransporters(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()))
 			if(transporterDTO.getId().equals(id))
 				return transporterDTO;
@@ -51,7 +54,7 @@ public class TransporterService {
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	@PreAuthorize("#transporterDTO?.business?.id == principal.business.id and " +
 	  	  	  	  "#transporterDTO != null and #transporterDTO.id == null")
-	@Restrictions(checkers = {PremiumChecker.class})
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	public Long add(TransporterDTO transporterDTO) throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException {
 		Transporter transporter = new Transporter();
 		TransporterDTOTransformer.copyFromDTO(transporter, transporterDTO);
@@ -63,7 +66,8 @@ public class TransporterService {
 		transporter.flush();
 		return transporter.getId();
 	}
-	
+
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	@PreAuthorize("#transporterDTO?.business?.id == principal.business.id and " +
 	  	  	  	  "#transporterDTO?.id != null")
@@ -74,11 +78,12 @@ public class TransporterService {
 		TransporterDTOTransformer.copyFromDTO(persistedTransporter, transporterDTO);
 		validator.validate(persistedTransporter);
 	}
-	
+
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@Transactional(readOnly = false)
 	@PreAuthorize("#businessID == principal.business.id and " +
 		  	  	  "T(com.novadart.novabill.domain.Transporter).findTransporter(#id)?.business?.id == #businessID")
-	public void remove(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException {
+	public void remove(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		Transporter transporter = Transporter.findTransporter(id);
 		transporter.remove(); //removing payment type
 		if(Hibernate.isInitialized(transporter.getBusiness().getTransporters()))
