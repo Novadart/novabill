@@ -256,7 +256,7 @@ public class AccountUpgradeTest extends AuthenticatedTest {
 	}
 	
 	@Test
-	public void enablePremiumFor12MonthsPremiumUserTest() throws PremiumUpgradeException{
+	public void enablePremiumFor12MonthsPremiumUserTest() throws PremiumUpgradeException, FreeUserAccessForbiddenException, NotAuthenticatedException, DataAccessException {
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		assertTrue(Business.findBusiness(businessID).getPrincipals().iterator().next().getGrantedRoles().contains(RoleType.ROLE_BUSINESS_PREMIUM));
 		Long base = getNDaysFromNowInMillis(30); //set in future

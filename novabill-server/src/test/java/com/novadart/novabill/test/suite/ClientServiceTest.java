@@ -78,7 +78,7 @@ public class ClientServiceTest extends ServiceTest {
 	}
 	
 	@Test
-	public void getAllAuthenticatedTest() throws NotAuthenticatedException, DataAccessException{
+	public void getAllAuthenticatedTest() throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		Set<ClientDTO> expected = new HashSet<ClientDTO>();
 		for(Client client: authenticatedPrincipal.getBusiness().getClients())
 			expected.add(ClientDTOTransformer.toDTO(client));
@@ -95,17 +95,17 @@ public class ClientServiceTest extends ServiceTest {
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void getAllUnauthenticatedTest() throws NotAuthenticatedException, DataAccessException{
+	public void getAllUnauthenticatedTest() throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		businessService.getClients(getUnathorizedBusinessID());
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void getAllUnauthenticatedNullTest() throws NotAuthenticatedException, DataAccessException{
+	public void getAllUnauthenticatedNullTest() throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		businessService.getClients(null);
 	}
 	
 	@Test
-	public void removeAuthenticatedTest() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, DataIntegrityException, JsonParseException, JsonMappingException, IOException{
+	public void removeAuthenticatedTest() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, DataIntegrityException, JsonParseException, JsonMappingException, IOException, FreeUserAccessForbiddenException {
 		Long clientID = new Long(testProps.get("clientWithoutInvoicesID"));
 		String name = Client.findClient(clientID).getName();
 		boolean result = clientService.remove(authenticatedPrincipal.getBusiness().getId(), clientID);
@@ -122,7 +122,7 @@ public class ClientServiceTest extends ServiceTest {
 	}
 	
 	@Test
-	public void removeAuthenticatedDataIntegrityViolationTest() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, DataIntegrityException{
+	public void removeAuthenticatedDataIntegrityViolationTest() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, DataIntegrityException, FreeUserAccessForbiddenException {
 		Long clientID = new Long(testProps.get("clientWithInvoicesID"));
 		boolean result = clientService.remove(authenticatedPrincipal.getBusiness().getId(), clientID);
 		Client.entityManager().flush();
@@ -131,29 +131,29 @@ public class ClientServiceTest extends ServiceTest {
 	
 	
 	@Test(expected = DataAccessException.class)
-	public void removeUnauthenticatedTest() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, DataIntegrityException{
+	public void removeUnauthenticatedTest() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, DataIntegrityException, FreeUserAccessForbiddenException {
 		Long clientID = authenticatedPrincipal.getBusiness().getClients().iterator().next().getId();
 		clientService.remove(getUnathorizedBusinessID(), clientID);
 	}
 
 	@Test(expected = DataAccessException.class)
-	public void removeUnauthenticatedTestBusinessIDNull() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, DataIntegrityException{
+	public void removeUnauthenticatedTestBusinessIDNull() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, DataIntegrityException, FreeUserAccessForbiddenException {
 		Long clientID = authenticatedPrincipal.getBusiness().getClients().iterator().next().getId();
 		clientService.remove(null, clientID);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void removeUnauthenticatedTestClientIDNull() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, DataIntegrityException{
+	public void removeUnauthenticatedTestClientIDNull() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, DataIntegrityException, FreeUserAccessForbiddenException {
 		clientService.remove(getUnathorizedBusinessID(), null);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void removeAuthenticatedNonExistingClientTest() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, DataIntegrityException{
+	public void removeAuthenticatedNonExistingClientTest() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, DataIntegrityException, FreeUserAccessForbiddenException {
 		clientService.remove(authenticatedPrincipal.getBusiness().getId(), -1l);
 	}
 	
 	@Test
-	public void getAuthenticatedTest() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException{
+	public void getAuthenticatedTest() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		Long clientID = authenticatedPrincipal.getBusiness().getClients().iterator().next().getId();
 		ClientDTO expectedDTO = ClientDTOTransformer.toDTO(Client.findClient(clientID));
 		ClientDTO actualDTO = clientService.get(clientID);
@@ -161,18 +161,18 @@ public class ClientServiceTest extends ServiceTest {
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void getUnauthenticatedTest() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException{
+	public void getUnauthenticatedTest() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		Long clientID = Business.findBusiness(getUnathorizedBusinessID()).getClients().iterator().next().getId(); 
 		clientService.get(clientID);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void getUnauthenticatedClientIDNullTest() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException{
+	public void getUnauthenticatedClientIDNullTest() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		clientService.get(null);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void getAuthenticatedNonExistingClientTest() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException{
+	public void getAuthenticatedNonExistingClientTest() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		clientService.get(-1l);
 	}
 	
@@ -246,7 +246,7 @@ public class ClientServiceTest extends ServiceTest {
 	}
 	
 	@Test
-	public void updateAuthenticatedTest() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ValidationException, JsonParseException, JsonMappingException, IOException{
+	public void updateAuthenticatedTest() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ValidationException, JsonParseException, JsonMappingException, IOException, FreeUserAccessForbiddenException {
 		Long clientID = authenticatedPrincipal.getBusiness().getClients().iterator().next().getId();
 		Client expectedClient = Client.findClient(clientID);
 		expectedClient.setName("Temporary name for this company");
@@ -263,7 +263,7 @@ public class ClientServiceTest extends ServiceTest {
 	}
 	
 	@Test(expected = Exception.class)
-	public void updateAuthenticatedValidationErrorTest() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, IOException, ValidationException {
+	public void updateAuthenticatedValidationErrorTest() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, IOException, ValidationException, FreeUserAccessForbiddenException {
 		Long clientID = authenticatedPrincipal.getBusiness().getClients().iterator().next().getId();
 		Client expectedClient = Client.findClient(clientID);
 		expectedClient.setAddress("");
@@ -277,12 +277,12 @@ public class ClientServiceTest extends ServiceTest {
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void updateAuthenticatedClientIDNull() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ValidationException{
+	public void updateAuthenticatedClientIDNull() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ValidationException, FreeUserAccessForbiddenException {
 		clientService.update(authenticatedPrincipal.getBusiness().getId(), ClientDTOTransformer.toDTO(TestUtils.createClient()));
 	}
 	
 	@Test(expected = Exception.class)
-	public void updateAuthenticatedClientNull() throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException {
+	public void updateAuthenticatedClientNull() throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException, FreeUserAccessForbiddenException {
 		try {
 			clientService.update(authenticatedPrincipal.getBusiness().getId(), null);
 		} catch (DataAccessException e) {
@@ -293,14 +293,14 @@ public class ClientServiceTest extends ServiceTest {
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void updateUnauthenticatedClient() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ValidationException{
+	public void updateUnauthenticatedClient() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ValidationException, FreeUserAccessForbiddenException {
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
 		client.setName("Temporary name for this company");
 		clientService.update(getUnathorizedBusinessID(), ClientDTOTransformer.toDTO(client));
 	}
 	
 	@Test(expected = Exception.class)
-	public void updateAuthorizedValidationFieldMappingTest() throws IllegalAccessException, InvocationTargetException, NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException {
+	public void updateAuthorizedValidationFieldMappingTest() throws IllegalAccessException, InvocationTargetException, NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, FreeUserAccessForbiddenException {
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
 		for(String key: validationFieldsMap.keySet()){
 			BeanUtils.setProperty(client, key, StringUtils.leftPad("1", 1000, '1'));
@@ -319,7 +319,7 @@ public class ClientServiceTest extends ServiceTest {
 	}
 	
 	@Test
-	public void updateAuthorizedDefaultPaymentTypeNotNullNullTest() throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException{
+	public void updateAuthorizedDefaultPaymentTypeNotNullNullTest() throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException, FreeUserAccessForbiddenException {
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
 		PaymentType paymentType = TestUtils.createPaymentType();
 		client.setDefaultPaymentType(paymentType);
@@ -333,7 +333,7 @@ public class ClientServiceTest extends ServiceTest {
 	}
 	
 	@Test
-	public void updateAuthorizedDefaultPaymentTypeNotNullNotNullTest() throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException{
+	public void updateAuthorizedDefaultPaymentTypeNotNullNotNullTest() throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException, FreeUserAccessForbiddenException {
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
 		PaymentType paymentType1 = TestUtils.createPaymentType();
 		client.setDefaultPaymentType(paymentType1);
@@ -350,7 +350,7 @@ public class ClientServiceTest extends ServiceTest {
 	}
 	
 	@Test
-	public void updateAuthorizedNullDefaultPaymentTypeNullNullTest() throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException{
+	public void updateAuthorizedNullDefaultPaymentTypeNullNullTest() throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException, FreeUserAccessForbiddenException {
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
 		ClientDTO clientDTO = ClientDTOTransformer.toDTO(client);
 		clientDTO.setDefaultPaymentTypeID(null);
@@ -359,7 +359,7 @@ public class ClientServiceTest extends ServiceTest {
 	}
 	
 	@Test
-	public void updateAuthorizedNullDefaultPaymentTypeNullNotNullTest() throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException{
+	public void updateAuthorizedNullDefaultPaymentTypeNullNotNullTest() throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException, FreeUserAccessForbiddenException {
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
 		PaymentType paymentType = TestUtils.createPaymentType();
 		paymentType.persist();
@@ -372,7 +372,7 @@ public class ClientServiceTest extends ServiceTest {
 	
 	
 	@Test
-	public void updateAuthorizedDefaultPriceListNotNullNotNullTest() throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException{
+	public void updateAuthorizedDefaultPriceListNotNullNotNullTest() throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException, FreeUserAccessForbiddenException {
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
 		PriceList priceList1 = TestUtils.createPriceList();
 		client.setDefaultPriceList(priceList1);
@@ -389,7 +389,7 @@ public class ClientServiceTest extends ServiceTest {
 	}
 	
 	@Test
-	public void updateAuthorizedDefaultPriceListNullNotNullTest() throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException{
+	public void updateAuthorizedDefaultPriceListNullNotNullTest() throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException, FreeUserAccessForbiddenException {
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
 		PriceList priceList = TestUtils.createPriceList();
 		priceList.persist();
@@ -401,7 +401,7 @@ public class ClientServiceTest extends ServiceTest {
 	}
 
 	@Test
-	public void updateAuthorizedDefaultDocumentIDClassNotNullNullTest() throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException{
+	public void updateAuthorizedDefaultDocumentIDClassNotNullNullTest() throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException, FreeUserAccessForbiddenException {
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
 		DocumentIDClass docIDClass = TestUtils.createDocumentIDClass();
 		client.setDefaultDocumentIDClass(docIDClass);
@@ -415,7 +415,7 @@ public class ClientServiceTest extends ServiceTest {
 	}
 
 	@Test
-	public void updateAuthorizedDefaultDocumentIDClassNotNullNotNullTest() throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException{
+	public void updateAuthorizedDefaultDocumentIDClassNotNullNotNullTest() throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException, FreeUserAccessForbiddenException {
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
 		DocumentIDClass docIDClass1 = TestUtils.createDocumentIDClass();
 		client.setDefaultDocumentIDClass(docIDClass1);
@@ -432,7 +432,7 @@ public class ClientServiceTest extends ServiceTest {
 	}
 
 	@Test
-	public void updateAuthorizedNullDefaultDocumentIDClassNullNullTest() throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException{
+	public void updateAuthorizedNullDefaultDocumentIDClassNullNullTest() throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException, FreeUserAccessForbiddenException {
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
 		ClientDTO clientDTO = ClientDTOTransformer.toDTO(client);
 		clientDTO.setDefaultDocumentIDClassID(null);
@@ -441,7 +441,7 @@ public class ClientServiceTest extends ServiceTest {
 	}
 
 	@Test
-	public void updateAuthorizedNullDefaultDocumentIDClassNullNotNullTest() throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException{
+	public void updateAuthorizedNullDefaultDocumentIDClassNullNotNullTest() throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException, FreeUserAccessForbiddenException {
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
 		DocumentIDClass docIDClass = TestUtils.createDocumentIDClass();
 		docIDClass.persist();
@@ -499,13 +499,13 @@ public class ClientServiceTest extends ServiceTest {
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void getClientAddressesUnauthorizedTest() throws NotAuthenticatedException, DataAccessException{
+	public void getClientAddressesUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		Client client = Business.findBusiness(getUnathorizedBusinessID()).getClients().iterator().next();
 		clientService.getClientAddresses(client.getId());
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void getClientAddressesNullTest() throws NotAuthenticatedException, DataAccessException{
+	public void getClientAddressesNullTest() throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		clientService.getClientAddresses(null);
 	}
 	
@@ -518,7 +518,7 @@ public class ClientServiceTest extends ServiceTest {
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void removeClientAddressNull1Test() throws NotAuthenticatedException, DataAccessException {
+	public void removeClientAddressNull1Test() throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
 		clientService.removeClientAddress(client.getId(), null);
 	}

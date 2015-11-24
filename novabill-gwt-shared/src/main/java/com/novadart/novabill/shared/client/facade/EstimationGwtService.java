@@ -17,20 +17,20 @@ import com.novadart.novabill.shared.client.exception.ValidationException;
 @RemoteServiceRelativePath("estimation.rpc")
 public interface EstimationGwtService extends RemoteService {
 	
-	public EstimationDTO get(Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException;
+	public EstimationDTO get(Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException;
 	
-	public List<EstimationDTO> getAllForClient(Long clientID, Integer year) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException;
+	public List<EstimationDTO> getAllForClient(Long clientID, Integer year) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException;
 	
 	public Long add(EstimationDTO estimationDTO) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException, ValidationException;
 	
-	public void remove(Long businessID, Long clientID, Long id) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException;
+	public void remove(Long businessID, Long clientID, Long id) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, FreeUserAccessForbiddenException;
 	
-	public void update(EstimationDTO estimationDTO) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ValidationException;
+	public void update(EstimationDTO estimationDTO) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ValidationException, FreeUserAccessForbiddenException;
 	
-	public Long getNextEstimationId() throws NotAuthenticatedException, DataAccessException;
+	public Long getNextEstimationId() throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException;
 	
-	public PageDTO<EstimationDTO> getAllForClientInRange(Long clientID, Integer year, int start, int length) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException;
+	public PageDTO<EstimationDTO> getAllForClientInRange(Long clientID, Integer year, int start, int length) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException;
 	
-	public PageDTO<EstimationDTO> getAllInRange(Long businessID, Integer year, int start, int length) throws NotAuthenticatedException, DataAccessException;
+	public PageDTO<EstimationDTO> getAllInRange(Long businessID, Integer year, int start, int length) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException;
 	
 }

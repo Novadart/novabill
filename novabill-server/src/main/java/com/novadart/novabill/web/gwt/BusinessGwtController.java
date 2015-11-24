@@ -49,28 +49,28 @@ public class BusinessGwtController extends AbstractGwtController implements Busi
 	}
 	
 	@Override
-	public BusinessStatsDTO getStats(Long businessID) throws NotAuthenticatedException, DataAccessException {
+	public BusinessStatsDTO getStats(Long businessID) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		return businessService.getStats(businessID);
 	}
 
 	@Override
-	public Integer countClients(Long businessID) throws NotAuthenticatedException, DataAccessException {
+	public Integer countClients(Long businessID) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		return businessService.countClients(businessID);
 	}
 
 	@Override
-	public Integer countInvoicesForYear(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException {
+	public Integer countInvoicesForYear(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		return businessService.countInvoicesForYear(businessID, year);
 	}
 
 
 	@Override
-	public Pair<BigDecimal, BigDecimal> getTotalsForYear(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException {
+	public Pair<BigDecimal, BigDecimal> getTotalsForYear(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		return businessService.getTotalsForYear(businessID, year);
 	}
 
 	@Override
-	public void update(BusinessDTO businessDTO) throws DataAccessException, NoSuchObjectException, ValidationException, NotAuthenticatedException, DataAccessException {
+	public void update(BusinessDTO businessDTO) throws DataAccessException, NoSuchObjectException, ValidationException, NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		businessService.update(businessDTO);
 	}
 
@@ -85,42 +85,42 @@ public class BusinessGwtController extends AbstractGwtController implements Busi
 	}
 
 	@Override
-	public List<InvoiceDTO> getInvoices(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException {
+	public List<InvoiceDTO> getInvoices(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		return businessService.getInvoices(businessID, year);
 	}
 
 	@Override
-	public List<CreditNoteDTO> getCreditNotes(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException {
+	public List<CreditNoteDTO> getCreditNotes(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		return businessService.getCreditNotes(businessID, year);
 	}
 
 	@Override
-	public List<EstimationDTO> getEstimations(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException {
+	public List<EstimationDTO> getEstimations(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		return businessService.getEstimations(businessID, year);
 	}
 
 	@Override
-	public List<TransportDocumentDTO> getTransportDocuments(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException {
+	public List<TransportDocumentDTO> getTransportDocuments(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		return businessService.getTransportDocuments(businessID, year);
 	}
 	
 	@Override
-	public List<ClientDTO> getClients(Long businessID) throws NotAuthenticatedException, DataAccessException {
+	public List<ClientDTO> getClients(Long businessID) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		return businessService.getClients(businessID);
 	}
 	
 	@Override
-	public List<CommodityDTO> getCommodities(Long businessID) throws NotAuthenticatedException, DataAccessException {
+	public List<CommodityDTO> getCommodities(Long businessID) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		return businessService.getCommodities(businessID);
 	}
 	
 	@Override
-	public List<PaymentTypeDTO> getPaymentTypes(Long businessID) throws NotAuthenticatedException, DataAccessException {
+	public List<PaymentTypeDTO> getPaymentTypes(Long businessID) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		return businessService.getPaymentTypes(businessID);
 	}
 
 	@Override
-	public BusinessDTO get(Long businessID) throws NotAuthenticatedException, DataAccessException {
+	public BusinessDTO get(Long businessID) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		return businessService.get(businessID);
 	}
 
@@ -137,7 +137,7 @@ public class BusinessGwtController extends AbstractGwtController implements Busi
 	}
 
 	@Override
-	public List<TransporterDTO> getTransporters(Long businessID) throws NotAuthenticatedException, DataAccessException {
+	public List<TransporterDTO> getTransporters(Long businessID) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		return businessService.getTransporters(businessID);
 	}
 

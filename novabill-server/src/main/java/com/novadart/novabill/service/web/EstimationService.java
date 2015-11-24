@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import com.novadart.novabill.annotation.Restrictions;
+import com.novadart.novabill.authorization.TrialOrPremiumChecker;
 import com.novadart.novabill.report.DocumentType;
 import com.novadart.novabill.service.PDFStorageService;
 import org.hibernate.Hibernate;
@@ -45,9 +47,10 @@ public class EstimationService {
 
 	@Autowired
 	private PDFStorageService pdfStorageService;
-	
+
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@PreAuthorize("T(com.novadart.novabill.domain.Estimation).findEstimation(#id)?.business?.id == principal.business.id")
-	public EstimationDTO get(Long id) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException {
+	public EstimationDTO get(Long id) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException, FreeUserAccessForbiddenException {
 		Estimation estimation = Estimation.findEstimation(id);
 		if(estimation == null)
 			throw new NoSuchElementException();
@@ -68,18 +71,19 @@ public class EstimationService {
 		}
 		
 	}
-	
+
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#clientID)?.business?.id == principal.business.id")
-	public List<EstimationDTO> getAllForClient(Long clientID, Integer year) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException {
+	public List<EstimationDTO> getAllForClient(Long clientID, Integer year) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException, FreeUserAccessForbiddenException {
 		return new ArrayList<EstimationDTO>(DTOUtils.filter(businessService.getEstimations(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId(), year), new EqualsClientIDPredicate(clientID)));
 	}
 
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
-	//@Restrictions(checkers = {NumberOfEstimationsPerYearQuotaReachedChecker.class})
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@PreAuthorize("#estimationDTO?.business?.id == principal.business.id and " +
 			  	  "T(com.novadart.novabill.domain.Client).findClient(#estimationDTO?.client?.id)?.business?.id == principal.business.id and " +
 			  	  "#estimationDTO != null and #estimationDTO.id == null")
-	public Long add(EstimationDTO estimationDTO) throws DataAccessException, FreeUserAccessForbiddenException, ValidationException {
+	public Long add(EstimationDTO estimationDTO) throws DataAccessException, ValidationException, FreeUserAccessForbiddenException, NotAuthenticatedException {
 		Estimation estimation = new Estimation();
 		EstimationDTOTransformer.copyFromDTO(estimation, estimationDTO, true);
 		validator.validate(Estimation.class, estimation);
@@ -96,11 +100,12 @@ public class EstimationService {
 		return estimation.getId();
 	}
 
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@Transactional(readOnly = false)
 	@PreAuthorize("#businessID == principal.business.id and " +
 			  	  "T(com.novadart.novabill.domain.Estimation).findEstimation(#id)?.business?.id == #businessID and " +
 			  	  "T(com.novadart.novabill.domain.Estimation).findEstimation(#id)?.client?.id == #clientID")
-	public void remove(Long businessID, Long clientID, Long id) throws DataAccessException, NoSuchObjectException {
+	public void remove(Long businessID, Long clientID, Long id) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException, FreeUserAccessForbiddenException {
 		Estimation estimation = Estimation.findEstimation(id);
 		estimation.remove();
 		if(Hibernate.isInitialized(estimation.getBusiness().getEstimations()))
@@ -109,11 +114,12 @@ public class EstimationService {
 			estimation.getClient().getEstimations().remove(estimation);
 	}
 
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	@PreAuthorize("#estimationDTO?.business?.id == principal.business.id and " +
 		  	  	  "T(com.novadart.novabill.domain.Client).findClient(#estimationDTO?.client?.id)?.business?.id == principal.business.id and " +
 		  	  	  "#estimationDTO?.id != null")
-	public void update(EstimationDTO estimationDTO) throws DataAccessException, NoSuchObjectException, ValidationException {
+	public void update(EstimationDTO estimationDTO) throws DataAccessException, NoSuchObjectException, ValidationException, FreeUserAccessForbiddenException, NotAuthenticatedException {
 		Estimation persistedEstimation = Estimation.findEstimation(estimationDTO.getId());
 		if(persistedEstimation == null)
 			throw new NoSuchObjectException();
@@ -130,20 +136,23 @@ public class EstimationService {
 		persistedEstimation.setDocumentPath(docPath);
 	}
 
-	public Long getNextEstimationId() throws NotAuthenticatedException {
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
+	public Long getNextEstimationId() throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		return utilsService.getAuthenticatedPrincipalDetails().getBusiness().getNextEstimationDocumentID();
 	}
 
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#clientID)?.business?.id == principal.business.id")
-	public PageDTO<EstimationDTO> getAllForClientInRange(Long clientID, Integer year, int start, int length) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+	public PageDTO<EstimationDTO> getAllForClientInRange(Long clientID, Integer year, int start, int length) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		List<EstimationDTO> allEstimations = getAllForClient(clientID, year);
-		return new PageDTO<EstimationDTO>(DTOUtils.range(allEstimations, start, length), start, length, new Long(allEstimations.size()));
+		return new PageDTO<>(DTOUtils.range(allEstimations, start, length), start, length, new Long(allEstimations.size()));
 	}
 
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@PreAuthorize("#businessID == principal.business.id")
-	public PageDTO<EstimationDTO> getAllInRange(Long businessID, Integer year, int start, int length) throws NotAuthenticatedException, DataAccessException {
+	public PageDTO<EstimationDTO> getAllInRange(Long businessID, Integer year, int start, int length) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		List<EstimationDTO> allEstimations = businessService.getEstimations(businessID, year);
-		return new PageDTO<EstimationDTO>(DTOUtils.range(allEstimations, start, length), start, length, new Long(allEstimations.size()));
+		return new PageDTO<>(DTOUtils.range(allEstimations, start, length), start, length, new Long(allEstimations.size()));
 	}
 
 }

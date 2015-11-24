@@ -40,7 +40,7 @@ public class InvoiceController {
 	@RequestMapping(value = "/year/{year}", method = RequestMethod.GET)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
-	public List<InvoiceDTO> getInvoices(@PathVariable Long businessID, @PathVariable Integer year) throws NotAuthenticatedException, DataAccessException {
+	public List<InvoiceDTO> getInvoices(@PathVariable Long businessID, @PathVariable Integer year) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		return businessService.getInvoices(businessID, year);
 	}
 	

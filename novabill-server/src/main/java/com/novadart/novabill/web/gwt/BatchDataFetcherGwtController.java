@@ -1,33 +1,21 @@
 package com.novadart.novabill.web.gwt;
 
-import java.util.List;
-
-import com.novadart.novabill.domain.DocumentIDClass;
-import com.novadart.novabill.service.web.DocumentIDClassService;
-import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.novadart.novabill.domain.Client;
+import com.novadart.novabill.domain.DocumentIDClass;
 import com.novadart.novabill.service.UtilsService;
+import com.novadart.novabill.service.web.DocumentIDClassService;
 import com.novadart.novabill.service.web.PriceListService;
-import com.novadart.novabill.shared.client.dto.ClientDTO;
-import com.novadart.novabill.shared.client.dto.EstimationDTO;
-import com.novadart.novabill.shared.client.dto.InvoiceDTO;
-import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
-import com.novadart.novabill.shared.client.dto.PriceListDTO;
-import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
+import com.novadart.novabill.shared.client.dto.*;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
-import com.novadart.novabill.shared.client.facade.BatchDataFetcherGwtService;
-import com.novadart.novabill.shared.client.facade.ClientGwtService;
-import com.novadart.novabill.shared.client.facade.CreditNoteGwtService;
-import com.novadart.novabill.shared.client.facade.EstimationGwtService;
-import com.novadart.novabill.shared.client.facade.InvoiceGwtService;
-import com.novadart.novabill.shared.client.facade.PaymentTypeGwtService;
-import com.novadart.novabill.shared.client.facade.TransportDocumentGwtService;
+import com.novadart.novabill.shared.client.facade.*;
 import com.novadart.novabill.shared.client.tuple.Pair;
 import com.novadart.novabill.shared.client.tuple.Triple;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 public class BatchDataFetcherGwtController extends AbstractGwtController implements BatchDataFetcherGwtService {
 
@@ -64,7 +52,7 @@ public class BatchDataFetcherGwtController extends AbstractGwtController impleme
 		return paymentTypeID == null? null: paymentTypeService.get(paymentTypeID);
 	}
 
-	private String getInvoiceDocumentIDSuffixForClient(Long clientID) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException {
+	private String getInvoiceDocumentIDSuffixForClient(Long clientID) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, FreeUserAccessForbiddenException {
 		Long documentIDClassID = clientService.get(clientID).getDefaultDocumentIDClassID();
 		return documentIDClassID == null? null: DocumentIDClass.findDocumentIDClass(documentIDClassID).getSuffix();
 	}
@@ -99,12 +87,12 @@ public class BatchDataFetcherGwtController extends AbstractGwtController impleme
 	}
 
 	@Override
-	public Pair<Long, ClientDTO> fetchNewEstimationForClientOpData(Long clientID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+	public Pair<Long, ClientDTO> fetchNewEstimationForClientOpData(Long clientID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		return new Pair<>(estimationService.getNextEstimationId(), clientService.get(clientID));
 	}
 
 	@Override
-	public Triple<Long, ClientDTO, EstimationDTO> fetchCloneEstimationOpData(Long estimationID, Long clientID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+	public Triple<Long, ClientDTO, EstimationDTO> fetchCloneEstimationOpData(Long estimationID, Long clientID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		return new Triple<>(estimationService.getNextEstimationId(), clientService.get(clientID), estimationService.get(estimationID));
 	}
 
@@ -119,7 +107,7 @@ public class BatchDataFetcherGwtController extends AbstractGwtController impleme
 	}
 
 	@Override
-	public Pair<Long, ClientDTO> fetchNewCreditNoteForClientOpData(Long clientID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+	public Pair<Long, ClientDTO> fetchNewCreditNoteForClientOpData(Long clientID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		return new Pair<>(creditNoteService.getNextCreditNoteDocumentID(), clientService.get(clientID));
 	}
 

@@ -2,6 +2,7 @@ package com.novadart.novabill.aspect;
 
 import java.util.Map;
 
+import com.novadart.novabill.shared.client.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -9,10 +10,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import com.google.common.collect.ImmutableMap;
 import com.novadart.novabill.annotation.RestExceptionProcessingMixin;
-import com.novadart.novabill.shared.client.exception.ClientUIException;
-import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
-import com.novadart.novabill.shared.client.exception.DataAccessException;
-import com.novadart.novabill.shared.client.exception.ValidationException;
 
 public aspect RestExceptionProcessorAspect {
 	
@@ -25,7 +22,7 @@ public aspect RestExceptionProcessorAspect {
 		return ImmutableMap.<String, Object>of("error", "VALIDATION ERROR", "message", ex.getErrors());
 	}
 
-	@ExceptionHandler(value = {AccessDeniedException.class, DataAccessException.class})
+	@ExceptionHandler(value = {AccessDeniedException.class, DataAccessException.class, NotAuthenticatedException.class})
 	@ResponseStatus(value = HttpStatus.UNAUTHORIZED)
 	@ResponseBody
 	public Map<String, Object> RestExceptionProcessor.accessDeniedExceptionHandler(){

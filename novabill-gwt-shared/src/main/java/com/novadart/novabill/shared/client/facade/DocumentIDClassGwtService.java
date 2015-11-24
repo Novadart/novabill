@@ -13,6 +13,6 @@ import java.util.List;
 @RemoteServiceRelativePath("documentidclass.rpc")
 public interface DocumentIDClassGwtService extends RemoteService {
 
-	List<DocumentIDClassDTO> getAll(Long businessID) throws NotAuthenticatedException, DataAccessException;
+	List<DocumentIDClassDTO> getAll(Long businessID) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException;
 	
 }

@@ -2,6 +2,7 @@ package com.novadart.novabill.service.web;
 
 import com.novadart.novabill.annotation.Restrictions;
 import com.novadart.novabill.authorization.PremiumChecker;
+import com.novadart.novabill.authorization.TrialOrPremiumChecker;
 import com.novadart.novabill.domain.*;
 import com.novadart.novabill.domain.dto.DTOUtils;
 import com.novadart.novabill.domain.dto.transformer.*;
@@ -49,7 +50,7 @@ public abstract class BusinessServiceImpl implements BusinessService {
 	
 	@PostConstruct
 	public void init(){
-		paymentTypes = new HashMap<Locale, PaymentType[]>();
+		paymentTypes = new HashMap<>();
 		paymentTypes.put(Locale.ITALIAN, new PaymentType[]{
 			new PaymentType(messageSource.getMessage("payment1.name", null, "Rimessa Diretta", Locale.ITALIAN),
 							messageSource.getMessage("payment1.paymentNote", null, "Pagamento in Rimessa Diretta", Locale.ITALIAN), PaymentDateType.IMMEDIATE, 0, PaymentDeltaType.COMMERCIAL_MONTH, 0),
@@ -87,8 +88,9 @@ public abstract class BusinessServiceImpl implements BusinessService {
 	}
 
 	@Override
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@PreAuthorize("#businessID == principal.business.id")
-	public BusinessStatsDTO getStats(Long businessID) throws NotAuthenticatedException, DataAccessException {
+	public BusinessStatsDTO getStats(Long businessID) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		BusinessStatsDTO stats = new BusinessStatsDTO();
 		stats.setClientsCount(countClients(businessID));
 		int year = Calendar.getInstance().get(Calendar.YEAR);
@@ -103,21 +105,24 @@ public abstract class BusinessServiceImpl implements BusinessService {
 	}
 	
 	@Override
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@Transactional(readOnly = true)
 	@PreAuthorize("#businessID == principal.business.id")
-	public Integer countClients(Long businessID) throws NotAuthenticatedException, DataAccessException {
+	public Integer countClients(Long businessID) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		return self().getClients(businessID).size();
 	}
 	
 	@Override
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@PreAuthorize("#businessID == principal.business.id")
-	public Integer countInvoicesForYear(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException {
+	public Integer countInvoicesForYear(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		return self().getInvoices(businessID, year).size();
 	}
 
 	@Override
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@PreAuthorize("#businessID == principal.business.id")
-	public Pair<BigDecimal, BigDecimal> getTotalsForYear(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException {
+	public Pair<BigDecimal, BigDecimal> getTotalsForYear(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		BigDecimal totalBeforeTaxes = new BigDecimal("0.0");
 		BigDecimal totalAfterTaxes = new BigDecimal("0.0");
 		for(InvoiceDTO invoiceDTO: self().getInvoices(businessID, year)){
@@ -128,41 +133,47 @@ public abstract class BusinessServiceImpl implements BusinessService {
 	}
 
 	@Override
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	@PreAuthorize("#businessDTO?.id == principal.business.id")
-	public void update(BusinessDTO businessDTO) throws DataAccessException, NoSuchObjectException, ValidationException {
+	public void update(BusinessDTO businessDTO) throws DataAccessException, NoSuchObjectException, ValidationException, FreeUserAccessForbiddenException, NotAuthenticatedException {
 		Business business = Business.findBusiness(businessDTO.getId());
 		BusinessDTOTransformer.copyFromDTO(business, businessDTO);
 		validator.validate(business, HeavyBusiness.class);
 	}
 	
 	@Override
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@PreAuthorize("#businessID == principal.business.id")
-	public List<InvoiceDTO> getInvoices(Long businessID, Integer year){
+	public List<InvoiceDTO> getInvoices(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException{
 		return DTOUtils.toDTOList(AccountingDocument.sortAccountingDocuments(Business.findBusiness(businessID).fetchInvoicesEagerly(year)), DTOUtils.invoiceDTOConverter, false);
 	}
 
 	@Override
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@PreAuthorize("#businessID == principal.business.id")
-	public List<CreditNoteDTO> getCreditNotes(Long businessID, Integer year) throws NotAuthenticatedException {
+	public List<CreditNoteDTO> getCreditNotes(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException{
 		return DTOUtils.toDTOList(AccountingDocument.sortAccountingDocuments(Business.findBusiness(businessID).fetchCreditNotesEagerly(year)), DTOUtils.creditNoteDTOConverter, false);
 	}
 
 	@Override
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@PreAuthorize("#businessID == principal.business.id")
-	public List<EstimationDTO> getEstimations(Long businessID, Integer year) throws NotAuthenticatedException {
+	public List<EstimationDTO> getEstimations(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		return DTOUtils.toDTOList(AccountingDocument.sortAccountingDocuments(Business.findBusiness(businessID).fetchEstimationsEagerly(year)), DTOUtils.estimationDTOConverter, false);
 	}
 
 	@Override
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@PreAuthorize("#businessID == principal.business.id")
-	public List<TransportDocumentDTO> getTransportDocuments(Long businessID, Integer year) throws NotAuthenticatedException {
+	public List<TransportDocumentDTO> getTransportDocuments(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		return DTOUtils.toDTOList(AccountingDocument.sortAccountingDocuments(Business.findBusiness(businessID).fetchTransportDocumentsEagerly(year)), DTOUtils.transportDocDTOConverter, false);
 	}
 	
 	@Override
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@PreAuthorize("#businessID == principal.business.id")
-	public List<ClientDTO> getClients(Long businessID){
+	public List<ClientDTO> getClients(Long businessID) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException{
 		Set<Client> clients = Business.findBusiness(businessID).getClients();
 		List<ClientDTO> clientDTOs = new ArrayList<ClientDTO>(clients.size());
 		for(Client client: clients)
@@ -171,8 +182,9 @@ public abstract class BusinessServiceImpl implements BusinessService {
 	}
 	
 	@Override
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@PreAuthorize("#businessID == principal.business.id")
-	public List<CommodityDTO> getCommodities(Long businessID) throws NotAuthenticatedException, DataAccessException {
+	public List<CommodityDTO> getCommodities(Long businessID) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		Set<Commodity> commodities = Business.findBusiness(businessID).getCommodities();
 		List<CommodityDTO> commodityDTOs = new ArrayList<CommodityDTO>(commodities.size());
 		for(Commodity commodity: commodities)
@@ -182,8 +194,9 @@ public abstract class BusinessServiceImpl implements BusinessService {
 	
 
 	@Override
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@PreAuthorize("#businessID == principal.business.id")
-	public List<PriceListDTO> getPriceLists(Long businessID) throws NotAuthenticatedException, DataAccessException {
+	public List<PriceListDTO> getPriceLists(Long businessID) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		Set<PriceList> priceLists = Business.findBusiness(businessID).getPriceLists();
 		List<PriceListDTO> priceListDTOs = new ArrayList<>(priceLists.size());
 		for(PriceList priceList: priceLists)
@@ -192,8 +205,9 @@ public abstract class BusinessServiceImpl implements BusinessService {
 	}
 
 	@Override
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@PreAuthorize("#businessID == principal.business.id")
-	public List<PaymentTypeDTO> getPaymentTypes(Long businessID) throws NotAuthenticatedException, DataAccessException{
+	public List<PaymentTypeDTO> getPaymentTypes(Long businessID) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException{
 		Set<PaymentType> paymentTypes = Business.findBusiness(businessID).getPaymentTypes();
 		List<PaymentTypeDTO> paymentTypeDTOs = new ArrayList<PaymentTypeDTO>(paymentTypes.size());
 		for(PaymentType paymentType: paymentTypes)
@@ -202,8 +216,9 @@ public abstract class BusinessServiceImpl implements BusinessService {
 	}
 	
 	@Override
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@PreAuthorize("#businessID == principal.business.id")
-	public List<TransporterDTO> getTransporters(Long businessID) throws NotAuthenticatedException, DataAccessException {
+	public List<TransporterDTO> getTransporters(Long businessID) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		Set<Transporter> transporters = Business.findBusiness(businessID).getTransporters();
 		List<TransporterDTO> transporterDTOs = new ArrayList<>(transporters.size());
 		for(Transporter transporter: transporters)
@@ -213,7 +228,8 @@ public abstract class BusinessServiceImpl implements BusinessService {
 	
 	@Override
 	@PreAuthorize("#businessID == principal.business.id")
-	public List<SharingPermitDTO> getSharingPermits(Long businessID) throws NotAuthenticatedException, DataAccessException {
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
+	public List<SharingPermitDTO> getSharingPermits(Long businessID) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		Set<SharingPermit> sharingPermits = Business.findBusiness(businessID).getSharingPermits();
 		List<SharingPermitDTO> sharingPermitDTOs = new ArrayList<>(sharingPermits.size());
 		for(SharingPermit sharingPermit: sharingPermits)
@@ -222,7 +238,8 @@ public abstract class BusinessServiceImpl implements BusinessService {
 	}
 	
 	@PreAuthorize("#businessID == principal.business.id")
-	public BusinessDTO get(Long businessID) throws NotAuthenticatedException, DataAccessException {
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
+	public BusinessDTO get(Long businessID) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		return BusinessDTOTransformer.toDTO(Business.findBusiness(businessID));
 	}
 
@@ -233,7 +250,8 @@ public abstract class BusinessServiceImpl implements BusinessService {
 		settings.setEmailSubject(EMAIL_SUBJECT);
 		settings.setEmailText(EMAIL_TEXT);
 	}
-	
+
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@PreAuthorize("principal.business == null and #businessDTO != null and #businessDTO.id == null")
 	@Transactional(readOnly = false)
 	public Long add(BusinessDTO businessDTO) throws NotAuthenticatedException, FreeUserAccessForbiddenException, ValidationException, DataAccessException, 
@@ -266,32 +284,37 @@ public abstract class BusinessServiceImpl implements BusinessService {
 	}
 
 	@Override
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@PreAuthorize("#businessID == principal.business.id")
-	public List<Integer> getInvoceYears(Long businessID) throws NotAuthenticatedException, DataAccessException {
+	public List<Integer> getInvoceYears(Long businessID) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		return Business.findBusiness(businessID).getInvoiceYears();
 	}
 	
 	@Override
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@PreAuthorize("#businessID == principal.business.id")
-	public List<Integer> getCreditNoteYears(Long businessID) throws NotAuthenticatedException, DataAccessException {
+	public List<Integer> getCreditNoteYears(Long businessID) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		return Business.findBusiness(businessID).getCreditNoteYears();
 	}
 	
 	@Override
 	@PreAuthorize("#businessID == principal.business.id")
-	public List<Integer> getEstimationYears(Long businessID) throws NotAuthenticatedException, DataAccessException {
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
+	public List<Integer> getEstimationYears(Long businessID) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		return Business.findBusiness(businessID).getEstimationYears();
 	}
 	
 	@Override
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@PreAuthorize("#businessID == principal.business.id")
-	public List<Integer> getTransportDocumentYears(Long businessID) throws NotAuthenticatedException, DataAccessException {
+	public List<Integer> getTransportDocumentYears(Long businessID) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		return Business.findBusiness(businessID).getTransportDocumentYears();
 	}
 
 	@Override
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@PreAuthorize("#businessID == principal.business.id")
-	public List<LogRecordDTO> getLogRecords(Long businessID, Integer numberOfDays) throws NotAuthenticatedException, DataAccessException {
+	public List<LogRecordDTO> getLogRecords(Long businessID, Integer numberOfDays) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		Long threshold = DateUtils.truncate(new Date(System.currentTimeMillis()), Calendar.HOUR).getTime() - (numberOfDays * 24L * 60L * 60L * 1000L) ;
 		List<LogRecordDTO> result = new ArrayList<>();
 		for(LogRecord lg: LogRecord.fetchAllSince(businessID, threshold))
@@ -300,8 +323,9 @@ public abstract class BusinessServiceImpl implements BusinessService {
 	}
 
 	@Override
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@PreAuthorize("#businessID == principal.business.id")
-	public List<BigDecimal> getInvoiceMonthTotals(Long businessID) throws NotAuthenticatedException, DataAccessException {
+	public List<BigDecimal> getInvoiceMonthTotals(Long businessID) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		Calendar cal = Calendar.getInstance();
 		List<BigDecimal> totals = new ArrayList<>(12);
 		for(int i = 0; i < 12; ++ i) totals.add(new BigDecimal("0.00"));
@@ -318,14 +342,15 @@ public abstract class BusinessServiceImpl implements BusinessService {
 	@Override
 	@PreAuthorize("#businessID == principal.business.id")
 	@Transactional(readOnly = false)
-	@Restrictions(checkers = {PremiumChecker.class})
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	public void setDefaultLayout(Long businessID, LayoutType layoutType) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		Business.findBusiness(businessID).getSettings().setDefaultLayoutType(layoutType);
 	}
 
 	@Override
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@PreAuthorize("#businessID == principal.business.id")
-	public List<NotificationDTO> getNotifications(Long businessID) {
+	public List<NotificationDTO> getNotifications(Long businessID) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException{
 		List<Notification> notifications = Notification.getUnseenNotificationsForBusiness(businessID); 
 		List<NotificationDTO> result = new ArrayList<>(notifications.size());
 		for(Notification n: notifications)
@@ -334,18 +359,20 @@ public abstract class BusinessServiceImpl implements BusinessService {
 	}
 
 	@Override
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@PreAuthorize("#businessID == principal.business.id and " +
 				  "T(com.novadart.novabill.domain.Notification).findNotification(#id)?.business?.id == #businessID")
 	@Transactional(readOnly = false)
-	public void markNotificationAsSeen(Long businessID, Long id) {
+	public void markNotificationAsSeen(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		Notification notification = Notification.findNotification(id);
 		notification.setSeen(true);
 		notification.merge();
 	}
 
 	@Override
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@PreAuthorize("#businessID == principal.business.id")
-	public List<DocumentIDClassDTO> getDocumentIdClasses(Long businessID) throws NotAuthenticatedException, DataAccessException {
+	public List<DocumentIDClassDTO> getDocumentIdClasses(Long businessID) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		Set<DocumentIDClass> documentIDClasses = Business.findBusiness(businessID).getDocumentIDClasses();
 		List<DocumentIDClassDTO> documentIDClassDTOs = new ArrayList<>(documentIDClasses.size());
 		for(DocumentIDClass documentIDClass : documentIDClasses)
@@ -354,7 +381,8 @@ public abstract class BusinessServiceImpl implements BusinessService {
 	}
 
 	@Override
-	public List<InvoiceDTO> getInvoices(Long businessID, Integer year, final String docIDSuffix) throws NotAuthenticatedException, DataAccessException {
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
+	public List<InvoiceDTO> getInvoices(Long businessID, Integer year, final String docIDSuffix) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		List<InvoiceDTO> allInvocesForYear = self().getInvoices(businessID, year);
 		Collection<InvoiceDTO> filtered = DTOUtils.filter(allInvocesForYear, new DTOUtils.Predicate<InvoiceDTO>(){
 			@Override

@@ -24,7 +24,7 @@ public class DocumentIDClassController {
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
-    public List<DocumentIDClassDTO> getDocIDClasses(@PathVariable Long businessID) throws NotAuthenticatedException, DataAccessException {
+    public List<DocumentIDClassDTO> getDocIDClasses(@PathVariable Long businessID) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
         return docidclassesService.getAll(businessID);
     }
 
@@ -49,7 +49,7 @@ public class DocumentIDClassController {
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
-    public Map<String, Object> remove(@PathVariable Long businessID, @PathVariable Long id) throws NotAuthenticatedException, DataAccessException{
+    public Map<String, Object> remove(@PathVariable Long businessID, @PathVariable Long id) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
         return ImmutableMap.of(JsonConst.VALUE, docidclassesService.remove(businessID, id));
     }
 

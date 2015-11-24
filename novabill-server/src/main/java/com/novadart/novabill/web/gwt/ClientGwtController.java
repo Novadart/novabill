@@ -1,22 +1,15 @@
 package com.novadart.novabill.web.gwt;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.novadart.novabill.annotation.HandleGWTServiceAccessDenied;
 import com.novadart.novabill.service.web.ClientService;
 import com.novadart.novabill.shared.client.dto.ClientAddressDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
-import com.novadart.novabill.shared.client.exception.DataAccessException;
-import com.novadart.novabill.shared.client.exception.DataIntegrityException;
-import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
-import com.novadart.novabill.shared.client.exception.InvalidArgumentException;
-import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
-import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
-import com.novadart.novabill.shared.client.exception.ValidationException;
+import com.novadart.novabill.shared.client.exception.*;
 import com.novadart.novabill.shared.client.facade.ClientGwtService;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 @HandleGWTServiceAccessDenied
 public class ClientGwtController extends AbstractGwtController implements ClientGwtService {
@@ -26,7 +19,7 @@ public class ClientGwtController extends AbstractGwtController implements Client
 	@Autowired
 	private ClientService clientService;
 	
-	public boolean remove(Long businessID, Long id) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException {
+	public boolean remove(Long businessID, Long id) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, FreeUserAccessForbiddenException {
 		return clientService.remove(businessID, id);
 	}
 
@@ -34,11 +27,11 @@ public class ClientGwtController extends AbstractGwtController implements Client
 		return clientService.add(businessID, clientDTO);
 	}
 
-	public void update(Long businessID, ClientDTO clientDTO) throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException {
+	public void update(Long businessID, ClientDTO clientDTO) throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException, FreeUserAccessForbiddenException {
 		clientService.update(businessID, clientDTO);
 	}
 
-	public ClientDTO get(Long id) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException {
+	public ClientDTO get(Long id) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, FreeUserAccessForbiddenException {
 		return clientService.get(id);
 	}
 
@@ -52,12 +45,12 @@ public class ClientGwtController extends AbstractGwtController implements Client
 	}
 
 	@Override
-	public List<ClientAddressDTO> getClientAddresses(Long clientID) throws NotAuthenticatedException, DataAccessException {
+	public List<ClientAddressDTO> getClientAddresses(Long clientID) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		return clientService.getClientAddresses(clientID);
 	}
 
 	@Override
-	public void removeClientAddress(Long clientID, Long id) throws NotAuthenticatedException, DataAccessException {
+	public void removeClientAddress(Long clientID, Long id) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		clientService.removeClientAddress(clientID, id);
 	}
 
