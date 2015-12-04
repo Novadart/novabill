@@ -73,11 +73,6 @@ public class Principal implements UserDetails {
 		creationTime = registration.getCreationTime();
 	}
 	
-	@Deprecated
-	public void setPasswordNonHashed(String password){
-		this.password = password;
-	}
-
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();

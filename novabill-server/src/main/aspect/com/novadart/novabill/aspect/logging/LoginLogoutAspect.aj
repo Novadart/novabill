@@ -23,10 +23,9 @@ privileged aspect LoginLogoutAspect {
 	
 	after() returning: login(){
 		Principal business = utilsService.getAuthenticatedPrincipalDetails();
-//		business.setLastLogin(new Date());
-//		business.merge();
-//		LOGGER.info("[{}, login, {}]", new Object[]{business.getUsername(), business.getLastLogin()});
-		LOGGER.info("[{}, login, {}]", new Object[]{business.getUsername(), new Date()});
+		business.setLastLogin(new Date());
+		business.merge();
+		LOGGER.info("[{}, login, {}]", new Object[]{business.getUsername(), business.getLastLogin()});
 	}
 	
 	after(Authentication authentication) returning: logout(authentication){

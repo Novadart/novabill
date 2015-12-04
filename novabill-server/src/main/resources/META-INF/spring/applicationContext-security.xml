@@ -35,18 +35,12 @@
     </http>
     <!-- Configure Authentication mechanism -->
     <authentication-manager alias="authenticationManager">
-        <!-- SHA-256 values can be produced using 'echo -n your_desired_password | sha256sum' (using normal *nix environments) -->
         <authentication-provider user-service-ref="principalDetailsService">
-	    	<password-encoder ref="passwordEncoder">
-	    		<salt-source user-property="creationTime" />
-	    	</password-encoder>
+	    	<password-encoder ref="passwordEncoder"/>
     	</authentication-provider>
     </authentication-manager>
-    
-    <beans:bean id="passwordEncoder" class="com.novadart.novabill.springsecurity.MigrationPasswordEncoder"/>
-    
-    <beans:bean id="shaPasswordEncoder" class="org.springframework.security.authentication.encoding.ShaPasswordEncoder">
-    	<beans:constructor-arg value="256"></beans:constructor-arg></beans:bean>
+
+    <beans:bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
     
     <beans:bean id="novabillAuthenticationEntryPoint" class="com.novadart.novabill.springsecurity.AuthenticationEntryPoint">
     	<beans:constructor-arg value="/login"></beans:constructor-arg>
