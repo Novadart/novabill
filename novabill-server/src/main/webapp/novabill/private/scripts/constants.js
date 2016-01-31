@@ -139,6 +139,8 @@ angular.module('novabill.constants', [])
 					commodityList : function(){ return baseConf.commoditiesBaseUrl + '#/'; },
 					commodityDetails : function(commodityId){ return baseConf.commoditiesBaseUrl + '#/details/' + commodityId; },
 
+					dashboard : function(){ return baseConf.dashboardUrl; },
+
 					estimationList : function(){ return baseConf.estimationsBaseUrl + '#/'; },
 					estimationNew : function(clientId){ return baseConf.estimationsBaseUrl + '#/new/' + clientId; },
 					estimationClone : function(clientId,estimationId){ return baseConf.estimationsBaseUrl + '#/new/' + clientId + '/clone/' + estimationId; },

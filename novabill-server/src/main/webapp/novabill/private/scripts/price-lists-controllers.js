@@ -12,8 +12,7 @@ angular.module('novabill.priceLists.controllers',
                                function($scope, nConstants, nSorting, nEditPriceListDialog, nAjax, $filter, nRegExp){
 	
 	$scope.DEFAULT_PRICELIST_NAME = nConstants.conf.defaultPriceListName;
-	$scope.PREMIUM = nConstants.conf.premium;
-	var PriceList = nAjax.PriceList(); 
+	var PriceList = nAjax.PriceList();
 	
 	$scope.loadPriceLists = function(){
 		PriceList.query(function(priceLists){

@@ -125,20 +125,6 @@
 
 		</script>
 
-		<style type="text/css">
-			.premium-label {
-				display: none;
-			}
-
-			li:HOVER .premium-only .premium-label {
-				display: inline;
-			}
-
-			.premium-only {
-				color: #999;
-			}
-		</style>
-
 	</head>
 	<!-- END HEAD -->
 	<!-- BEGIN BODY -->
@@ -256,13 +242,13 @@
 				</li>
 
 				<li class="<%=PAGES.COMMODITIES.equals(activePage) ? "active" : ""%>"><a href="${commoditiesUrl}"> <i
-						class="fa fa-th"></i> <span class="title <%=!isPremium ? "premium-only" : ""%>">Articoli <span class="label label-primary premium-label">Premium</span></span> <%
+						class="fa fa-th"></i> <span class="title">Articoli</span> <%
 					if(PAGES.COMMODITIES.equals(activePage)) {
 				%> <span class="selected"></span> <%} %>
 				</a></li>
 
 				<li class="<%=PAGES.PRICE_LISTS.equals(activePage) ? "active" : ""%>"><a href="${priceListsUrl}"> <i
-						class="fa fa-dollar"></i> <span class="title <%=!isPremium ? "premium-only" : ""%>">Listini <span class="label label-primary premium-label">Premium</span></span> <%
+						class="fa fa-dollar"></i> <span class="title">Listini</span> <%
 					if(PAGES.PRICE_LISTS.equals(activePage)) {
 				%> <span class="selected"></span> <%} %>
 				</a></li>
@@ -281,18 +267,18 @@
 				<li class="<%=PAGES.STATISTICS_GENERAL.equals(activePage) || PAGES.STATISTICS_CLIENTS.equals(activePage) || PAGES.STATISTICS_COMMODITIES.equals(activePage)? "active" : "" %>">
 					<a href="javascript:;">
 						<i class="fa fa-bar-chart-o"></i>
-						<span class="title <%=!isPremium ? "premium-only" : ""%>">Statistiche <span class="label label-primary premium-label">Premium</span></span>
+						<span class="title">Statistiche</span>
 						<span class="arrow "></span>
 					</a>
 					<ul class="sub-menu">
-						<li class="<%=PAGES.STATISTICS_GENERAL.equals(activePage) ? "active" : "" %> <%=!isPremium ? " premium-only" : ""%>" >
-							<a href="${statisticsGeneralUrl}"><i class="fa fa-dashboard"></i> Generali <span class="label label-primary premium-label">Premium</span></a>
+						<li class="<%=PAGES.STATISTICS_GENERAL.equals(activePage) ? "active" : "" %>" >
+							<a href="${statisticsGeneralUrl}"><i class="fa fa-dashboard"></i> Generali</a>
 						</li>
-						<li class="<%=PAGES.STATISTICS_CLIENTS.equals(activePage) ? "active" : "" %> <%=!isPremium ? " premium-only" : ""%>">
-							<a href="${statisticsClientsUrl}"><i class="fa fa-user"></i> Clienti <span class="label label-primary premium-label">Premium</span></a>
+						<li class="<%=PAGES.STATISTICS_CLIENTS.equals(activePage) ? "active" : "" %>">
+							<a href="${statisticsClientsUrl}"><i class="fa fa-user"></i> Clienti</a>
 						</li>
-						<li class="<%=PAGES.STATISTICS_COMMODITIES.equals(activePage) ? "active" : "" %> <%=!isPremium ? " premium-only" : ""%>">
-							<a href="${statisticsCommoditiesUrl}"><i class="fa fa-th"></i> Articoli <span class="label label-primary premium-label">Premium</span></a>
+						<li class="<%=PAGES.STATISTICS_COMMODITIES.equals(activePage) ? "active" : "" %>">
+							<a href="${statisticsCommoditiesUrl}"><i class="fa fa-th"></i> Articoli</a>
 						</li>
 					</ul>
 				</li>
@@ -303,8 +289,8 @@
 				</li>
 
 				<li class="<%=PAGES.SHARE.equals(activePage) ? "active last" : "last" %> "><a href="${shareUrl}"> <i
-						class="fa fa-group"></i> <span class="title <%=!isPremium ? "premium-only" : ""%>">
-                            Condivisione <span class="label label-primary premium-label">Premium</span></span> <% if(PAGES.SHARE.equals(activePage)) { %> <span
+						class="fa fa-group"></i> <span class="title">
+                            Condivisione <% if(PAGES.SHARE.equals(activePage)) { %> <span
 						class="selected"></span> <%} %>
 				</a></li>
 

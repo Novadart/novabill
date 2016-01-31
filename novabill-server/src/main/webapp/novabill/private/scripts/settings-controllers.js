@@ -49,14 +49,9 @@ angular.module('novabill.settings.controllers', ['novabill.directives', 'novabil
 
             $scope.update = function(){
                 $scope.business.$update(function(){
-
-                    if(nConstants.conf.premium) {
-                        Business.setDefaultLayout({defaultLayoutType : $scope.business.settings.defaultLayoutType}, function(){
-                            $window.location.reload();
-                        });
-                    } else {
+                    Business.setDefaultLayout({defaultLayoutType : $scope.business.settings.defaultLayoutType}, function(){
                         $window.location.reload();
-                    }
+                    });
                 });
             };
 

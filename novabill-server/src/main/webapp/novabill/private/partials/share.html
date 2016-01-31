@@ -17,13 +17,12 @@
 	<div class="row">
 		<div class="col-md-12">
 			<div class="well">
-				<n-premium-alert></n-premium-alert>
 				<h4>{{'INFO' | translate}}</h4>
 				<p>{{'SHARING_PERMIT_INFO1' | translate}}</p>
 				<p ng-bind-html="sharingInfo2"></p>
 			</div>
 
-			<button n-premium-check type="button" class="btn green new-share" ng-click="newShare()">{{'NEW_SHARE' | translate}}</button>
+			<button type="button" class="btn green new-share" ng-click="newShare()">{{'NEW_SHARE' | translate}}</button>
 			<img class="spinner" ng-show="sharingPermits==null" src="../../private_assets/img/ajax-loading.gif">
 			<p class="no-data-message text-center text-info" ng-show="sharingPermits && sharingPermits.length===0">{{'NO_DATA' | translate}}</p>
 

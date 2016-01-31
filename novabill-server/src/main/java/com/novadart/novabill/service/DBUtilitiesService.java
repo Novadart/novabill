@@ -263,37 +263,37 @@ public class DBUtilitiesService {
 //		}
 //	}
 	
-	public void createSecondBusiness() throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException, com.novadart.novabill.shared.client.exception.CloneNotSupportedException{
-		Registration registration = new Registration();
-		registration.setEmail("info@prmanufatti.it");
-		setPrivateFieldForRegistration(registration, "password", "64c7dba27c3e6d28957471136cc637b87aa10148fe19178f2010cb276df5aba4"); //avoid password hashing
-		Principal principal = new Principal(registration);
-		principal.getGrantedRoles().add(RoleType.ROLE_BUSINESS_TRIAL);
-		principal.setPassword("p3rr3:12oi");
-		Business business = new Business();
-		for(PaymentType pType: paymentTypes){
-			PaymentType paymentType = null;
-			try {
-				paymentType = pType.clone();
-			} catch (CloneNotSupportedException e) {
-				throw new com.novadart.novabill.shared.client.exception.CloneNotSupportedException();
-			}
-			paymentType.setBusiness(business);
-			business.getPaymentTypes().add(paymentType);
-		}
-		business.setName("P.R. Manufatti in Cemento");
-		business.setAddress("Via Levà, 85");
-		business.setCity("Conselve ");
-		business.setPostcode("35026");
-		business.setProvince("PD");
-		business.getSettings().setDefaultLayoutType(LayoutType.DENSE);
-		business.setVatID("IT04254930284");
-		business.setCountry("IT");
-		business.getPrincipals().add(principal);
-		principal.setBusiness(business);
-		business.persist();
-		
-	}
+//	public void createSecondBusiness() throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException, com.novadart.novabill.shared.client.exception.CloneNotSupportedException{
+//		Registration registration = new Registration();
+//		registration.setEmail("info@prmanufatti.it");
+//		setPrivateFieldForRegistration(registration, "password", "64c7dba27c3e6d28957471136cc637b87aa10148fe19178f2010cb276df5aba4"); //avoid password hashing
+//		Principal principal = new Principal(registration);
+//		principal.getGrantedRoles().add(RoleType.ROLE_BUSINESS_TRIAL);
+//		principal.setPassword("p3rr3:12oi");
+//		Business business = new Business();
+//		for(PaymentType pType: paymentTypes){
+//			PaymentType paymentType = null;
+//			try {
+//				paymentType = pType.clone();
+//			} catch (CloneNotSupportedException e) {
+//				throw new com.novadart.novabill.shared.client.exception.CloneNotSupportedException();
+//			}
+//			paymentType.setBusiness(business);
+//			business.getPaymentTypes().add(paymentType);
+//		}
+//		business.setName("P.R. Manufatti in Cemento");
+//		business.setAddress("Via Levà, 85");
+//		business.setCity("Conselve ");
+//		business.setPostcode("35026");
+//		business.setProvince("PD");
+//		business.getSettings().setDefaultLayoutType(LayoutType.DENSE);
+//		business.setVatID("IT04254930284");
+//		business.setCountry("IT");
+//		business.getPrincipals().add(principal);
+//		principal.setBusiness(business);
+//		business.persist();
+//
+//	}
 	
 //	private void createThirdBusiness() throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException, com.novadart.novabill.shared.client.exception.CloneNotSupportedException{
 //		Registration registration = new Registration();
