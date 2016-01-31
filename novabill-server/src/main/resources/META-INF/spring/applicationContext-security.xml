@@ -17,13 +17,13 @@
         <!-- NOTE exposed till Novabill 3.0 -->
         <intercept-url pattern="/private/feedback" access="permitAll" />
         
-        <intercept-url pattern="/private/**" access="hasAnyRole('ROLE_BUSINESS_FREE', 'ROLE_BUSINESS_PREMIUM')" />
-        <intercept-url pattern="/**/business.rpc" access="hasAnyRole('ROLE_BUSINESS_FREE', 'ROLE_BUSINESS_PREMIUM')" />
-        <intercept-url pattern="/**/client.rpc" access="hasAnyRole('ROLE_BUSINESS_FREE', 'ROLE_BUSINESS_PREMIUM')" />
-        <intercept-url pattern="/**/invoice.rpc" access="hasAnyRole('ROLE_BUSINESS_FREE', 'ROLE_BUSINESS_PREMIUM')" />
-        <intercept-url pattern="/**/estimation.rpc" access="hasAnyRole('ROLE_BUSINESS_FREE', 'ROLE_BUSINESS_PREMIUM')" />
-        <intercept-url pattern="/**/creditnote.rpc" access="hasAnyRole('ROLE_BUSINESS_FREE', 'ROLE_BUSINESS_PREMIUM')" />
-        <intercept-url pattern="/**/transportdoc.rpc" access="hasAnyRole('ROLE_BUSINESS_FREE', 'ROLE_BUSINESS_PREMIUM')" />
+        <intercept-url pattern="/private/**" access="hasAnyRole('ROLE_BUSINESS_TRIAL', 'ROLE_BUSINESS_PREMIUM')" />
+        <intercept-url pattern="/**/business.rpc" access="hasAnyRole('ROLE_BUSINESS_TRIAL', 'ROLE_BUSINESS_PREMIUM')" />
+        <intercept-url pattern="/**/client.rpc" access="hasAnyRole('ROLE_BUSINESS_TRIAL', 'ROLE_BUSINESS_PREMIUM')" />
+        <intercept-url pattern="/**/invoice.rpc" access="hasAnyRole('ROLE_BUSINESS_TRIAL', 'ROLE_BUSINESS_PREMIUM')" />
+        <intercept-url pattern="/**/estimation.rpc" access="hasAnyRole('ROLE_BUSINESS_TRIAL', 'ROLE_BUSINESS_PREMIUM')" />
+        <intercept-url pattern="/**/creditnote.rpc" access="hasAnyRole('ROLE_BUSINESS_TRIAL', 'ROLE_BUSINESS_PREMIUM')" />
+        <intercept-url pattern="/**/transportdoc.rpc" access="hasAnyRole('ROLE_BUSINESS_TRIAL', 'ROLE_BUSINESS_PREMIUM')" />
         <intercept-url pattern="/resources/**" access="permitAll" />
         <intercept-url pattern="/login" access="permitAll" />
         <intercept-url pattern="/**" access="permitAll" />

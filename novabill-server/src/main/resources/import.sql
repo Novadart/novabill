@@ -4,6 +4,9 @@ insert into principal_granted_roles (principal, granted_roles) values (1, 1);
 insert into business (id, name, address, postcode, city, province, country, email, phone, mobile, fax, web, vatid, ssn, default_layout_type, version) values (2, 'Novadart S.n.c. di Giordano Battilana & C.', 'via Stradone, 51', '35010', 'Campo San Martino', 'PD', 'IT', 'risto.gligorov@novadart.com', '3334927614', '3334927614', '0498597898', '', 'IT04534350281', 'IT04534350281', 0, 1);
 insert into principal (id, creation_time, username, password, version, business, enabled) values (2, 1385137600000, 'risto.gligorov@novadart.com', '$2a$10$TGxkcePWlxnQSZo2mqjnx..y.4lTFGQIu9mVlRdv6Rs9Rd44Xx/Ki', 1, 2, 't')
 insert into principal_granted_roles (principal, granted_roles) values (2, 0);
+insert into business (id, name, address, postcode, city, province, country, email, phone, mobile, fax, web, vatid, ssn, default_layout_type, version) values (188, 'Novadart S.n.c. di Giordano Battilana & C.', 'via Stradone, 51', '35010', 'Campo San Martino', 'PD', 'IT', 'john.doe@novadart.com', '3334927614', '3334927614', '0498597898', '', 'IT04534350282', 'IT04534350282', 0, 1);
+insert into principal (id, creation_time, username, password, version, business, enabled) values (2, 1385137600000, 'john.doe@novadart.com', '$2a$10$TGxkcePWlxnQSZo2mqjnx..y.4lTFGQIu9mVlRdv6Rs9Rd44Xx/Ki', 1, 2, 't')
+insert into principal_granted_roles (principal, granted_roles) values (188, 2);
 
 --creating price lists
 insert into price_list (id, name, version, business) values (161, '::default', '1', 1);
@@ -330,4 +333,4 @@ insert into sharing_permit (id, created_on, description, email, business, versio
 --creating document id class
 insert into documentidclass (id, suffix, business, version) values (187, 'bis', 1, 1);
 
-alter sequence hibernate_sequence restart with 188;
+alter sequence hibernate_sequence restart with 189;
