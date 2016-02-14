@@ -323,6 +323,7 @@
 			principalEmail : '<%=principal.getUsername()%>',
 			principalCreationDate : <%=principal.getCreationTime()%>,
 			premium : <%=isPremium%>,
+			role : '<%=principal.getGrantedRoles().iterator().next()%>',
 			defaultPriceListName : '<%=PriceListConstants.DEFAULT%>',
 			basePath : '${basePath}',
 			version : '<tiles:insertAttribute name="novabill.version" />'
