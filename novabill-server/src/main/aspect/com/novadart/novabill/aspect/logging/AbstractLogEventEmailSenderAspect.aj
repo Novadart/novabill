@@ -25,7 +25,7 @@ public abstract aspect AbstractLogEventEmailSenderAspect {
 	protected void sendEmailMessage(String eventType, String principal, Date time, Map<String, Object> otherTemplateVars, String templatePath){
 		if(sendEmail){
 			new EmailBuilder().to(emailAddresses)
-					.subject(eventType)
+					.subject("[Novabill Notification] ~ "+eventType)
 					.template(templatePath)
 					.templateVar("eventType", eventType)
 					.templateVar("principal", principal)
