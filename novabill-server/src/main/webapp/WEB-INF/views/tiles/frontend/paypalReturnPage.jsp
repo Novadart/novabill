@@ -35,7 +35,7 @@
                 <br>
                 <p style="text-align: justify;">
                     Ti invieremo un'email non appena avremo verificato il completamento dell'acquisto. Puoi verificare lo stato del tuo piano nella <a href="${profilePageUrl}">pagina del profilo</a><br><br>
-                    In caso di necessità contattaci all'indirizzo <a href="mailto:supporto@novabill.it">supporto@novabill.it</a><br> 
+                    In caso di necessità contattaci all'indirizzo <a href="mailto:info@novabill.it">info@novabill.it</a><br>
                     Grazie.
                 </p>
                 <br>

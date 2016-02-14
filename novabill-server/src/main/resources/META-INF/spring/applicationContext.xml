@@ -105,7 +105,7 @@
 		<property name="sendEmail" value="${notification.exception}" />
 		<property name="emailAddresses">
 			<list>
-				<value>notification@novabill.it</value>
+				<value>info@novabill.it</value>
 			</list>
 		</property>
 		<property name="loggingOn" value="true"/>
@@ -118,7 +118,7 @@
 		<property name="sendEmail" value="${notification.registration}" />
 		<property name="emailAddresses">
 			<list>
-				<value>notification@novabill.it</value>
+				<value>info@novabill.it</value>
 			</list>
 		</property>
 	</bean>
@@ -129,7 +129,7 @@
 		<property name="sendEmail" value="${notification.accountUpgrade}" />
 		<property name="emailAddresses">
 		    <list>
-				<value>notification@novabill.it</value>
+				<value>info@novabill.it</value>
 			</list>
 		</property>
 	</bean>
@@ -140,7 +140,7 @@
 		<property name="sendEmail" value="${notification.feedback}" />
 		<property name="emailAddresses">
 			<list>
-				<value>notification@novabill.it</value>
+				<value>info@novabill.it</value>
 			</list>
 		</property>
 	</bean>
@@ -151,7 +151,7 @@
 		<property name="sendEmail" value="${notification.validationError}" />
 		<property name="emailAddresses">
 			<list>
-				<value>notification@novabill.it</value>
+				<value>info@novabill.it</value>
 			</list>
 		</property>
 	</bean>
@@ -162,7 +162,7 @@
 		<property name="sendEmail" value="${notification.clientUIError}" />
 		<property name="emailAddresses">
 			<list>
-				<value>notification@novabill.it</value>
+				<value>info@novabill.it</value>
 			</list>
 		</property>
 	</bean>
@@ -220,7 +220,7 @@
 		<property name="sendEmail" value="${notification.deleteAccount}" />
 		<property name="emailAddresses">
 			<list>
-				<value>notification@novabill.it</value>
+				<value>info@novabill.it</value>
 			</list>
 		</property>
 	</bean>
