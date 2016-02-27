@@ -32,6 +32,7 @@ public abstract aspect AbstractLogEventEmailSenderAspect {
 					.templateVar("time", time)
 					.templateVar("otherVars", otherTemplateVars == null? Collections.emptyMap(): otherTemplateVars)
 					.handlingType(MailHandlingType.INTERNAL)
+					.from("no-reply@s1.novabill.it")
 					.build().send();
 		}
 	}
