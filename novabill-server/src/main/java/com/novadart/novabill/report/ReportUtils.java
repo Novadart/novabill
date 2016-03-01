@@ -88,4 +88,8 @@ public class ReportUtils {
 		return premiumExpirationTime == null || premiumExpirationTime < new Date().getTime();
 	}
 
+	public static String formatWitholdTaxPensionContLabel(String pattern, BigDecimal percent, Locale locale){
+		return String.format(pattern, removeTrailingZeros(percent, locale));
+	}
+
 }

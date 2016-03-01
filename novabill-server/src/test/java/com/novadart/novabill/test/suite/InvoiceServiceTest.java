@@ -9,10 +9,14 @@ import com.novadart.novabill.domain.dto.transformer.BusinessDTOTransformer;
 import com.novadart.novabill.domain.dto.transformer.ClientDTOTransformer;
 import com.novadart.novabill.domain.dto.transformer.InvoiceDTOTransformer;
 import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.report.DocumentType;
+import com.novadart.novabill.report.JRDataSourceFactory;
+import com.novadart.novabill.report.JasperReportService;
 import com.novadart.novabill.service.PDFStorageService;
 import com.novadart.novabill.service.web.InvoiceService;
 import com.novadart.novabill.shared.client.data.EntityType;
 import com.novadart.novabill.shared.client.data.FilteringDateType;
+import com.novadart.novabill.shared.client.data.LayoutType;
 import com.novadart.novabill.shared.client.data.OperationType;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
@@ -25,6 +29,7 @@ import com.novadart.novabill.shared.client.facade.InvoiceGwtService;
 import com.novadart.novabill.shared.client.validation.ErrorObject;
 import com.novadart.novabill.shared.client.validation.Field;
 import com.novadart.novabill.web.mvc.ajax.dto.EmailDTO;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,8 +41,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
+import java.nio.channels.Channels;
+import java.nio.channels.WritableByteChannel;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.security.NoSuchAlgorithmException;
@@ -45,6 +54,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.zip.GZIPOutputStream;
 
 import static org.junit.Assert.*;
 
@@ -527,5 +537,56 @@ public class InvoiceServiceTest extends ServiceTest {
 		assertTrue(!Files.exists(FileSystems.getDefault().getPath(oldPdfPath)));
 		assertTrue(Files.exists(FileSystems.getDefault().getPath(currPdfPath)));
 	}
+
+	@Test
+	public void withouldTaxPensionCompensationUpdateTest() throws DataAccessException, FreeUserAccessForbiddenException, ValidationException, DataIntegrityException, NoSuchObjectException, NotAuthenticatedException {
+		Invoice expectedInvoice = authenticatedPrincipal.getBusiness().getInvoices().iterator().next();
+		BigDecimal preUpdateWitholdTax = expectedInvoice.getWitholdTaxPercent();
+		BigDecimal preUpdatePensionContribution = expectedInvoice.getPensionContributionPercent();
+		BigDecimal preUpdateWitholdTaxTotal = expectedInvoice.getWitholdTaxTotal();
+		BigDecimal preUpdatePensionContributionTotal = expectedInvoice.getPensionContributionTotal();
+		expectedInvoice.setWitholdTaxPercent(new BigDecimal("20.0"));
+		expectedInvoice.setPensionContributionPercent(new BigDecimal("4.0"));
+		expectedInvoice.setWitholdTaxTotal(new BigDecimal("20.0"));
+		expectedInvoice.setPensionContributionTotal(new BigDecimal("4.0"));
+		invoiceService.update(InvoiceDTOTransformer.toDTO(expectedInvoice, true));
+		Invoice.entityManager().flush();
+		Invoice actualInvoice = Invoice.findInvoice(expectedInvoice.getId());
+		assertEquals(null, preUpdateWitholdTax);
+		assertEquals(null, preUpdatePensionContribution);
+		assertEquals(null, preUpdateWitholdTaxTotal);
+		assertEquals(null, preUpdatePensionContributionTotal);
+		assertEquals(new BigDecimal("20.0"), actualInvoice.getWitholdTaxPercent());
+		assertEquals(new BigDecimal("4.0"), actualInvoice.getPensionContributionPercent());
+		assertEquals(new BigDecimal("20.0"), actualInvoice.getWitholdTaxTotal());
+		assertEquals(new BigDecimal("4.0"), actualInvoice.getPensionContributionTotal());
+	}
+
+
+	@Autowired
+	private JasperReportService jasperReportService;
+	@Test
+	public void generatePdfTest(){
+		Invoice inv = authenticatedPrincipal.getBusiness().getInvoices().iterator().next();
+		inv.setPensionContribution(true);
+		inv.setPensionContributionPercent(new BigDecimal("4.0"));
+		inv.setPensionContributionTotal(new BigDecimal("4.1"));
+		inv.setWitholdTax(true);
+		inv.setWitholdTaxPercent(new BigDecimal("20.0"));
+		inv.setWitholdTaxTotal(new BigDecimal("20.1"));
+		inv.setSplitPayment(false);
+		inv.setLayoutType(LayoutType.DENSE);
+		JRBeanCollectionDataSource dataSource = JRDataSourceFactory.createDataSource(inv, inv.getBusiness().getId());
+		try(WritableByteChannel channel = new RandomAccessFile("/tmp/test.pdf.gz", "rw").getChannel();
+			GZIPOutputStream destStream = new GZIPOutputStream(Channels.newOutputStream(channel))
+		) {
+			jasperReportService.exportReportToPdfFile(dataSource, DocumentType.INVOICE, inv.getLayoutType(), destStream);
+		} catch (Exception e) {
+			e.printStackTrace();
+			assertFalse(true);
+		}
+
+	}
+
 
 }

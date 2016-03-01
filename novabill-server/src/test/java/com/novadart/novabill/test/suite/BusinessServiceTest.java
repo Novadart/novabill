@@ -378,5 +378,27 @@ public class BusinessServiceTest extends ServiceTest {
 		Long businessID = getUnathorizedBusinessID();
 		businessService.setDefaultLayout(businessID, LayoutType.TIDY);
 	}
+
+	@Test
+	public void witholdTaxUpdateTest() throws NotAuthenticatedException, FreeUserAccessForbiddenException, NoSuchObjectException, DataAccessException, ValidationException {
+		Long businessID = authenticatedPrincipal.getBusiness().getId();
+		Business business = Business.findBusiness(businessID);
+		BigDecimal preUpdateWitholdTax = business.getSettings().getWitholdTaxPercent();
+		business.getSettings().setWitholdTaxPercent(new BigDecimal("20.0"));
+		businessGwtService.update(BusinessDTOTransformer.toDTO(business));
+		assertEquals(null, preUpdateWitholdTax);
+		assertEquals(new BigDecimal("20.0"), Business.findBusiness(businessID).getSettings().getWitholdTaxPercent());
+	}
+
+	@Test
+	public void pensionContributionUpdateTest() throws NotAuthenticatedException, FreeUserAccessForbiddenException, NoSuchObjectException, DataAccessException, ValidationException {
+		Long businessID = authenticatedPrincipal.getBusiness().getId();
+		Business business = Business.findBusiness(businessID);
+		BigDecimal preUpdatePensionContribution = business.getSettings().getWitholdTaxPercent();
+		business.getSettings().setPensionContributionPercent(new BigDecimal("4.0"));
+		businessGwtService.update(BusinessDTOTransformer.toDTO(business));
+		assertEquals(null, preUpdatePensionContribution);
+		assertEquals(new BigDecimal("4.0"), Business.findBusiness(businessID).getSettings().getPensionContributionPercent());
+	}
 	
 }

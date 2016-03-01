@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Invoice" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="20" uuid="96f0ca59-afec-4bbb-95f2-0a9732c6c014">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="149"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -80,6 +80,12 @@
 	<field name="document.business" class="com.novadart.novabill.domain.Business"/>
 	<field name="document.splitPayment" class="java.lang.Boolean"/>
 	<field name="document.documentIDSuffix" class="java.lang.String"/>
+	<field name="document.witholdTax" class="java.lang.Boolean"/>
+	<field name="document.witholdTaxPercent" class="java.math.BigDecimal"/>
+	<field name="document.witholdTaxTotal" class="java.math.BigDecimal"/>
+	<field name="document.pensionContribution" class="java.lang.Boolean"/>
+	<field name="document.pensionContributionPercent" class="java.math.BigDecimal"/>
+	<field name="document.pensionContributionTotal" class="java.math.BigDecimal"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -461,10 +467,12 @@ com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.d
 			</textField>
 		</band>
 		<band height="110" splitType="Prevent">
-			<printWhenExpression><![CDATA[$F{document.splitPayment}]]></printWhenExpression>
+			<printWhenExpression><![CDATA[$F{document.splitPayment} &&
+!$F{document.witholdTax} &&
+!$F{document.pensionContribution}]]></printWhenExpression>
 			<textField>
 				<reportElement positionType="Float" x="330" y="25" width="90" height="20" uuid="e70d9f40-7c6a-41a3-bb67-b65e945623a1"/>
-				<textElement verticalAlignment="Middle">
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Open Sans Light"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{tidy.totalTax}]]></textFieldExpression>
@@ -476,7 +484,7 @@ com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.d
 					<leftPen lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineColor="#CCCCCC"/>
 				</box>
-				<textElement verticalAlignment="Middle">
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Open Sans Light" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{tidy.total}]]></textFieldExpression>
@@ -513,7 +521,7 @@ com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.d
 				<box>
 					<topPen lineWidth="0.15" lineColor="#CCCCCC"/>
 				</box>
-				<textElement verticalAlignment="Middle">
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Open Sans Light"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{tidy.totalWithoutTax}]]></textFieldExpression>
@@ -523,7 +531,7 @@ com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.d
 				<box>
 					<bottomPen lineWidth="0.0" lineColor="#CCCCCC"/>
 				</box>
-				<textElement verticalAlignment="Middle">
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Open Sans Light" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{tidy.splitPaymentTax}]]></textFieldExpression>
@@ -543,7 +551,7 @@ com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.d
 				<box>
 					<bottomPen lineWidth="0.15" lineColor="#CCCCCC"/>
 				</box>
-				<textElement verticalAlignment="Middle">
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Open Sans Light" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{tidy.splitPaymentNet}]]></textFieldExpression>
@@ -559,27 +567,29 @@ com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.d
 				<textFieldExpression><![CDATA[java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format($F{document.totalBeforeTax}.doubleValue())]]></textFieldExpression>
 			</textField>
 		</band>
-		<band height="70">
-			<printWhenExpression><![CDATA[!$F{document.splitPayment}]]></printWhenExpression>
+		<band height="70" splitType="Prevent">
+			<printWhenExpression><![CDATA[!$F{document.splitPayment} &&
+!$F{document.witholdTax} &&
+!$F{document.pensionContribution}]]></printWhenExpression>
 			<textField>
-				<reportElement positionType="Float" x="330" y="8" width="90" height="20" uuid="f104573a-3c8a-467f-ab3d-661f3d287f50"/>
+				<reportElement positionType="Float" x="330" y="5" width="90" height="20" uuid="f104573a-3c8a-467f-ab3d-661f3d287f50"/>
 				<box>
 					<topPen lineWidth="0.15" lineColor="#CCCCCC"/>
 				</box>
-				<textElement verticalAlignment="Middle">
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Open Sans Light"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{tidy.totalWithoutTax}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="Float" x="419" y="28" width="120" height="20" uuid="8999bf46-a57e-465f-878e-fd64932e63b8"/>
+				<reportElement positionType="Float" x="419" y="25" width="120" height="20" uuid="8999bf46-a57e-465f-878e-fd64932e63b8"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Open Sans Light"/>
 				</textElement>
 				<textFieldExpression><![CDATA[java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format($F{document.totalTax}.doubleValue())]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="Float" x="419" y="8" width="120" height="20" uuid="d721f9ef-7a77-457c-8853-3f949f9613b5"/>
+				<reportElement positionType="Float" x="419" y="5" width="120" height="20" uuid="d721f9ef-7a77-457c-8853-3f949f9613b5"/>
 				<box>
 					<topPen lineWidth="0.15" lineColor="#CCCCCC"/>
 				</box>
@@ -589,24 +599,24 @@ com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.d
 				<textFieldExpression><![CDATA[java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format($F{document.totalBeforeTax}.doubleValue())]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="Float" x="330" y="48" width="90" height="20" uuid="5672e38f-753e-4e72-a32f-91ebf9e1bd41"/>
+				<reportElement positionType="Float" x="330" y="45" width="90" height="20" uuid="5672e38f-753e-4e72-a32f-91ebf9e1bd41"/>
 				<box>
 					<bottomPen lineWidth="0.15" lineColor="#CCCCCC"/>
 				</box>
-				<textElement verticalAlignment="Middle">
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Open Sans Light" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{tidy.total}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="Float" x="330" y="28" width="90" height="20" uuid="1d1a31c0-d889-4fbb-bf93-9c530f9173fb"/>
-				<textElement verticalAlignment="Middle">
+				<reportElement positionType="Float" x="330" y="25" width="90" height="20" uuid="1d1a31c0-d889-4fbb-bf93-9c530f9173fb"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Open Sans Light"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{tidy.totalTax}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="Float" x="419" y="48" width="120" height="20" uuid="5d131a5d-3de1-4cf0-8a54-078bc0a7ead3"/>
+				<reportElement positionType="Float" x="419" y="45" width="120" height="20" uuid="5d131a5d-3de1-4cf0-8a54-078bc0a7ead3"/>
 				<box>
 					<bottomPen lineWidth="0.15" lineColor="#CCCCCC"/>
 				</box>
@@ -614,6 +624,259 @@ com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.d
 					<font fontName="Open Sans Light" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format($F{document.total}.doubleValue())]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="90" splitType="Prevent">
+			<printWhenExpression><![CDATA[!$F{document.splitPayment} &&
+!$F{document.witholdTax} &&
+$F{document.pensionContribution}]]></printWhenExpression>
+			<textField>
+				<reportElement positionType="Float" x="419" y="45" width="120" height="20" uuid="560c6683-88c2-4ae9-829b-2faecb2799ef"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Open Sans Light"/>
+				</textElement>
+				<textFieldExpression><![CDATA[java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format($F{document.totalTax}.doubleValue())]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="240" y="65" width="180" height="20" uuid="b086eef1-c3ef-4cf9-9951-8f769aa2d336"/>
+				<box>
+					<bottomPen lineWidth="0.15" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Open Sans Light" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{tidy.total}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="240" y="45" width="180" height="20" uuid="4d80aa38-0e42-4343-81d5-b69ff3871e69"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Open Sans Light"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{tidy.totalTax}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="240" y="7" width="180" height="20" uuid="df9c84b7-e71a-4778-b4f5-e452f197cf5d"/>
+				<box>
+					<topPen lineWidth="0.15" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Open Sans Light"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{tidy.totalWithoutTax}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="419" y="65" width="120" height="20" uuid="cbba1538-87a5-45e4-9acf-6f11137b4db0"/>
+				<box>
+					<bottomPen lineWidth="0.15" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Open Sans Light" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format($F{document.total}.doubleValue())]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="419" y="7" width="120" height="20" uuid="df053b29-5ccd-409b-963f-178c93e5fd7d"/>
+				<box>
+					<topPen lineWidth="0.15" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Open Sans Light"/>
+				</textElement>
+				<textFieldExpression><![CDATA[java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format($F{document.totalBeforeTax}.doubleValue())]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="240" y="25" width="180" height="20" uuid="2d0135d8-cf0d-41e0-9e01-a1489abcf5dc"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Open Sans Light"/>
+				</textElement>
+				<textFieldExpression><![CDATA[com.novadart.novabill.report.ReportUtils.formatWitholdTaxPensionContLabel(
+    $R{tidy.pensionContribution},
+    $F{document.pensionContributionPercent},
+    Locale.ITALY
+)]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="419" y="26" width="120" height="20" uuid="f52386d8-2d12-4b7d-95e0-59ba0cb85621"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Open Sans Light"/>
+				</textElement>
+				<textFieldExpression><![CDATA[java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format(
+    $F{document.pensionContributionTotal}.doubleValue())]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="90" splitType="Prevent">
+			<printWhenExpression><![CDATA[!$F{document.splitPayment} &&
+$F{document.witholdTax} &&
+!$F{document.pensionContribution}]]></printWhenExpression>
+			<textField>
+				<reportElement positionType="Float" x="419" y="25" width="120" height="20" uuid="8f6719dc-f565-4ca3-bd81-afe17c84d1d9"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Open Sans Light"/>
+				</textElement>
+				<textFieldExpression><![CDATA[java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format($F{document.totalTax}.doubleValue())]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="290" y="65" width="130" height="20" uuid="d43d3201-f5eb-4258-81a2-7f0e972c1f52"/>
+				<box>
+					<bottomPen lineWidth="0.15" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Open Sans Light" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{tidy.total}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="290" y="25" width="130" height="20" uuid="6e037d34-2203-4498-8a6f-14cfd2c87076"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Open Sans Light"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{tidy.totalTax}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="290" y="5" width="130" height="20" uuid="ea16506e-92ba-496a-9117-5b0aacb9e929"/>
+				<box>
+					<topPen lineWidth="0.15" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Open Sans Light"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{tidy.totalWithoutTax}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="419" y="65" width="120" height="20" uuid="a9bb5b7d-d2f9-4b91-8c4e-ee67925adee7"/>
+				<box>
+					<bottomPen lineWidth="0.15" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Open Sans Light" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format($F{document.total}.doubleValue())]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="419" y="5" width="120" height="20" uuid="13a68622-e3a0-4fcc-8741-9de2d4916030"/>
+				<box>
+					<topPen lineWidth="0.15" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Open Sans Light"/>
+				</textElement>
+				<textFieldExpression><![CDATA[java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format($F{document.totalBeforeTax}.doubleValue())]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="290" y="45" width="130" height="20" uuid="003ae086-c1f2-480d-ab27-910b872190a6"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Open Sans Light"/>
+				</textElement>
+				<textFieldExpression><![CDATA[com.novadart.novabill.report.ReportUtils.formatWitholdTaxPensionContLabel(
+    $R{tidy.witholdTaxPercent},
+    $F{document.witholdTaxPercent},
+    Locale.ITALY
+)]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="419" y="45" width="120" height="20" uuid="14517202-a37d-448b-90d0-ddf63d12531b"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Open Sans Light"/>
+				</textElement>
+				<textFieldExpression><![CDATA[java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format(
+    -$F{document.witholdTaxTotal}.doubleValue())]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="110" splitType="Prevent">
+			<printWhenExpression><![CDATA[!$F{document.splitPayment} &&
+$F{document.witholdTax} &&
+$F{document.pensionContribution}]]></printWhenExpression>
+			<textField>
+				<reportElement positionType="Float" x="419" y="85" width="120" height="20" uuid="77fac4eb-52a3-4059-b4fb-270f174b0cfb"/>
+				<box>
+					<bottomPen lineWidth="0.15" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Open Sans Light" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format($F{document.total}.doubleValue())]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="240" y="45" width="180" height="20" uuid="80f51a9d-73da-4729-9d9e-919faab7ea93"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Open Sans Light"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{tidy.totalTax}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="240" y="5" width="180" height="20" uuid="04d17e9b-9136-4f22-a39d-15dac1e69fe8"/>
+				<box>
+					<topPen lineWidth="0.15" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Open Sans Light"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{tidy.totalWithoutTax}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="419" y="5" width="120" height="20" uuid="607be830-4663-4d47-bff1-03ff79b069c7"/>
+				<box>
+					<topPen lineWidth="0.15" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Open Sans Light"/>
+				</textElement>
+				<textFieldExpression><![CDATA[java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format($F{document.totalBeforeTax}.doubleValue())]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="419" y="45" width="120" height="20" uuid="90f08706-70da-4859-90da-67e319cdae9f"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Open Sans Light"/>
+				</textElement>
+				<textFieldExpression><![CDATA[java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format($F{document.totalTax}.doubleValue())]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="240" y="85" width="180" height="20" uuid="53fbb7c6-b87e-4fe0-92e5-43034e97ea43"/>
+				<box>
+					<bottomPen lineWidth="0.15" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Open Sans Light" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{tidy.total}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="419" y="25" width="120" height="20" uuid="cb14aa38-ee3f-4f3b-b2e7-ad31b8057aaf"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Open Sans Light"/>
+				</textElement>
+				<textFieldExpression><![CDATA[java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format(
+    $F{document.pensionContributionTotal}.doubleValue())]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="240" y="25" width="180" height="20" uuid="db1c39e2-68cc-4cbb-98e1-358800550643"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Open Sans Light"/>
+				</textElement>
+				<textFieldExpression><![CDATA[com.novadart.novabill.report.ReportUtils.formatWitholdTaxPensionContLabel(
+    $R{tidy.pensionContribution},
+    $F{document.pensionContributionPercent},
+    Locale.ITALY
+)]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="240" y="65" width="180" height="20" uuid="02e14d28-8ea9-446a-95c9-2c2c7cf146cf"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Open Sans Light"/>
+				</textElement>
+				<textFieldExpression><![CDATA[com.novadart.novabill.report.ReportUtils.formatWitholdTaxPensionContLabel(
+    $R{tidy.witholdTaxPercent},
+    $F{document.witholdTaxPercent},
+    Locale.ITALY
+)]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="420" y="65" width="120" height="20" uuid="81cbd808-b14f-4415-99ec-7e6401f0fed8"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Open Sans Light"/>
+				</textElement>
+				<textFieldExpression><![CDATA[java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format(
+    -$F{document.witholdTaxTotal}.doubleValue())]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

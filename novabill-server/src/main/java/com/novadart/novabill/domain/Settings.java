@@ -1,6 +1,7 @@
 package com.novadart.novabill.domain;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.concurrent.TimeUnit;
 
 import javax.persistence.Column;
@@ -54,6 +55,14 @@ public class Settings implements Serializable {
     @Email
     @Trimmed
     private String emailReplyTo;
+
+	private boolean witholdTax;
+
+	private BigDecimal witholdTaxPercent;
+
+	private boolean pensionContribution;
+
+	private BigDecimal pensionContributionPercent;
     
     public Long getNonFreeExpirationDelta(TimeUnit timeUnit){
     	Long now = System.currentTimeMillis();
@@ -164,5 +173,36 @@ public class Settings implements Serializable {
 	public void setEmailReplyTo(String emailReplyTo) {
 		this.emailReplyTo = emailReplyTo;
 	}
-	
+
+	public boolean isWitholdTax() {
+		return witholdTax;
+	}
+
+	public void setWitholdTax(boolean witholdTax) {
+		this.witholdTax = witholdTax;
+	}
+
+	public BigDecimal getWitholdTaxPercent() {
+		return witholdTaxPercent;
+	}
+
+	public void setWitholdTaxPercent(BigDecimal witholdTaxRate) {
+		this.witholdTaxPercent = witholdTaxRate;
+	}
+
+	public boolean isPensionContribution() {
+		return pensionContribution;
+	}
+
+	public void setPensionContribution(boolean pensionContribution) {
+		this.pensionContribution = pensionContribution;
+	}
+
+	public BigDecimal getPensionContributionPercent() {
+		return pensionContributionPercent;
+	}
+
+	public void setPensionContributionPercent(BigDecimal pensionContribution) {
+		this.pensionContributionPercent = pensionContribution;
+	}
 }

@@ -1,5 +1,6 @@
 package com.novadart.novabill.shared.client.dto;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
@@ -23,6 +24,18 @@ public class InvoiceDTO extends AbstractInvoiceDTO implements IsSerializable {
 	private MailDeliveryStatus emailedToClient;
 
 	private boolean splitPayment;
+
+	private boolean witholdTax;
+
+	private BigDecimal witholdTaxPercent;
+
+	private boolean pensionContribution;
+
+	private BigDecimal pensionContributionPercent;
+
+	private BigDecimal witholdTaxTotal;
+
+	private BigDecimal pensionContributionTotal;
 	
     private List<Long> transportDocumentIDs;
     
@@ -120,5 +133,53 @@ public class InvoiceDTO extends AbstractInvoiceDTO implements IsSerializable {
 
 	public void setSplitPayment(boolean splitPayment) {
 		this.splitPayment = splitPayment;
+	}
+
+	public boolean isWitholdTax() {
+		return witholdTax;
+	}
+
+	public void setWitholdTax(boolean witholdTax) {
+		this.witholdTax = witholdTax;
+	}
+
+	public BigDecimal getWitholdTaxPercent() {
+		return witholdTaxPercent;
+	}
+
+	public void setWitholdTaxPercent(BigDecimal witholdTaxPercent) {
+		this.witholdTaxPercent = witholdTaxPercent;
+	}
+
+	public boolean isPensionContribution() {
+		return pensionContribution;
+	}
+
+	public void setPensionContribution(boolean pensionContribution) {
+		this.pensionContribution = pensionContribution;
+	}
+
+	public BigDecimal getPensionContributionPercent() {
+		return pensionContributionPercent;
+	}
+
+	public void setPensionContributionPercent(BigDecimal pensionContributionPercent) {
+		this.pensionContributionPercent = pensionContributionPercent;
+	}
+
+	public BigDecimal getWitholdTaxTotal() {
+		return witholdTaxTotal;
+	}
+
+	public void setWitholdTaxTotal(BigDecimal witholdTaxTotal) {
+		this.witholdTaxTotal = witholdTaxTotal;
+	}
+
+	public BigDecimal getPensionContributionTotal() {
+		return pensionContributionTotal;
+	}
+
+	public void setPensionContributionTotal(BigDecimal pensionContributionTotal) {
+		this.pensionContributionTotal = pensionContributionTotal;
 	}
 }
