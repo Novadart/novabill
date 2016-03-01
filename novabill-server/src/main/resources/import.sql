@@ -5,7 +5,7 @@ insert into business (id, name, address, postcode, city, province, country, emai
 insert into principal (id, creation_time, username, password, version, business, enabled) values (2, 1385137600000, 'risto.gligorov@novadart.com', '$2a$10$TGxkcePWlxnQSZo2mqjnx..y.4lTFGQIu9mVlRdv6Rs9Rd44Xx/Ki', 1, 2, 't')
 insert into principal_granted_roles (principal, granted_roles) values (2, 0);
 insert into business (id, name, address, postcode, city, province, country, email, phone, mobile, fax, web, vatid, ssn, default_layout_type, version, withold_tax, pension_contribution) values (188, 'Novadart S.n.c. di Giordano Battilana & C.', 'via Stradone, 51', '35010', 'Campo San Martino', 'PD', 'IT', 'john.doe@novadart.com', '3334927614', '3334927614', '0498597898', '', 'IT04534350282', 'IT04534350282', 0, 1, 'f', 'f');
-insert into principal (id, creation_time, username, password, version, business, enabled) values (2, 1385137600000, 'john.doe@novadart.com', '$2a$10$TGxkcePWlxnQSZo2mqjnx..y.4lTFGQIu9mVlRdv6Rs9Rd44Xx/Ki', 1, 2, 't')
+insert into principal (id, creation_time, username, password, version, business, enabled) values (188, 1385137600000, 'john.doe@novadart.com', '$2a$10$TGxkcePWlxnQSZo2mqjnx..y.4lTFGQIu9mVlRdv6Rs9Rd44Xx/Ki', 1, 2, 't')
 insert into principal_granted_roles (principal, granted_roles) values (188, 2);
 
 --creating price lists
