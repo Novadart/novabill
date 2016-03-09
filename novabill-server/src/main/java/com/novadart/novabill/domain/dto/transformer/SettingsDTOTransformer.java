@@ -20,7 +20,8 @@ public class SettingsDTOTransformer {
 		settingsDTO.setEmailReplyTo(settings.getEmailReplyTo());
 		settingsDTO.setNonFreeAccountExpirationTime(settings.getNonFreeAccountExpirationTime());
 		settingsDTO.setWitholdTax(settings.isWitholdTax());
-		settingsDTO.setWitholdTaxPercent(settings.getWitholdTaxPercent());
+		settingsDTO.setWitholdTaxPercentFirstLevel(settings.getWitholdTaxPercentFirstLevel());
+		settingsDTO.setWitholdTaxPercentSecondLevel(settings.getWitholdTaxPercentSecondLevel());
 		settingsDTO.setPensionContribution(settings.isPensionContribution());
 		settingsDTO.setPensionContributionTax(settings.getPensionContributionPercent());
 		return settingsDTO;
@@ -38,7 +39,8 @@ public class SettingsDTOTransformer {
 		settings.setEmailText(settingsDTO.getEmailText());
 		settings.setEmailReplyTo(settingsDTO.getEmailReplyTo());
 		settings.setWitholdTax(settingsDTO.isWitholdTax());
-		settings.setWitholdTaxPercent(settingsDTO.getWitholdTaxPercent());
+		settings.setWitholdTaxPercentFirstLevel(settingsDTO.getWitholdTaxPercentFirstLevel());
+		settings.setWitholdTaxPercentSecondLevel(settingsDTO.getWitholdTaxPercentSecondLevel());
 		settings.setPensionContribution(settingsDTO.isPensionContribution());
 		settings.setPensionContributionPercent(settingsDTO.getPensionContributionTax());
 	}

@@ -541,11 +541,11 @@ public class InvoiceServiceTest extends ServiceTest {
 	@Test
 	public void withouldTaxPensionCompensationUpdateTest() throws DataAccessException, FreeUserAccessForbiddenException, ValidationException, DataIntegrityException, NoSuchObjectException, NotAuthenticatedException {
 		Invoice expectedInvoice = authenticatedPrincipal.getBusiness().getInvoices().iterator().next();
-		BigDecimal preUpdateWitholdTax = expectedInvoice.getWitholdTaxPercent();
+		BigDecimal preUpdateWitholdTax = expectedInvoice.getWitholdTaxPercentSecondLevel();
 		BigDecimal preUpdatePensionContribution = expectedInvoice.getPensionContributionPercent();
 		BigDecimal preUpdateWitholdTaxTotal = expectedInvoice.getWitholdTaxTotal();
 		BigDecimal preUpdatePensionContributionTotal = expectedInvoice.getPensionContributionTotal();
-		expectedInvoice.setWitholdTaxPercent(new BigDecimal("20.0"));
+		expectedInvoice.setWitholdTaxPercentSecondLevel(new BigDecimal("20.0"));
 		expectedInvoice.setPensionContributionPercent(new BigDecimal("4.0"));
 		expectedInvoice.setWitholdTaxTotal(new BigDecimal("20.0"));
 		expectedInvoice.setPensionContributionTotal(new BigDecimal("4.0"));
@@ -556,13 +556,15 @@ public class InvoiceServiceTest extends ServiceTest {
 		assertEquals(null, preUpdatePensionContribution);
 		assertEquals(null, preUpdateWitholdTaxTotal);
 		assertEquals(null, preUpdatePensionContributionTotal);
-		assertEquals(new BigDecimal("20.0"), actualInvoice.getWitholdTaxPercent());
+		assertEquals(new BigDecimal("20.0"), actualInvoice.getWitholdTaxPercentSecondLevel());
 		assertEquals(new BigDecimal("4.0"), actualInvoice.getPensionContributionPercent());
 		assertEquals(new BigDecimal("20.0"), actualInvoice.getWitholdTaxTotal());
 		assertEquals(new BigDecimal("4.0"), actualInvoice.getPensionContributionTotal());
 	}
 
 
+
+	//TODO remove this test case
 	@Autowired
 	private JasperReportService jasperReportService;
 	@Test
@@ -572,9 +574,10 @@ public class InvoiceServiceTest extends ServiceTest {
 		inv.setPensionContributionPercent(new BigDecimal("4.0"));
 		inv.setPensionContributionTotal(new BigDecimal("4.1"));
 		inv.setWitholdTax(true);
-		inv.setWitholdTaxPercent(new BigDecimal("20.0"));
+		inv.setWitholdTaxPercentFirstLevel(new BigDecimal("10.0"));
+		inv.setWitholdTaxPercentSecondLevel(new BigDecimal("20.0"));
 		inv.setWitholdTaxTotal(new BigDecimal("20.1"));
-		inv.setSplitPayment(false);
+		inv.setSplitPayment(true);
 		inv.setLayoutType(LayoutType.DENSE);
 		JRBeanCollectionDataSource dataSource = JRDataSourceFactory.createDataSource(inv, inv.getBusiness().getId());
 		try(WritableByteChannel channel = new RandomAccessFile("/tmp/test.pdf.gz", "rw").getChannel();

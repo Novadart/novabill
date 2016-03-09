@@ -383,18 +383,20 @@ public class BusinessServiceTest extends ServiceTest {
 	public void witholdTaxUpdateTest() throws NotAuthenticatedException, FreeUserAccessForbiddenException, NoSuchObjectException, DataAccessException, ValidationException {
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		Business business = Business.findBusiness(businessID);
-		BigDecimal preUpdateWitholdTax = business.getSettings().getWitholdTaxPercent();
-		business.getSettings().setWitholdTaxPercent(new BigDecimal("20.0"));
+		BigDecimal preUpdateWitholdTaxFirstLevel = business.getSettings().getWitholdTaxPercentFirstLevel();
+		BigDecimal preUpdateWitholdTaxSecondLevel = business.getSettings().getWitholdTaxPercentSecondLevel();
+		business.getSettings().setWitholdTaxPercentSecondLevel(new BigDecimal("20.0"));
 		businessGwtService.update(BusinessDTOTransformer.toDTO(business));
-		assertEquals(null, preUpdateWitholdTax);
-		assertEquals(new BigDecimal("20.0"), Business.findBusiness(businessID).getSettings().getWitholdTaxPercent());
+		assertEquals(null, preUpdateWitholdTaxFirstLevel);
+		assertEquals(null, preUpdateWitholdTaxSecondLevel);
+		assertEquals(new BigDecimal("20.0"), Business.findBusiness(businessID).getSettings().getWitholdTaxPercentSecondLevel());
 	}
 
 	@Test
 	public void pensionContributionUpdateTest() throws NotAuthenticatedException, FreeUserAccessForbiddenException, NoSuchObjectException, DataAccessException, ValidationException {
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		Business business = Business.findBusiness(businessID);
-		BigDecimal preUpdatePensionContribution = business.getSettings().getWitholdTaxPercent();
+		BigDecimal preUpdatePensionContribution = business.getSettings().getWitholdTaxPercentSecondLevel();
 		business.getSettings().setPensionContributionPercent(new BigDecimal("4.0"));
 		businessGwtService.update(BusinessDTOTransformer.toDTO(business));
 		assertEquals(null, preUpdatePensionContribution);

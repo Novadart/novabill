@@ -27,7 +27,9 @@ public class InvoiceDTO extends AbstractInvoiceDTO implements IsSerializable {
 
 	private boolean witholdTax;
 
-	private BigDecimal witholdTaxPercent;
+	private BigDecimal witholdTaxPercentFirstLevel;
+
+	private BigDecimal witholdTaxPercentSecondLevel;
 
 	private boolean pensionContribution;
 
@@ -143,12 +145,20 @@ public class InvoiceDTO extends AbstractInvoiceDTO implements IsSerializable {
 		this.witholdTax = witholdTax;
 	}
 
-	public BigDecimal getWitholdTaxPercent() {
-		return witholdTaxPercent;
+	public BigDecimal getWitholdTaxPercentFirstLevel() {
+		return witholdTaxPercentFirstLevel;
 	}
 
-	public void setWitholdTaxPercent(BigDecimal witholdTaxPercent) {
-		this.witholdTaxPercent = witholdTaxPercent;
+	public void setWitholdTaxPercentFirstLevel(BigDecimal witholdTaxPercentFirstLevel) {
+		this.witholdTaxPercentFirstLevel = witholdTaxPercentFirstLevel;
+	}
+
+	public BigDecimal getWitholdTaxPercentSecondLevel() {
+		return witholdTaxPercentSecondLevel;
+	}
+
+	public void setWitholdTaxPercentSecondLevel(BigDecimal witholdTaxPercentSecondLevel) {
+		this.witholdTaxPercentSecondLevel = witholdTaxPercentSecondLevel;
 	}
 
 	public boolean isPensionContribution() {
