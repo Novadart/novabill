@@ -31,15 +31,11 @@ public class SettingsDTO implements IsSerializable {
     
     private Long nonFreeAccountExpirationTime;
 
-	private boolean witholdTax;
-
 	private BigDecimal witholdTaxPercentFirstLevel;
 
 	private BigDecimal witholdTaxPercentSecondLevel;
 
-	private boolean pensionContribution;
-
-	private BigDecimal pensionContributionTax;
+	private BigDecimal pensionContributionPercent;
 
 	public LayoutType getDefaultLayoutType() {
 		return defaultLayoutType;
@@ -138,14 +134,6 @@ public class SettingsDTO implements IsSerializable {
 		this.nonFreeAccountExpirationTime = nonFreeAccountExpirationTime;
 	}
 
-	public boolean isWitholdTax() {
-		return witholdTax;
-	}
-
-	public void setWitholdTax(boolean witholdTax) {
-		this.witholdTax = witholdTax;
-	}
-
 	public BigDecimal getWitholdTaxPercentFirstLevel() {
 		return witholdTaxPercentFirstLevel;
 	}
@@ -162,19 +150,11 @@ public class SettingsDTO implements IsSerializable {
 		this.witholdTaxPercentSecondLevel = witholdTaxPercentSecondLevel;
 	}
 
-	public boolean isPensionContribution() {
-		return pensionContribution;
+	public BigDecimal getPensionContributionPercent() {
+		return pensionContributionPercent;
 	}
 
-	public void setPensionContribution(boolean pensionContribution) {
-		this.pensionContribution = pensionContribution;
-	}
-
-	public BigDecimal getPensionContributionTax() {
-		return pensionContributionTax;
-	}
-
-	public void setPensionContributionTax(BigDecimal pensionContributionTax) {
-		this.pensionContributionTax = pensionContributionTax;
+	public void setPensionContributionPercent(BigDecimal pensionContributionPercent) {
+		this.pensionContributionPercent = pensionContributionPercent;
 	}
 }

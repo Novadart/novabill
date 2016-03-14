@@ -238,6 +238,8 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 			PAYMENTS_STATUS_FILTERING_PAYMENT_DUEDATE : 'Data di Scadenza',
 			PAYMENTS_STATUS_PRINT : 'Stampa',
 			PAYMENTS_STATUS_START_DATE : 'Da data',
+			PENSION_CONTRIBUTION : '#TR# Pension contribution',
+			PENSION_CONTRIBUTION_PLACEHOLDER: '#TR# esempio: 4',
 			PLAN_PREMIUM : 'Premium',
 			PLAN_STANDARD : 'Standard',
 			POSTCODE : 'C.A.P.',
@@ -316,6 +318,7 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 			TITLE_DELETE_ACCOUNT : 'Elimina Account',
 			TITLE_EMAIL_SETTINGS : 'Impostazioni E-Mail',
 			TITLE_EXPORT_DATA : 'Esporta i tuoi dati',
+			TITLE_INVOICE_SETTINGS : '#TR# Invoice settings',
 			TITLE_LAYOUT_SETTINGS : 'Impostazioni di Stampa',
 			TITLE_OTHER_SETTINGS : 'Altre impostazioni',
 			TITLE_SET_LOGO : 'Imposta il tuo logo',
@@ -342,6 +345,7 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 			VALIDATION_EMAIL_TAKEN : 'Email già utilizzata in un\'altra condivisione',
 			VALIDATION_NAME_TAKEN : 'Nome già utilizzato per un altro listino',
 			VALIDATION_INVALID_VALUE : 'Valore non valido',
+			VALIDATION_PERCENT : 'Value should be between 0 and 100',
 			VALIDATION_REQUIRED : 'Obbligatorio',
 			VALIDATION_SKU_TAKEN : 'Codice già utilizzato per un altro articolo',
 			VAT : 'IVA',
@@ -353,8 +357,11 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 			WEBSITE : 'Sito Web',
 			WEBSITE_PLACEHOLDER : 'esempio: www.example.com',
 			WEIGHT : 'Peso (kg)',
-			WEIGHT_PLACEHOLDER : 'esempio: 2'
-
+			WEIGHT_PLACEHOLDER : 'esempio: 2',
+			WITHOLD_TAX_FIRST_LEVEL : '#TR# Withold tax on net amount',
+			WITHOLD_TAX_FIRST_LEVEL_PLACEHOLDER : '#TR# esempio: 100',
+			WITHOLD_TAX_SECOND_LEVEL : '#TR# Withold tax',
+			WITHOLD_TAX_SECOND_LEVEL_PLACEHOLDER : '#TR# esempio: 20'
 		});
 
 		$translateProvider.preferredLanguage('it_IT');

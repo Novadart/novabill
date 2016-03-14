@@ -56,13 +56,9 @@ public class Settings implements Serializable {
     @Trimmed
     private String emailReplyTo;
 
-	private boolean witholdTax;
-
 	private BigDecimal witholdTaxPercentFirstLevel;
 
 	private BigDecimal witholdTaxPercentSecondLevel;
-
-	private boolean pensionContribution;
 
 	private BigDecimal pensionContributionPercent;
     
@@ -176,14 +172,6 @@ public class Settings implements Serializable {
 		this.emailReplyTo = emailReplyTo;
 	}
 
-	public boolean isWitholdTax() {
-		return witholdTax;
-	}
-
-	public void setWitholdTax(boolean witholdTax) {
-		this.witholdTax = witholdTax;
-	}
-
 	public BigDecimal getWitholdTaxPercentFirstLevel() {
 		return witholdTaxPercentFirstLevel;
 	}
@@ -198,14 +186,6 @@ public class Settings implements Serializable {
 
 	public void setWitholdTaxPercentSecondLevel(BigDecimal witholdTaxRate) {
 		this.witholdTaxPercentSecondLevel = witholdTaxRate;
-	}
-
-	public boolean isPensionContribution() {
-		return pensionContribution;
-	}
-
-	public void setPensionContribution(boolean pensionContribution) {
-		this.pensionContribution = pensionContribution;
 	}
 
 	public BigDecimal getPensionContributionPercent() {

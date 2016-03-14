@@ -116,12 +116,54 @@
                     <tab-heading>
                         <i class="fa fa-gears"></i> {{'BUSINESS_TAB_OPTIONS' | translate}}
                     </tab-heading>
+
+                    <img class="spinner" ng-show="!business" src="../../private_assets/img/ajax-loading.gif">
+
+                    <!-- ISLAND 1 -->
+                    <h4><strong style="text-transform: uppercase;">{{'TITLE_INVOICE_SETTINGS' | translate}}</strong></h4>
+
+                    <form name="invoiceSettingsForm" ng-show="business" class="form-horizontal" role="form">
+                        <div class="form-body">
+
+                            <div class="form-group">
+                                <label for="pensionContribution" class="col-md-4 control-label">{{ 'PENSION_CONTRIBUTION' | translate }}</label>
+                                <div class="col-md-4">
+                                    <input class="form-control input-xlarge" type="number" id="pensionContribution" name="pensionContribution" min="0" max="100" ng-model="business.settings.pensionContributionPercent"
+                                           placeholder="{{'PENSION_CONTRIBUTION_PLACEHOLDER' | translate}}" >
+                                    <div ng-show="invoiceSettingsForm.pensionContribution.$dirty && invoiceSettingsForm.pensionContribution.$invalid">
+                                        <span class="text-danger">{{'VALIDATION_PERCENT' | translate}}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="witholdTaxFirstLevel" class="col-md-4 control-label">{{ 'WITHOLD_TAX_FIRST_LEVEL' | translate }}</label>
+                                <div class="col-md-4">
+                                    <input class="form-control input-xlarge" type="number" id="witholdTaxFirstLevel" name="witholdTaxFirstLevel" min="0" max="100" ng-model="business.settings.witholdTaxPercentFirstLevel"
+                                           placeholder="{{'WITHOLD_TAX_FIRST_LEVEL_PLACEHOLDER' | translate}}" >
+                                    <div ng-show="invoiceSettingsForm.witholdTaxFirstLevel.$dirty && invoiceSettingsForm.witholdTaxFirstLevel.$invalid">
+                                        <span class="text-danger">{{'VALIDATION_PERCENT' | translate}}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="witholdTaxSecondLevel" class="col-md-4 control-label">{{ 'WITHOLD_TAX_SECOND_LEVEL' | translate }}</label>
+                                <div class="col-md-4">
+                                    <input class="form-control input-xlarge" type="number" id="witholdTaxSecondLevel" name="witholdTaxSecondLevel" min="0" max="100" ng-model="business.settings.witholdTaxPercentSecondLevel"
+                                           placeholder="{{'WITHOLD_TAX_SECOND_LEVEL_PLACEHOLDER' | translate}}" >
+                                    <div ng-show="invoiceSettingsForm.witholdTaxSecondLevel.$dirty && invoiceSettingsForm.witholdTaxSecondLevel.$invalid">
+                                        <span class="text-danger">{{'VALIDATION_PERCENT' | translate}}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
                     
                     <!-- ISLAND 1 -->
                     <h4><strong style="text-transform: uppercase;">{{'TITLE_LAYOUT_SETTINGS' | translate}}</strong></h4>
                     
-                    <img class="spinner" ng-show="!business" src="../../private_assets/img/ajax-loading.gif">
-
                     <form ng-show="business" class="form-horizontal" role="form">
                         <div class="form-body">
                             <div class="form-group">
@@ -250,7 +292,7 @@
                         </div>
                     </form>
 
-                    <button ng-show="business" type="button" ng-click="update()" ng-disabled="emailForm.$invalid" class="btn green save-options button-save">
+                    <button ng-show="business" type="button" ng-click="update()" ng-disabled="emailForm.$invalid || invoiceSettingsForm.$invalid" class="btn green save-options button-save">
                       {{'SAVE_CHANGES' | translate}}
                     </button>
                 </tab>
