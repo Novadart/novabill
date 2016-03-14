@@ -239,7 +239,7 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 			PAYMENTS_STATUS_PRINT : 'Stampa',
 			PAYMENTS_STATUS_START_DATE : 'Da data',
 			PENSION_CONTRIBUTION : '#TR# Pension contribution',
-			PENSION_CONTRIBUTION_PLACEHOLDER: '#TR# esempio: 4',
+			PENSION_CONTRIBUTION_PLACEHOLDER: '#TR# esempio: 4,00',
 			PLAN_PREMIUM : 'Premium',
 			PLAN_STANDARD : 'Standard',
 			POSTCODE : 'C.A.P.',
@@ -359,9 +359,9 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 			WEIGHT : 'Peso (kg)',
 			WEIGHT_PLACEHOLDER : 'esempio: 2',
 			WITHOLD_TAX_FIRST_LEVEL : '#TR# Withold tax on net amount',
-			WITHOLD_TAX_FIRST_LEVEL_PLACEHOLDER : '#TR# esempio: 100',
+			WITHOLD_TAX_FIRST_LEVEL_PLACEHOLDER : '#TR# esempio: 100,00',
 			WITHOLD_TAX_SECOND_LEVEL : '#TR# Withold tax',
-			WITHOLD_TAX_SECOND_LEVEL_PLACEHOLDER : '#TR# esempio: 20'
+			WITHOLD_TAX_SECOND_LEVEL_PLACEHOLDER : '#TR# esempio: 20,00'
 		});
 
 		$translateProvider.preferredLanguage('it_IT');
