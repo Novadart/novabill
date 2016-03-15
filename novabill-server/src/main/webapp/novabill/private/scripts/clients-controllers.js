@@ -10,13 +10,19 @@ angular.module('novabill.clients.controllers',
  */
     .controller('ClientsCtrl', ['$scope', 'nSorting', '$location', 'nConstants', 'nAjax', 'nEditClientDialog',
         function($scope, nSorting, $location, nConstants, nAjax, nEditClientDialog){
-
+            var FILTER_QUERY_PARAM = 'filter';
             var loadedClients = [];
             var filteredClients = [];
             var displayedClientsCount = 0;
             var PARTITION = 50;
 
             var Business = nAjax.Business();
+
+            $scope.query = $location.search()[FILTER_QUERY_PARAM] ? $location.search()[[FILTER_QUERY_PARAM]] : '';
+
+            $scope.$watch('query', function(newValue, oldValue){
+                $location.search(FILTER_QUERY_PARAM, newValue == ''? null : newValue);
+            });
 
             $scope.partitionClients = function(clients){
                 //split it alphabetically

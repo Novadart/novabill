@@ -10,6 +10,10 @@ angular.module('novabill.payments.controllers', ['novabill.translations', 'novab
 	.controller('PaymentsCtrl', ['$scope', 'nConstants', 'nDownload', '$location', '$timeout',
 		function($scope, nConstants, nDownload, $location, $timeout){
 
+			var START_PARAM = 'start';
+			var END_PARAM = 'end';
+			var DATE_TYPE_PARAM = 'date-type';
+
 			$scope.dateOptions = {
 				'starting-day' : '1',
 				'clear-text' : 'Ripulisci'
@@ -35,9 +39,9 @@ angular.module('novabill.payments.controllers', ['novabill.translations', 'novab
 			}, 1000);
 
 			$scope.uiBootstrap = {
-				filteringDateType : 'PAYMENT_DUEDATE',
-				startDate : null,
-				endDate : null,
+				filteringDateType : $location.search()[DATE_TYPE_PARAM] ? $location.search()[[DATE_TYPE_PARAM]] : 'PAYMENT_DUEDATE',
+				startDate : $location.search()[START_PARAM] ? new Date($location.search()[[START_PARAM]]) : null,
+				endDate : $location.search()[END_PARAM] ? new Date($location.search()[[END_PARAM]]) : null,
 				openSD : false,
 				openED : false
 			};
@@ -98,12 +102,14 @@ angular.module('novabill.payments.controllers', ['novabill.translations', 'novab
 			};
 
 			$scope.$watch('uiBootstrap.startDate', function(newValue, oldValue){
+				$location.search(START_PARAM, newValue);
 				if(newValue != null){
 					$scope.loadInvoices($scope.uiBootstrap.filteringDateType, newValue, $scope.uiBootstrap.endDate);
 				}
 			});
 
 			$scope.$watch('uiBootstrap.endDate', function(newValue, oldValue){
+				$location.search(END_PARAM, newValue);
 				if(newValue != null){
 					$scope.loadInvoices($scope.uiBootstrap.filteringDateType, $scope.uiBootstrap.startDate, newValue);
 				}
@@ -111,6 +117,7 @@ angular.module('novabill.payments.controllers', ['novabill.translations', 'novab
 
 			$scope.$watch('uiBootstrap.filteringDateType', function(newValue, oldValue){
 				if(newValue != null){
+					$location.search(DATE_TYPE_PARAM, newValue);
 					$scope.loadInvoices($scope.uiBootstrap.filteringDateType, $scope.uiBootstrap.startDate, $scope.uiBootstrap.endDate);
 				}
 			});

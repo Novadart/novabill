@@ -632,7 +632,8 @@ angular.module('novabill.directives',
 			templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-year-selector.html'),
 			scope: {
 				callback : '&',
-				documentType : '@'
+				documentType : '@',
+				selectedYear : '@'
 			},
 			controller : ['$scope', function($scope){
 				var years = documentYears[$scope.documentType];
@@ -645,7 +646,9 @@ angular.module('novabill.directives',
 				});
 
 				$scope.years = years;
-				$scope.selectedYear = $scope.years.length > 0 ?  $scope.years[0] : null;
+
+				if($scope.selectedYear == null)
+					$scope.selectedYear = $scope.years.length > 0 ?  $scope.years[0] : null;
 
 				$scope.onChange = function(){
 					$scope.callback({ year : String($scope.selectedYear) });
@@ -756,14 +759,16 @@ angular.module('novabill.directives',
 		return {
 			templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-suffix-selector.html'),
 			scope: {
-				callback : '&'
+				callback : '&',
+				selectedClass : '@'
 			},
 			controller : ['$scope', '$window', '$filter', function($scope, $window, $filter){
 				var classes = $window.invoiceSuffixes;
 				var sortedClasses = classes.sort();
 
 				$scope.classes = [$filter('translate')('SUFFIX_STANDARD')].concat(sortedClasses);
-				$scope.selectedClass = $scope.classes[0];
+				if($scope.selectedClass == null)
+					$scope.selectedClass = $scope.classes[0];
 
 				$scope.onChange = function(event){
 					var index = $scope.classes.indexOf($scope.selectedClass);

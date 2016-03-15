@@ -12,13 +12,18 @@ angular.module('novabill.transportDocuments.controllers',
 		'nEditTransporterDialog', 'nConfirmDialog', 'nAjax',
 		function($scope, $location, $filter, nConstants, nSelectClientDialog,
 				 nEditTransporterDialog, nConfirmDialog, nAjax){
-			var selectedYear = String(new Date().getFullYear());
+			var YEAR_PARAM = 'year';
+			var FILTER_QUERY_PARAM = 'filter';
+
 			var Transporter = nAjax.Transporter();
 			var loadedTransportDocuments = [];
 			var filteredTransportDocuments = [];
 			var PARTITION = 50;
+
+			$scope.selectedYear = $location.search()[YEAR_PARAM]? $location.search()[[YEAR_PARAM]]: String(new Date().getFullYear());
+
 			$scope.uiBootstrap = {
-				query : ''
+				query : $location.search()[FILTER_QUERY_PARAM]? $location.search()[[FILTER_QUERY_PARAM]]: ''
 			};
 
 			$scope.onTabChange = function(token){
@@ -48,14 +53,16 @@ angular.module('novabill.transportDocuments.controllers',
 			}
 
 			$scope.$watch('uiBootstrap.query', function(newValue, oldValue){
+				$location.search(FILTER_QUERY_PARAM, newValue == ''? null : newValue);
 				updateFilteredTransportDocuments();
 			});
 
 			$scope.loadTransportDocuments = function(year) {
-				selectedYear = year;
+				$scope.selectedYear = year;
+				$location.search(YEAR_PARAM, year);
 				$scope.transportDocuments = null;
 
-				GWT_Server.transportDocument.getAllInRange(nConstants.conf.businessId, selectedYear, '0', '1000000', {
+				GWT_Server.transportDocument.getAllInRange(nConstants.conf.businessId, $scope.selectedYear, '0', '1000000', {
 					onSuccess : function(page){
 						$scope.$apply(function(){
 							loadedTransportDocuments = page.items;
@@ -92,7 +99,7 @@ angular.module('novabill.transportDocuments.controllers',
 				$scope.$apply(function(){
 					$scope.transportDocuments = null;
 				});
-				$scope.loadTransportDocuments(selectedYear);
+				$scope.loadTransportDocuments($scope.selectedYear);
 			});
 
 			$scope.newTransporter = function(){
@@ -135,17 +142,17 @@ angular.module('novabill.transportDocuments.controllers',
 /**
  * TRANSPORT DOCUMENTS MODIFY PAGE CONTROLLER
  */
-	.controller('TransportDocumentDetailsCtrl', ['$scope', '$routeParams', '$location', '$translate',
-		function($scope, $routeParams, $location, $translate) {
+	.controller('TransportDocumentDetailsCtrl', ['$scope', '$routeParams', '$location', '$translate', 'nSafeHistoryBack',
+		function($scope, $routeParams, $location, $translate, nSafeHistoryBack) {
 			$scope.pageTitle = $translate('MODIFY_TRANSPORT_DOCUMENT');
 
 			GWT_UI.showModifyTransportDocumentPage('transport-document-details', $routeParams.transportDocumentId, {
 				onSuccess : function(bool){
-					$location.path('/');
+					nSafeHistoryBack.safeBack();
 				},
 				onFailure : function(){
 					$scope.$apply(function(){
-						$location.path('/');
+						nSafeHistoryBack.safeBack();
 					});
 				}
 			});

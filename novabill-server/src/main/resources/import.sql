@@ -322,6 +322,19 @@ insert into abstract_invoice (payed, payment_due_date, id) values ('f', '2010-11
 insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, payment_delta_type, emailed_to_client, business, client, withold_tax, pension_contribution) values (181, 0, 0, 'default', 1, 0, 1, 3, 'f', 'f');
 insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (182, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 181);
 
+insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, layout_type, version, to_company_name, to_street, to_city, to_postcode, to_province, to_country) values (189, '2015-10-20', 2015, 1, '', '', 121.0, 100.0, 21.0, 1, 1, 'The mighty company from this Young Entrepreneur', 'via Qualche Strada con Nome Lungo, 12', 'Nervesa della Battaglia', '42837', 'PD', 'IT');
+insert into estimation (limitations, valid_till, id, business, client) values ('', '2015-11-20', 189, 1, 3);
+insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (190, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 189);
+
+insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, layout_type, version, to_company_name, to_street, to_city, to_postcode, to_province, to_country) values (191, '2015-10-20', 2015, 1, '', '', 121.0, 100.0, 21.0, 1, 1, 'The mighty company from this Young Entrepreneur', 'via Qualche Strada con Nome Lungo, 12', 'Nervesa della Battaglia', '42837', 'PD', 'IT');
+insert into transport_document (cause, from_company_name, from_street, from_city, from_postcode, from_province, from_country, number_of_packages, trade_zone, transport_start_date, transportation_responsibility, transporter, id, business, client) values ('', 'Novadart S.n.c. di Giordano Battilana & C.', 'via Stradone, 51', 'Campo San Martino', '35010', 'PD', 'IT', 1 , '', '2015-10-20', '', '', 191, 1, 3);
+insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (192, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 191);
+
+insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, layout_type, version, to_company_name, to_street, to_city, to_postcode, to_province, to_country) values (193, '2015-10-20', 2015, 1, '', '', 121.0, 100.0, 21.0, 1, 1, 'The mighty company from this Young Entrepreneur', 'via Qualche Strada con Nome Lungo, 12', 'Nervesa della Battaglia', '42837', 'PD', 'IT');
+insert into abstract_invoice (payed, payment_due_date, id) values ('f', '2016-11-20', 193);
+insert into credit_note (id, business, client) values (193, 1, 3);
+insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (194, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 193);
+
 --creating transporters
 insert into transporter (id, name, description, business, version) values (183, 'Jason Statham', 'The transporter', 1, 1);
 insert into transporter (id, name, description, business, version) values (184, 'Jason Statham', 'The transporrer', 2, 1);
@@ -333,4 +346,4 @@ insert into sharing_permit (id, created_on, description, email, business, versio
 --creating document id class
 insert into documentidclass (id, suffix, business, version) values (187, 'bis', 1, 1);
 
-alter sequence hibernate_sequence restart with 189;
+alter sequence hibernate_sequence restart with 195;

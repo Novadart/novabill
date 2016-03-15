@@ -17,7 +17,7 @@
 					   placeholder="{{'FILTER' | translate}}..." ng-model="query">
 			</div>
 
-			<n-year-selector class="pull-right" document-type="creditNotes" callback="loadCreditNotes(year)"></n-year-selector>
+			<n-year-selector class="pull-right" document-type="creditNotes" selected-year="{{selectedYear}}" callback="loadCreditNotes(year)"></n-year-selector>
 
 		</div>
 	</div>
