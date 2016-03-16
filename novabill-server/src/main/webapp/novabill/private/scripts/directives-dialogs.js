@@ -266,7 +266,7 @@ angular.module('novabill.directives.dialogs',
 	.factory('nSendEmailDialog', ['nConstants', '$modal', function (nConstants, $modal){
 
 		return {
-			open : function( invoice ) {
+			open : function( business, invoice ) {
 
 				return $modal.open({
 
@@ -274,12 +274,13 @@ angular.module('novabill.directives.dialogs',
 
 					controller: ['$scope', '$modalInstance', '$filter',
 						function($scope, $modalInstance, $filter){
-
+							var replyTo = business.settings.emailReplyTo && business.settings.emailReplyTo.trim().length > 0?
+								business.settings.emailReplyTo : business.email;
 							$scope.data = {
 								to : invoice.client.email,
-								replyTo : invoice.business.email,
-								message : $filter('nEmailKeywords')(invoice.business.settings.emailText, invoice),
-								subject : $filter('nEmailKeywords')(invoice.business.settings.emailSubject, invoice)
+								replyTo : replyTo,
+								message : $filter('nEmailKeywords')(business.settings.emailText, invoice),
+								subject : $filter('nEmailKeywords')(business.settings.emailSubject, invoice)
 							};
 
 							$scope.save = function(){

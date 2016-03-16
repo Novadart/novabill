@@ -1,7 +1,6 @@
 package com.novadart.novabill.service.web;
 
 import com.novadart.novabill.annotation.Restrictions;
-import com.novadart.novabill.authorization.PremiumChecker;
 import com.novadart.novabill.authorization.TrialOrPremiumChecker;
 import com.novadart.novabill.domain.*;
 import com.novadart.novabill.domain.dto.DTOUtils;

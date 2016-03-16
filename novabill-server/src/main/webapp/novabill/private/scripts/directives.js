@@ -99,15 +99,18 @@ angular.module('novabill.directives',
 						};
 
 						$scope.sendEmailToClient = function(){
-							var instance = nSendEmailDialog.open($scope.invoice);
-							instance.result.then(function(data){
-								var InvoiceUtils = nAjax.InvoiceUtils();
-								InvoiceUtils.email(data, function(data){
-									nAlertDialog.open($filter('translate')(data.value ? 'SEND_EMAIL_TO_CLIENT_SUCCESS' : 'SEND_EMAIL_TO_CLIENT_FAILURE'));
-								}, function(){
-									nAlertDialog.open($filter('translate')('SEND_EMAIL_TO_CLIENT_FAILURE'));
+							nAjax.Business().get(function(business){
+								var instance = nSendEmailDialog.open(business, $scope.invoice);
+								instance.result.then(function(data){
+									var InvoiceUtils = nAjax.InvoiceUtils();
+									InvoiceUtils.email(data, function(data){
+										nAlertDialog.open($filter('translate')(data.value ? 'SEND_EMAIL_TO_CLIENT_SUCCESS' : 'SEND_EMAIL_TO_CLIENT_FAILURE'));
+									}, function(){
+										nAlertDialog.open($filter('translate')('SEND_EMAIL_TO_CLIENT_FAILURE'));
+									});
 								});
-							});
+
+							})
 						};
 
 						//activate the dropdown
