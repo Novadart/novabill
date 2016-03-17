@@ -199,6 +199,7 @@ angular.module('novabill.clients.controllers',
                     function(client){
                         client.$update(function(){
                             $scope.client = client;
+                            $route.reload();
                         });
                     }
                 );
