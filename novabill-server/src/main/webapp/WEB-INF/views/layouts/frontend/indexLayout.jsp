@@ -343,7 +343,7 @@
                             <div class="col-sm-12 text-center">
                                 <button type="submit" class="btn btn-success">Accedi</button>
                                 <br>
-                                <a href="#">Non hai un account? Registrati</a>
+                                <a href="${registerPageUrl}">Non hai un account? Registrati</a>
                             </div>
                         </div>
 

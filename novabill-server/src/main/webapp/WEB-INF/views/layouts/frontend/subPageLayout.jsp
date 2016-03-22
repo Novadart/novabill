@@ -6,153 +6,166 @@
 <spring:url value="/frontend_assets" var="frontendAssetsUrl" />
 <spring:url value="/" var="basePath" />
 
-<%
-    String pageName = (String)request.getAttribute("pageName");
-%>
+<compress:html enabled="${mvn.tiles.minify.html}" compressJavaScript="${mvn.tiles.minify.html}" compressCss="${mvn.tiles.minify.html}">
 
-<compress:html enabled="${mvn.tiles.minify.html}" compressJavaScript="${mvn.tiles.minify.html}" compressCss="${mvn.tiles.minify.html}"> 
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        <meta content="Novabill è un servizio online per la gestione della contabilità, studiato per piccole imprese e professionisti." name="description" />
+        <meta content="Novadart" name="author" />
 
-<!DOCTYPE html>
-<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
-<!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
-<!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->
-<!-- BEGIN HEAD -->
-<head>
-    <meta charset="utf-8" />
-    <title>Novabill | <%=pageName%></title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <meta content="Novabill è un servizio online per la gestione della contabilità, studiato per piccole imprese e professionisti." name="description" />
-    <meta content="Novadart" name="author" />
+        <link rel="icon" href="${frontendAssetsUrl}/img/favicon.png">
 
-   <!-- BEGIN GLOBAL MANDATORY STYLES -->          
-   <link href="${frontendAssetsUrl}/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
-   <link href="${frontendAssetsUrl}/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-   <!-- END GLOBAL MANDATORY STYLES -->
-   
-   <!-- BEGIN THEME STYLES --> 
-   <link href="${frontendAssetsUrl}/css/style-metronic.css" rel="stylesheet" type="text/css"/>
-   <link href="${frontendAssetsUrl}/css/style.css" rel="stylesheet" type="text/css"/>
-   <link href="${frontendAssetsUrl}/css/themes/blue.css" rel="stylesheet" type="text/css" id="style_color"/>
-   <link href="${frontendAssetsUrl}/css/style-responsive.css" rel="stylesheet" type="text/css"/>
-   <link href="${frontendAssetsUrl}/css/custom.css" rel="stylesheet" type="text/css"/>
-   <!-- END THEME STYLES -->
+        <title>Novabill</title>
 
-    <script src="${frontendAssetsUrl}/plugins/jquery-1.10.2.min.js" type="text/javascript"></script>
-   <link href="${frontendAssetsUrl}/plugins/jquery.cookiebar/jquery.cookiebar.css" rel="stylesheet" type="text/css"/>
-    <script src="${frontendAssetsUrl}/plugins/jquery.cookiebar/jquery.cookiebar.js" type="text/javascript"></script>
-   
-   <!-- BEGIN PAGE LEVEL PLUGIN STYLES --> 
-   <link href="${frontendAssetsUrl}/plugins/fancybox/source/jquery.fancybox.css" rel="stylesheet" /> 
-   <link href="${frontendAssetsUrl}/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css"/>
-   <link href="${frontendAssetsUrl}/plugins/iealert/css/style.css" rel="stylesheet" type="text/css"/>
-   <!-- END PAGE LEVEL PLUGIN STYLES -->
-   
-   <tiles:insertAttribute ignore="true" name="head" />
-   
-   <tiles:insertAttribute  ignore="true" name="css" />
-   
-   <tiles:insertAttribute  ignore="true" name="cssExtra" />
+        <!-- jQuery Cookiebar -->
+        <link href="${frontendAssetsUrl}/bower_components/jquery.cookiebar/dist/jquery.cookiebar.min.css" rel="stylesheet" type="text/css"/>
 
-   <link rel="shortcut icon" href="${frontendAssetsUrl}/img/favicon.png" />
-   
-   <style type="text/css">
-   .page-container {
-        min-height: 400px;
-   }
-   </style>
-   
-</head>
-<!-- END HEAD -->
+        <!-- Font Awesome -->
+        <link href="${frontendAssetsUrl}/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
 
-<!-- BEGIN BODY -->
-<body>
+        <!-- Bootstrap core CSS -->
+        <link href="${frontendAssetsUrl}/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
 
-    <tiles:insertAttribute name="header" />
+        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+        <link href="${frontendAssetsUrl}/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
 
-    <!-- BEGIN PAGE CONTAINER -->  
-    
+        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <!-- Custom styles for this template -->
+        <link href="${frontendAssetsUrl}/css/style.css" rel="stylesheet">
+
+        <!-- Loading jQuery here because it might be needed in the body of the page -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="${frontendAssetsUrl}/bower_components/jquery/dist/jquery.min.js"><\/script>')</script>
+
+    </head>
+    <!-- NAVBAR
+    ================================================== -->
+    <body>
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Navigazione</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#"><img src="${frontendAssetsUrl}/img/logo_thin.png"></a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+
+                <a type="button" data-toggle="modal" data-target="#novabill-login" class="btn btn-success navbar-btn navbar-right" style="margin-right: 5px;">Accedi / Registrati</a>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#features">Funzionalità</a></li>
+                    <li><a href="#pricing">Quanto costa?</a></li>
+                    <li><a href="http://novabill.uservoice.com/">Supporto</a></li>
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+
     <tiles:insertAttribute name="body" />
-    
-    <!-- END PAGE CONTAINER -->  
 
-    <tiles:insertAttribute name="footer" />
 
-    <!-- Load javascripts at bottom, this will reduce page load time -->
-    <!-- BEGIN CORE PLUGINS(REQUIRED FOR ALL PAGES) -->
-    <!--[if lt IE 9]>
-    <script src="${frontendAssetsUrl}/plugins/respond.min.js"></script>  
-    <![endif]-->  
-    <script src="${frontendAssetsUrl}/plugins/jquery.cookie-1.4.0.js" type="text/javascript"></script>
-    <script src="${frontendAssetsUrl}/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
-    <script src="${frontendAssetsUrl}/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>      
-    <script type="text/javascript" src="${frontendAssetsUrl}/plugins/hover-dropdown.js"></script>
-    <script type="text/javascript" src="${frontendAssetsUrl}/plugins/back-to-top.js"></script>    
-    <script src="${frontendAssetsUrl}/plugins/uniform/jquery.uniform.min.js" type="text/javascript" ></script>
-    <script src="${frontendAssetsUrl}/plugins/iealert/iealert.min.js" type="text/javascript"></script>
-    <script src="${frontendAssetsUrl}/plugins/jquery.pwstrength.bootstrap/src/pwstrength.js" type="text/javascript"></script>
-    <!-- END CORE PLUGINS -->
+    <div class="container">
+
+        <!-- FOOTER -->
+        <footer>
+            <p class="pull-right"><a href="#">Back to top</a></p>
+            <p>&copy; 2016 <a target="_blank" href="http://www.novadart.com">Novadart</a> &middot; <a href="#">Privacy Policy</a> &middot; <a href="#">Termini di Servizio</a> &middot; <a href="#">Cookie Policy</a></p>
+        </footer>
+
+    </div>
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="${frontendAssetsUrl}/bower_components/jquery.cookie/jquery.cookie.js"></script>
+    <script src="${frontendAssetsUrl}/bower_components/jquery.cookiebar/dist/jquery.cookiebar.min.js"></script>
+    <script src="${frontendAssetsUrl}/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="${frontendAssetsUrl}/js/ie10-viewport-bug-workaround.js"></script>
 
     <script>
-	var NovabillFrontendConf = {
-	        basePath : '${basePath}',
-	        version : '<tiles:insertAttribute name="novabill.version" />'
-	};
-	
-	$(function(){
-        var message = 'Questo sito o gli strumenti terzi da questo utilizzati si avvalgono di cookie necessari al funzionamento ed utili alle finalità illustrate nella cookie policy. ' +
-                'Se vuoi saperne di più o negare il consenso a tutti o ad alcuni cookie, consulta la cookie policy. <br>Chiudendo questo banner, scorrendo questa pagina, ' +
-                'cliccando su un link o proseguendo la navigazione in altra maniera, acconsenti all’uso dei cookie.';
-        var acceptOnScroll = typeof window.COOKIEBAR_DISABLE_ONSCROLL === 'undefined';
-        $.cookieBar({
-            autoEnable: false,
-            message: message,
-            acceptButton: true,
-            acceptText: 'Chiudi',
-            policyButton: true,
-            policyText: 'Cookie Policy',
-            policyURL: '${cookiesPolicy}',
-            fixed:true,
-            zindex:'9999999',
-            acceptOnContinue: true,
-            acceptOnScroll: acceptOnScroll
-        });
-	});
-	</script>
-	
-	<!-- BEGIN PAGE LEVEL JAVASCRIPTS(REQUIRED ONLY FOR CURRENT PAGE) -->
-	<script type="text/javascript" src="${frontendAssetsUrl}/plugins/fancybox/source/jquery.fancybox.pack.js"></script>
-	
-	<script src="${frontendAssetsUrl}/scripts/app.js"></script>  
-	<script type="text/javascript">
-	    jQuery(document).ready(function() {    
-	       App.init();
-	       App.initUniform();
-	       
-	       if(!window.skipIEAlert && !$.cookie('ie_alert_shown_public')){
-		       $("body").iealert({
-		    	   support:"ie8",
-		           title:"Il tuo browser è vecchio e insicuro e non è supportato da Novabill",
-		           text:"Non è sicuro utilizzare questo browser per lavorare su dati sensibili.<br>Per favore premi sul pulsante 'Aggiorna' qui sotto e installa una versione più recente di Internet Explorer o uno dei browser alternativi suggeriti.<br><br>Grazie",
-		           upgradeTitle:"Aggiorna",
-		           upgradeLink:"http://browsehappy.com/",
-		           overlayClose:false,
-		           closeBtn: true
-		       });
-	
-	           $.cookie('ie_alert_shown_public', 'true', { path: '/' });
-	       }
-	    });
-	</script>
-	<!-- END PAGE LEVEL JAVASCRIPTS -->
+        $("nav ul li a[href^='#']").on('click', function(e) {
 
-    <tiles:insertAttribute  ignore="true" name="javascript" />
-    
-    <tiles:insertAttribute  ignore="true" name="javascriptExtra" />
-    
+            // prevent default anchor click behavior
+            e.preventDefault();
+
+            // store hash
+            var hash = this.hash;
+
+            // animate
+            $('html, body').animate({
+                scrollTop: $(hash).offset().top
+            }, 500, function(){
+
+                // when done, add hash to url
+                // (default click behaviour)
+                window.location.hash = hash;
+            });
+
+        });
+
+
+        $(function(){
+
+            // setup the cookie bar
+            var message = 'Questo sito o gli strumenti terzi da questo utilizzati si avvalgono di cookie necessari al funzionamento ed utili alle finalità illustrate nella cookie policy. ' +
+                    'Se vuoi saperne di più o negare il consenso a tutti o ad alcuni cookie, consulta la cookie policy. <br>Chiudendo questo banner, scorrendo questa pagina, ' +
+                    'cliccando su un link o proseguendo la navigazione in altra maniera, acconsenti all’uso dei cookie.';
+            $.cookieBar({
+                autoEnable: false,
+                message: message,
+                acceptButton: true,
+                acceptText: 'Chiudi',
+                policyButton: true,
+                policyText: 'Cookie Policy',
+                policyURL: '${cookiesPolicy}',
+                fixed:true,
+                zindex:'9999999',
+                acceptOnContinue: true,
+                acceptOnScroll: false
+            });
+
+        });
+    </script>
+
+    <script type="text/javascript">
+        (function(w, d) {
+            var loader = function() {
+                var s = d.createElement("script"), tag = d
+                        .getElementsByTagName("script")[0];
+                s.src = "https://cdn.iubenda.com/iubenda.js";
+                tag.parentNode.insertBefore(s, tag);
+            };
+            if (w.addEventListener) {
+                w.addEventListener("load", loader, false);
+            } else if (w.attachEvent) {
+                w.attachEvent("onload", loader);
+            } else {
+                w.onload = loader;
+            }
+        })(window, document);
+    </script>
+
+
     <tiles:insertAttribute name="analytics" />
-    
-</body>
-<!-- END BODY -->
-</html>
+
+    </body>
+    </html>
 
 </compress:html>
