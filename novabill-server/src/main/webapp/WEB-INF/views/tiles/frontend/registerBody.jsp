@@ -5,7 +5,6 @@
 
 <spring:url var="frontendAssetsUrl" value="/frontend_assets" />
 <spring:url var="registerUrl" value="/register" />
-<spring:url var="homeUrl" value="/" />
 <spring:url var="tosUrl" value="/tos-minimal" />
 
 <link href="${frontendAssetsUrl}/bower_components/ekko-lightbox/dist/ekko-lightbox.min.css" rel="stylesheet">

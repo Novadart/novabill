@@ -4,7 +4,7 @@
 <%@ taglib uri="http://htmlcompressor.googlecode.com/taglib/compressor" prefix="compress" %>
 
 <spring:url value="/frontend_assets" var="frontendAssetsUrl" />
-<spring:url value="/" var="basePath" />
+<spring:url var="homeUrl" value="/" />
 
 <compress:html enabled="${mvn.tiles.minify.html}" compressJavaScript="${mvn.tiles.minify.html}" compressCss="${mvn.tiles.minify.html}">
 
@@ -60,15 +60,15 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#"><img src="${frontendAssetsUrl}/img/logo_thin.png"></a>
+                <a class="navbar-brand" href="${homeUrl}"><img src="${frontendAssetsUrl}/img/logo_thin.png"></a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
 
                 <a type="button" data-toggle="modal" data-target="#novabill-login" class="btn btn-success navbar-btn navbar-right" style="margin-right: 5px;">Accedi / Registrati</a>
 
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#features">Funzionalità</a></li>
-                    <li><a href="#pricing">Quanto costa?</a></li>
+                    <li><a href="${homeUrl}#features">Funzionalità</a></li>
+                    <li><a href="${homeUrl}#pricing">Quanto costa?</a></li>
                     <li><a href="http://novabill.uservoice.com/">Supporto</a></li>
                 </ul>
 

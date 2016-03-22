@@ -11,6 +11,7 @@
 <spring:url value="/resources/login_check" var="loginUrl" />
 <spring:url value="/forgot-password" var="forgotPasswordUrl" />
 <spring:url value="/cookies-policy" var="cookiesPolicy" />
+<spring:url var="logoutUrl" value="/resources/logout" />
 
 <compress:html enabled="${mvn.tiles.minify.html}" compressJavaScript="${mvn.tiles.minify.html}" compressCss="${mvn.tiles.minify.html}">
 
@@ -100,7 +101,19 @@
                     </div>
                     <div id="navbar" class="navbar-collapse collapse">
 
-                        <a type="button" data-toggle="modal" data-target="#novabill-login" class="btn btn-success navbar-btn navbar-right" style="margin-right: 5px;">Accedi / Registrati</a>
+                        <sec:authorize access="isAnonymous()">
+                            <a type="button" data-toggle="modal" data-target="#novabill-login" class="btn btn-success navbar-btn navbar-right" style="margin-right: 5px;">Accedi / Registrati</a>
+                        </sec:authorize>
+                        <sec:authorize access="isAuthenticated()">
+
+                            <form action="${logoutUrl}" method="post" style="margin-right: 10px;">
+                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                                <input class="btn btn-default navbar-btn navbar-right" type="submit" value="Esci">
+                            </form>
+
+                            <a href="${privateUrl}" style="margin-right: 10px;" type="button" class="btn btn-primary navbar-btn navbar-right">Accedi ai tuoi Documenti</a>
+
+                        </sec:authorize>
 
                         <ul class="nav navbar-nav navbar-right">
                             <li><a href="#features">Funzionalità</a></li>
