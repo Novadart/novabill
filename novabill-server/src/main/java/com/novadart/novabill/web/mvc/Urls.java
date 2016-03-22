@@ -10,7 +10,6 @@ public interface Urls {
 	// to fix
 	String PUBLIC_ABOUT = "/about";
 	String PUBLIC_FEATURES = "/features";
-	String PUBLIC_PRICES = "/prices";
 	String PUBLIC_PAGE_NOT_FOUND = "/page-not-found";
 	String PUBLIC_EXCEPTION = "/oops";
 	String PUBLIC_FORGOT_PASSWORD = "/forgot-password";
