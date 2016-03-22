@@ -1,10 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <%@ taglib uri="http://htmlcompressor.googlecode.com/taglib/compressor" prefix="compress" %>
 
 <spring:url value="/frontend_assets" var="frontendAssetsUrl" />
 <spring:url var="homeUrl" value="/" />
+<spring:url var="logoutUrl" value="/resources/logout" />
+<spring:url value="/resources/login_check" var="loginUrl" />
+<spring:url value="/forgot-password" var="forgotPasswordUrl" />
+<spring:url value="/register" var="registerPageUrl"/>
 
 <compress:html enabled="${mvn.tiles.minify.html}" compressJavaScript="${mvn.tiles.minify.html}" compressCss="${mvn.tiles.minify.html}">
 
@@ -64,7 +69,19 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
 
-                <a type="button" data-toggle="modal" data-target="#novabill-login" class="btn btn-success navbar-btn navbar-right" style="margin-right: 5px;">Accedi / Registrati</a>
+                <sec:authorize access="isAnonymous()">
+                    <a type="button" data-toggle="modal" data-target="#novabill-login" class="btn btn-success navbar-btn navbar-right" style="margin-right: 5px;">Accedi / Registrati</a>
+                </sec:authorize>
+                <sec:authorize access="isAuthenticated()">
+
+                    <form action="${logoutUrl}" method="post" style="margin-right: 10px;">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        <input class="btn btn-default navbar-btn navbar-right" type="submit" value="Esci">
+                    </form>
+
+                    <a href="${privateUrl}" style="margin-right: 10px;" type="button" class="btn btn-primary navbar-btn navbar-right">Accedi ai tuoi Documenti</a>
+
+                </sec:authorize>
 
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="${homeUrl}#features">Funzionalità</a></li>
@@ -88,6 +105,55 @@
         </footer>
 
     </div>
+
+
+    <div id="novabill-login" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Accedi</h4>
+                </div>
+                <div class="modal-body">
+
+                    <form class="form-horizontal" action="${loginUrl}"  method="post">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label">E-mail</label>
+                            <div class="col-sm-10">
+                                <input name="j_username" type="email" class="form-control" id="inputEmail3" placeholder="Email">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
+                            <div class="col-sm-10">
+                                <input name="j_password" type="password" class="form-control" id="inputPassword3" placeholder="Password">
+                                <a href="${forgotPasswordUrl}">Ho dimenticato la password</a>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="_spring_security_remember_me"> Ricordami per 7 giorni
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12 text-center">
+                                <button type="submit" class="btn btn-success">Accedi</button>
+                                <br>
+                                <a href="${registerPageUrl}">Non hai un account? Registrati</a>
+                            </div>
+                        </div>
+
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                    </form>
+
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
 
     <!-- Bootstrap core JavaScript

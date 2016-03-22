@@ -5,16 +5,15 @@ public interface Urls {
 	//	Public Urls
 	String PUBLIC_HOME = "/";
     String PUBLIC_REGISTER = "/register";
-
+    String PUBLIC_FORGOT_PASSWORD = "/forgot-password";
+    String PUBLIC_FORGOT_PASSWORD_OK = "/forgot-password-ok";
+    String PUBLIC_PASSWORD_RECOVERY = "/password-recovery";
+    String PUBLIC_PASSWORD_RECOVERY_OK = "/password-recovery-ok";
 
 	// to fix
 	String PUBLIC_ABOUT = "/about";
 	String PUBLIC_PAGE_NOT_FOUND = "/page-not-found";
 	String PUBLIC_EXCEPTION = "/oops";
-	String PUBLIC_FORGOT_PASSWORD = "/forgot-password";
-	String PUBLIC_FORGOT_PASSWORD_OK = "/forgot-password-ok";
-	String PUBLIC_PASSWORD_RECOVERY = "/password-recovery";
-	String PUBLIC_PASSWORD_RECOVERY_OK = "/password-recovery-ok";
 	String PUBLIC_TOS = "/tos";
 	String PUBLIC_TOS_MINIMAL = "/tos-minimal";
 	String PUBLIC_PAYPAL_RETURN_PAGE = "/paypal-return-page";

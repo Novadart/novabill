@@ -13,15 +13,28 @@
 <script src="${frontendAssetsUrl}/bower_components/zxcvbn/dist/zxcvbn.js"></script>
 <script src="${frontendAssetsUrl}/bower_components/pwstrength-bootstrap/dist/pwstrength-bootstrap-1.2.10.min.js"></script>
 
+<style>
+    
+    .progress {
+        margin-bottom: 0px;
+    }
+    
+</style>
+
 <div class="container">
 
 
     <div class="row">
 
-        <div class="col-md-8 col-md-offset-2">
-
+        <div class="col-md-8 col-md-offset-2 text-center">
             <h3>Inserisci i tuoi dati <small style="margin-left: 10px;">(Dubbi? guarda il <a data-toggle="lightbox" data-width="853" href="https://www.youtube.com/watch?v=qWv0UQ3Q3Dk">video di esempio</a>)</small>
             </h3>
+            <br><br>
+        </div>
+
+
+
+        <div class="col-md-8 col-md-offset-2">
 
             <form:form action="${registerUrl}" modelAttribute="registration" cssClass="form-horizontal" method="post" class="form-horizontal">
 
