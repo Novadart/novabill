@@ -17,8 +17,6 @@
 	<!-- PAGES -->
 	<definition name="frontend.index" extends="frontend.indexLayout">
 	   <put-attribute name="analytics" value="/WEB-INF/views/tiles/frontend/analytics.jsp" />
-       <put-attribute name="header" value="/WEB-INF/views/tiles/frontend/header.jsp" />
-       <put-attribute name="footer" value="/WEB-INF/views/tiles/frontend/footer.jsp" />
 	</definition>
 	
     <definition name="frontend.about" extends="frontend.subPageLayout">

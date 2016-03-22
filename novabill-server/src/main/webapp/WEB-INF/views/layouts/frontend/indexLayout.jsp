@@ -28,6 +28,9 @@
 
         <title>Novabill</title>
 
+        <!-- jQuery Cookiebar -->
+        <link href="${frontendAssetsUrl}/bower_components/jquery.cookiebar/dist/jquery.cookiebar.min.css" rel="stylesheet" type="text/css"/>
+
         <!-- Font Awesome -->
         <link href="${frontendAssetsUrl}/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
 
@@ -358,6 +361,8 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="${frontendAssetsUrl}/bower_components/jquery/dist/jquery.min.js"><\/script>')</script>
+    <script src="${frontendAssetsUrl}/bower_components/jquery.cookie/jquery.cookie.js"></script>
+    <script src="${frontendAssetsUrl}/bower_components/jquery.cookiebar/dist/jquery.cookiebar.min.js"></script>
     <script src="${frontendAssetsUrl}/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="${frontendAssetsUrl}/js/ie10-viewport-bug-workaround.js"></script>
@@ -392,7 +397,32 @@
             });
 
         });
+
+
+        $(function(){
+
+            // setup the cookie bar
+            var message = 'Questo sito o gli strumenti terzi da questo utilizzati si avvalgono di cookie necessari al funzionamento ed utili alle finalità illustrate nella cookie policy. ' +
+                    'Se vuoi saperne di più o negare il consenso a tutti o ad alcuni cookie, consulta la cookie policy. <br>Chiudendo questo banner, scorrendo questa pagina, ' +
+                    'cliccando su un link o proseguendo la navigazione in altra maniera, acconsenti all’uso dei cookie.';
+            $.cookieBar({
+                autoEnable: false,
+                message: message,
+                acceptButton: true,
+                acceptText: 'Chiudi',
+                policyButton: true,
+                policyText: 'Cookie Policy',
+                policyURL: '${cookiesPolicy}',
+                fixed:true,
+                zindex:'9999999',
+                acceptOnContinue: true,
+                acceptOnScroll: false
+            });
+
+        });
     </script>
+
+    <tiles:insertAttribute name="analytics" />
 
     </body>
     </html>
