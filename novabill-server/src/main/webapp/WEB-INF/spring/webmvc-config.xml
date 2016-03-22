@@ -27,21 +27,13 @@
 	
 	<security:global-method-security pre-post-annotations="enabled"/>
 
-	<mvc:resources location="/frontend_assets/css/" mapping="/frontend_assets/css/**" />
-	<mvc:resources location="/frontend_assets/fonts/" mapping="/frontend_assets/fonts/**" />
-	<mvc:resources location="/frontend_assets/scripts/" mapping="/frontend_assets/scripts/**" />
-	<mvc:resources location="/frontend_assets/plugins/" mapping="/frontend_assets/plugins/**" />
-	<mvc:resources location="/frontend_assets/img/" mapping="/frontend_assets/img/**" />
+	<mvc:resources location="/frontend_assets/" mapping="/frontend_assets/**" />
 
 	<mvc:resources location="/novabill/" mapping="/novabill/**" />
 	<mvc:resources location="/novabill-deps/" mapping="/novabill-deps/**" />
 	<mvc:resources location="/novabill-min/" mapping="/novabill-min/**" />
 
-	<mvc:resources location="/private_assets/css/" mapping="/private_assets/css/**"	/>
-	<mvc:resources location="/private_assets/fonts/" mapping="/private_assets/fonts/**" />
-	<mvc:resources location="/private_assets/scripts/"	mapping="/private_assets/scripts/**" />
-	<mvc:resources location="/private_assets/plugins/" mapping="/private_assets/plugins/**" />
-	<mvc:resources location="/private_assets/img/" mapping="/private_assets/img/**" />
+	<mvc:resources location="/private_assets/" mapping="/private_assets/**"	/>
 
 	<mvc:resources location="/rpc/" mapping="/rpc/**" />
 

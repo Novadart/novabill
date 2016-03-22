@@ -1,0 +1,15 @@
+{
+  "name": "jparallax",
+  "homepage": "https://github.com/stephband/jparallax",
+  "version": "2.0.3",
+  "_release": "2.0.3",
+  "_resolution": {
+    "type": "version",
+    "tag": "2.0.3",
+    "commit": "1ec6f1ee3e0ed0474187f932afa5c9b26174ff8b"
+  },
+  "_source": "git://github.com/stephband/jparallax.git",
+  "_target": "^2.0.3",
+  "_originalSource": "jparallax",
+  "_direct": true
+}

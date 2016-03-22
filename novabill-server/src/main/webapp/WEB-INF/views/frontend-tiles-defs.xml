@@ -21,10 +21,6 @@
        <put-attribute name="footer" value="/WEB-INF/views/tiles/frontend/footer.jsp" />
 	</definition>
 	
-	<definition name="frontend.login" extends="frontend.subPageLayout" >
-       <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/loginBody.jsp" />
-	</definition>
-	
     <definition name="frontend.about" extends="frontend.subPageLayout">
        <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/aboutBody.jsp" />
     </definition>
