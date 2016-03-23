@@ -18,7 +18,7 @@
 <compress:html enabled="${mvn.tiles.minify.html}" compressJavaScript="${mvn.tiles.minify.html}" compressCss="${mvn.tiles.minify.html}">
 
     <!DOCTYPE html>
-    <html lang="en">
+    <html lang="it">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
