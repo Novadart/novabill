@@ -10,6 +10,9 @@
 <spring:url value="/resources/login_check" var="loginUrl" />
 <spring:url value="/forgot-password" var="forgotPasswordUrl" />
 <spring:url value="/register" var="registerPageUrl"/>
+<spring:url value="/about" var="aboutUrl" />
+<spring:url value="/cookies-policy" var="cookiePolicyUrl" />
+<spring:url value="/tos" var="tosUrl" />
 
 <compress:html enabled="${mvn.tiles.minify.html}" compressJavaScript="${mvn.tiles.minify.html}" compressCss="${mvn.tiles.minify.html}">
 
@@ -101,7 +104,7 @@
         <!-- FOOTER -->
         <footer>
             <p class="pull-right"><a href="#">Back to top</a></p>
-            <p>&copy; 2016 <a target="_blank" href="http://www.novadart.com">Novadart</a> &middot; <a href="#">Privacy Policy</a> &middot; <a href="#">Termini di Servizio</a> &middot; <a href="#">Cookie Policy</a></p>
+            <p>&copy; 2016 <a target="_blank" href="http://www.novadart.com">Novadart</a> &middot; <a href="${aboutUrl}">Chi Siamo</a> &middot; <a href="https://www.iubenda.com/privacy-policy/257554">Privacy Policy</a> &middot; <a href="${tosUrl}">Termini di Servizio</a> &middot; <a href="${cookiePolicyUrl}">Cookie Policy</a></p>
         </footer>
 
     </div>

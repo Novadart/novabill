@@ -73,12 +73,10 @@
 	<!-- Error pages -->
 	
 	<definition name="frontend.pageNotFound" extends="frontend.subPageLayout"  >
-	   <put-attribute name="head" value="/WEB-INF/views/tiles/frontend/pageNotFoundHead.jsp" />
        <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/pageNotFoundBody.jsp" />
     </definition>
 	
 	<definition name="frontend.oops" extends="frontend.subPageLayout" >
-	   <put-attribute name="head" value="/WEB-INF/views/tiles/frontend/oopsHead.jsp" />
        <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/oopsBody.jsp" />
 	</definition>
 	
