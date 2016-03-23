@@ -26,34 +26,34 @@
 			message: 'We use cookies to track usage and preferences.', //Message displayed on bar
 			acceptButton: true, //Set to true to show accept/enable button
 			acceptText: 'I Understand', //Text on accept/enable button
-			acceptFunction: false, //Callback function that triggers when user accepts
+			acceptFunction: function(cookieValue){if(cookieValue!='enabled' && cookieValue!='accepted') window.location = window.location.href;}, //Function to run after accept
 			declineButton: false, //Set to true to show decline/disable button
 			declineText: 'Disable Cookies', //Text on decline/disable button
-			declineFunction: false, //Callback function that triggers when user declines
+			declineFunction: function(cookieValue){if(cookieValue=='enabled' || cookieValue=='accepted') window.location = window.location.href;}, //Function to run after decline
 			policyButton: false, //Set to true to show Privacy Policy button
 			policyText: 'Privacy Policy', //Text on Privacy Policy button
-			policyFunction: false, //Callback function that triggers before redirect when user clicks policy button
 			policyURL: '/privacy-policy/', //URL of Privacy Policy
 			autoEnable: true, //Set to true for cookies to be accepted automatically. Banner still shows
-			acceptOnContinue: false, //Set to true to silently accept cookies when visitor moves to another page
+			acceptOnContinue: false, //Set to true to accept cookies when visitor moves to another page
+			acceptOnScroll: false, //Set to true to accept cookies when visitor scrolls X pixels up or down
+			acceptAnyClick: false, //Set to true to accept cookies when visitor clicks anywhere on the page
 			expireDays: 365, //Number of days for cookieBar cookie to be stored for
+			renewOnVisit: false, //Renew the cookie upon revisit to website
 			forceShow: false, //Force cookieBar to show regardless of user cookie preference
 			effect: 'slide', //Options: slide, fade, hide
 			element: 'body', //Element to append/prepend cookieBar to. Remember "." for class or "#" for id.
 			append: false, //Set to true for cookieBar HTML to be placed at base of website. Actual position may change according to CSS
 			fixed: false, //Set to true to add the class "fixed" to the cookie bar. Default CSS should fix the position
 			bottom: false, //Force CSS when fixed, so bar appears at bottom of website
-			customClass: '', // Optional cookie bar class. Target #cookiebar.<customClass> to avoid !important overwrites and separate multiple classes by spaces
 			zindex: '', //Can be set in CSS, although some may prefer to set here
-			redirect: String(window.location.href), //Current location. Setting to false stops redirect
 			domain: String(window.location.hostname), //Location of privacy policy
-			referrer: String(document.referrer), //Where visitor has come from
+			referrer: String(document.referrer) //Where visitor has come from
 		};
 		var options = $.extend(defaults,options);
 		
 		//Sets expiration date for cookie
 		var expireDate = new Date();
-		expireDate.setTime(expireDate.getTime()+(options.expireDays*24*60*60*1000));
+		expireDate.setTime(expireDate.getTime()+(options.expireDays*86400000));
 		expireDate = expireDate.toGMTString();
 		
 		var cookieEntry = 'cb-enabled={value}; expires='+expireDate+'; path=/';
@@ -70,6 +70,8 @@
 		if(cookieValue=='' && doReturn!='cookies' && options.autoEnable){
 			cookieValue = 'enabled';
 			document.cookie = cookieEntry.replace('{value}','enabled');
+		}else if((cookieValue=='accepted' || cookieValue=='declined') && doReturn!='cookies' && options.renewOnVisit){
+			document.cookie = cookieEntry.replace('{value}',cookieValue);
 		}
 		if(options.acceptOnContinue){
 			if(options.referrer.indexOf(options.domain)>=0 && String(window.location.href).indexOf(options.policyURL)==-1 && doReturn!='cookies' && doReturn!='set' && cookieValue!='accepted' && cookieValue!='declined'){
@@ -116,12 +118,12 @@
 			//Whether to add "fixed" class to cookie bar
 			if(options.fixed){
 				if(options.bottom){
-					var classes = ' class="fixed bottom ' + options.customClass + '"';
+					var fixed = ' class="fixed bottom"';
 				}else{
-					var classes = ' class="fixed ' + options.customClass + '"';
+					var fixed = ' class="fixed"';
 				}
 			}else{
-				var classes = ' class="' + options.customClass + '"';
+				var fixed = '';
 			}
 			if(options.zindex!=''){
 				var zindex = ' style="z-index:'+options.zindex+';"';
@@ -132,33 +134,29 @@
 			//Displays the cookie bar if arguments met
 			if(options.forceShow || cookieValue=='enabled' || cookieValue==''){
 				if(options.append){
-					$(options.element).append('<div id="cookie-bar"'+classes+zindex+'><p>'+message+acceptButton+declineButton+policyButton+'</p></div>');
+					$(options.element).append('<div id="cookie-bar"'+fixed+zindex+'><p>'+message+acceptButton+declineButton+policyButton+'</p></div>');
 				}else{
-					$(options.element).prepend('<div id="cookie-bar"'+classes+zindex+'><p>'+message+acceptButton+declineButton+policyButton+'</p></div>');
+					$(options.element).prepend('<div id="cookie-bar"'+fixed+zindex+'><p>'+message+acceptButton+declineButton+policyButton+'</p></div>');
 				}
 			}
 			
-			//Sets the cookie preference to accepted if enable/accept button pressed
-			$('#cookie-bar .cb-enable').click(function(){
-				document.cookie = cookieEntry.replace('{value}','accepted');
-				if (options.acceptFunction && typeof(options.acceptFunction) === 'function') {
-					options.acceptFunction();
-				}
-				if(cookieValue!='enabled' && cookieValue!='accepted' && options.redirect !== false){
-					window.location = options.redirect;
+			var removeBar = function(func){
+				if(options.acceptOnScroll) $(document).off('scroll');
+				if(typeof(func)==='function') func(cookieValue);
+				if(options.effect=='slide'){
+					$('#cookie-bar').slideUp(300,function(){$('#cookie-bar').remove();});
+				}else if(options.effect=='fade'){
+					$('#cookie-bar').fadeOut(300,function(){$('#cookie-bar').remove();});
 				}else{
-					if(options.effect=='slide'){
-						$('#cookie-bar').slideUp(300,function(){$('#cookie-bar').remove();});
-					}else if(options.effect=='fade'){
-						$('#cookie-bar').fadeOut(300,function(){$('#cookie-bar').remove();});
-					}else{
-						$('#cookie-bar').hide(0,function(){$('#cookie-bar').remove();});
-					}
-					return false;
+					$('#cookie-bar').hide(0,function(){$('#cookie-bar').remove();});
 				}
-			});
-			//Sets the cookie preference to declined if disable/decline button pressed
-			$('#cookie-bar .cb-disable').click(function(){
+				$(document).unbind('click',anyClick);
+			};
+			var cookieAccept = function(){
+				document.cookie = cookieEntry.replace('{value}','accepted');
+				removeBar(options.acceptFunction);
+			};
+			var cookieDecline = function(){
 				var deleteDate = new Date();
 				deleteDate.setTime(deleteDate.getTime()-(864000000));
 				deleteDate = deleteDate.toGMTString();
@@ -172,28 +170,29 @@
 					}
 				}
 				document.cookie = cookieEntry.replace('{value}','declined');
-				if (options.declineFunction && typeof(options.declineFunction) === 'function') {
-					options.declineFunction();
-				}
-				if(cookieValue=='enabled' && cookieValue!='accepted' && options.redirect !== false){
-					window.location = options.redirect;
-				}else{
-					if(options.effect=='slide'){
-						$('#cookie-bar').slideUp(300,function(){$('#cookie-bar').remove();});
-					}else if(options.effect=='fade'){
-						$('#cookie-bar').fadeOut(300,function(){$('#cookie-bar').remove();});
+				removeBar(options.declineFunction);
+			};
+			var anyClick = function(e){
+				if(!$(e.target).hasClass('cb-policy')) cookieAccept();
+			};
+			
+			$('#cookie-bar .cb-enable').click(function(){cookieAccept();return false;});
+			$('#cookie-bar .cb-disable').click(function(){cookieDecline();return false;});
+			if(options.acceptOnScroll){
+				var scrollStart = $(document).scrollTop(),scrollNew,scrollDiff;
+				$(document).on('scroll',function(){
+					scrollNew = $(document).scrollTop();
+					if(scrollNew>scrollStart){
+						scrollDiff = scrollNew - scrollStart;
 					}else{
-						$('#cookie-bar').hide(0,function(){$('#cookie-bar').remove();});
+						scrollDiff = scrollStart - scrollNew;
 					}
-					return false;
-				}
-			});
-			//Triggers when the user clicks the policy button
-			$('#cookie-bar .cb-policy').click(function(){
-				if (options.policyFunction && typeof(options.policyFunction) === 'function') {
-					options.policyFunction();
-				}
-			});
+					if(scrollDiff>=Math.round(options.acceptOnScroll)) cookieAccept();
+				});
+			}
+			if(options.acceptAnyClick){
+				$(document).bind('click',anyClick);
+			}
 		}
 	};
 })(jQuery);

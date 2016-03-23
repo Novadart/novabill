@@ -30,7 +30,7 @@
         <title>Novabill</title>
 
         <!-- jQuery Cookiebar -->
-        <link href="${frontendAssetsUrl}/bower_components/jquery.cookiebar/dist/jquery.cookiebar.min.css" rel="stylesheet" type="text/css"/>
+        <link href="${frontendAssetsUrl}/components/jquery.cookiebar/jquery.cookiebar.css" rel="stylesheet" type="text/css"/>
 
         <!-- Font Awesome -->
         <link href="${frontendAssetsUrl}/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
@@ -375,7 +375,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="${frontendAssetsUrl}/bower_components/jquery/dist/jquery.min.js"><\/script>')</script>
     <script src="${frontendAssetsUrl}/bower_components/jquery.cookie/jquery.cookie.js"></script>
-    <script src="${frontendAssetsUrl}/bower_components/jquery.cookiebar/dist/jquery.cookiebar.min.js"></script>
+    <script src="${frontendAssetsUrl}/components/jquery.cookiebar/jquery.cookiebar.js"></script>
     <script src="${frontendAssetsUrl}/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="${frontendAssetsUrl}/js/ie10-viewport-bug-workaround.js"></script>
@@ -429,7 +429,7 @@
                 fixed:true,
                 zindex:'9999999',
                 acceptOnContinue: true,
-                acceptOnScroll: false
+                acceptOnScroll: true
             });
 
         });

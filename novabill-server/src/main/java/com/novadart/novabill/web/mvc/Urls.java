@@ -9,6 +9,7 @@ public interface Urls {
     String PUBLIC_FORGOT_PASSWORD_OK = "/forgot-password-ok";
     String PUBLIC_PASSWORD_RECOVERY = "/password-recovery";
     String PUBLIC_PASSWORD_RECOVERY_OK = "/password-recovery-ok";
+    String PUBLIC_LOGIN_CHECK = "/resources/login_check";
 
 	// to fix
 	String PUBLIC_ABOUT = "/about";
@@ -22,7 +23,6 @@ public interface Urls {
 	String PUBLIC_SHARE_THANKS = "/share-thanks";
 	String PUBLIC_EMAIL_INVOICES = "/email/invoices";
 	String PUBLIC_PAYPAL_IPN_LISTENER = "/paypal-ipn-listener";
-	String PUBLIC_LOGIN_CHECK = "/resources/login_check";
 	String PUBLIC_COOKIES_POLICY = "/cookies-policy" ;
 
 	// Private Urls	
