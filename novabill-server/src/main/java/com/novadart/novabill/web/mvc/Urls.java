@@ -16,17 +16,14 @@ public interface Urls {
 	String PUBLIC_TOS_MINIMAL = "/tos-minimal";
 	String PUBLIC_COOKIES_POLICY = "/cookies-policy" ;
 	String PUBLIC_ABOUT = "/about";
-
-	// to fix
 	String PUBLIC_PAYPAL_RETURN_PAGE = "/paypal-return-page";
-	String PUBLIC_SHARE_REQUEST = "/share-ask";
-	String PUBLIC_SHARE_SHARE = "/share";
-	String PUBLIC_SHARE_THANKS = "/share-thanks";
-	String PUBLIC_EMAIL_INVOICES = "/email/invoices";
 	String PUBLIC_PAYPAL_IPN_LISTENER = "/paypal-ipn-listener";
+	String PUBLIC_SHARE_REQUEST = "/share-ask";
+	String PUBLIC_SHARE_THANKS = "/share-thanks";
+    String PUBLIC_EMAIL_INVOICES = "/email/invoices";
+	String PUBLIC_SHARE_SHARE = "/share";
 
-
-	// Private Urls	
+	// Private Urls
 	String PRIVATE_HOME = "/private/";
 	String PRIVATE_HELLO = "/private/hello";
 	String PRIVATE_CHANGE_PASSWORD = "/private/change-password";

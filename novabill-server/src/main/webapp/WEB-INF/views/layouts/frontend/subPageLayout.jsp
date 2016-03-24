@@ -6,6 +6,8 @@
 
 <spring:url value="/frontend_assets" var="frontendAssetsUrl" />
 <spring:url var="homeUrl" value="/" />
+<spring:url var="basePath" value="/" />
+<spring:url var="shareAskUrl" value="/share-ask" />
 <spring:url var="logoutUrl" value="/resources/logout" />
 <spring:url value="/resources/login_check" var="loginUrl" />
 <spring:url value="/forgot-password" var="forgotPasswordUrl" />
@@ -104,6 +106,7 @@
         <!-- FOOTER -->
         <footer>
             <p class="pull-right"><a href="#">Back to top</a></p>
+            <a class="btn btn-default pull-right" style="position: relative; bottom: 8px; margin-right: 10px;" href="${shareAskUrl}">Accesso per Commercialisti</a>
             <p>&copy; 2016 <a target="_blank" href="http://www.novadart.com">Novadart</a> &middot; <a href="${aboutUrl}">Chi Siamo</a> &middot; <a href="https://www.iubenda.com/privacy-policy/257554">Privacy Policy</a> &middot; <a href="${tosUrl}">Termini di Servizio</a> &middot; <a href="${cookiePolicyUrl}">Cookie Policy</a></p>
         </footer>
 
@@ -169,6 +172,11 @@
     <script src="${frontendAssetsUrl}/js/ie10-viewport-bug-workaround.js"></script>
 
     <script>
+        var NovabillFrontendConf = {
+            basePath : '${basePath}',
+            version : '<tiles:insertAttribute name="novabill.version" />'
+        };
+
         $("nav ul li a[href^='#']").on('click', function(e) {
 
             // prevent default anchor click behavior

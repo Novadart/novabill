@@ -14,6 +14,7 @@
 <spring:url value="/cookies-policy" var="cookiePolicyUrl" />
 <spring:url value="/tos" var="tosUrl" />
 <spring:url var="logoutUrl" value="/resources/logout" />
+<spring:url var="shareAskUrl" value="/share-ask" />
 
 <compress:html enabled="${mvn.tiles.minify.html}" compressJavaScript="${mvn.tiles.minify.html}" compressCss="${mvn.tiles.minify.html}">
 
@@ -270,9 +271,9 @@
                     <div class="panel-heading">
                         <h1>5,00 € / Mese</h1>
                     </div>
-                    <%--<div class="panel-body text-center">--%>
+                        <%--<div class="panel-body text-center">--%>
                         <%--<p><strong>5,00 € / Mese</strong></p>--%>
-                    <%--</div>--%>
+                        <%--</div>--%>
                     <ul class="list-group text-center">
                         <li class="list-group-item"><i class="fa fa-check"></i> Creazione Offerte/Fatture/DDT/Note di Credito</li>
                         <li class="list-group-item"><i class="fa fa-check"></i> Gestione Clienti</li>
@@ -301,6 +302,7 @@
         <!-- FOOTER -->
         <footer>
             <p class="pull-right"><a href="#">Back to top</a></p>
+            <a class="btn btn-default pull-right" style="position: relative; bottom: 8px; margin-right: 10px;" href="${shareAskUrl}">Accesso per Commercialisti</a>
             <p>&copy; 2016 <a target="_blank" href="http://www.novadart.com">Novadart</a> &middot; <a href="${aboutUrl}">Chi Siamo</a> &middot; <a href="https://www.iubenda.com/privacy-policy/257554">Privacy Policy</a> &middot; <a href="${tosUrl}">Termini di Servizio</a> &middot; <a href="${cookiePolicyUrl}">Cookie Policy</a></p>
         </footer>
 
@@ -331,6 +333,15 @@
                 </div>
                 <div class="modal-body">
 
+                    <div class="row" style='display: <%="true".equals(request.getParameter("loginerror")) ? "block" : "none"%>'>
+                        <div class="col-md-10 col-md-offset-1" >
+                            <div class="alert alert-danger text-center">
+                                Credenziali non valide
+                            </div>
+                        </div>
+                    </div>
+
+
                     <form class="form-horizontal" action="${loginUrl}"  method="post">
                         <div class="form-group">
                             <label for="inputEmail3" class="col-sm-2 control-label">E-mail</label>
@@ -345,6 +356,7 @@
                                 <a href="${forgotPasswordUrl}">Ho dimenticato la password</a>
                             </div>
                         </div>
+
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
                                 <div class="checkbox">
@@ -433,6 +445,13 @@
                 acceptOnContinue: true,
                 acceptOnScroll: true
             });
+
+            <% if("true".equals(request.getParameter("login")) || "true".equals(request.getParameter("loginerror"))) { %>
+            // we need to show the login modal
+            $('#novabill-login').modal('show');
+            <% } %>
+
+
 
         });
     </script>

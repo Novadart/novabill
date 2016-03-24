@@ -25,10 +25,9 @@
         <intercept-url pattern="/**/creditnote.rpc" access="hasAnyRole('ROLE_BUSINESS_TRIAL', 'ROLE_BUSINESS_PREMIUM')" />
         <intercept-url pattern="/**/transportdoc.rpc" access="hasAnyRole('ROLE_BUSINESS_TRIAL', 'ROLE_BUSINESS_PREMIUM')" />
         <intercept-url pattern="/resources/**" access="permitAll" />
-        <intercept-url pattern="/login" access="permitAll" />
         <intercept-url pattern="/**" access="permitAll" />
         <session-management session-fixation-protection="migrateSession">
-            <concurrency-control max-sessions="100" expired-url="/login"/>
+            <concurrency-control max-sessions="100" expired-url="/?login=true"/>
         </session-management>
         <remember-me key="${mvn.rememberme.key}" token-validity-seconds="604800" data-source-ref="dataSource"/>
         <csrf request-matcher-ref="csrfSecurityRequestMatcher"/>
@@ -43,7 +42,7 @@
     <beans:bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
     
     <beans:bean id="novabillAuthenticationEntryPoint" class="com.novadart.novabill.springsecurity.AuthenticationEntryPoint">
-    	<beans:constructor-arg value="/login"></beans:constructor-arg>
+    	<beans:constructor-arg value="/?login=true" />
     </beans:bean>
     
     <beans:bean id="novabillAuthenticationSuccessHandler" class="com.novadart.novabill.springsecurity.AuthenticationSuccessHandler">
@@ -51,6 +50,6 @@
     </beans:bean>
     
     <beans:bean id="novabillAuthenticationFailureHandler" class="com.novadart.novabill.springsecurity.AuthenticationFailureHandler">
-    	<beans:property name="defaultFailureUrl" value="/login?error=true"/>
+    	<beans:property name="defaultFailureUrl" value="/?loginerror=true"/>
     </beans:bean>
 </beans:beans>

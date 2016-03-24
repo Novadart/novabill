@@ -96,10 +96,7 @@
     </definition>
     
 	<definition name="sharing.share" extends="frontend.subPageLayout">
-	   <put-attribute name="css" value="/WEB-INF/views/tiles/frontend/sharing/shareCss.jsp" />
-	   <put-attribute name="cssExtra" value="/WEB-INF/views/tiles/frontend/resourcesCSS.jsp" />
        <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/sharing/shareBody.jsp" />
-       <put-attribute name="javascriptExtra" value="/WEB-INF/views/tiles/frontend/resourcesJS.jsp" />
     </definition>
     
     <definition name="sharing.invalidSharingRequest" extends="frontend.subPageLayout">

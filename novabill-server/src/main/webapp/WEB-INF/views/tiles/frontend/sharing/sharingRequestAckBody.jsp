@@ -13,7 +13,7 @@
 				<p>Se i dati sono corretti riceverai a breve una email con le istruzioni per continuare.</p>
 			</div>
             <div style="text-align: center;">
-                <a class="btn btn-lg blue" href="${homeUrl}">Home</a>
+                <a class="btn btn-primary" href="${homeUrl}">Home</a>
             </div>
 		</div>
 	</div>
