@@ -33,7 +33,7 @@
                                        placeholder="{{'FILTER' | translate}}..." ng-model="uiBootstrap.query">
                             </div>
 
-                            <n-year-selector class="pull-right" document-type="transportDocuments" callback="loadTransportDocuments(year)"></n-year-selector>
+                            <n-year-selector class="pull-right" document-type="transportDocuments" selected-year="{{selectedYear}}" callback="loadTransportDocuments(year)"></n-year-selector>
 
                             <div class="clearfix"></div>
 

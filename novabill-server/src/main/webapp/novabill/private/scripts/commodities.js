@@ -10,17 +10,18 @@ angular.module("novabill.commodities", ['novabill.commodities.controllers','nova
 	
 	$routeProvider
 
-	.when('/', {
-		templateUrl: nConstantsProvider.url.htmlFragmentUrl('/commodities.html'),
-		controller: 'CommoditiesCtrl'
-	})
+		.when('/', {
+			templateUrl: nConstantsProvider.url.htmlFragmentUrl('/commodities.html'),
+			controller: 'CommoditiesCtrl',
+			reloadOnSearch: false
+		})
 
-	.when('/details/:commodityId', {
-		templateUrl: nConstantsProvider.url.htmlFragmentUrl('/commodities-detail.html'),
-		controller: 'CommoditiesDetailsCtrl'
-	})
+		.when('/details/:commodityId', {
+			templateUrl: nConstantsProvider.url.htmlFragmentUrl('/commodities-detail.html'),
+			controller: 'CommoditiesDetailsCtrl'
+		})
 
-	.otherwise ({
+		.otherwise({
 		redirectTo: '/'
 	});
 

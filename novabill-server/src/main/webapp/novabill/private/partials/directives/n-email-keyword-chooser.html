@@ -1,9 +1,9 @@
-<div class="btn-group" dropdown>
-	<button type="button" class="btn btn-default btn-xs dropdown-toggle">
+<div class="btn-group" dropdown dropdown-append-to-body>
+	<button type="button" class="btn btn-primary" dropdown-toggle>
 		{{'EMAIL_KEYWORD_CHOOSER' | translate}} <span class="caret"></span>
 	</button>
 	<ul class="dropdown-menu" role="menu">
-		<li ng-repeat="(key, translation) in keywords" ng-click="click(key)">
+		<li ng-repeat="(key, translation) in keywords" ng-click="click(key)" role="menuitem">
 		  <a href="javascript:void(0);">{{translation | translate}}</a>
 		</li>
 	</ul>

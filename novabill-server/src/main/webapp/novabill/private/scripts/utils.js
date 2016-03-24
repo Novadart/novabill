@@ -160,6 +160,17 @@ angular.module('novabill.utils', ['novabill.translations', 'novabill.constants']
 	};
 }])
 
+	.factory('nSafeHistoryBack', ['$window', function ($window) {
+
+		return {
+			safeBack : function () {
+				if($window.document.referrer.indexOf($window.location.hostname) != -1)
+					$window.history.back();
+			}	
+		}
+		
+	}])
+
 
 /*
  * FILTERS

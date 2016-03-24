@@ -17,7 +17,7 @@
 					   placeholder="{{'FILTER' | translate}}..." ng-model="query">
 			</div>
 
-			<n-year-selector class="pull-right" document-type="estimations" callback="loadEstimations(year)"></n-year-selector>
+			<n-year-selector class="pull-right" document-type="estimations" selected-year="{{selectedYear}}" callback="loadEstimations(year)"></n-year-selector>
 
 		</div>
 	</div>
