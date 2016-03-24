@@ -47,14 +47,14 @@
             <td width="50%">JSESSIONID</td>
             <td width="50%">Al termine della sessione di navigazione</td>
         </tr>
-        <tr>
-            <td width="50%">ie_alert_shown</td>
-            <td width="50%">Al termine della sessione di navigazione</td>
-        </tr>
-        <tr>
-            <td width="50%">ie_alert_shown_public</td>
-            <td width="50%">Al termine della sessione di navigazione</td>
-        </tr>
+        <%--<tr>--%>
+            <%--<td width="50%">ie_alert_shown</td>--%>
+            <%--<td width="50%">Al termine della sessione di navigazione</td>--%>
+        <%--</tr>--%>
+        <%--<tr>--%>
+            <%--<td width="50%">ie_alert_shown_public</td>--%>
+            <%--<td width="50%">Al termine della sessione di navigazione</td>--%>
+        <%--</tr>--%>
         <tr>
             <td width="50%">SPRING_SECURITY_REMEMBER_ME_COOKIE</td>
             <td width="50%">Al termine della sessione di navigazione</td>

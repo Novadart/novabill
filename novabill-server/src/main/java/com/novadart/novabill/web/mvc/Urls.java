@@ -4,29 +4,26 @@ public interface Urls {
 
 	//	Public Urls
 	String PUBLIC_HOME = "/";
-	String PUBLIC_ABOUT = "/about";
-	String PUBLIC_FEATURES = "/features";
-	String PUBLIC_PRICES = "/prices";
+    String PUBLIC_REGISTER = "/register";
+    String PUBLIC_FORGOT_PASSWORD = "/forgot-password";
+    String PUBLIC_FORGOT_PASSWORD_OK = "/forgot-password-ok";
+    String PUBLIC_PASSWORD_RECOVERY = "/password-recovery";
+    String PUBLIC_PASSWORD_RECOVERY_OK = "/password-recovery-ok";
+    String PUBLIC_LOGIN_CHECK = "/resources/login_check";
 	String PUBLIC_PAGE_NOT_FOUND = "/page-not-found";
 	String PUBLIC_EXCEPTION = "/oops";
-	String PUBLIC_LOGIN = "/login";
-	String PUBLIC_FORGOT_PASSWORD = "/forgot-password";
-	String PUBLIC_FORGOT_PASSWORD_OK = "/forgot-password-ok";
-	String PUBLIC_PASSWORD_RECOVERY = "/password-recovery";
-	String PUBLIC_PASSWORD_RECOVERY_OK = "/password-recovery-ok";
-	String PUBLIC_REGISTER = "/register";
 	String PUBLIC_TOS = "/tos";
 	String PUBLIC_TOS_MINIMAL = "/tos-minimal";
-	String PUBLIC_PAYPAL_RETURN_PAGE = "/paypal-return-page";
-	String PUBLIC_SHARE_REQUEST = "/share-ask";
-	String PUBLIC_SHARE_SHARE = "/share";
-	String PUBLIC_SHARE_THANKS = "/share-thanks";
-	String PUBLIC_EMAIL_INVOICES = "/email/invoices";
-	String PUBLIC_PAYPAL_IPN_LISTENER = "/paypal-ipn-listener";
-	String PUBLIC_LOGIN_CHECK = "/resources/login_check";
 	String PUBLIC_COOKIES_POLICY = "/cookies-policy" ;
+	String PUBLIC_ABOUT = "/about";
+	String PUBLIC_PAYPAL_RETURN_PAGE = "/paypal-return-page";
+	String PUBLIC_PAYPAL_IPN_LISTENER = "/paypal-ipn-listener";
+	String PUBLIC_SHARE_REQUEST = "/share-ask";
+	String PUBLIC_SHARE_THANKS = "/share-thanks";
+    String PUBLIC_EMAIL_INVOICES = "/email/invoices";
+	String PUBLIC_SHARE_SHARE = "/share";
 
-	// Private Urls	
+	// Private Urls
 	String PRIVATE_HOME = "/private/";
 	String PRIVATE_HELLO = "/private/hello";
 	String PRIVATE_CHANGE_PASSWORD = "/private/change-password";

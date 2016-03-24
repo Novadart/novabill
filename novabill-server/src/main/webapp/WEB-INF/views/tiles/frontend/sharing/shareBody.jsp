@@ -1,8 +1,32 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<spring:url var="novabillDepsUrl" value="/novabill-deps" />
+<spring:url var="novabillCoreUrl" value="/novabill/frontend" />
+<spring:url var="novabillPrivateCoreUrl" value="/novabill/private" />
 
 <h1>
     <%=request.getAttribute("businessName")%>
 </h1>
+
+<link href="${novabillCoreUrl}/css/directives-frontend.css?v=${project.version}" rel="stylesheet" type="text/css" />
+
+<style>
+    h1 {
+        text-align: center;
+    }
+
+    .share-body {
+        margin-top: 40px;
+    }
+
+
+
+    .tab-pane {
+        margin-top: 20px;
+        margin-bottom: 40px;
+    }
+</style>
 
 <div class="container share-body" ng-app="novabill-frontend.share">
 
@@ -176,19 +200,21 @@
                     <div class="container-fluid">
 
                         <div class="row">
-                            <div class="col-md-12">
 
-                                <select class="pull-right year-select form-control input-small"
+                            <div class="col-md-offset-6 col-md-2">
+                                <select class="year-select form-control"
                                         ng-model="year"
                                         ng-options="y for y in years"></select>
+                            </div>
 
-                                <select class="form-control pull-right input-large"
+                            <div class="col-md-4">
+                                <select class="form-control"
                                         style="margin-right: 10px"
                                         ng-model="selectedClient"
                                         ng-options="cl.id as cl.name for cl in clients"></select>
+                            </div>
 
-                                <div class="clearfix"></div>
-
+                            <div class="col-md-12">
 
                                 <form class="form-horizontal" role="form">
                                     <div class="form-body">
@@ -276,7 +302,9 @@
 
                         <div class="row">
 
-                            <select class="pull-right year-select form-control input-small" ng-model="year" ng-options="y for y in years"></select>
+                            <div class="col-md-offset-10 col-md-2">
+                                <select class="pull-right year-select form-control input-small" ng-model="year" ng-options="y for y in years"></select>
+                            </div>
 
                         </div>
 
@@ -449,5 +477,23 @@
 
 
 </div>
+
+<script src="${novabillDepsUrl}/angular/angular.min.js?v=${project.version}"></script>
+<script src="${novabillDepsUrl}/angular/angular-route.min.js?v=${project.version}"></script>
+<script src="${novabillDepsUrl}/angular/angular-sanitize.min.js?v=${project.version}"></script>
+<script src="${novabillDepsUrl}/angular/angular-animate.min.js?v=${project.version}"></script>
+<script src="${novabillDepsUrl}/angular/angular-resource.min.js?v=${project.version}"></script>
+<script src="${novabillDepsUrl}/angular/i18n/angular-locale_it-it.js?v=${project.version}" type="text/javascript"></script>
+<script src="${novabillDepsUrl}/angular-translate.min.js?v=${project.version}" type="text/javascript"></script>
+<script src="${novabillDepsUrl}/angular-ui/ui-bootstrap-tpls-0.13.3.min.js?v=${project.version}" type="text/javascript"></script>
+<script src="${novabillDepsUrl}/ng-infinite-scroll.min.js?v=${project.version}"></script>
+<script src="${novabillDepsUrl}/ng-google-chart-0.0.11.js?v=${project.version}"></script>
+<script src="${novabillDepsUrl}/bignumber-1.3.0/bignumber.min.js?v=${project.version}"></script>
+
+<script src="${novabillCoreUrl}/scripts/translations-frontend.js?v=${project.version}" type="text/javascript"></script>
+<script src="${novabillCoreUrl}/scripts/constants-frontend.js?v=${project.version}" type="text/javascript"></script>
+<script src="${novabillCoreUrl}/scripts/ajax-frontend.js?v=${project.version}" type="text/javascript"></script>
+<script src="${novabillCoreUrl}/scripts/directives-frontend.js?v=${project.version}" type="text/javascript"></script>
+<script src="${novabillCoreUrl}/scripts/share.js?v=${project.version}" type="text/javascript"></script>
 
 
