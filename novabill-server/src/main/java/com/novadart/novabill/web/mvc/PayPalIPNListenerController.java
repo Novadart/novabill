@@ -20,6 +20,8 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -34,6 +36,8 @@ import com.novadart.novabill.shared.client.exception.PremiumUpgradeException;
 @Controller
 @RequestMapping(Urls.PUBLIC_PAYPAL_IPN_LISTENER)
 public class PayPalIPNListenerController {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(PayPalIPNListenerController.class);
 	
 	@Value("${paypal.url}")
 	private String payPalUrl;
@@ -85,17 +89,28 @@ public class PayPalIPNListenerController {
     public @ResponseBody void processIPN(@RequestParam("txn_type") String transactionType, @RequestParam(value = "txn_id", required = false) String transactionID,
     		HttpServletRequest request) throws URISyntaxException, ClientProtocolException, IOException, PremiumUpgradeException{
     	Map<String, String> parametersMap = extractParameters(request);
-    	if(!verifyIPN(request)) return;
+		LOGGER.info(
+				String.format("IPN for transaction %s received. Params: %s", transactionID, parametersMap.toString()));
+    	if(!verifyIPN(request)){
+			LOGGER.warn(String.format("Paypal verification of IPN for transaction %s failed.", transactionID));
+			return;
+		}
     	String email = parametersMap.get(RECEIVER_EMAIL);
-    	if(email!= null && !email.equals(payPalEmail))//email doesn't match
-    		return;
+    	if(email!= null && !email.equals(payPalEmail)) {//email doesn't match
+			LOGGER.warn(
+					String.format("Validation of IPN for transaction %s failed. Email mismatch expected: %s, actual: %s",
+							transactionID, payPalEmail, email));
+			return;
+		}
     	Transaction transaction = null;
     	if(transactionID != null){
-    		if(Transaction.findByTransactionID(transactionID).size() > 0)
-    			return; //already processed thus ignore
-    		else
+    		if(Transaction.findByTransactionID(transactionID).size() > 0) {
+				LOGGER.info(String.format("IPN for transaction %s already processed. Discarding...", transactionID));
+				return; //already processed thus ignore
+			}else
     			transaction = new Transaction(transactionID).merge(); //store transaction id
     	}
+		LOGGER.info(String.format("Processing IPN for transaction %s", transactionID));
     	for(PayPalIPNHandlerService ipnHandler: ipnHandlers)
     		ipnHandler.handle(transactionType, parametersMap, transaction);
     }

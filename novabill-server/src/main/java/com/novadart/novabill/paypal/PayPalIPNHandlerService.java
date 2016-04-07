@@ -2,6 +2,8 @@ package com.novadart.novabill.paypal;
 
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +14,8 @@ import com.novadart.novabill.service.web.PremiumEnablerService;
 import com.novadart.novabill.shared.client.exception.PremiumUpgradeException;
 
 public abstract class PayPalIPNHandlerService {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(PayPalIPNHandlerService.class);
 	
 	protected final static String COMPLETED = "Completed";
 	
@@ -42,7 +46,9 @@ public abstract class PayPalIPNHandlerService {
 		String email = parametersMap.get(CUSTOM);
 		Business business = principalDetailsService.loadUserByUsername(email).getBusiness();
 		try {
+			LOGGER.info(String.format("Making business %s premium", email));
 			premiumEnablerService.enablePremiumForNMonths(business, paymentPlans.getPayPalPaymentPlanDescriptor(parametersMap.get(ITEM_NAME)).getPayedPeriodInMonths());
+			LOGGER.info(String.format("Notifying and invoicing business %s", email));
 			premiumEnablerService.notifyAndInvoiceBusiness(business, paymentPlans.getPayPalPaymentPlanDescriptor(parametersMap.get(ITEM_NAME)).getItemName(), email);
 		} catch (PremiumUpgradeException e) {
 			e.setUsername(email);
