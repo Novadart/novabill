@@ -18,6 +18,8 @@ import com.novadart.novabill.shared.client.dto.NotificationType;
 import com.novadart.novabill.shared.client.dto.PaymentDateType;
 import com.novadart.novabill.shared.client.dto.PaymentDeltaType;
 import com.novadart.novabill.shared.client.exception.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -38,6 +40,8 @@ import static com.novadart.novabill.service.PDFStorageService.pdfFileToByteArray
 
 @Service
 public class PremiumEnablerService {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(PremiumEnablerService.class);
 
 	@Value("${novadart.username}")
 	private String novadartUsername; 
@@ -209,8 +213,11 @@ public class PremiumEnablerService {
 		try{
 			setSecurityContext();
 			Business novadartBusiness = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId());
+			LOGGER.info(String.format("Adding business %s as client to Novadart if not already", email));
 			Long clientID = addOrUpdateClient(novadartBusiness, business, email);
+			LOGGER.info(String.format("Invoicing %s", email));
 			Long invoiceID = createInvoice(novadartBusiness, clientID, paymentPlan);
+			LOGGER.info(String.format("Emailing invoice to %s", email));
 			exportAndEmailInvoicePdf(invoiceID, novadartBusiness.getId(), email);
 			expireSessions(email);
 		} catch (Exception e){
