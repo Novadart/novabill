@@ -56,7 +56,7 @@ public class PayPalIPNListenerController {
     
     private final static String RECEIVER_EMAIL = "receiver_email";
     
-	private boolean verifyIPN(HttpServletRequest request) throws URISyntaxException, ClientProtocolException, IOException{
+	private boolean verifyIPN(HttpServletRequest request, String transactionID) throws URISyntaxException, ClientProtocolException, IOException{
 		//passing back the message to paypal
 		HttpClient client = HttpClientBuilder.create().build();
 		HttpPost post = new HttpPost(payPalUrl);
@@ -72,6 +72,7 @@ public class PayPalIPNListenerController {
     	BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         String responseText = reader.readLine();
         is.close();
+		LOGGER.info(String.format("Paypal response for transaction %s: %s", transactionID, responseText));
     	return RESP_VERIFIED.equals(responseText);
     }
     
@@ -91,7 +92,7 @@ public class PayPalIPNListenerController {
     	Map<String, String> parametersMap = extractParameters(request);
 		LOGGER.info(
 				String.format("IPN for transaction %s received. Params: %s", transactionID, parametersMap.toString()));
-    	if(!verifyIPN(request)){
+    	if(!verifyIPN(request, transactionID)){
 			LOGGER.warn(String.format("Paypal verification of IPN for transaction %s failed.", transactionID));
 			return;
 		}
