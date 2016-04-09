@@ -238,8 +238,8 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 			PAYMENTS_STATUS_FILTERING_PAYMENT_DUEDATE : 'Data di Scadenza',
 			PAYMENTS_STATUS_PRINT : 'Stampa',
 			PAYMENTS_STATUS_START_DATE : 'Da data',
-			PENSION_CONTRIBUTION : '#TR# Pension contribution',
-			PENSION_CONTRIBUTION_PLACEHOLDER: '#TR# esempio: 4,00',
+			PENSION_CONTRIBUTION : 'Contributo Previdenziale',
+			PENSION_CONTRIBUTION_PLACEHOLDER: 'esempio: 4',
 			PLAN_PREMIUM : 'Premium',
 			PLAN_STANDARD : 'Standard',
 			POSTCODE : 'C.A.P.',
@@ -318,7 +318,7 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 			TITLE_DELETE_ACCOUNT : 'Elimina Account',
 			TITLE_EMAIL_SETTINGS : 'Impostazioni E-Mail',
 			TITLE_EXPORT_DATA : 'Esporta i tuoi dati',
-			TITLE_INVOICE_SETTINGS : '#TR# Invoice settings',
+			TITLE_INVOICE_SETTINGS : 'Impostazioni di Fatturazione',
 			TITLE_LAYOUT_SETTINGS : 'Impostazioni di Stampa',
 			TITLE_OTHER_SETTINGS : 'Altre impostazioni',
 			TITLE_SET_LOGO : 'Imposta il tuo logo',
@@ -358,10 +358,10 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 			WEBSITE_PLACEHOLDER : 'esempio: www.example.com',
 			WEIGHT : 'Peso (kg)',
 			WEIGHT_PLACEHOLDER : 'esempio: 2',
-			WITHOLD_TAX_FIRST_LEVEL : '#TR# Withold tax on net amount',
-			WITHOLD_TAX_FIRST_LEVEL_PLACEHOLDER : '#TR# esempio: 100,00',
-			WITHOLD_TAX_SECOND_LEVEL : '#TR# Withold tax',
-			WITHOLD_TAX_SECOND_LEVEL_PLACEHOLDER : '#TR# esempio: 20,00'
+			WITHOLD_TAX_FIRST_LEVEL : '% di imponibile su cui calcolare la ritenuta d\'acconto',
+			WITHOLD_TAX_FIRST_LEVEL_PLACEHOLDER : 'Esempio: 100',
+			WITHOLD_TAX_SECOND_LEVEL : '% IVA applicata sulla ritenuta d\'acconto',
+			WITHOLD_TAX_SECOND_LEVEL_PLACEHOLDER : 'esempio: 20'
 		});
 
 		$translateProvider.preferredLanguage('it_IT');
