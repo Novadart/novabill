@@ -55,19 +55,24 @@ public class PayPalIPNListenerController {
     private final static String RESP_VERIFIED = "VERIFIED";
     
     private final static String RECEIVER_EMAIL = "receiver_email";
+
+	private final static String CHARSET = "charset";
     
 	private boolean verifyIPN(HttpServletRequest request, String transactionID) throws URISyntaxException, ClientProtocolException, IOException{
 		//passing back the message to paypal
 		HttpClient client = HttpClientBuilder.create().build();
 		HttpPost post = new HttpPost(payPalUrl);
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		String encoding = null;
 		params.add(new BasicNameValuePair(PARAM_NAME_CMD, PARAM_VAL_CMD)); //You need to add this parameter to tell PayPal to verify
 		for (Enumeration<String> e = request.getParameterNames(); e.hasMoreElements();) {
 			String name = e.nextElement();
 			String value = request.getParameter(name);
 			params.add(new BasicNameValuePair(name, value));
+			if(CHARSET.equals(name))
+				encoding = value;
 		}
-		post.setEntity(new UrlEncodedFormEntity(params, request.getCharacterEncoding() == null? "utf-8": request.getCharacterEncoding()));
+		post.setEntity(new UrlEncodedFormEntity(params, encoding == null? "utf-8": encoding));
 		InputStream is = client.execute(post).getEntity().getContent();
     	BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         String responseText = reader.readLine();
