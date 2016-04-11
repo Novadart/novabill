@@ -42,38 +42,42 @@ public class PayPalIPNListenerController {
 	@Autowired
 	private List<PayPalIPNHandlerService> ipnHandlers;
 	
-    private final static String PARAM_NAME_CMD = "cmd";
-    
-    private final static String PARAM_VAL_CMD = "_notify-validate";
+    public final static String PARAM_NAME_CMD = "cmd";
+	public final static String PARAM_VAL_CMD = "_notify-validate";
+	public final static String RESP_VERIFIED = "VERIFIED";
+	public final static String RECEIVER_EMAIL = "receiver_email";
+	public final static String CHARSET = "charset";
+	public final static String UTF_8 = "utf-8";
+	public final static String CONTENT_TYPE = "Content-Type";
+	public final static String HOST = "Host";
+	public final static String PAYPAL_HOST = "www.paypal.com";
+	public final static String FORM_URL_ENCODED_CONTENT_TYPE = "application/x-www-form-urlencoded";
+	public final static String TXN_TYPE_PARAM = "txn_type";
+	public final static String TXN_ID_PARAM = "txn_id";
 
-    private final static String RESP_VERIFIED = "VERIFIED";
-    
-    private final static String RECEIVER_EMAIL = "receiver_email";
-
-	private final static String CHARSET = "charset";
-    
 	private boolean verifyIPN(HttpServletRequest request, String transactionID) throws URISyntaxException, ClientProtocolException, IOException{
 		//passing back the message to paypal
 		//Prepare 'notify-validate' command with exactly the same parameters
 		Enumeration en = request.getParameterNames();
-		StringBuilder cmd = new StringBuilder("cmd=_notify-validate");
+		StringBuilder ipnParams = new StringBuilder( PARAM_NAME_CMD + "=" +PARAM_VAL_CMD);
+		String charset = request.getParameterMap().containsKey(CHARSET)? request.getParameter(CHARSET): UTF_8;
 		String paramName;
 		String paramValue;
 		while (en.hasMoreElements()) {
 			paramName = (String) en.nextElement();
 			paramValue = request.getParameter(paramName);
-			cmd.append("&").append(paramName).append("=")
-					.append(URLEncoder.encode(paramValue, request.getParameter("charset")));
+			ipnParams.append("&").append(paramName).append("=")
+					.append(URLEncoder.encode(paramValue, charset));
 		}
 
 		//Post above command to Paypal IPN URL
 		URL u = new URL(payPalUrl);
 		HttpsURLConnection uc = (HttpsURLConnection) u.openConnection();
 		uc.setDoOutput(true);
-		uc.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-		uc.setRequestProperty("Host", "www.paypal.com");
+		uc.setRequestProperty(CONTENT_TYPE, FORM_URL_ENCODED_CONTENT_TYPE);
+		uc.setRequestProperty(HOST, PAYPAL_HOST);
 		PrintWriter pw = new PrintWriter(uc.getOutputStream());
-		pw.println(cmd.toString());
+		pw.println(ipnParams.toString());
 		pw.close();
 
 		//Read response from Paypal
@@ -96,8 +100,8 @@ public class PayPalIPNListenerController {
     }
     
     @RequestMapping
-    public @ResponseBody void processIPN(@RequestParam("txn_type") String transactionType, @RequestParam(value = "txn_id", required = false) String transactionID,
-    		HttpServletRequest request) throws URISyntaxException, ClientProtocolException, IOException, PremiumUpgradeException{
+    public @ResponseBody void processIPN(@RequestParam(TXN_TYPE_PARAM) String transactionType, @RequestParam(value = TXN_ID_PARAM, required = false) String transactionID,
+    		HttpServletRequest request) throws URISyntaxException, IOException, PremiumUpgradeException{
     	Map<String, String> parametersMap = extractParameters(request);
 		LOGGER.info(
 				String.format("IPN for transaction %s received. Params: %s", transactionID, parametersMap.toString()));
