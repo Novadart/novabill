@@ -239,6 +239,8 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 			PAYMENTS_STATUS_PRINT : 'Stampa',
 			PAYMENTS_STATUS_START_DATE : 'Da data',
 			PENSION_CONTRIBUTION : 'Contributo Previdenziale',
+            PENSION_CONTRIBUTION_ENABLE : 'Abilita Contributo Previdenziale',
+			PENSION_CONTRIBUTION_LABEL : 'Percentuale di Contributo Previdenziale',
 			PENSION_CONTRIBUTION_PLACEHOLDER: 'esempio: 4',
 			PLAN_PREMIUM : 'Premium',
 			PLAN_STANDARD : 'Standard',
@@ -345,7 +347,7 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 			VALIDATION_EMAIL_TAKEN : 'Email già utilizzata in un\'altra condivisione',
 			VALIDATION_NAME_TAKEN : 'Nome già utilizzato per un altro listino',
 			VALIDATION_INVALID_VALUE : 'Valore non valido',
-			VALIDATION_PERCENT : 'Value should be between 0 and 100',
+			VALIDATION_PERCENT : 'Il valore deve essere compreso tra 0 e 100',
 			VALIDATION_REQUIRED : 'Obbligatorio',
 			VALIDATION_SKU_TAKEN : 'Codice già utilizzato per un altro articolo',
 			VAT : 'IVA',
@@ -358,9 +360,11 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 			WEBSITE_PLACEHOLDER : 'esempio: www.example.com',
 			WEIGHT : 'Peso (kg)',
 			WEIGHT_PLACEHOLDER : 'esempio: 2',
-			WITHOLD_TAX_FIRST_LEVEL : '% di imponibile su cui calcolare la ritenuta d\'acconto',
+			WITHOLD_TAX : 'Ritenuta d\'acconto',
+            WITHOLD_TAX_ENABLE : 'Abilita Ritenuta d\'acconto',
+			WITHOLD_TAX_FIRST_LEVEL : 'Percentuale di imponibile su cui calcolare la ritenuta d\'acconto',
 			WITHOLD_TAX_FIRST_LEVEL_PLACEHOLDER : 'Esempio: 100',
-			WITHOLD_TAX_SECOND_LEVEL : '% IVA applicata sulla ritenuta d\'acconto',
+			WITHOLD_TAX_SECOND_LEVEL : 'Percentuale di IVA applicata sulla ritenuta d\'acconto',
 			WITHOLD_TAX_SECOND_LEVEL_PLACEHOLDER : 'esempio: 20'
 		});
 

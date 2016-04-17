@@ -2,163 +2,162 @@
 
 angular.module('novabill.utils', ['novabill.translations', 'novabill.constants'])
 
-/*
- * FACTORIES
- */
-.factory('nSorting', ['nConstants', function(nConstants) {
-	return {
+	/*
+	 * FACTORIES
+	 */
+	.factory('nSorting', ['nConstants', function(nConstants) {
+		return {
 
-		/**
-		 * Compare two client addresses
-		 * @return -1 if minor, 0 if equal, 1 if major
-		 */
-		clientAddressesComparator : function(c1, c2) {
-			var s1 = c1.name.toLowerCase();
-			var s2 = c2.name.toLowerCase();
-			return s1<s2 ? -1 : (s1>s2 ? 1 : 0);
-		},
+			/**
+			 * Compare two client addresses
+			 * @return -1 if minor, 0 if equal, 1 if major
+			 */
+			clientAddressesComparator : function(c1, c2) {
+				var s1 = c1.name.toLowerCase();
+				var s2 = c2.name.toLowerCase();
+				return s1<s2 ? -1 : (s1>s2 ? 1 : 0);
+			},
 
-		/**
-		 * Compare two clients
-		 * @return -1 if minor, 0 if equal, 1 if major
-		 */
-		clientsComparator : function(c1, c2) {
-			var s1 = c1.name.toLowerCase();
-			var s2 = c2.name.toLowerCase();
-			return s1<s2 ? -1 : (s1>s2 ? 1 : 0);
-		},
+			/**
+			 * Compare two clients
+			 * @return -1 if minor, 0 if equal, 1 if major
+			 */
+			clientsComparator : function(c1, c2) {
+				var s1 = c1.name.toLowerCase();
+				var s2 = c2.name.toLowerCase();
+				return s1<s2 ? -1 : (s1>s2 ? 1 : 0);
+			},
 
-		/**
-		 * Compare two price lists
-		 * @return -1 if minor, 0 if equal, 1 if major
-		 */
-		priceListsComparator : function(p1, p2){
-			if(p1.name === nConstants.conf.defaultPriceListName){ return -1; }
-			if(p2.name === nConstants.conf.defaultPriceListName){ return 1; }
+			/**
+			 * Compare two price lists
+			 * @return -1 if minor, 0 if equal, 1 if major
+			 */
+			priceListsComparator : function(p1, p2){
+				if(p1.name === nConstants.conf.defaultPriceListName){ return -1; }
+				if(p2.name === nConstants.conf.defaultPriceListName){ return 1; }
 
-			var n1 = p1.name.toLowerCase();
-			var n2 = p2.name.toLowerCase();
-			return n1<n2 ? -1 : (n1>n2 ? 1 : 0);
-		},
+				var n1 = p1.name.toLowerCase();
+				var n2 = p2.name.toLowerCase();
+				return n1<n2 ? -1 : (n1>n2 ? 1 : 0);
+			},
 
-		/**
-		 * Compare two objects that have a 'description' property
-		 */
-		descriptionComparator : function(i1, i2){
-			var n1 = i1.description.toLowerCase();
-			var n2 = i2.description.toLowerCase();
-			return n1<n2 ? -1 : (n1>n2 ? 1 : 0);
-		}
+			/**
+			 * Compare two objects that have a 'description' property
+			 */
+			descriptionComparator : function(i1, i2){
+				var n1 = i1.description.toLowerCase();
+				var n2 = i2.description.toLowerCase();
+				return n1<n2 ? -1 : (n1>n2 ? 1 : 0);
+			}
 
-	};
-}])
+		};
+	}])
 
-.factory('nRegExp', function() {
-	return {
+	.factory('nRegExp', function() {
+		return {
 
-		twoDecimalsFloatNumber : /^(\+|\-)?\d+((\.|\,)\d{1,2})?$/,
-		positiveTwoDecimalsFloatNumber : /^\d+((\.|\,)\d{1,2})?$/,
+			twoDecimalsFloatNumber : /^(\+|\-)?\d+((\.|\,)\d{1,2})?$/,
+			positiveTwoDecimalsFloatNumber : /^\d+((\.|\,)\d{1,2})?$/,
 
-		positiveFloatNumber : /^\d+((\.|\,)\d+)?$/,
-		floatNumber : /^\-?\d+((\.|\,)\d+)?$/,
+			positiveFloatNumber : /^\d+((\.|\,)\d+)?$/,
+			floatNumber : /^\-?\d+((\.|\,)\d+)?$/,
 
-		reserved_word : /^\::.*$/,
-		
-		ssn : /^[a-zA-Z]{6}[0-9]{2}[a-zA-Z][0-9]{2}[a-zA-Z][0-9]{3}[a-zA-Z]$/,
-		vatId : /^([A-Z]{2})?[0-9]{11}$/,
+			reserved_word : /^\::.*$/,
 
-		docIdClass : /^[/a-zA-Z\-_]+.*$/
+			ssn : /^[a-zA-Z]{6}[0-9]{2}[a-zA-Z][0-9]{2}[a-zA-Z][0-9]{3}[a-zA-Z]$/,
+			vatId : /^([A-Z]{2})?[0-9]{11}$/,
 
-	};
-})
+			docIdClass : /^[/a-zA-Z\-_]+.*$/
+
+		};
+	})
 
 
-.factory('nDownload', ['$window', '$document', 'nConstants', function($window, $document, nConstants) {
+	.factory('nDownload', ['$window', '$document', 'nConstants', function($window, $document, nConstants) {
 
-	var HIDDEN_IFRAME = angular.element('<iframe style="display: none;"></iframe>');
-	angular.element($document[0].body).append(HIDDEN_IFRAME);
+		var HIDDEN_IFRAME = angular.element('<iframe style="display: none;"></iframe>');
+		angular.element($document[0].body).append(HIDDEN_IFRAME);
 
-	return {
+		return {
 
-		_downloadPdf : function(documentClass, documentId){
-			var pdfUrl = nConstants.conf.pdfDownloadUrl
-			.replace('{document}', documentClass)
-			.replace('{id}', documentId);
-			
-			HIDDEN_IFRAME.attr('src', pdfUrl);
-		},
-		
-		_printPdf : function(documentClass, documentId){
-			var pdfUrl = nConstants.conf.pdfPrintUrl
-			.replace('{document}', documentClass)
-			.replace('{id}', documentId);
-			
-			var openPrintPage = nConstants.conf.pdfPrintPageUrl
-			.replace('{pdfUrl}', encodeURIComponent(pdfUrl));
-			
-			$window.open(openPrintPage, '_blank');
-		},
-		
-		_formatDate : function(date){
-			var formatedDate = date.getFullYear() + '-' + ('0'+(date.getMonth()+1)).slice(-2) + '-' + ('0'+date.getDate()).slice(-2);
-			return formatedDate;
-		},
+			_downloadPdf : function(documentClass, documentId){
+				var pdfUrl = nConstants.conf.pdfDownloadUrl
+					.replace('{document}', documentClass)
+					.replace('{id}', documentId);
 
-		downloadInvoicePdf : function(documentId){
-			this._downloadPdf('invoices', documentId);
-		},
+				HIDDEN_IFRAME.attr('src', pdfUrl);
+			},
 
-		downloadEstimationPdf : function(documentId){
-			this._downloadPdf('estimations', documentId);
-		},
+			_printPdf : function(documentClass, documentId){
+				var pdfUrl = nConstants.conf.pdfPrintUrl
+					.replace('{document}', documentClass)
+					.replace('{id}', documentId);
 
-		downloadCreditNotePdf : function(documentId){
-			this._downloadPdf('creditnotes', documentId);
-		},
+				var openPrintPage = nConstants.conf.pdfPrintPageUrl
+					.replace('{pdfUrl}', encodeURIComponent(pdfUrl));
 
-		downloadTransportDocumentPdf : function(documentId){
-			this._downloadPdf('transportdocs', documentId);
-		},
-		
-		downloadPaymentsProspect : function(filteringDateType, startDate, endDate){
-			var prospectUrl = nConstants.conf.pdfPaymentsProspectUrl
-			.replace('{filteringDateType}', filteringDateType)
-			.replace('{startDate}', startDate ? this._formatDate(startDate) : '')
-			.replace('{endDate}', endDate ? this._formatDate(endDate) : '');
-			
-			HIDDEN_IFRAME.attr('src', prospectUrl);
-			
-		},
-		
-		downloadExportZip : function(clients, invoices, estimations, creditNotes, transportDocs){
-			var exportZipUrl = nConstants.conf.exportDwonloadUrl
-			.replace('{c}', clients)
-			.replace('{i}', invoices)
-			.replace('{e}', estimations)
-			.replace('{cn}', creditNotes)
-			.replace('{t}', transportDocs);
-			
-			HIDDEN_IFRAME.attr('src', exportZipUrl);
-		},
-		
-		printInvoicePdf : function(documentId){
-			this._printPdf('invoices', documentId);
-		},
+				$window.open(openPrintPage, '_blank');
+			},
 
-		printEstimationPdf : function(documentId){
-			this._printPdf('estimations', documentId);
-		},
+			_formatDate : function(date){
+				return date.getFullYear() + '-' + ('0'+(date.getMonth()+1)).slice(-2) + '-' + ('0'+date.getDate()).slice(-2);
+			},
 
-		printCreditNotePdf : function(documentId){
-			this._printPdf('creditnotes', documentId);
-		},
+			downloadInvoicePdf : function(documentId){
+				this._downloadPdf('invoices', documentId);
+			},
 
-		printTransportDocumentPdf : function(documentId){
-			this._printPdf('transportdocs', documentId);
-		}
-		
-	};
-}])
+			downloadEstimationPdf : function(documentId){
+				this._downloadPdf('estimations', documentId);
+			},
+
+			downloadCreditNotePdf : function(documentId){
+				this._downloadPdf('creditnotes', documentId);
+			},
+
+			downloadTransportDocumentPdf : function(documentId){
+				this._downloadPdf('transportdocs', documentId);
+			},
+
+			downloadPaymentsProspect : function(filteringDateType, startDate, endDate){
+				var prospectUrl = nConstants.conf.pdfPaymentsProspectUrl
+					.replace('{filteringDateType}', filteringDateType)
+					.replace('{startDate}', startDate ? this._formatDate(startDate) : '')
+					.replace('{endDate}', endDate ? this._formatDate(endDate) : '');
+
+				HIDDEN_IFRAME.attr('src', prospectUrl);
+
+			},
+
+			downloadExportZip : function(clients, invoices, estimations, creditNotes, transportDocs){
+				var exportZipUrl = nConstants.conf.exportDwonloadUrl
+					.replace('{c}', clients)
+					.replace('{i}', invoices)
+					.replace('{e}', estimations)
+					.replace('{cn}', creditNotes)
+					.replace('{t}', transportDocs);
+
+				HIDDEN_IFRAME.attr('src', exportZipUrl);
+			},
+
+			printInvoicePdf : function(documentId){
+				this._printPdf('invoices', documentId);
+			},
+
+			printEstimationPdf : function(documentId){
+				this._printPdf('estimations', documentId);
+			},
+
+			printCreditNotePdf : function(documentId){
+				this._printPdf('creditnotes', documentId);
+			},
+
+			printTransportDocumentPdf : function(documentId){
+				this._printPdf('transportdocs', documentId);
+			}
+
+		};
+	}])
 
 	.factory('nSafeHistoryBack', ['$window', function ($window) {
 
@@ -166,114 +165,114 @@ angular.module('novabill.utils', ['novabill.translations', 'novabill.constants']
 			safeBack : function () {
 				if($window.document.referrer.indexOf($window.location.hostname) != -1)
 					$window.history.back();
-			}	
+			}
 		}
-		
+
 	}])
 
 
-/*
- * FILTERS
- */
+	/*
+	 * FILTERS
+	 */
 
-.filter('nFriendlyDate',['$filter', function($filter){
+	.filter('nFriendlyDate',['$filter', function($filter){
 
-	return function(dateToFormat, format){
-		var target = new Date( parseInt(dateToFormat) );
-		target.setHours(0, 0, 0, 0);
+		return function(dateToFormat, format){
+			var target = new Date( parseInt(dateToFormat) );
+			target.setHours(0, 0, 0, 0);
 
-		var today = new Date();
-		today.setHours(0, 0, 0, 0);
+			var today = new Date();
+			today.setHours(0, 0, 0, 0);
 
-		if(target.getTime() === today.getTime()){
+			if(target.getTime() === today.getTime()){
 
-			return $filter('translate')('TODAY');
-
-		} else {
-
-			var yesterday = new Date();
-			yesterday.setHours(0, 0, 0, 0);
-			yesterday.setDate(yesterday.getDate() - 1);
-
-			if(target.getTime() === yesterday.getTime()){
-
-				return $filter('translate')('YESTERDAY');
+				return $filter('translate')('TODAY');
 
 			} else {
 
-				return $filter('date')(dateToFormat, format);
-			}
+				var yesterday = new Date();
+				yesterday.setHours(0, 0, 0, 0);
+				yesterday.setDate(yesterday.getDate() - 1);
 
-		}
-	};
-}])
+				if(target.getTime() === yesterday.getTime()){
+
+					return $filter('translate')('YESTERDAY');
+
+				} else {
+
+					return $filter('date')(dateToFormat, format);
+				}
+
+			}
+		};
+	}])
 
 
 /**
  * Replace a reserved word with some custom string. If no string is supplied, return the empty string
  */
-.filter('nReplaceReservedWord', ['$filter', 'nRegExp', function($filter, nRegExp) {
-	return function(input, replacement) {
-		return nRegExp.reserved_word.test(input) ? (replacement ? $filter('translate')(replacement) : '') : input;
-	};
-}])
+	.filter('nReplaceReservedWord', ['$filter', 'nRegExp', function($filter, nRegExp) {
+		return function(input, replacement) {
+			return nRegExp.reserved_word.test(input) ? (replacement ? $filter('translate')(replacement) : '') : input;
+		};
+	}])
 
 
 /**
  * Replace email keywords with test client data
  */
-.filter('nEmailKeywordsFake', ['$filter', 'nConstants', function($filter, nConstants) {
-	return function(input) {
-		return !input ? '' : 
-			input
-			.replace(/\$RagioneSocialeAzienda/g, nConstants.conf.businessName)
-			.replace(/\$NomeCliente/g, "Mario Rossi")
-			.replace(/\$DataFattura/g, '01/01/1970')
-			.replace(/\$NumeroFattura/g, '10/1970')
-			.replace(/\$TotaleFattura/g, '€ 223,56')
-			.replace(/\n/g, '<br>')
-			.replace(/\$\w*/g, '<i>#ERR</i>');
-	};
-}])
+	.filter('nEmailKeywordsFake', ['$filter', 'nConstants', function($filter, nConstants) {
+		return function(input) {
+			return !input ? '' :
+				input
+					.replace(/\$RagioneSocialeAzienda/g, nConstants.conf.businessName)
+					.replace(/\$NomeCliente/g, "Mario Rossi")
+					.replace(/\$DataFattura/g, '01/01/1970')
+					.replace(/\$NumeroFattura/g, '10/1970')
+					.replace(/\$TotaleFattura/g, '€ 223,56')
+					.replace(/\n/g, '<br>')
+					.replace(/\$\w*/g, '<i>#ERR</i>');
+		};
+	}])
 
 
 /**
  * Replace email keywords with invoice data
  */
-.filter('nEmailKeywords', ['$filter', 'nConstants', function($filter, nConstants) {
-	return function(input, invoice) {
-		return !input ? '' : 
-			input
-			.replace(/\$RagioneSocialeAzienda/g, nConstants.conf.businessName)
-			.replace(/\$NomeCliente/g, invoice.client.name)
-			.replace(/\$DataFattura/g, $filter('date')(invoice.accountingDocumentDate, 'dd/MM/yyyy'))
-			.replace(/\$NumeroFattura/g, invoice.documentID+'/'+$filter('date')(invoice.accountingDocumentDate, 'yyyy'))
-			.replace(/\$TotaleFattura/g, $filter('currency')(invoice.total))
-			.replace(/\$.*/g, '#ERR');
-	};
-}])
+	.filter('nEmailKeywords', ['$filter', 'nConstants', function($filter, nConstants) {
+		return function(input, invoice) {
+			return !input ? '' :
+				input
+					.replace(/\$RagioneSocialeAzienda/g, nConstants.conf.businessName)
+					.replace(/\$NomeCliente/g, invoice.client.name)
+					.replace(/\$DataFattura/g, $filter('date')(invoice.accountingDocumentDate, 'dd/MM/yyyy'))
+					.replace(/\$NumeroFattura/g, invoice.documentID+'/'+$filter('date')(invoice.accountingDocumentDate, 'yyyy'))
+					.replace(/\$TotaleFattura/g, $filter('currency')(invoice.total))
+					.replace(/\$.*/g, '#ERR');
+		};
+	}])
 
 
 /**
  * Analytics Service
  */
-.provider('nAnalytics', [ function() {
+	.provider('nAnalytics', [ function() {
 
-	var urlPath = "";
+		var urlPath = "";
 
-	this.urlPath = function(value){
-		urlPath = value;
-	};
-
-	this.$get = ['$rootScope', '$window', '$location', '$log', function($rootScope, $window, $location, $log){
-
-		// setup Google Analytics if present, or mock it
-		var GA = $window.ga ? $window.ga : function(action, event, url){
-			$log.debug('Analytics::_trackPageview[ '+ (url ? url : $window.location.href) +' ]');
+		this.urlPath = function(value){
+			urlPath = value;
 		};
 
-		//service instance
-		var nAnalyticsInstance = {
+		this.$get = ['$rootScope', '$window', '$location', '$log', function($rootScope, $window, $location, $log){
+
+			// setup Google Analytics if present, or mock it
+			var GA = $window.ga ? $window.ga : function(action, event, url){
+				$log.debug('Analytics::_trackPageview[ '+ (url ? url : $window.location.href) +' ]');
+			};
+
+			//service instance
+			var nAnalyticsInstance = {
 
 				// track page view
 				trackPageview : function(url){
@@ -284,14 +283,14 @@ angular.module('novabill.utils', ['novabill.translations', 'novabill.constants']
 					}
 				}
 
-		};
+			};
 
-		// automatically track page views
-		$rootScope.$on('$viewContentLoaded', function(){
-			nAnalyticsInstance.trackPageview(urlPath + '#' + $location.path());
-		});
+			// automatically track page views
+			$rootScope.$on('$viewContentLoaded', function(){
+				nAnalyticsInstance.trackPageview(urlPath + '#' + $location.path());
+			});
 
-		return nAnalyticsInstance;
-	}];
+			return nAnalyticsInstance;
+		}];
 
-}]);
+	}]);
