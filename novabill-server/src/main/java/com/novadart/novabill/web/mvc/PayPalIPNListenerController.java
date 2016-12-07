@@ -1,25 +1,11 @@
 package com.novadart.novabill.web.mvc;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.http.NameValuePair;
+import com.novadart.novabill.domain.Transaction;
+import com.novadart.novabill.paypal.PayPalIPNHandlerService;
+import com.novadart.novabill.shared.client.exception.PremiumUpgradeException;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.message.BasicNameValuePair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -27,13 +13,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.novadart.novabill.domain.Transaction;
-import com.novadart.novabill.paypal.PayPalIPNHandlerService;
-import com.novadart.novabill.shared.client.exception.PremiumUpgradeException;
+import javax.net.ssl.HttpsURLConnection;
+import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping(Urls.PUBLIC_PAYPAL_IPN_LISTENER)
 public class PayPalIPNListenerController {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(PayPalIPNListenerController.class);
 	
 	@Value("${paypal.url}")
 	private String payPalUrl;
@@ -44,30 +42,50 @@ public class PayPalIPNListenerController {
 	@Autowired
 	private List<PayPalIPNHandlerService> ipnHandlers;
 	
-    private final static String PARAM_NAME_CMD = "cmd";
-    
-    private final static String PARAM_VAL_CMD = "_notify-validate";
+    public final static String PARAM_NAME_CMD = "cmd";
+	public final static String PARAM_VAL_CMD = "_notify-validate";
+	public final static String RESP_VERIFIED = "VERIFIED";
+	public final static String RECEIVER_EMAIL = "receiver_email";
+	public final static String CHARSET = "charset";
+	public final static String UTF_8 = "utf-8";
+	public final static String CONTENT_TYPE = "Content-Type";
+	public final static String HOST = "Host";
+	public final static String PAYPAL_HOST = "www.paypal.com";
+	public final static String FORM_URL_ENCODED_CONTENT_TYPE = "application/x-www-form-urlencoded";
+	public final static String TXN_TYPE_PARAM = "txn_type";
+	public final static String TXN_ID_PARAM = "txn_id";
 
-    private final static String RESP_VERIFIED = "VERIFIED";
-    
-    private final static String RECEIVER_EMAIL = "receiver_email";
-    
-	private boolean verifyIPN(HttpServletRequest request) throws URISyntaxException, ClientProtocolException, IOException{
+	private boolean verifyIPN(HttpServletRequest request, String transactionID) throws URISyntaxException, ClientProtocolException, IOException{
 		//passing back the message to paypal
-		HttpClient client = HttpClientBuilder.create().build();
-		HttpPost post = new HttpPost(payPalUrl);
-		List<NameValuePair> params = new ArrayList<NameValuePair>();
-		params.add(new BasicNameValuePair(PARAM_NAME_CMD, PARAM_VAL_CMD)); //You need to add this parameter to tell PayPal to verify
-		for (Enumeration<String> e = request.getParameterNames(); e.hasMoreElements();) {
-			String name = e.nextElement();
-			String value = request.getParameter(name);
-			params.add(new BasicNameValuePair(name, value));
+		//Prepare 'notify-validate' command with exactly the same parameters
+		Enumeration en = request.getParameterNames();
+		StringBuilder ipnParams = new StringBuilder( PARAM_NAME_CMD + "=" +PARAM_VAL_CMD);
+		String charset = request.getParameterMap().containsKey(CHARSET)? request.getParameter(CHARSET): UTF_8;
+		String paramName;
+		String paramValue;
+		while (en.hasMoreElements()) {
+			paramName = (String) en.nextElement();
+			paramValue = request.getParameter(paramName);
+			ipnParams.append("&").append(paramName).append("=")
+					.append(URLEncoder.encode(paramValue, charset));
 		}
-		post.setEntity(new UrlEncodedFormEntity(params, request.getCharacterEncoding() == null? "utf-8": request.getCharacterEncoding()));
-		InputStream is = client.execute(post).getEntity().getContent();
-    	BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-        String responseText = reader.readLine();
-        is.close();
+
+		//Post above command to Paypal IPN URL
+		URL u = new URL(payPalUrl);
+		HttpsURLConnection uc = (HttpsURLConnection) u.openConnection();
+		uc.setDoOutput(true);
+		uc.setRequestProperty(CONTENT_TYPE, FORM_URL_ENCODED_CONTENT_TYPE);
+		uc.setRequestProperty(HOST, PAYPAL_HOST);
+		PrintWriter pw = new PrintWriter(uc.getOutputStream());
+		pw.println(ipnParams.toString());
+		pw.close();
+
+		//Read response from Paypal
+		BufferedReader in = new BufferedReader(new InputStreamReader(uc.getInputStream()));
+		String responseText = in.readLine();
+		in.close();
+
+		LOGGER.info(String.format("Paypal response for transaction %s: %s", transactionID, responseText));
     	return RESP_VERIFIED.equals(responseText);
     }
     
@@ -82,20 +100,31 @@ public class PayPalIPNListenerController {
     }
     
     @RequestMapping
-    public @ResponseBody void processIPN(@RequestParam("txn_type") String transactionType, @RequestParam(value = "txn_id", required = false) String transactionID,
-    		HttpServletRequest request) throws URISyntaxException, ClientProtocolException, IOException, PremiumUpgradeException{
+    public @ResponseBody void processIPN(@RequestParam(TXN_TYPE_PARAM) String transactionType, @RequestParam(value = TXN_ID_PARAM, required = false) String transactionID,
+    		HttpServletRequest request) throws URISyntaxException, IOException, PremiumUpgradeException{
     	Map<String, String> parametersMap = extractParameters(request);
-    	if(!verifyIPN(request)) return;
+		LOGGER.info(
+				String.format("IPN for transaction %s received. Params: %s", transactionID, parametersMap.toString()));
+    	if(!verifyIPN(request, transactionID)){
+			LOGGER.warn(String.format("Paypal verification of IPN for transaction %s failed.", transactionID));
+			return;
+		}
     	String email = parametersMap.get(RECEIVER_EMAIL);
-    	if(email!= null && !email.equals(payPalEmail))//email doesn't match
-    		return;
+    	if(email!= null && !email.equals(payPalEmail)) {//email doesn't match
+			LOGGER.warn(
+					String.format("Validation of IPN for transaction %s failed. Email mismatch expected: %s, actual: %s",
+							transactionID, payPalEmail, email));
+			return;
+		}
     	Transaction transaction = null;
     	if(transactionID != null){
-    		if(Transaction.findByTransactionID(transactionID).size() > 0)
-    			return; //already processed thus ignore
-    		else
+    		if(Transaction.findByTransactionID(transactionID).size() > 0) {
+				LOGGER.info(String.format("IPN for transaction %s already processed. Discarding...", transactionID));
+				return; //already processed thus ignore
+			}else
     			transaction = new Transaction(transactionID).merge(); //store transaction id
     	}
+		LOGGER.info(String.format("Processing IPN for transaction %s", transactionID));
     	for(PayPalIPNHandlerService ipnHandler: ipnHandlers)
     		ipnHandler.handle(transactionType, parametersMap, transaction);
     }
