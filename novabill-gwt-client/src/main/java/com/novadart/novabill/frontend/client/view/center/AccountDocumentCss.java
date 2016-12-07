@@ -79,4 +79,11 @@ public interface AccountDocumentCss extends CssResource {
 	
 	String transporterBox();
 
+	String withholdingTaxFirstLevel();
+
+	String withholdingTaxSecondLevel();
+
+	String withholdtaxnumber();
+
+	String withholdtaxlabel();
 }

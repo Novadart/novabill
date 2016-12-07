@@ -162,3 +162,23 @@ input[type="text"].box.number {
 .upDownButton:HOVER {
     opacity: 1;
 }
+
+.withholdingTaxFirstLevel {
+
+}
+
+.withholdingTaxSecondLevel {
+
+}
+
+input[type="text"].box.withholdtaxnumber {
+	width: 5em;
+	text-align: center;
+}
+
+.withholdtaxlabel {
+	font-weight: bold;
+	font-size: 1.1em;
+	padding: 0 2em 0 0;
+	width: 17em;
+}

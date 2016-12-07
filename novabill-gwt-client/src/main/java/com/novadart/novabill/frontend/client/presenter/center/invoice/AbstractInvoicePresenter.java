@@ -17,6 +17,7 @@ import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.widget.notification.NotificationCallback;
 import com.novadart.novabill.shared.client.dto.*;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -158,6 +159,16 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 		}
 		inv.setItems(invItems);
 		inv.setNote(getView().getNote().getText());
+
+		if(getView().getSetWithholdingTax().getValue()){
+			inv.setWitholdTax(true);
+			inv.setWitholdTaxPercentFirstLevel(new BigDecimal(getView().getWithholdingTaxFirstLevel().getText()));
+			inv.setWitholdTaxPercentSecondLevel(new BigDecimal(getView().getWithholdingTaxSecondLevel().getText()));
+		} else {
+			inv.setWitholdTax(false);
+			inv.setWitholdTaxPercentFirstLevel(null);
+			inv.setWitholdTaxPercentSecondLevel(null);
+		}
 		
 		if(!getView().getSetToAddress().getValue()){
 			getView().getToAddrCity().setText(getClient().getCity());
@@ -185,6 +196,7 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 		inv.setPaymentDueDate(getView().getPayment().getPaymentDueDate());
 		inv.setSplitPayment(getView().getSelectSplitPayment().isItemSelected(1));
 		inv.setPaymentNote(getView().getPaymentNote().getText());
+
 		CalcUtils.calculateTotals(invItems, inv);
 		return inv;
 	}

@@ -364,7 +364,7 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
             WITHOLD_TAX_ENABLE : 'Abilita Ritenuta d\'acconto',
 			WITHOLD_TAX_FIRST_LEVEL : 'Percentuale di imponibile su cui calcolare la ritenuta d\'acconto',
 			WITHOLD_TAX_FIRST_LEVEL_PLACEHOLDER : 'Esempio: 100',
-			WITHOLD_TAX_SECOND_LEVEL : 'Percentuale di IVA applicata sulla ritenuta d\'acconto',
+			WITHOLD_TAX_SECOND_LEVEL : 'Percentuale di ritenuta d\'acconto',
 			WITHOLD_TAX_SECOND_LEVEL_PLACEHOLDER : 'esempio: 20'
 		});
 
