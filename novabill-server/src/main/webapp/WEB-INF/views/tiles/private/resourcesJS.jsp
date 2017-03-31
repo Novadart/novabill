@@ -20,6 +20,8 @@
 <script src="${novabillDepsUrl}/AngularJS-Toaster-0.4.15/toaster.min.js?v=${project.version}"></script>
 <script src="${novabillDepsUrl}/ng-google-chart-0.0.11.js?v=${project.version}"></script>
 
+<script src="${novabillCoreUrl}/scripts/angular-locale_it-it.novadart.js?v=${project.version}" type="text/javascript"></script>
+
 <script src="${novabillCoreUrl}/scripts/logging.js?v=${project.version}" type="text/javascript"></script>
 <script src="${novabillCoreUrl}/scripts/ajax.js?v=${project.version}" type="text/javascript"></script>
 <script src="${novabillCoreUrl}/scripts/translations.js?v=${project.version}" type="text/javascript"></script>
