@@ -25,7 +25,7 @@ public class NumberOfEstimationsPerYearQuotaReachedChecker implements Restricion
 	@Override
 	public void check(Principal principal) throws FreeUserAccessForbiddenException {
 		LOGGER.debug("Number of estimations per year quota check - quota: {}, roles: {}", new Object[]{numberOfEstimationsPerYearQuota, principal.getGrantedRoles()});
-		if(principal.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_FREE) && 
+		if(principal.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_TRIAL) &&
 				principal.getBusiness().getEstimationsForYear(Calendar.getInstance().get(Calendar.YEAR)).size() >= numberOfEstimationsPerYearQuota)
 			throw new FreeUserAccessForbiddenException(FreeUserAccessErrorType.NUMBER_OF_ESTIMATIONS_QUOTA_REACHED);
 	}

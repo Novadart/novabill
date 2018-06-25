@@ -9,14 +9,20 @@ angular.module('novabill.invoices.controllers',
  */
 	.controller('InvoicesCtrl', ['$scope', '$location', 'nConstants', 'nSelectClientDialog', '$filter', 'nEditDocumentIdClassDialog', 'nAjax', 'nConfirmDialog', 'nAlertDialog',
 		function($scope, $location, nConstants, nSelectClientDialog, $filter, nEditDocumentIdClassDialog, nAjax, nConfirmDialog, nAlertDialog){
-			var selectedYear = String(new Date().getFullYear());
-			var selectedClass = null;
+			var YEAR_PARAM = 'year';
+			var DOC_CLASS_PARAM = 'doc-class';
+			var FILTER_QUERY_PARAM = 'filter';
 			var loadedInvoices = [];
 			var filteredInvoices = [];
 			var PARTITION = 50;
 			var DocumentIDClass = nAjax.DocumentIDClass();
+
+			$scope.selectedYear = $location.search()[YEAR_PARAM]? $location.search()[[YEAR_PARAM]]: String(new Date().getFullYear());
+
+			$scope.selectedClass = $location.search()[DOC_CLASS_PARAM]? $location.search()[[DOC_CLASS_PARAM]]: null;
+
 			$scope.uiBootstrap = {
-				query : ''
+				query : $location.search()[FILTER_QUERY_PARAM]? $location.search()[[FILTER_QUERY_PARAM]]: ''
 			};
 
 			$scope.onTabChange = function(token){
@@ -40,17 +46,20 @@ angular.module('novabill.invoices.controllers',
 			}
 
 			$scope.$watch('uiBootstrap.query', function(newValue, oldValue){
+				$location.search(FILTER_QUERY_PARAM, newValue == ''? null : newValue);
 				updateFilteredInvoices();
 			});
 
 			$scope.loadInvoicesByYear = function(year) {
-				selectedYear = year;
-				$scope.loadInvoices(selectedYear, selectedClass);
+				$scope.selectedYear = year;
+				$location.search(YEAR_PARAM, year);
+				$scope.loadInvoices($scope.selectedYear, $scope.selectedClass);
 			};
 
 			$scope.loadInvoicesForClass = function(claz) {
-				selectedClass = claz;
-				$scope.loadInvoices(selectedYear, selectedClass);
+				$scope.selectedClass = claz;
+				$location.search(DOC_CLASS_PARAM, claz);
+				$scope.loadInvoices($scope.selectedYear, $scope.selectedClass);
 			};
 
 
@@ -94,7 +103,7 @@ angular.module('novabill.invoices.controllers',
 				$scope.$apply(function(){
 					$scope.invoices= null;
 				});
-				$scope.loadInvoices(selectedYear, selectedClass);
+				$scope.loadInvoices($scope.selectedYear, $scope.selectedClass);
 			});
 
 
@@ -152,17 +161,17 @@ angular.module('novabill.invoices.controllers',
 /**
  * INVOICE MODIFY PAGE CONTROLLER
  */
-	.controller('InvoiceDetailsCtrl', ['$scope', '$routeParams', '$location', '$translate',
-		function($scope, $routeParams, $location, $translate) {
+	.controller('InvoiceDetailsCtrl', ['$scope', '$routeParams', '$location', '$translate', 'nSafeHistoryBack',
+		function($scope, $routeParams, $location, $translate, nSafeHistoryBack) {
 			$scope.pageTitle = $translate('MODIFY_INVOICE');
 
 			GWT_UI.showModifyInvoicePage('invoice-details', $routeParams.invoiceId, {
 				onSuccess : function(bool){
-					$location.path('/');
+					nSafeHistoryBack.safeBack();
 				},
 				onFailure : function(){
 					$scope.$apply(function(){
-						$location.path('/');
+						nSafeHistoryBack.safeBack();
 					});
 				}
 			});

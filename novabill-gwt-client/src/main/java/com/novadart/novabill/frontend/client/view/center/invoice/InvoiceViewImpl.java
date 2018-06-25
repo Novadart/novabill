@@ -61,6 +61,11 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	@UiField ValidatedTextArea paymentNote;
 	@UiField ValidatedTextArea note;
 
+	@UiField CheckBox setWithholdingTax;
+	@UiField HorizontalPanel withholdingTaxContainer;
+	@UiField(provided=true) ValidatedTextBox withholdingTaxFirstLevel;
+	@UiField(provided=true) ValidatedTextBox withholdingTaxSecondLevel;
+
 	@UiField CheckBox setToAddress;
 	@UiField HorizontalPanel toAddressContainer;
 	@UiField(provided=true) RichTextArea toAddrCompanyName;
@@ -99,6 +104,9 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		});
 
 		number = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NUMBER);
+
+		withholdingTaxFirstLevel = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.PERCENT_NUMBER);
+		withholdingTaxSecondLevel = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.PERCENT_NUMBER);
 
 		itemInsertionForm = new ItemInsertionForm(false, readonly, new ItemInsertionForm.Handler() {
 
@@ -191,6 +199,11 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		toAddressContainer.setVisible(e.getValue());
 	}
 
+	@UiHandler("setWithholdingTax")
+	void onSetWithholdingTax(ValueChangeEvent<Boolean> e){
+		withholdingTaxContainer.setVisible(e.getValue());
+	}
+
 	@UiHandler("toAddrButtonDefault")
 	void onToAddressButtonDefaultChange(ChangeEvent e){
 		presenter.onToAddressButtonDefaultChange();
@@ -199,6 +212,21 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	@Override
 	public void setPresenter(Presenter presenter) {
 		this.presenter = presenter;
+	}
+
+	@Override
+	public CheckBox getSetWithholdingTax() {
+		return setWithholdingTax;
+	}
+
+	@Override
+	public ValidatedTextBox getWithholdingTaxFirstLevel() {
+		return withholdingTaxFirstLevel;
+	}
+
+	@Override
+	public ValidatedTextBox getWithholdingTaxSecondLevel() {
+		return withholdingTaxSecondLevel;
 	}
 
 	@Override
@@ -249,6 +277,11 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	@Override
 	public HorizontalPanel getToAddressContainer() {
 		return toAddressContainer;
+	}
+
+	@Override
+	public HorizontalPanel getWithholdingTaxContainer() {
+		return withholdingTaxContainer;
 	}
 
 	@Override
@@ -340,6 +373,11 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		totalAfterTaxes.setText("");
 		itemInsertionForm.reset();
 
+		setWithholdingTax.setValue(false);
+		withholdingTaxContainer.setVisible(false);
+		withholdingTaxFirstLevel.reset();
+		withholdingTaxSecondLevel.reset();
+
 		setToAddress.setValue(false);
 		toAddressContainer.setVisible(false);
 		toAddrCity.reset();
@@ -373,6 +411,11 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		abort.setEnabled(!value);
 		selectSplitPayment.setEnabled(!value);
 
+		setWithholdingTax.setEnabled(!value);
+		withholdingTaxFirstLevel.setEnabled(!value);
+		withholdingTaxSecondLevel.setEnabled(!value);
+
+		setToAddress.setEnabled(!value);
 		toAddrCompanyName.setEnabled(!value);
 		toAddrStreetName.setEnabled(!value);
 		toAddrPostCode.setEnabled(!value);

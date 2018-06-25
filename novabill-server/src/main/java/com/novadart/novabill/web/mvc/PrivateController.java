@@ -6,6 +6,7 @@ import com.novadart.novabill.service.web.BusinessService;
 import com.novadart.novabill.service.web.DocumentIDClassService;
 import com.novadart.novabill.shared.client.dto.DocumentIDClassDTO;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -46,7 +47,7 @@ public class PrivateController {
 	}
 	
 	@RequestMapping(value = Urls.PRIVATE_CLIENTS, method = RequestMethod.GET)
-	public ModelAndView clients() throws IOException, NotAuthenticatedException, DataAccessException{
+	public ModelAndView clients() throws IOException, NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		ModelAndView mav = new ModelAndView("private.clients");
 		mav.addObject("activePage", PAGES.CLIENTS);
 		
@@ -68,7 +69,7 @@ public class PrivateController {
 	}
 	
 	@RequestMapping(value = Urls.PRIVATE_DOCS_INVOICES, method = RequestMethod.GET)
-	public ModelAndView invoices() throws IOException, NotAuthenticatedException, DataAccessException{
+	public ModelAndView invoices() throws IOException, NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		ModelAndView mav = new ModelAndView("private.invoices");
 		mav.addObject("activePage", PAGES.INVOICES);
 		Principal principal = (Principal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -84,7 +85,7 @@ public class PrivateController {
 	}
 	
 	@RequestMapping(value = Urls.PRIVATE_DOCS_ESTIMATIONS, method = RequestMethod.GET)
-	public ModelAndView estimations() throws IOException, NotAuthenticatedException, DataAccessException{
+	public ModelAndView estimations() throws IOException, NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		ModelAndView mav = new ModelAndView("private.estimations");
 		mav.addObject("activePage", PAGES.ESTIMATIONS);
 		Principal principal = (Principal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -93,7 +94,7 @@ public class PrivateController {
 	}
 	
 	@RequestMapping(value = Urls.PRIVATE_DOCS_TRANSPORT_DOCUMENTS, method = RequestMethod.GET)
-	public ModelAndView transportDocuments() throws IOException, NotAuthenticatedException, DataAccessException{
+	public ModelAndView transportDocuments() throws IOException, NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		ModelAndView mav = new ModelAndView("private.transportDocuments");
 		mav.addObject("activePage", PAGES.TRANSPORT_DOCUMENTS);
 		Principal principal = (Principal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -102,7 +103,7 @@ public class PrivateController {
 	}
 	
 	@RequestMapping(value = Urls.PRIVATE_DOCS_CREDIT_NOTES, method = RequestMethod.GET)
-	public ModelAndView creditNotes() throws IOException, NotAuthenticatedException, DataAccessException{
+	public ModelAndView creditNotes() throws IOException, NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		ModelAndView mav = new ModelAndView("private.creditNotes");
 		mav.addObject("activePage", PAGES.CREDIT_NOTES);
 		Principal principal = (Principal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

@@ -1,5 +1,6 @@
 package com.novadart.novabill.shared.client.util;
 
+import com.google.common.base.Optional;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 
 import java.math.BigDecimal;
@@ -38,7 +39,7 @@ public class AccountingCalcUtils {
         return partitions;
     }
 
-    public static AccountingDocumentTotals calculatePartialTotals(BigDecimal tax, List<AccountingDocumentItemDTO> accountingDocumentItems){
+    public static AccountingDocumentTotals calculatePartialTotals(BigDecimal tax, List<AccountingDocumentItemDTO> accountingDocumentItems, Optional<BigDecimal> pensionContributionOpt){
         BigDecimal totalBeforeTaxes = BigDecimal.ZERO;
 
         for (AccountingDocumentItemDTO a : accountingDocumentItems) {
@@ -47,41 +48,66 @@ public class AccountingCalcUtils {
 
         //	calc total before taxes
         BigDecimal roundedTotalBeforeTaxes = round2Dec(totalBeforeTaxes);
+        BigDecimal pensionContribution = BigDecimal.ZERO;
+
+        if(pensionContributionOpt.isPresent()){
+            BigDecimal pensionContribPercent = pensionContributionOpt.get().divide(AccountingCalcUtils.BD_100);
+            pensionContribution = roundedTotalBeforeTaxes.multiply(pensionContribPercent);
+        }
 
         //	calc total taxes
         BigDecimal taxesPercent = tax.divide(AccountingCalcUtils.BD_100); // for example 22 / 100 = 0.22
-        BigDecimal totalTaxes = roundedTotalBeforeTaxes.multiply(taxesPercent);
+        BigDecimal totalTaxes = roundedTotalBeforeTaxes.add(pensionContribution).multiply(taxesPercent);
         BigDecimal roundedTaxes = round2Dec(totalTaxes);
 
         // calc total after taxes
-        BigDecimal roundedTotalAfterTaxes = roundedTotalBeforeTaxes.add(roundedTaxes); // already rounded
+        BigDecimal roundedTotalAfterTaxes = roundedTotalBeforeTaxes.add(pensionContribution).add(roundedTaxes); // already rounded
 
         AccountingDocumentTotals result = new AccountingDocumentTotals();
         result.setTotalBeforeTaxes(roundedTotalBeforeTaxes);
+        result.setPensionContributionTotal(pensionContribution);
         result.setTotalTaxes(roundedTaxes);
         result.setTotalAfterTaxes(roundedTotalAfterTaxes);
         return result;
     }
 
-    public static AccountingDocumentTotals calculateTotals(List<AccountingDocumentItemDTO> accountingDocumentItems){
+    //TODO calculate pension contribution and withhold tax
+    public static AccountingDocumentTotals calculateTotals(List<AccountingDocumentItemDTO> accountingDocumentItems,
+                                                           Optional<BigDecimal> pensionContribOpt,
+                                                           Optional<BigDecimal> withholdTaxPercentageOfTotalOpt,
+                                                           Optional<BigDecimal> withholdTaxPercentageOpt){
 
+        // first of all we divide the items by VAT percent value (22%, 10%, 4%, etc..)
         Map<BigDecimal, List<AccountingDocumentItemDTO>> partitions = partitionItemsByTax(accountingDocumentItems);
 
         BigDecimal totalBeforeTaxes = BigDecimal.ZERO;
         BigDecimal totalTaxes = BigDecimal.ZERO;
+        BigDecimal totalPensionContribution = BigDecimal.ZERO;
 
         AccountingDocumentTotals partialTotals;
         for (BigDecimal tax : partitions.keySet()) {
-            partialTotals = calculatePartialTotals(tax, partitions.get(tax));
+
+            // calculate the partial totals for a given tax value
+            partialTotals = calculatePartialTotals(tax, partitions.get(tax), pensionContribOpt);
+
+            // the final totals are the sum of the partial totals
             totalBeforeTaxes = totalBeforeTaxes.add(partialTotals.getTotalBeforeTaxes());
+            totalPensionContribution = totalPensionContribution.add(partialTotals.getPensionContributionTotal());
             totalTaxes = totalTaxes.add(partialTotals.getTotalTaxes());
         }
 
-        BigDecimal totalAfterTaxes = totalBeforeTaxes.add(totalTaxes);
+        BigDecimal totalAfterTaxes;
+        if(withholdTaxPercentageOfTotalOpt.isPresent() && withholdTaxPercentageOpt.isPresent()){
+
+        } else {
+            totalAfterTaxes = totalBeforeTaxes.add(totalTaxes);
+        }
+
 
         // all values are sum of rounded values, thus no rounding is required
         AccountingDocumentTotals result = new AccountingDocumentTotals();
         result.setTotalBeforeTaxes(totalBeforeTaxes);
+        result.setPensionContributionTotal(totalPensionContribution);
         result.setTotalTaxes(totalTaxes);
         result.setTotalAfterTaxes(totalAfterTaxes);
         return result;
@@ -127,22 +153,45 @@ public class AccountingCalcUtils {
         private BigDecimal totalBeforeTaxes;
         private BigDecimal totalTaxes;
         private BigDecimal totalAfterTaxes;
+        private BigDecimal pensionContributionTotal;
+        private BigDecimal withholdTaxTotal;
+
+        public BigDecimal getWithholdTaxTotal() {
+            return withholdTaxTotal;
+        }
+
+        public void setWithholdTaxTotal(BigDecimal withholdTaxTotal) {
+            this.withholdTaxTotal = withholdTaxTotal;
+        }
+
+        public BigDecimal getPensionContributionTotal() {
+            return pensionContributionTotal;
+        }
+
+        public void setPensionContributionTotal(BigDecimal pensionContributionTotal) {
+            this.pensionContributionTotal = pensionContributionTotal;
+        }
 
         public BigDecimal getTotalBeforeTaxes() {
             return totalBeforeTaxes;
         }
+
         public void setTotalBeforeTaxes(BigDecimal totalBeforeTaxes) {
             this.totalBeforeTaxes = totalBeforeTaxes;
         }
+
         public BigDecimal getTotalTaxes() {
             return totalTaxes;
         }
+
         public void setTotalTaxes(BigDecimal totalTaxes) {
             this.totalTaxes = totalTaxes;
         }
+
         public BigDecimal getTotalAfterTaxes() {
             return totalAfterTaxes;
         }
+
         public void setTotalAfterTaxes(BigDecimal totalAfterTaxes) {
             this.totalAfterTaxes = totalAfterTaxes;
         }

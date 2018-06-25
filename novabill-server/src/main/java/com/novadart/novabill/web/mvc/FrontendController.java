@@ -25,20 +25,6 @@ public class FrontendController {
 		return "frontend.about";
 	}
 	
-	@RequestMapping(value = Urls.PUBLIC_FEATURES, method = RequestMethod.GET)
-	public String features(Model model){
-		model.addAttribute("activePage", PAGES.FEATURES);
-		model.addAttribute("pageName", "Funzionalità");
-		return "frontend.features";
-	}
-
-	@RequestMapping(value = Urls.PUBLIC_PRICES, method = RequestMethod.GET)
-	public String prices(Model model){
-		model.addAttribute("activePage", PAGES.PRICES);
-		model.addAttribute("pageName", "Quanto Costa?");
-		return "frontend.prices";
-	}
-	
 	@RequestMapping(value = Urls.PUBLIC_PAGE_NOT_FOUND, method = RequestMethod.GET)
 	public String pageNotFound(Model model){
 		model.addAttribute("pageName", "Risorsa non Disponibile");

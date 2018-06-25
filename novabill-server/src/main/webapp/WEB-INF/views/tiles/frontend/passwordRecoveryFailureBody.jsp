@@ -5,32 +5,25 @@
 <spring:url var="homeUrl" value="/" />
 <spring:url var="forgotPasswordUrl" value="/forgot-password" />
 
-<div class="page-container">
-  
-        <!-- BEGIN BREADCRUMBS -->   
-        <div class="row breadcrumbs margin-bottom-40">
-            <div class="container">
-                <div class="col-md-4 col-sm-4">
-                    <h1>Creazione Nuova Password</h1>
-                </div>
-                <div class="col-md-8 col-sm-8">
-                    <ul class="pull-right breadcrumb">
-                        <li><a href="${homeUrl}">Home</a></li>
-                        <li class="active">Creazione Nuova Password</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <!-- END BREADCRUMBS -->
 
-        <!-- BEGIN CONTAINER -->   
-        <div class="container " style="margin-bottom: 150px; margin-top: 150px;"> <!-- margin-bottom-40 -->
-          <div class="row">
-            <div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 alert alert-warning">
-                Questo link non è più valido. <br> 
+<!-- BEGIN CONTAINER -->
+<div class="container"> <!-- margin-bottom-40 -->
+    <div class="row">
+
+
+        <div class="col-md-8 col-md-offset-2 text-center">
+
+            <h2>Creazione Nuova Password</h2>
+            <br><br>
+
+        </div>
+
+        <div class="col-md-8 col-md-offset-2">
+            <div class="alert alert-danger text-center">
+                Questo link non è più valido. <br>
                 Se vuoi creare una nuova password esegui nuovamente la procedura a <a href="${forgotPasswordUrl}">questo indirizzo</a>. Grazie.
             </div>
-          </div>
         </div>
-        
+
+    </div>
 </div>

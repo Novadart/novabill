@@ -20,9 +20,13 @@ angular.module('novabill.settings.controllers', ['novabill.directives', 'novabil
             $scope.principalEmail = nConstants.conf.principalEmail;
             $scope.principalCreationDate = nConstants.conf.principalCreationDate;
             $scope.premium = nConstants.conf.premium;
+            $scope.checks = {
+                pensionContributionEnabled : false,
+                witholdTaxEnabled : false
+            };
 
             $scope.onTabChange = function(token){
-                $location.search('tab',token);
+                $location.search('tab', token);
             };
 
             $scope.activeTab = {
@@ -37,26 +41,49 @@ angular.module('novabill.settings.controllers', ['novabill.directives', 'novabil
                 $scope.activeTab.business = true;
             }
 
-
             Business.get(function(business){
                 $scope.business = business;
                 $scope.priceDisplayInDocsMonolithic = !business.settings.priceDisplayInDocsMonolithic;
+                $scope.checks.pensionContributionEnabled = business.settings.pensionContributionPercent!= null;
+                $scope.checks.witholdTaxEnabled = business.settings.witholdTaxPercentFirstLevel!=null && business.settings.witholdTaxPercentSecondLevel!=null;
             });
 
             $scope.businessUpdateCallback = function(){
                 $window.location.reload();
             };
 
-            $scope.update = function(){
-                $scope.business.$update(function(){
-
-                    if(nConstants.conf.premium) {
-                        Business.setDefaultLayout({defaultLayoutType : $scope.business.settings.defaultLayoutType}, function(){
-                            $window.location.reload();
-                        });
-                    } else {
-                        $window.location.reload();
+            $scope.invoiceSettingsFormIsValid = function(){
+                if($scope.checks.witholdTaxEnabled){
+                    if($scope.business.settings.witholdTaxPercentFirstLevel == null ||
+                        $scope.business.settings.witholdTaxPercentSecondLevel == null){
+                        return false;
                     }
+                }
+
+                if($scope.checks.pensionContributionEnabled){
+                    if($scope.business.settings.pensionContributionPercent == null){
+                        return false;
+                    }
+                }
+
+                return true;
+            };
+
+            $scope.update = function(){
+
+                if(!$scope.checks.witholdTaxEnabled){
+                    $scope.business.settings.witholdTaxPercentFirstLevel = null;
+                    $scope.business.settings.witholdTaxPercentSecondLevel = null;
+                }
+
+                if(!$scope.checks.pensionContributionEnabled){
+                    $scope.business.settings.pensionContributionPercent = null;
+                }
+
+                $scope.business.$update(function(){
+                    Business.setDefaultLayout({defaultLayoutType : $scope.business.settings.defaultLayoutType}, function(){
+                        $window.location.reload();
+                    });
                 });
             };
 
@@ -66,7 +93,7 @@ angular.module('novabill.settings.controllers', ['novabill.directives', 'novabil
                 nEmailPreviewDialog.open($scope.business);
             };
 
-            $scope.$watch('priceDisplayInDocsMonolithic', function(newValue, oldValue) {
+            $scope.$watch('priceDisplayInDocsMonolithic', function(newValue) {
                 if($scope.business){
                     $scope.business.settings.priceDisplayInDocsMonolithic = !newValue;
                 }

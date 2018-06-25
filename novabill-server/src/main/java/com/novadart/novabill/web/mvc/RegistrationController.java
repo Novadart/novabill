@@ -71,7 +71,7 @@ public class RegistrationController{
 			String rawRassword = registration.getPassword();
 			registration.setPassword(rawRassword); //force hashing
 			Principal principal = new Principal(registration);
-			principal.getGrantedRoles().add(RoleType.ROLE_BUSINESS_FREE);
+			principal.getGrantedRoles().add(RoleType.ROLE_BUSINESS_TRIAL);
 			principal.persist();
 			status.setComplete();
 			sendRegistrationCompletedMail(registration, locale);

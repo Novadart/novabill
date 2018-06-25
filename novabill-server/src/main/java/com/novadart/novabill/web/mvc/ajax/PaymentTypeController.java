@@ -24,14 +24,14 @@ public class PaymentTypeController {
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
-    public List<PaymentTypeDTO> getAll(@PathVariable Long businessID) throws NotAuthenticatedException, DataAccessException {
+    public List<PaymentTypeDTO> getAll(@PathVariable Long businessID) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
         return paymentTypeService.getAll(businessID);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
-    public PaymentTypeDTO get(@PathVariable Long id) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException {
+    public PaymentTypeDTO get(@PathVariable Long id) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, FreeUserAccessForbiddenException {
         return paymentTypeService.get(id);
     }
 
@@ -52,7 +52,7 @@ public class PaymentTypeController {
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
-    public void remove(@PathVariable Long businessID, @PathVariable Long id) throws NotAuthenticatedException, DataAccessException {
+    public void remove(@PathVariable Long businessID, @PathVariable Long id) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
         paymentTypeService.remove(businessID, id);
     }
 

@@ -99,15 +99,18 @@ angular.module('novabill.directives',
 						};
 
 						$scope.sendEmailToClient = function(){
-							var instance = nSendEmailDialog.open($scope.invoice);
-							instance.result.then(function(data){
-								var InvoiceUtils = nAjax.InvoiceUtils();
-								InvoiceUtils.email(data, function(data){
-									nAlertDialog.open($filter('translate')(data.value ? 'SEND_EMAIL_TO_CLIENT_SUCCESS' : 'SEND_EMAIL_TO_CLIENT_FAILURE'));
-								}, function(){
-									nAlertDialog.open($filter('translate')('SEND_EMAIL_TO_CLIENT_FAILURE'));
+							nAjax.Business().get(function(business){
+								var instance = nSendEmailDialog.open(business, $scope.invoice);
+								instance.result.then(function(data){
+									var InvoiceUtils = nAjax.InvoiceUtils();
+									InvoiceUtils.email(data, function(data){
+										nAlertDialog.open($filter('translate')(data.value ? 'SEND_EMAIL_TO_CLIENT_SUCCESS' : 'SEND_EMAIL_TO_CLIENT_FAILURE'));
+									}, function(){
+										nAlertDialog.open($filter('translate')('SEND_EMAIL_TO_CLIENT_FAILURE'));
+									});
 								});
-							});
+
+							})
 						};
 
 						//activate the dropdown
@@ -632,7 +635,8 @@ angular.module('novabill.directives',
 			templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-year-selector.html'),
 			scope: {
 				callback : '&',
-				documentType : '@'
+				documentType : '@',
+				selectedYear : '@'
 			},
 			controller : ['$scope', function($scope){
 				var years = documentYears[$scope.documentType];
@@ -645,7 +649,9 @@ angular.module('novabill.directives',
 				});
 
 				$scope.years = years;
-				$scope.selectedYear = $scope.years.length > 0 ?  $scope.years[0] : null;
+
+				if($scope.selectedYear == null)
+					$scope.selectedYear = $scope.years.length > 0 ?  $scope.years[0] : null;
 
 				$scope.onChange = function(){
 					$scope.callback({ year : String($scope.selectedYear) });
@@ -756,14 +762,16 @@ angular.module('novabill.directives',
 		return {
 			templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-suffix-selector.html'),
 			scope: {
-				callback : '&'
+				callback : '&',
+				selectedClass : '@'
 			},
 			controller : ['$scope', '$window', '$filter', function($scope, $window, $filter){
 				var classes = $window.invoiceSuffixes;
 				var sortedClasses = classes.sort();
 
 				$scope.classes = [$filter('translate')('SUFFIX_STANDARD')].concat(sortedClasses);
-				$scope.selectedClass = $scope.classes[0];
+				if($scope.selectedClass == null)
+					$scope.selectedClass = $scope.classes[0];
 
 				$scope.onChange = function(event){
 					var index = $scope.classes.indexOf($scope.selectedClass);
@@ -847,70 +855,6 @@ angular.module('novabill.directives',
 			restrict: 'E',
 			replace: true
 		};
-	}])
-
-
-	/*
-	 * DIRECTIVES FOR PREMIUM CHECKS
-	 */
-
-	.directive('nPremiumAlert', ['nConstants', function(nConstants) {
-
-		return {
-			templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-premium-alert.html'),
-			scope: { },
-			controller : ['$scope', 'nConstants', '$sce', '$filter', '$window',
-				function($scope, nConstants, $sce, $filter, $window){
-					$scope.premium = nConstants.conf.premium;
-					$scope.message = $sce.trustAsHtml($filter('translate')('PREMIUM_ALERT'));
-					$scope.premiumUrl = nConstants.conf.premiumUrl;
-				}],
-			restrict: 'E',
-			replace: true
-		};
-
-	}])
-
-
-	.directive('nPremiumAlertInline', ['nConstants', function(nConstants) {
-
-		return {
-			templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-premium-alert-inline.html'),
-			scope: { },
-			controller : ['$scope', 'nConstants', '$sce', '$filter', '$window',
-				function($scope, nConstants, $sce, $filter, $window){
-					$scope.premium = nConstants.conf.premium;
-					$scope.message = $sce.trustAsHtml($filter('translate')('PREMIUM_ALERT'));
-					$scope.premiumUrl = nConstants.conf.premiumUrl;
-				}],
-			restrict: 'E',
-			replace: true
-		};
-
-	}])
-
-
-	.directive('nPremiumCheck', ['nConstants', function(nConstants) {
-
-		return {
-			scope: {
-				nPremiumClick : '&'
-			},
-			link : function(scope, element, attrs){
-				if(!nConstants.conf.premium){
-					element.attr('disabled', 'disabled');
-					element.css('color', '#999');
-				} else {
-					if(scope.nPremiumClick) {
-						element.click(function(){
-							scope.nPremiumClick();
-						});
-					}
-				};
-			},
-			restrict: 'A'
-		};
-
 	}])
 
 

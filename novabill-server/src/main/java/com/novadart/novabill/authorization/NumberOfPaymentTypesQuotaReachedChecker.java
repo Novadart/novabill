@@ -32,7 +32,7 @@ public class NumberOfPaymentTypesQuotaReachedChecker implements RestricionChecke
 	@Override
 	public void check(Principal principal) throws FreeUserAccessForbiddenException, NotAuthenticatedException, DataAccessException {
 		LOGGER.debug("Number of payment types quota check - quota: {}, roles: {}", new Object[]{numberOfPaymentTypesQuota, principal.getGrantedRoles()});
-		if(principal.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_FREE) &&
+		if(principal.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_TRIAL) &&
 				businessService.getPaymentTypes(principal.getBusiness().getId()).size() >= numberOfPaymentTypesQuota)
 			throw new FreeUserAccessForbiddenException(FreeUserAccessErrorType.NUMBER_OF_PAYMENTTYPES_QUOTA_REACHED);
 

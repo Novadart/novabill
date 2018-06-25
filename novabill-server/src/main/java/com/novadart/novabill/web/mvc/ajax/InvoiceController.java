@@ -40,14 +40,14 @@ public class InvoiceController {
 	@RequestMapping(value = "/year/{year}", method = RequestMethod.GET)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
-	public List<InvoiceDTO> getInvoices(@PathVariable Long businessID, @PathVariable Integer year) throws NotAuthenticatedException, DataAccessException {
+	public List<InvoiceDTO> getInvoices(@PathVariable Long businessID, @PathVariable Integer year) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		return businessService.getInvoices(businessID, year);
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
-	public InvoiceDTO get(@PathVariable Long id) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException{
+	public InvoiceDTO get(@PathVariable Long id) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException, FreeUserAccessForbiddenException {
 		return invoiceService.get(id);
 	}
 	
@@ -55,7 +55,7 @@ public class InvoiceController {
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
 	public PageDTO<InvoiceDTO> getAllInRange(@PathVariable Long businessID, @PathVariable Integer year,
-			@PathVariable Integer start, @PathVariable Integer length) throws NotAuthenticatedException, DataAccessException{
+			@PathVariable Integer start, @PathVariable Integer length) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		return invoiceService.getAllInRange(businessID, year, start, length);
 	}
 
@@ -63,21 +63,21 @@ public class InvoiceController {
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
 	public PageDTO<InvoiceDTO> getAllInRange(@PathVariable Long businessID, @PathVariable Integer year, @PathVariable String suffix,
-											 @PathVariable Integer start, @PathVariable Integer length) throws NotAuthenticatedException, DataAccessException{
+											 @PathVariable Integer start, @PathVariable Integer length) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		return invoiceService.getAllInRange(businessID, year, suffix, start, length);
 	}
 	
 	@RequestMapping(value = "/year/{year}/clients/{clientID}", method = RequestMethod.GET)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
-	public List<InvoiceDTO> getAllForClient(@PathVariable Long clientID, @PathVariable Integer year) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException {
+	public List<InvoiceDTO> getAllForClient(@PathVariable Long clientID, @PathVariable Integer year) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException, FreeUserAccessForbiddenException {
 		return invoiceService.getAllForClient(clientID, year);
 	}
 	
 	@RequestMapping(value = "/{id}/clients/{clientID}", method = RequestMethod.DELETE)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
-	public void remove(@PathVariable Long businessID, @PathVariable Long clientID, @PathVariable Long id) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException, DataIntegrityException {
+	public void remove(@PathVariable Long businessID, @PathVariable Long clientID, @PathVariable Long id) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException, DataIntegrityException, FreeUserAccessForbiddenException {
 		invoiceService.remove(businessID, clientID, id);
 	}
 	
@@ -91,14 +91,14 @@ public class InvoiceController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
-	public void update(@RequestBody InvoiceDTO invoiceDTO) throws DataAccessException, NoSuchObjectException, ValidationException, DataIntegrityException {
+	public void update(@RequestBody InvoiceDTO invoiceDTO) throws DataAccessException, NoSuchObjectException, ValidationException, DataIntegrityException, FreeUserAccessForbiddenException, NotAuthenticatedException {
 		invoiceService.update(invoiceDTO);
 	}
 
 	@RequestMapping(value = "/nextid", method = RequestMethod.GET)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
-	public Map<String, Object> getNextInvoiceDocumentID(@RequestParam(value = "suffix", required = false) String suffix) {
+	public Map<String, Object> getNextInvoiceDocumentID(@RequestParam(value = "suffix", required = false) String suffix) throws FreeUserAccessForbiddenException, NotAuthenticatedException, DataAccessException {
 		return ImmutableMap.of(JsonConst.VALUE, invoiceService.getNextInvoiceDocumentID(suffix) + suffix);
 	}
 
@@ -106,7 +106,7 @@ public class InvoiceController {
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
 	public PageDTO<InvoiceDTO> getAllForClientInRange(@PathVariable Long clientID, @PathVariable Integer year, 
-			@PathVariable Integer start, @PathVariable Integer length) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException {
+			@PathVariable Integer start, @PathVariable Integer length) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException, FreeUserAccessForbiddenException {
 		return invoiceService.getAllForClientInRange(clientID, year, start, length);
 	}
 	
@@ -130,7 +130,7 @@ public class InvoiceController {
 	@RequestMapping(value = "/{id}/email", method = RequestMethod.POST)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
-	public Map<String, Object> email(@PathVariable Long id, @RequestBody EmailDTO emailDTO) throws NoSuchAlgorithmException, UnsupportedEncodingException, ValidationException{
+	public Map<String, Object> email(@PathVariable Long id, @RequestBody EmailDTO emailDTO) throws NoSuchAlgorithmException, UnsupportedEncodingException, ValidationException, DataAccessException, NotAuthenticatedException, FreeUserAccessForbiddenException {
 		return ImmutableMap.of(JsonConst.VALUE, invoiceService.email(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId(), id, emailDTO));
 	}
 

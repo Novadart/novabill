@@ -206,7 +206,7 @@ public class PriceListServiceTest extends ServiceTest {
 	}
 
 	@Test(expected = DataAccessException.class)
-	public void getAllIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void getAllIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		priceListService.getAll(null);
 	}
 	
@@ -234,12 +234,12 @@ public class PriceListServiceTest extends ServiceTest {
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void getIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void getIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		priceListService.get(null);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void getUnauthorizedTest() throws NotAuthenticatedException, NoSuchObjectException, DataAccessException{
+	public void getUnauthorizedTest() throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, FreeUserAccessForbiddenException {
 		PriceList priceList = TestUtils.createPriceList();
 		Business business = Business.findBusiness(getUnathorizedBusinessID());
 		priceList.setBusiness(business);
@@ -280,7 +280,7 @@ public class PriceListServiceTest extends ServiceTest {
 	}
 	
 	@Test
-	public void clonePriceListTest() throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, ValidationException{
+	public void clonePriceListTest() throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, ValidationException, FreeUserAccessForbiddenException {
 		Long id = Long.parseLong(testPL.get(authenticatedPrincipal.getUsername()));
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		Long clonedPLId = priceListService.clonePriceList(businessID, id, "Cloned price list" + System.currentTimeMillis());
@@ -288,19 +288,19 @@ public class PriceListServiceTest extends ServiceTest {
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void clonePriceListNullBusinessIDTest() throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, ValidationException{
+	public void clonePriceListNullBusinessIDTest() throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, ValidationException, FreeUserAccessForbiddenException {
 		Long id = Long.parseLong(testPL.get(authenticatedPrincipal.getUsername()));
 		priceListService.clonePriceList(null, id, "Cloned price list" + System.currentTimeMillis());
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void clonePriceListNullIDTest() throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, ValidationException{
+	public void clonePriceListNullIDTest() throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, ValidationException, FreeUserAccessForbiddenException {
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		priceListService.clonePriceList(businessID, null, "Cloned price list" + System.currentTimeMillis());
 	}
 	
 	@Test(expected = Exception.class)
-	public void clonePriceListNameNUllTest() throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, ValidationException {
+	public void clonePriceListNameNUllTest() throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, ValidationException, FreeUserAccessForbiddenException {
 		Long id = Long.parseLong(testPL.get(authenticatedPrincipal.getUsername()));
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		try {

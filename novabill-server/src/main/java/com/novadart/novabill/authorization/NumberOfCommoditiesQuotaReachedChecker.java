@@ -32,7 +32,7 @@ public class NumberOfCommoditiesQuotaReachedChecker implements RestricionChecker
 	@Override
 	public void check(Principal principal) throws FreeUserAccessForbiddenException, NotAuthenticatedException, DataAccessException {
 		LOGGER.debug("Number of commodities quota check - quota: {}, roles: {}", new Object[]{numberOfCommoditiesQuota, principal.getGrantedRoles()});
-		if(principal.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_FREE) &&
+		if(principal.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_TRIAL) &&
 				businessService.getCommodities(principal.getBusiness().getId()).size() >= numberOfCommoditiesQuota)
 			throw new FreeUserAccessForbiddenException(FreeUserAccessErrorType.NUMBER_OF_COMMODITIES_QUOTA_REACHED);
 	}

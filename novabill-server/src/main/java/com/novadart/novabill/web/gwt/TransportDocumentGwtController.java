@@ -24,11 +24,11 @@ public class TransportDocumentGwtController extends AbstractGwtController implem
 	@Autowired
 	private TransportDocumentService transportDocService;
 	
-	public TransportDocumentDTO get(Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+	public TransportDocumentDTO get(Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		return transportDocService.get(id);
 	}
 
-	public List<TransportDocumentDTO> getAllForClient(Long clientID, Integer year) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+	public List<TransportDocumentDTO> getAllForClient(Long clientID, Integer year) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		return transportDocService.getAllForClient(clientID, year);
 	}
 
@@ -36,38 +36,38 @@ public class TransportDocumentGwtController extends AbstractGwtController implem
 		return transportDocService.add(transportDocDTO);
 	}
 
-	public void remove(Long businessID, Long clientID, Long id) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException {
+	public void remove(Long businessID, Long clientID, Long id) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		transportDocService.remove(businessID, clientID, id);
 	}
 
-	public void update(TransportDocumentDTO transportDocDTO) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ValidationException, DataIntegrityException {
+	public void update(TransportDocumentDTO transportDocDTO) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ValidationException, DataIntegrityException, FreeUserAccessForbiddenException {
 		transportDocService.update(transportDocDTO);
 	}
 
-	public Long getNextTransportDocId() throws NotAuthenticatedException, DataAccessException {
+	public Long getNextTransportDocId() throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		return transportDocService.getNextTransportDocId();
 	}
 
-	public PageDTO<TransportDocumentDTO> getAllForClientInRange(Long clientID, Integer year, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+	public PageDTO<TransportDocumentDTO> getAllForClientInRange(Long clientID, Integer year, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		return transportDocService.getAllForClientInRange(clientID, year, start, length);
 	}
 
-	public PageDTO<TransportDocumentDTO> getAllInRange(Long businessID, Integer year, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException {
+	public PageDTO<TransportDocumentDTO> getAllInRange(Long businessID, Integer year, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		return transportDocService.getAllInRange(businessID, year, start, length);
 	}
 
 	@Override
-	public List<TransportDocumentDTO> getAllWithIDs(List<Long> ids) throws DataAccessException, NoSuchObjectException {
+	public List<TransportDocumentDTO> getAllWithIDs(List<Long> ids) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException, FreeUserAccessForbiddenException {
 		return transportDocService.getAllWithIDs(ids);
 	}
 
 	@Override
-	public void setInvoice(Long businessID, Long invoiceID, Long transportDocID) throws DataAccessException, NotAuthenticatedException, DataIntegrityException {
+	public void setInvoice(Long businessID, Long invoiceID, Long transportDocID) throws DataAccessException, NotAuthenticatedException, DataIntegrityException, FreeUserAccessForbiddenException {
 		transportDocService.setInvoice(businessID, invoiceID, transportDocID);
 	}
 
 	@Override
-	public void clearInvoice(Long businessID, Long transportDocID) throws DataAccessException, NotAuthenticatedException, DataIntegrityException {
+	public void clearInvoice(Long businessID, Long transportDocID) throws DataAccessException, NotAuthenticatedException, DataIntegrityException, FreeUserAccessForbiddenException {
 		transportDocService.clearInvoice(businessID, transportDocID);
 	}
 

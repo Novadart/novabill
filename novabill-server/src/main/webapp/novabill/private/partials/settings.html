@@ -1,50 +1,50 @@
 <div class="container-fluid settings">
-	<div class="row">
-		<div class="col-md-12">
+    <div class="row">
+        <div class="col-md-12">
 
-			<!-- BEGIN PAGE TITLE & BREADCRUMB-->
-			<h3 class="page-title">{{'SETTINGS' | translate}}</h3>
-			<ul class="breadcrumb">
-				<li><i class="fa fa-dashboard"></i> <a href="../">Dashboard</a></li>
-				<li><span>{{'SETTINGS' | translate}}</span></li>
-			</ul>
+            <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+            <h3 class="page-title">{{'SETTINGS' | translate}}</h3>
+            <ul class="breadcrumb">
+                <li><i class="fa fa-dashboard"></i> <a href="../">Dashboard</a></li>
+                <li><span>{{'SETTINGS' | translate}}</span></li>
+            </ul>
 
-		</div>
-	</div>
+        </div>
+    </div>
 
-	<div class="clearfix"></div>
+    <div class="clearfix"></div>
 
-	<div class="row">
-		<div class="col-md-12">
-		    <tabset class="tabbable-custom">
-			    <tab select="onTabChange('business')" active="activeTab.business">
+    <div class="row">
+        <div class="col-md-12">
+            <tabset class="tabbable-custom">
+                <tab select="onTabChange('business')" active="activeTab.business">
                     <tab-heading>
-				        <i class="fa fa-building"></i> {{'BUSINESS_TAB_BUSINESS' | translate}}
-			        </tab-heading>
-			        
-			        <div class="container-fluid">
-                          <div class="row">
-                              <div class="col-md-6">
-                                  <h4><strong style="text-transform: uppercase;">{{'TITLE_COMPANY_DATA' | translate}}</strong></h4>
-                                  <n-business-form callback="businessUpdateCallback()" business="business" fields-to-show="all"></n-business-form>
-                              </div>
-                              <div class="col-md-6" >
-                                  <h4><strong style="text-transform: uppercase;">{{'TITLE_SET_LOGO' | translate}}</strong></h4>
-                                  <n-business-logo></n-business-logo>
-                              </div>
-                          </div>
+                        <i class="fa fa-building"></i> {{'BUSINESS_TAB_BUSINESS' | translate}}
+                    </tab-heading>
+
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h4><strong style="text-transform: uppercase;">{{'TITLE_COMPANY_DATA' | translate}}</strong></h4>
+                                <n-business-form callback="businessUpdateCallback()" business="business" fields-to-show="all"></n-business-form>
+                            </div>
+                            <div class="col-md-6" >
+                                <h4><strong style="text-transform: uppercase;">{{'TITLE_SET_LOGO' | translate}}</strong></h4>
+                                <n-business-logo></n-business-logo>
+                            </div>
                         </div>
+                    </div>
                 </tab>
-                
+
                 <tab  select="onTabChange('profile')" active="activeTab.profile">
                     <tab-heading>
                         <i class="fa fa-user"></i> {{'BUSINESS_TAB_PROFILE' | translate}}
                     </tab-heading>
-                    
+
                     <div class="row" style="margin-bottom: 30px;" >
                         <div class="col-md-12">
                             <h4><strong style="text-transform: uppercase;">{{'TITLE_PROFILE_STATUS' | translate}}</strong></h4>
-                            
+
                             <form class="form-horizontal" role="form">
                                 <div class="form-body">
                                     <div class="form-group">
@@ -72,29 +72,27 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group" ng-if="premium">
-                                        <label  class="col-md-4 control-label">{{'BUSINESS_TAB_PROFILE_PLAN_EXPIRATION' | translate}}</label>
-                                        <div class="col-md-4">
-                                            <div class="form-control readonly" style="font-weight: bold;">
-                                                {{business.settings.nonFreeAccountExpirationTime | date:'dd/MM/yyyy'}}
-                                            </div>
+                                    <label  class="col-md-4 control-label">{{'BUSINESS_TAB_PROFILE_PLAN_EXPIRATION' | translate}}</label>
+                                    <div class="col-md-4">
+                                        <div class="form-control readonly" style="font-weight: bold;">
+                                            {{business.settings.nonFreeAccountExpirationTime | date:'dd/MM/yyyy'}}
                                         </div>
                                     </div>
                                 </div>
                             </form>
-                            
-                            
+
+
                         </div>
                     </div>
-                    
+
                     <div class="row" style="margin-bottom: 30px;" >
                         <div class="col-md-12">
                             <h4><strong style="text-transform: uppercase;">{{'TITLE_PROFILE' | translate}}</strong></h4>
                             <a href="{{changePasswordUrl}}" class="btn default">{{'CHANGE_PASSWORD' | translate}}</a>
                         </div>
                     </div>
-                                
-                     <div class="row" style="margin-bottom: 30px;">
+
+                    <div class="row" style="margin-bottom: 30px;">
                         <div class="col-md-12">
                             <h4><strong style="text-transform: uppercase;">{{'TITLE_EXPORT_DATA' | translate}}</strong></h4>
                             <a href="javascript:void(0);" class="btn default" ng-click="exportZip(true, false, false, false, false)">{{'EXPORT_CLIENTS' | translate}}</a>
@@ -104,36 +102,120 @@
                             <a style="margin-left: 10px;" href="javascript:void(0);" class="btn default" ng-click="exportZip(false, false, false, false, true)">{{'EXPORT_TRANSPORT_DOCUMENTS' | translate}}</a>
                         </div>
                     </div>
-                    
+
                     <div class="row" style="margin-bottom: 30px;" >
                         <div class="col-md-12">
                             <h4><strong style="text-transform: uppercase;">{{'TITLE_DELETE_ACCOUNT' | translate}}</strong></h4>
                             <a href="{{deleteAccountUrl}}" class="btn red">{{'DELETE_ACCOUNT' | translate}}</a>
                         </div>
                     </div>
-                 
+
                 </tab>
-                
+
                 <tab  select="onTabChange('options')" active="activeTab.options">
                     <tab-heading>
                         <i class="fa fa-gears"></i> {{'BUSINESS_TAB_OPTIONS' | translate}}
                     </tab-heading>
-                    
+
+                    <img class="spinner" ng-show="!business" src="../../private_assets/img/ajax-loading.gif">
+
+                    <!-- ISLAND 1 -->
+                    <h4><strong style="text-transform: uppercase;">{{'TITLE_INVOICE_SETTINGS' | translate}}</strong></h4>
+
+
+                    <form name="invoiceSettingsForm" ng-show="business" class="form-horizontal" role="form" novalidate>
+                        <div class="form-body">
+                            <tabset type="pills">
+                                <tab>
+                                    <tab-heading>
+                                        {{ 'PENSION_CONTRIBUTION' | translate }}
+                                    </tab-heading>
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">{{ 'PENSION_CONTRIBUTION_ENABLE' | translate }}</label>
+                                        <div class="col-md-8">
+                                            <div class="checkbox-list">
+                                                <label> <input type="checkbox" ng-model="checks.pensionContributionEnabled">
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" collapse="!checks.pensionContributionEnabled">
+                                        <label for="pensionContribution" class="col-md-4 control-label">{{ 'PENSION_CONTRIBUTION_LABEL' | translate }}</label>
+                                        <div class="col-md-4">
+                                            <input class="form-control input-xlarge" type="text" id="pensionContribution" name="pensionContribution"
+                                                   ng-model="business.settings.pensionContributionPercent" n-smart-tax
+                                                   placeholder="{{'PENSION_CONTRIBUTION_PLACEHOLDER' | translate}}" >
+                                            <div ng-show="invoiceSettingsForm.pensionContribution.$dirty && invoiceSettingsForm.pensionContribution.$invalid">
+                                                <span class="text-danger">{{'VALIDATION_PERCENT' | translate}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </tab>
+
+
+                                <tab >
+                                    <tab-heading>
+                                        {{ 'WITHOLD_TAX' | translate }}
+                                    </tab-heading>
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">{{ 'WITHOLD_TAX_ENABLE' | translate }}</label>
+                                        <div class="col-md-8">
+                                            <div class="checkbox-list">
+                                                <label>
+                                                    <input type="checkbox" ng-model="checks.witholdTaxEnabled">
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" collapse="!checks.witholdTaxEnabled">
+                                        <label for="witholdTaxFirstLevel" class="col-md-4 control-label">{{ 'WITHOLD_TAX_FIRST_LEVEL' | translate }}</label>
+                                        <div class="col-md-4">
+                                            <input class="form-control input-xlarge" type="text" id="witholdTaxFirstLevel" name="witholdTaxFirstLevel"
+                                                   ng-model="business.settings.witholdTaxPercentFirstLevel" n-smart-tax
+                                                   placeholder="{{'WITHOLD_TAX_FIRST_LEVEL_PLACEHOLDER' | translate}}" >
+                                            <div ng-show="invoiceSettingsForm.witholdTaxFirstLevel.$dirty && invoiceSettingsForm.witholdTaxFirstLevel.$invalid">
+                                                <span class="text-danger">{{'VALIDATION_PERCENT' | translate}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" collapse="!checks.witholdTaxEnabled">
+                                        <label for="witholdTaxSecondLevel" class="col-md-4 control-label">{{ 'WITHOLD_TAX_SECOND_LEVEL' | translate }}</label>
+                                        <div class="col-md-4">
+                                            <input class="form-control input-xlarge" type="text" id="witholdTaxSecondLevel" name="witholdTaxSecondLevel"
+                                                   ng-model="business.settings.witholdTaxPercentSecondLevel" n-smart-tax
+                                                   placeholder="{{'WITHOLD_TAX_SECOND_LEVEL_PLACEHOLDER' | translate}}" >
+                                            <div ng-show="invoiceSettingsForm.witholdTaxSecondLevel.$dirty && invoiceSettingsForm.witholdTaxSecondLevel.$invalid">
+                                                <span class="text-danger">{{'VALIDATION_PERCENT' | translate}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </tab>
+                            </tabset>
+                        </div>
+                    </form>
+
+
+
+
+
                     <!-- ISLAND 1 -->
                     <h4><strong style="text-transform: uppercase;">{{'TITLE_LAYOUT_SETTINGS' | translate}}</strong></h4>
-                    
-                    <img class="spinner" ng-show="!business" src="../../private_assets/img/ajax-loading.gif">
 
                     <form ng-show="business" class="form-horizontal" role="form">
                         <div class="form-body">
                             <div class="form-group">
-                                <label n-premium-check class="col-md-4 control-label">{{'LAYOUT_TYPE' | translate}}</label>
+                                <label class="col-md-4 control-label">{{'LAYOUT_TYPE' | translate}}</label>
                                 <div class="col-md-8">
-                                    <select class="form-control input-xlarge" ng-model="business.settings.defaultLayoutType" n-premium-check>
+                                    <select class="form-control input-xlarge" ng-model="business.settings.defaultLayoutType">
                                         <option value="DENSE">{{'LAYOUT_TYPE_DENSE' | translate}}</option>
                                         <option value="TIDY">{{'LAYOUT_TYPE_TIDY' | translate}}</option>
                                     </select>
-                                    <n-premium-alert-inline></n-premium-alert-inline>
                                 </div>
                             </div>
 
@@ -146,98 +228,97 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="form-group">
                                 <label for="defaultTermsAndConditionsForEstimation" class="col-md-4 control-label">{{ 'BUSINESS_OPTION_DEFAULT_TERMS_AND_CONDITIONS_FOR_ESTIMATION' | translate }}</label>
                                 <div class="col-md-8">
-                                    <textarea 
-                                    id="defaultTermsAndConditionsForEstimation" 
-                                    name="defaultTermsAndConditionsForEstimation" 
-                                    maxlength="3000"
-                                    ng-model="business.settings.defaultTermsAndConditionsForEstimation" 
-                                    class="form-control input-xlarge" rows="5"></textarea>
+                                    <textarea
+                                            id="defaultTermsAndConditionsForEstimation"
+                                            name="defaultTermsAndConditionsForEstimation"
+                                            maxlength="3000"
+                                            ng-model="business.settings.defaultTermsAndConditionsForEstimation"
+                                            class="form-control input-xlarge" rows="5"></textarea>
                                 </div>
                             </div>
-                            
+
                             <div class="form-group">
-                                <label for="footerNote" class="col-md-4 control-label">{{ 'BUSINESS_OPTION_FOOTER_TEXT' | translate }}</label>
+                                <label class="col-md-4 control-label">{{ 'BUSINESS_OPTION_FOOTER_TEXT' | translate }}</label>
                                 <div class="col-md-8">
-                                   <label for="estimationFooterNote" class="control-label">{{ 'ESTIMATION' | translate }}</label>
-                                   <input id="estimationFooterNote" maxlength="300" class="form-control input-xlarge" type="text" ng-model="business.settings.estimationFooterNote">
-                                   <label for="transportDocumentFooterNote" style="margin-top: 10px;" class="control-label">{{ 'TRANSPORT_DOCUMENT' | translate }}</label>
-                                   <input id="transportDocumentFooterNote" maxlength="300" class="form-control input-xlarge" type="text" ng-model="business.settings.transportDocumentFooterNote">
-                                   <label for="invoiceFooterNote" style="margin-top: 10px;" class="control-label">{{ 'INVOICE' | translate }}</label>
-                                   <input id="invoiceFooterNote" maxlength="300" class="form-control input-xlarge" type="text" ng-model="business.settings.invoiceFooterNote">
-                                   <label for="creditNoteFooterNote" style="margin-top: 10px;" class="control-label">{{ 'CREDIT_NOTE' | translate }}</label>
-                                   <input id="creditNoteFooterNote" maxlength="300" class="form-control input-xlarge" type="text" ng-model="business.settings.creditNoteFooterNote">
+                                    <label for="estimationFooterNote" class="control-label">{{ 'ESTIMATION' | translate }}</label>
+                                    <input id="estimationFooterNote" maxlength="300" class="form-control input-xlarge" type="text" ng-model="business.settings.estimationFooterNote">
+                                    <label for="transportDocumentFooterNote" style="margin-top: 10px;" class="control-label">{{ 'TRANSPORT_DOCUMENT' | translate }}</label>
+                                    <input id="transportDocumentFooterNote" maxlength="300" class="form-control input-xlarge" type="text" ng-model="business.settings.transportDocumentFooterNote">
+                                    <label for="invoiceFooterNote" style="margin-top: 10px;" class="control-label">{{ 'INVOICE' | translate }}</label>
+                                    <input id="invoiceFooterNote" maxlength="300" class="form-control input-xlarge" type="text" ng-model="business.settings.invoiceFooterNote">
+                                    <label for="creditNoteFooterNote" style="margin-top: 10px;" class="control-label">{{ 'CREDIT_NOTE' | translate }}</label>
+                                    <input id="creditNoteFooterNote" maxlength="300" class="form-control input-xlarge" type="text" ng-model="business.settings.creditNoteFooterNote">
                                 </div>
                             </div>
 
                         </div>
                     </form>
-                    
-                    
+
+
                     <!-- ISLAND 2 -->
-                    <h4 n-premium-check><strong style="text-transform: uppercase;">{{'TITLE_EMAIL_SETTINGS' | translate}}</strong></h4>
-                    <n-premium-alert-inline></n-premium-alert-inline>
-                    
+                    <h4><strong style="text-transform: uppercase;">{{'TITLE_EMAIL_SETTINGS' | translate}}</strong></h4>
+
                     <form name="emailForm" ng-show="business" class="form-horizontal" role="form" novalidate>
                         <div class="form-body">
 
                             <div class="form-group">
-                                <label n-premium-check for="emailReplyTo" class="col-md-4 control-label">{{ 'BUSINESS_OPTION_EMAIL_REPLY_TO' | translate }} *</label>
+                                <label for="emailReplyTo" class="col-md-4 control-label">{{ 'BUSINESS_OPTION_EMAIL_REPLY_TO' | translate }} *</label>
                                 <div class="col-md-4">
-                                    <input n-premium-check class="form-control input-xlarge" type="email" id="emailReplyTo" name="emailReplyTo" maxlength="200" ng-model="business.settings.emailReplyTo" 
-                                        placeholder="{{'BUSINESS_OPTION_EMAIL_REPLY_TO_PLACEHOLDER' | translate}}" required>
+                                    <input class="form-control input-xlarge" type="email" id="emailReplyTo" name="emailReplyTo" maxlength="200" ng-model="business.settings.emailReplyTo"
+                                           placeholder="{{'BUSINESS_OPTION_EMAIL_REPLY_TO_PLACEHOLDER' | translate}}" required>
                                     <div ng-show="emailForm.emailReplyTo.$dirty && emailForm.emailReplyTo.$invalid">
                                         <span class="text-danger">{{'VALIDATION_REQUIRED' | translate}}</span>
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="form-group">
-                                <label n-premium-check for="emailSubject" class="col-md-4 control-label">{{ 'BUSINESS_OPTION_EMAIL_SUBJECT' | translate }} *</label>
+                                <label for="emailSubject" class="col-md-4 control-label">{{ 'BUSINESS_OPTION_EMAIL_SUBJECT' | translate }} *</label>
                                 <div class="col-md-4">
-                                    <textarea n-premium-check id="emailSubject" name="emailSubject" placeholder="{{'BUSINESS_OPTION_EMAIL_SUBJECT_PLACEHOLDER' | translate}}" maxlength="78" 
-                                    ng-trim="false"
-                                    ng-model="business.settings.emailSubject" class="form-control input-xlarge" rows="2" required></textarea>
+                                    <textarea id="emailSubject" name="emailSubject" placeholder="{{'BUSINESS_OPTION_EMAIL_SUBJECT_PLACEHOLDER' | translate}}" maxlength="78"
+                                              ng-trim="false"
+                                              ng-model="business.settings.emailSubject" class="form-control input-xlarge" rows="2" required></textarea>
                                     <n-email-keyword-chooser model="business.settings.emailSubject"></n-email-keyword-chooser>
                                     <div ng-show="emailForm.emailSubject.$dirty && emailForm.emailSubject.$invalid">
                                         <span class="text-danger">{{'VALIDATION_REQUIRED' | translate}}</span>
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="form-group">
-                                <label n-premium-check for="emailText" class="col-md-4 control-label">{{ 'BUSINESS_OPTION_EMAIL_TEXT' | translate }} *</label>
+                                <label for="emailText" class="col-md-4 control-label">{{ 'BUSINESS_OPTION_EMAIL_TEXT' | translate }} *</label>
                                 <div class="col-md-4">
-                                    <textarea n-premium-check id="emailText" name="emailText" ng-model="business.settings.emailText" 
-                                    class="form-control input-xlarge" maxlength="1000" rows="8" 
-                                        ng-trim="false" required></textarea>
+                                    <textarea id="emailText" name="emailText" ng-model="business.settings.emailText"
+                                              class="form-control input-xlarge" maxlength="1000" rows="8"
+                                              ng-trim="false" required></textarea>
                                     <n-email-keyword-chooser model="business.settings.emailText"></n-email-keyword-chooser>
                                     <div ng-show="emailForm.emailText.$dirty && emailForm.emailText.$invalid">
-				                        <span class="text-danger">{{'VALIDATION_REQUIRED' | translate}}</span>
-				                    </div>
+                                        <span class="text-danger">{{'VALIDATION_REQUIRED' | translate}}</span>
+                                    </div>
                                 </div>
                             </div>
-                            
+
                             <div class="form-group">
                                 <label class="col-md-4 control-label"></label>
                                 <div class="col-md-5">
-                                    <button n-premium-check type="button" ng-click="viewPreview()" ng-disabled="emailForm.$invalid" class="btn default pull-right">
-				                      {{'BUSINESS_OPTION_EMAIL_PREVIEW' | translate}}
-				                    </button>
+                                    <button type="button" ng-click="viewPreview()" ng-disabled="emailForm.$invalid" class="btn default pull-right">
+                                        {{'BUSINESS_OPTION_EMAIL_PREVIEW' | translate}}
+                                    </button>
                                 </div>
                             </div>
 
                         </div>
                     </form>
-                    
-                    
-                    
+
+
+
                     <!-- ISLAND 3 -->
                     <h4><strong style="text-transform: uppercase;">{{'TITLE_OTHER_SETTINGS' | translate}}</strong></h4>
-                    
+
                     <form ng-show="business" class="form-horizontal" role="form">
                         <div class="form-body">
 
@@ -254,13 +335,15 @@
                         </div>
                     </form>
 
-                    <button ng-show="business" type="button" ng-click="update()" ng-disabled="emailForm.$invalid" class="btn green save-options button-save">
-                      {{'SAVE_CHANGES' | translate}}
+                    <button ng-show="business" type="button" ng-click="update()"
+                            ng-disabled="emailForm.$invalid || !invoiceSettingsFormIsValid()"
+                            class="btn green save-options button-save">
+                        {{'SAVE_CHANGES' | translate}}
                     </button>
                 </tab>
-			</tabset>
-		
-		</div>
-	</div>
+            </tabset>
+
+        </div>
+    </div>
 
 </div>

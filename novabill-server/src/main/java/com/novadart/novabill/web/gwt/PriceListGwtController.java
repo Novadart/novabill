@@ -27,12 +27,12 @@ public class PriceListGwtController extends AbstractGwtController implements Pri
 	private PriceListService priceListService;
 
 	@Override
-	public List<PriceListDTO> getAll(Long businessID) throws NotAuthenticatedException, DataAccessException {
+	public List<PriceListDTO> getAll(Long businessID) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		return priceListService.getAll(businessID);
 	}
 
 	@Override
-	public PriceListDTO get(Long id) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException {
+	public PriceListDTO get(Long id) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, FreeUserAccessForbiddenException {
 		return priceListService.get(id);
 	}
 
@@ -47,17 +47,17 @@ public class PriceListGwtController extends AbstractGwtController implements Pri
 	}
 
 	@Override
-	public void remove(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException, DataIntegrityException {
+	public void remove(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException, DataIntegrityException, FreeUserAccessForbiddenException {
 		priceListService.remove(businessID, id);
 	}
 
 	@Override
-	public Map<String, Pair<String, PriceDTO>> getPrices(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException {
+	public Map<String, Pair<String, PriceDTO>> getPrices(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		return priceListService.getPrices(businessID, id);
 	}
 
 	@Override
-	public Long clonePriceList(Long businessID, Long id, String priceListName) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, ValidationException {
+	public Long clonePriceList(Long businessID, Long id, String priceListName) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, ValidationException, FreeUserAccessForbiddenException {
 		return priceListService.clonePriceList(businessID, id, priceListName);
 	}
 

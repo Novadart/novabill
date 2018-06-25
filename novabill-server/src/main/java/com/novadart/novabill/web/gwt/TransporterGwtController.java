@@ -28,7 +28,7 @@ public class TransporterGwtController extends AbstractGwtController implements T
 	}
 
 	@Override
-	public TransporterDTO get(Long id) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException {
+	public TransporterDTO get(Long id) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, FreeUserAccessForbiddenException {
 		return transporterService.get(id);
 	}
 	
@@ -38,12 +38,12 @@ public class TransporterGwtController extends AbstractGwtController implements T
 	}
 
 	@Override
-	public void remove(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException {
+	public void remove(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		transporterService.remove(businessID, id);
 	}
 
 	@Override
-	public List<TransporterDTO> getAll(Long businessID) throws NotAuthenticatedException, DataAccessException {
+	public List<TransporterDTO> getAll(Long businessID) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		return transporterService.getAll(businessID);
 	}
 

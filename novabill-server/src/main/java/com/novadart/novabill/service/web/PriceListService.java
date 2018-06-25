@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.novadart.novabill.authorization.TrialOrPremiumChecker;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -46,14 +47,16 @@ public class PriceListService {
 	
 	@Autowired
 	private UtilsService utilsService;
-	
+
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@PreAuthorize("#businessID == principal.business.id")
-	public List<PriceListDTO> getAll(Long businessID) throws NotAuthenticatedException, DataAccessException {
+	public List<PriceListDTO> getAll(Long businessID) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		return businessService.getPriceLists(businessID);
 	}
-	
+
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@PreAuthorize("T(com.novadart.novabill.domain.PriceList).findPriceList(#id)?.business?.id == principal.business.id")
-	public PriceListDTO get(Long id) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException {
+	public PriceListDTO get(Long id) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, FreeUserAccessForbiddenException {
 		Long businessID = utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId();
 		PriceList defaultPL = PriceList.getDefaultPriceList(businessID);
 		List<Price> defautPLPrices = Price.findPricesForPriceList(defaultPL.getId());
@@ -80,7 +83,7 @@ public class PriceListService {
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	@PreAuthorize("#priceListDTO?.business?.id == principal.business.id and " +
 		  	  	  "#priceListDTO != null and #priceListDTO.id == null")
-	@Restrictions(checkers = {PremiumChecker.class})
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	public Long add(PriceListDTO priceListDTO) throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException {
 		PriceList priceList = new PriceList();
 		PriceListDTOTransformer.copyFromDTO(priceList, priceListDTO);
@@ -92,7 +95,8 @@ public class PriceListService {
 		priceList.flush();
 		return priceList.getId();
 	}
-	
+
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	@PreAuthorize("#priceListDTO?.business?.id == principal.business.id and " +
 	  	  	  	  "#priceListDTO?.id != null")
@@ -115,11 +119,12 @@ public class PriceListService {
 				defaultPriceList.getClients().add(client);
 		}
 	}
-	
+
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@Transactional(readOnly = false)
 	@PreAuthorize("#businessID == principal.business.id and " +
 		  	  	  "T(com.novadart.novabill.domain.PriceList).findPriceList(#id)?.business?.id == #businessID")
-	public void remove(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException, DataIntegrityException {
+	public void remove(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException, DataIntegrityException, FreeUserAccessForbiddenException {
 		PriceList priceList = PriceList.findPriceList(id);
 		if(priceList.getName().equals(PriceListConstants.DEFAULT)) //removing default pricelist
 			throw new DataIntegrityException();
@@ -128,11 +133,12 @@ public class PriceListService {
 		if(Hibernate.isInitialized(priceList.getBusiness().getPriceLists()))
 			priceList.getBusiness().getPriceLists().remove(priceList);
 	}
-	
+
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@Transactional(readOnly = true)
 	@PreAuthorize("#businessID == principal.business.id and " +
 		  	  	  "T(com.novadart.novabill.domain.PriceList).findPriceList(#id)?.business?.id == #businessID")
-	public Map<String, Pair<String, PriceDTO>> getPrices(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException {
+	public Map<String, Pair<String, PriceDTO>> getPrices(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		List<CommodityDTO> commodities = businessService.getCommodities(businessID);
 		Map<String, Pair<String, PriceDTO>> result = new HashMap<>();
 		Map<Long, String> commMap = new HashMap<>();
@@ -146,11 +152,12 @@ public class PriceListService {
 		}
 		return result;
 	}
-	
+
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	@PreAuthorize("#businessID == principal.business.id and " + 
 				  "T(com.novadart.novabill.domain.PriceList).findPriceList(#id)?.business?.id == #businessID")
-	public Long clonePriceList(Long businessID, Long id,  String priceListName) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, ValidationException {
+	public Long clonePriceList(Long businessID, Long id,  String priceListName) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, ValidationException, FreeUserAccessForbiddenException {
 		PriceList priceList = PriceList.findPriceList(id);
 		if(priceList == null)
 			throw new NoSuchObjectException();

@@ -7,30 +7,24 @@
 <spring:url var="homeUrl" value="/" />
 <spring:url var="dashboardUrl" value="/private/" />
 
-<div class="page-container">
-  
-        <!-- BEGIN BREADCRUMBS -->   
-        <div class="row breadcrumbs margin-bottom-40">
-            <div class="container">
-                <div class="col-md-4 col-sm-4">
-                    <h1>Attivazione Premium</h1>
-                </div>
-                <div class="col-md-8 col-sm-8">
-                    <ul class="pull-right breadcrumb">
-                        <li><a href="${homeUrl}">Home</a></li>
-                        <li class="active">Attivazione Premium</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <!-- END BREADCRUMBS -->
 
-        <!-- BEGIN CONTAINER -->   
-        <div class="container " style="margin-bottom: 150px; margin-top: 50px;"> <!-- margin-bottom-40 -->
-          <div class="row">
-            <div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 alert alert-info">
-                 <h3 class="text-center"><strong>
-                Grazie per aver acquistato la versione Premium di Novabill!
+
+<!-- BEGIN CONTAINER -->
+<div class="container"> <!-- margin-bottom-40 -->
+    <div class="row">
+
+
+        <div class="col-md-8 col-md-offset-2 text-center">
+
+            <h2>Attivazione Premium</h2>
+            <br><br>
+
+        </div>
+
+        <div class="col-md-8 col-md-offset-2">
+            <div class="alert alert-info">
+                <h3 class="text-center"><strong>
+                    Grazie per aver acquistato la versione Premium di Novabill!
                 </strong></h3>
                 <br>
                 <p style="text-align: justify;">
@@ -40,11 +34,11 @@
                 </p>
                 <br>
                 <p class="text-center">
-                    <a class="btn green" href="${dashboardUrl}">Continua</a>
-                
+                    <a class="btn btn-success" href="${dashboardUrl}">Continua</a>
+
                 </p>
             </div>
-          </div>
         </div>
-        
+
+    </div>
 </div>

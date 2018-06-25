@@ -38,8 +38,8 @@ public class PDFStorageService {
     private static String XML_EXT = ".xml";
 
 
-    @Value("${pdf.storage.path}")
-    private String pdfStoragePath;
+    @Value("${document.storage.path}")
+    private String documentStoragePath;
 
     @Autowired
     private JasperReportService jasperReportService;
@@ -58,12 +58,12 @@ public class PDFStorageService {
         String year = String.valueOf(document.getAccountingDocumentYear());
         String docId = document.getExpandedDocumentId();
         String filename = Joiner.on('_').skipNulls().join(new String[]{docType, businessId, year, docId, uniquePathID});
-        return mergePaths(pdfStoragePath, filename) + PDF_EXT;
+        return mergePaths(documentStoragePath, filename) + PDF_EXT;
     }
 
     @PostConstruct
     public void init() throws IOException {
-        Path path = Paths.get(pdfStoragePath);
+        Path path = Paths.get(documentStoragePath);
         if(!Files.exists(path))
             Files.createDirectories(path);
     }
@@ -88,7 +88,7 @@ public class PDFStorageService {
     public void purgeOrphanPDFs(){
         String query = "select d.documentPath from AccountingDocument d";
         Set<String> pdfPaths = new HashSet<>(entityManager.createQuery(query, String.class).getResultList());
-        try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(Paths.get(pdfStoragePath))) {
+        try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(Paths.get(documentStoragePath))) {
             for (Path path : directoryStream) {
                 if(!pdfPaths.contains(path.toString()))
                     Files.delete(path);

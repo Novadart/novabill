@@ -13,7 +13,8 @@ public enum Field {
 	accountingDocumentItems_totalBeforeTax, accountingDocumentItems_totalTax, accountingDocumentItems_total, accountingDocumentItems_price,
 	
 	//Invoice fields
-	paymentDueDate, payed, paymentTypeName, paymentDeltaType, createdFromTransportDocuments, seenByClient,
+	paymentDueDate, payed, paymentTypeName, paymentDeltaType, createdFromTransportDocuments, seenByClient, witholdTaxTotal,
+	pensionContributionTotal,
 	
 	//Estimation
 	limitations, validTill, termsAndConditions,
@@ -48,7 +49,7 @@ public enum Field {
 	//Business settings
 	settings_defaultLayoutType, settings_priceDisplayInDocsMonolithic, settings_incognitoEnabled, settings_invoiceFooterNote,
 	settings_creditNoteFooterNote, settings_estimationFooterNote, settings_transportDocumentFooterNote,
-	emailSubject, emailText, emailReplyTo,
+	emailSubject, emailText, emailReplyTo, witholdTax, witholdTaxPercent, pensionContribution, pensionContributionPercent,
 	
 	//Email
 	to, from, subject, text, replyTo, message,

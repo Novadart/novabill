@@ -2,8 +2,6 @@ package com.novadart.novabill.test.suite;
 
 
 import com.dumbster.smtp.SimpleSmtpServer;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.novadart.novabill.aspect.logging.DBLoggerAspect;
 import com.novadart.novabill.domain.*;
 import com.novadart.novabill.domain.dto.DTOUtils;
@@ -11,10 +9,14 @@ import com.novadart.novabill.domain.dto.transformer.BusinessDTOTransformer;
 import com.novadart.novabill.domain.dto.transformer.ClientDTOTransformer;
 import com.novadart.novabill.domain.dto.transformer.InvoiceDTOTransformer;
 import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.report.DocumentType;
+import com.novadart.novabill.report.JRDataSourceFactory;
+import com.novadart.novabill.report.JasperReportService;
 import com.novadart.novabill.service.PDFStorageService;
 import com.novadart.novabill.service.web.InvoiceService;
 import com.novadart.novabill.shared.client.data.EntityType;
 import com.novadart.novabill.shared.client.data.FilteringDateType;
+import com.novadart.novabill.shared.client.data.LayoutType;
 import com.novadart.novabill.shared.client.data.OperationType;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
@@ -27,6 +29,7 @@ import com.novadart.novabill.shared.client.facade.InvoiceGwtService;
 import com.novadart.novabill.shared.client.validation.ErrorObject;
 import com.novadart.novabill.shared.client.validation.Field;
 import com.novadart.novabill.web.mvc.ajax.dto.EmailDTO;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,8 +41,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
+import java.nio.channels.Channels;
+import java.nio.channels.WritableByteChannel;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.security.NoSuchAlgorithmException;
@@ -47,6 +54,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.zip.GZIPOutputStream;
 
 import static org.junit.Assert.*;
 
@@ -86,7 +94,7 @@ public class InvoiceServiceTest extends ServiceTest {
 	}
 
 	@Test
-	public void getAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void getAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		Long invoiceID = authenticatedPrincipal.getBusiness().getInvoices().iterator().next().getId();
 		InvoiceDTO expectedDTO = InvoiceDTOTransformer.toDTO(Invoice.findInvoice(invoiceID), true);
 		InvoiceDTO actualDTO = invoiceService.get(invoiceID);
@@ -94,36 +102,36 @@ public class InvoiceServiceTest extends ServiceTest {
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void getUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void getUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		Long invoiceID = Business.findBusiness(getUnathorizedBusinessID()).getInvoices().iterator().next().getId();
 		invoiceService.get(invoiceID);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void getAuthorizedInvoiceIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void getAuthorizedInvoiceIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		invoiceService.get(null);
 	}
 	
 	@Test
-	public void getAllInRangeAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void getAllInRangeAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		PageDTO<InvoiceDTO> results = invoiceService.getAllInRange(authenticatedPrincipal.getBusiness().getId(), getYear(), 0, 10);
 		assertTrue(10 == results.getLength() && 0 == results.getOffset() && results.getItems().size() <= 10);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void getAllInRangeUnauthorizedTest() throws NotAuthenticatedException, DataAccessException{
+	public void getAllInRangeUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		invoiceService.getAllInRange(getUnathorizedBusinessID(), getYear(), 0, 10);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void getAllInRangeUnauthorizedBusinessIDNullTest() throws NotAuthenticatedException, DataAccessException{
+	public void getAllInRangeUnauthorizedBusinessIDNullTest() throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		invoiceService.getAllInRange(null, getYear(), 0, 10);
 	}
 	
 	@Test
-	public void getAllForClientAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void getAllForClientAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		Long clientID = new Long(testProps.get("clientWithInvoicesID"));
-		List<AccountingDocumentDTO> actual = new ArrayList<AccountingDocumentDTO>(invoiceService.getAllForClient(clientID, getYear()));
+		List<AccountingDocumentDTO> actual = new ArrayList<>(invoiceService.getAllForClient(clientID, getYear()));
 		List<AccountingDocumentDTO> expected = new ArrayList<>();
 		for(Invoice doc: Client.findClient(clientID).getInvoices())
 			if(doc.getAccountingDocumentYear().equals(getYear()))
@@ -132,23 +140,23 @@ public class InvoiceServiceTest extends ServiceTest {
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void getAllForClientUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void getAllForClientUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		Long clientID = Business.findBusiness(getUnathorizedBusinessID()).getClients().iterator().next().getId();
 		invoiceService.getAllForClient(clientID, getYear());
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void getAllForClientAuthorizedClientIDNotExistTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void getAllForClientAuthorizedClientIDNotExistTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		invoiceService.getAllForClient(-1l, getYear());
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void getAllForClientAuthorizedClientIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void getAllForClientAuthorizedClientIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		invoiceService.getAllForClient(null, getYear());
 	}
 	
 	@Test
-	public void removeAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, JsonParseException, JsonMappingException, IOException, DataIntegrityException{
+	public void removeAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, IOException, DataIntegrityException, FreeUserAccessForbiddenException {
 		Long clientID = new Long(testProps.get("clientWithInvoicesID"));
 		Long invoiceID = Client.findClient(clientID).getInvoices().iterator().next().getId();
 		invoiceService.remove(authenticatedPrincipal.getBusiness().getId(), clientID, invoiceID);
@@ -175,33 +183,33 @@ public class InvoiceServiceTest extends ServiceTest {
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void removeUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, DataIntegrityException{
+	public void removeUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, DataIntegrityException, FreeUserAccessForbiddenException {
 		Long clientID = new Long(testProps.get("clientWithInvoicesID"));
 		Long invoiceID = Client.findClient(clientID).getInvoices().iterator().next().getId();
 		invoiceService.remove(getUnathorizedBusinessID(), clientID, invoiceID);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void removeUnauthorizedBusinessIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, DataIntegrityException{
+	public void removeUnauthorizedBusinessIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, DataIntegrityException, FreeUserAccessForbiddenException {
 		Long clientID = new Long(testProps.get("clientWithInvoicesID"));
 		Long invoiceID = Client.findClient(clientID).getInvoices().iterator().next().getId();
 		invoiceService.remove(null, clientID, invoiceID);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void removeAuthorizedClientIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, DataIntegrityException{
+	public void removeAuthorizedClientIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, DataIntegrityException, FreeUserAccessForbiddenException {
 		Long invoiceID = authenticatedPrincipal.getBusiness().getInvoices().iterator().next().getId();
 		invoiceService.remove(authenticatedPrincipal.getBusiness().getId(), null, invoiceID);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void removeAauthorizedInvoiceIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, DataIntegrityException{
+	public void removeAauthorizedInvoiceIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, DataIntegrityException, FreeUserAccessForbiddenException {
 		Long clientID = new Long(testProps.get("clientWithInvoicesID"));
 		invoiceService.remove(authenticatedPrincipal.getBusiness().getId(), clientID, null);
 	}
 	
 	@Test
-	public void setPayedAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException, JsonParseException, JsonMappingException, IOException{
+	public void setPayedAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException, IOException{
 		Long clientID = new Long(testProps.get("clientWithInvoicesID"));
 		Long invoiceID = Client.findClient(clientID).getInvoices().iterator().next().getId();
 		invoiceService.setPayed(authenticatedPrincipal.getBusiness().getId(), clientID, invoiceID, true);
@@ -217,51 +225,51 @@ public class InvoiceServiceTest extends ServiceTest {
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void setPayedUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, DataIntegrityException{
+	public void setPayedUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, DataIntegrityException, FreeUserAccessForbiddenException {
 		Long clientID = new Long(testProps.get("clientWithInvoicesID"));
 		Long invoiceID = Client.findClient(clientID).getInvoices().iterator().next().getId();
 		invoiceService.remove(getUnathorizedBusinessID(), clientID, invoiceID);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void setPayedUnauthorizedBusinessIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, DataIntegrityException{
+	public void setPayedUnauthorizedBusinessIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, DataIntegrityException, FreeUserAccessForbiddenException {
 		Long clientID = new Long(testProps.get("clientWithInvoicesID"));
 		Long invoiceID = Client.findClient(clientID).getInvoices().iterator().next().getId();
 		invoiceService.remove(null, clientID, invoiceID);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void setPayedUnauthorizedClientIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, DataIntegrityException{
+	public void setPayedUnauthorizedClientIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, DataIntegrityException, FreeUserAccessForbiddenException {
 		Long invoiceID = authenticatedPrincipal.getBusiness().getInvoices().iterator().next().getId();
 		invoiceService.remove(authenticatedPrincipal.getBusiness().getId(), null, invoiceID);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void setPayedUnauthorizedInvoiceIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, DataIntegrityException{
+	public void setPayedUnauthorizedInvoiceIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, DataIntegrityException, FreeUserAccessForbiddenException {
 		Long clientID = new Long(testProps.get("clientWithInvoicesID"));
 		invoiceService.remove(authenticatedPrincipal.getBusiness().getId(), clientID, null);
 	}
 	
 	@Test
-	public void getAllForClientInRangeAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void getAllForClientInRangeAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		Long clientID = new Long(testProps.get("clientWithInvoicesID"));
 		PageDTO<InvoiceDTO> results = invoiceService.getAllForClientInRange(clientID, getYear(), 0, 10);
 		assertTrue(10 == results.getLength() && 0 == results.getOffset() && results.getItems().size() <= 10);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void getAllForClientInRangeUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void getAllForClientInRangeUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		Long clientID = Business.findBusiness(getUnathorizedBusinessID()).getClients().iterator().next().getId();
 		invoiceService.getAllForClientInRange(clientID, getYear(), 0, 10);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void getAllForClientInRangeClientIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void getAllForClientInRangeClientIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		invoiceService.getAllForClientInRange(null, getYear(), 0, 10);
 	}
 	
 	@Test
-	public void updateAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, JsonParseException, JsonMappingException, IOException, DataIntegrityException{
+	public void updateAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, IOException, DataIntegrityException, FreeUserAccessForbiddenException {
 		Invoice expectedInvoice = authenticatedPrincipal.getBusiness().getInvoices().iterator().next();
 		expectedInvoice.setNote("Temporary note for this invoice");
 		invoiceService.update(InvoiceDTOTransformer.toDTO(expectedInvoice, true));
@@ -279,12 +287,12 @@ public class InvoiceServiceTest extends ServiceTest {
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void updateAuthorizedInvoiceNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, DataIntegrityException{
+	public void updateAuthorizedInvoiceNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, DataIntegrityException, FreeUserAccessForbiddenException {
 		invoiceService.update(null);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void updateAuthorizedIDNull() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, DataIntegrityException{
+	public void updateAuthorizedIDNull() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, DataIntegrityException, FreeUserAccessForbiddenException {
 		Invoice invoice = authenticatedPrincipal.getBusiness().getInvoices().iterator().next();
 		InvoiceDTO invDTO = InvoiceDTOTransformer.toDTO(invoice, true);
 		invDTO.setId(null);
@@ -293,7 +301,7 @@ public class InvoiceServiceTest extends ServiceTest {
 	
 	
 	@Test
-	public void addAuthorizedTest() throws NotAuthenticatedException, DataAccessException, ValidationException, FreeUserAccessForbiddenException, InstantiationException, IllegalAccessException, JsonParseException, JsonMappingException, IOException, DataIntegrityException{
+	public void addAuthorizedTest() throws NotAuthenticatedException, DataAccessException, ValidationException, FreeUserAccessForbiddenException, InstantiationException, IllegalAccessException, IOException, DataIntegrityException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
 		InvoiceDTO invDTO = InvoiceDTOTransformer.toDTO(TestUtils.createInvOrCredNote(authenticatedPrincipal.getBusiness().getNextInvoiceDocumentID(null), Invoice.class), true);
 		invDTO.setClient(ClientDTOTransformer.toDTO(client));
@@ -386,13 +394,13 @@ public class InvoiceServiceTest extends ServiceTest {
 			invDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 			invoiceService.add(invDTO);
 		}catch(ValidationException e){
-			Set<Field> expected = new HashSet<Field>(TestUtils.invoiceValidationFieldsMap.values());
+			Set<Field> expected = new HashSet<>(TestUtils.invoiceValidationFieldsMap.values());
 			expected.remove(Field.accountingDocumentYear);
 			expected.remove(Field.accountingDocumentDate);
 			expected.remove(Field.documentID);
 			expected.remove(Field.payed);
 			expected.remove(Field.paymentDueDate);
-			Set<Field> actual= new HashSet<Field>();
+			Set<Field> actual= new HashSet<>();
 			for(ErrorObject error: e.getErrors())
 				actual.add(error.getField());
 			assertEquals(expected, actual);
@@ -428,7 +436,7 @@ public class InvoiceServiceTest extends ServiceTest {
 	}
 	
 	@Test
-	public void emailInvoiceAuthorizedTest() throws NoSuchAlgorithmException, JsonParseException, JsonMappingException, IOException, ValidationException{
+	public void emailInvoiceAuthorizedTest() throws NoSuchAlgorithmException, IOException, ValidationException, FreeUserAccessForbiddenException, NotAuthenticatedException, DataAccessException {
 		Invoice inv = authenticatedPrincipal.getBusiness().getInvoices().iterator().next();
 		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
 		EmailDTO emailDTO = new EmailDTO();
@@ -454,14 +462,14 @@ public class InvoiceServiceTest extends ServiceTest {
 	}
 	
 	@Test(expected = ValidationException.class)
-	public void emailInvoiceInvalidParams1Test() throws NoSuchAlgorithmException, UnsupportedEncodingException, ValidationException {
+	public void emailInvoiceInvalidParams1Test() throws NoSuchAlgorithmException, UnsupportedEncodingException, ValidationException, FreeUserAccessForbiddenException, NotAuthenticatedException, DataAccessException {
 		Invoice inv = authenticatedPrincipal.getBusiness().getInvoices().iterator().next();
 		EmailDTO emailDTO = new EmailDTO();
 		invoiceAjaxService.email(inv.getBusiness().getId(), inv.getId(), emailDTO);
 	}
 	
 	@Test(expected = ValidationException.class)
-	public void emailInvoiceInvalidParams2Test() throws NoSuchAlgorithmException, UnsupportedEncodingException, ValidationException {
+	public void emailInvoiceInvalidParams2Test() throws NoSuchAlgorithmException, UnsupportedEncodingException, ValidationException, FreeUserAccessForbiddenException, NotAuthenticatedException, DataAccessException {
 		Invoice inv = authenticatedPrincipal.getBusiness().getInvoices().iterator().next();
 		EmailDTO emailDTO = new EmailDTO();
 		emailDTO.setTo("foo@bar.com");
@@ -469,7 +477,7 @@ public class InvoiceServiceTest extends ServiceTest {
 	}
 	
 	@Test(expected = ValidationException.class)
-	public void emailInvoiceInvalidParams3Test() throws NoSuchAlgorithmException, UnsupportedEncodingException, ValidationException {
+	public void emailInvoiceInvalidParams3Test() throws NoSuchAlgorithmException, UnsupportedEncodingException, ValidationException, FreeUserAccessForbiddenException, NotAuthenticatedException, DataAccessException {
 		Invoice inv = authenticatedPrincipal.getBusiness().getInvoices().iterator().next();
 		EmailDTO emailDTO = new EmailDTO();
 		emailDTO.setTo("foo@bar.com");
@@ -478,7 +486,7 @@ public class InvoiceServiceTest extends ServiceTest {
 	}
 	
 	@Test(expected = ValidationException.class)
-	public void emailInvoiceInvalidParams4Test() throws NoSuchAlgorithmException, UnsupportedEncodingException, ValidationException {
+	public void emailInvoiceInvalidParams4Test() throws NoSuchAlgorithmException, UnsupportedEncodingException, ValidationException, FreeUserAccessForbiddenException, NotAuthenticatedException, DataAccessException {
 		Invoice inv = authenticatedPrincipal.getBusiness().getInvoices().iterator().next();
 		EmailDTO emailDTO = new EmailDTO();
 		emailDTO.setTo("foo@bar.com");
@@ -488,7 +496,7 @@ public class InvoiceServiceTest extends ServiceTest {
 	}
 	
 	@Test(expected = ValidationException.class)
-	public void emailInvoiceInvalidParams5Test() throws NoSuchAlgorithmException, UnsupportedEncodingException, ValidationException {
+	public void emailInvoiceInvalidParams5Test() throws NoSuchAlgorithmException, UnsupportedEncodingException, ValidationException, FreeUserAccessForbiddenException, NotAuthenticatedException, DataAccessException {
 		Invoice inv = authenticatedPrincipal.getBusiness().getInvoices().iterator().next();
 		EmailDTO emailDTO = new EmailDTO();
 		emailDTO.setTo("foo-bar.com");
@@ -499,7 +507,7 @@ public class InvoiceServiceTest extends ServiceTest {
 	}
 	
 	@Test(expected = ValidationException.class)
-	public void emailInvoiceInvalidParams6Test() throws NoSuchAlgorithmException, UnsupportedEncodingException, ValidationException {
+	public void emailInvoiceInvalidParams6Test() throws NoSuchAlgorithmException, UnsupportedEncodingException, ValidationException, FreeUserAccessForbiddenException, NotAuthenticatedException, DataAccessException {
 		Invoice inv = authenticatedPrincipal.getBusiness().getInvoices().iterator().next();
 		EmailDTO emailDTO = new EmailDTO();
 		emailDTO.setTo("foo@bar.com");
@@ -529,5 +537,59 @@ public class InvoiceServiceTest extends ServiceTest {
 		assertTrue(!Files.exists(FileSystems.getDefault().getPath(oldPdfPath)));
 		assertTrue(Files.exists(FileSystems.getDefault().getPath(currPdfPath)));
 	}
+
+	@Test
+	public void withouldTaxPensionCompensationUpdateTest() throws DataAccessException, FreeUserAccessForbiddenException, ValidationException, DataIntegrityException, NoSuchObjectException, NotAuthenticatedException {
+		Invoice expectedInvoice = authenticatedPrincipal.getBusiness().getInvoices().iterator().next();
+		BigDecimal preUpdateWitholdTax = expectedInvoice.getWitholdTaxPercentSecondLevel();
+		BigDecimal preUpdatePensionContribution = expectedInvoice.getPensionContributionPercent();
+		BigDecimal preUpdateWitholdTaxTotal = expectedInvoice.getWitholdTaxTotal();
+		BigDecimal preUpdatePensionContributionTotal = expectedInvoice.getPensionContributionTotal();
+		expectedInvoice.setWitholdTaxPercentSecondLevel(new BigDecimal("20.0"));
+		expectedInvoice.setPensionContributionPercent(new BigDecimal("4.0"));
+		expectedInvoice.setWitholdTaxTotal(new BigDecimal("20.0"));
+		expectedInvoice.setPensionContributionTotal(new BigDecimal("4.0"));
+		invoiceService.update(InvoiceDTOTransformer.toDTO(expectedInvoice, true));
+		Invoice.entityManager().flush();
+		Invoice actualInvoice = Invoice.findInvoice(expectedInvoice.getId());
+		assertEquals(null, preUpdateWitholdTax);
+		assertEquals(null, preUpdatePensionContribution);
+		assertEquals(null, preUpdateWitholdTaxTotal);
+		assertEquals(null, preUpdatePensionContributionTotal);
+		assertEquals(new BigDecimal("20.0"), actualInvoice.getWitholdTaxPercentSecondLevel());
+		assertEquals(new BigDecimal("4.0"), actualInvoice.getPensionContributionPercent());
+		assertEquals(new BigDecimal("20.0"), actualInvoice.getWitholdTaxTotal());
+		assertEquals(new BigDecimal("4.0"), actualInvoice.getPensionContributionTotal());
+	}
+
+
+
+	//TODO remove this test case
+	@Autowired
+	private JasperReportService jasperReportService;
+	@Test
+	public void generatePdfTest(){
+		Invoice inv = authenticatedPrincipal.getBusiness().getInvoices().iterator().next();
+		inv.setPensionContribution(true);
+		inv.setPensionContributionPercent(new BigDecimal("4.0"));
+		inv.setPensionContributionTotal(new BigDecimal("4.1"));
+		inv.setWitholdTax(true);
+		inv.setWitholdTaxPercentFirstLevel(new BigDecimal("10.0"));
+		inv.setWitholdTaxPercentSecondLevel(new BigDecimal("20.0"));
+		inv.setWitholdTaxTotal(new BigDecimal("20.1"));
+		inv.setSplitPayment(true);
+		inv.setLayoutType(LayoutType.DENSE);
+		JRBeanCollectionDataSource dataSource = JRDataSourceFactory.createDataSource(inv, inv.getBusiness().getId());
+		try(WritableByteChannel channel = new RandomAccessFile("/tmp/test.pdf.gz", "rw").getChannel();
+			GZIPOutputStream destStream = new GZIPOutputStream(Channels.newOutputStream(channel))
+		) {
+			jasperReportService.exportReportToPdfFile(dataSource, DocumentType.INVOICE, inv.getLayoutType(), destStream);
+		} catch (Exception e) {
+			e.printStackTrace();
+			assertFalse(true);
+		}
+
+	}
+
 
 }

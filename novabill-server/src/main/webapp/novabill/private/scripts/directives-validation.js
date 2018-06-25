@@ -153,7 +153,7 @@ angular.module('novabill.directives.validation',
                     if (nRegExp.positiveTwoDecimalsFloatNumber.test(viewValue)) {
                         var dotVal = viewValue.replace(',', '.');
                         var floatVal = parseFloat(dotVal);
-                        if(floatVal >= 0 && floatVal < 100){
+                        if(floatVal >= 0 && floatVal <= 100){
                             ctrl.$setValidity('tax', true);
                             return dotVal;
                         } else {

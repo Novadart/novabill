@@ -12,7 +12,8 @@ angular.module("novabill.clients",
 
 				.when('/', {
 					templateUrl: nConstantsProvider.url.htmlFragmentUrl('/clients.html'),
-					controller: 'ClientsCtrl'
+					controller: 'ClientsCtrl',
+					reloadOnSearch: false
 				})
 
 

@@ -1,23 +1,26 @@
 package com.novadart.novabill.test.suite;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.novadart.novabill.domain.*;
+import com.novadart.novabill.aspect.logging.DBLoggerAspect;
+import com.novadart.novabill.domain.Business;
+import com.novadart.novabill.domain.Client;
+import com.novadart.novabill.domain.CreditNote;
+import com.novadart.novabill.domain.LogRecord;
+import com.novadart.novabill.domain.dto.DTOUtils;
+import com.novadart.novabill.domain.dto.transformer.BusinessDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.ClientDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.CreditNoteDTOTransformer;
+import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.PDFStorageService;
+import com.novadart.novabill.shared.client.data.EntityType;
+import com.novadart.novabill.shared.client.data.OperationType;
+import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
+import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
+import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.exception.*;
+import com.novadart.novabill.shared.client.facade.ClientGwtService;
+import com.novadart.novabill.shared.client.facade.CreditNoteGwtService;
+import com.novadart.novabill.shared.client.validation.ErrorObject;
+import com.novadart.novabill.shared.client.validation.Field;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,23 +31,13 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.novadart.novabill.aspect.logging.DBLoggerAspect;
-import com.novadart.novabill.domain.dto.DTOUtils;
-import com.novadart.novabill.domain.dto.transformer.BusinessDTOTransformer;
-import com.novadart.novabill.domain.dto.transformer.ClientDTOTransformer;
-import com.novadart.novabill.domain.dto.transformer.CreditNoteDTOTransformer;
-import com.novadart.novabill.domain.security.Principal;
-import com.novadart.novabill.shared.client.data.EntityType;
-import com.novadart.novabill.shared.client.data.OperationType;
-import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
-import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
-import com.novadart.novabill.shared.client.dto.PageDTO;
-import com.novadart.novabill.shared.client.facade.ClientGwtService;
-import com.novadart.novabill.shared.client.facade.CreditNoteGwtService;
-import com.novadart.novabill.shared.client.validation.ErrorObject;
-import com.novadart.novabill.shared.client.validation.Field;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.util.*;
+
+import static org.junit.Assert.*;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -76,7 +69,7 @@ public class CreditNoteServiceTest extends ServiceTest {
 	}
 
 	@Test
-	public void getAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void getAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		Long creditNoteID = authenticatedPrincipal.getBusiness().getCreditNotes().iterator().next().getId();
 		CreditNoteDTO expectedDTO = CreditNoteDTOTransformer.toDTO(CreditNote.findCreditNote(creditNoteID), true);
 		CreditNoteDTO actualDTO = creditNoteService.get(creditNoteID);
@@ -84,78 +77,78 @@ public class CreditNoteServiceTest extends ServiceTest {
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void getUnathorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void getUnathorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		Long creditNoteID = Business.findBusiness(getUnathorizedBusinessID()).getCreditNotes().iterator().next().getId();
 		creditNoteService.get(creditNoteID);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void getAuthorizedCreditNoteIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void getAuthorizedCreditNoteIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		creditNoteService.get(null);
 	}
 	
 	@Test
-	public void getAllInRangeAuthorizedTest() throws NotAuthenticatedException, DataAccessException{
+	public void getAllInRangeAuthorizedTest() throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		PageDTO<CreditNoteDTO> results = creditNoteService.getAllInRange(authenticatedPrincipal.getBusiness().getId(), getYear(), 0, 10);
 		assertTrue(10 == results.getLength() && 0 == results.getOffset() && results.getItems().size() <= 10);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void getAllInRangeUnauthorizedTest() throws NotAuthenticatedException, DataAccessException{
+	public void getAllInRangeUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		creditNoteService.getAllInRange(getUnathorizedBusinessID(), getYear(), 0, 10);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void getAllInRangeAuthorizedBusinessIDNullTest() throws NotAuthenticatedException, DataAccessException{
+	public void getAllInRangeAuthorizedBusinessIDNullTest() throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		creditNoteService.getAllInRange(null, getYear(), 0, 10);
 	}
 	
 	@Test
-	public void getAllForClientAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void getAllForClientAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		Long clientID = new Long(testProps.get("clientWithCreditNotesID"));
-		List<AccountingDocumentDTO> actual = new ArrayList<AccountingDocumentDTO>(creditNoteService.getAllForClient(clientID, getYear()));
+		List<AccountingDocumentDTO> actual = new ArrayList<>(creditNoteService.getAllForClient(clientID, getYear()));
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		List<AccountingDocumentDTO> expected = DTOUtils.toDTOList(new ArrayList(Client.findClient(clientID).getCreditNotes()), DTOUtils.creditNoteDTOConverter, false); 
 		assertTrue(TestUtils.equal(expected, actual, TestUtils.accountingDocumentComparator));
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void getAllForClientUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void getAllForClientUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		Long clientID = Business.findBusiness(getUnathorizedBusinessID()).getClients().iterator().next().getId();
 		creditNoteService.getAllForClient(clientID, getYear());
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void getAllForClientAuthorizedClientIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void getAllForClientAuthorizedClientIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		Integer year = getYear(); 
 		creditNoteService.getAllForClient(null, year);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void getAllForClientAuthorizedClientIDNotExistTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void getAllForClientAuthorizedClientIDNotExistTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		creditNoteService.getAllForClient(-1l, getYear());
 	}
 	
 	@Test
-	public void getAllForClientInRangeAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void getAllForClientInRangeAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		Long clientID = new Long(testProps.get("clientWithCreditNotesID"));
 		PageDTO<CreditNoteDTO> results = creditNoteService.getAllForClientInRange(clientID, getYear(), 0, 10);
 		assertTrue(10 == results.getLength() && 0 == results.getOffset() && results.getItems().size() <= 10);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void getAllForClientInRangeUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void getAllForClientInRangeUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		Long clientID = Business.findBusiness(getUnathorizedBusinessID()).getClients().iterator().next().getId();
 		creditNoteService.getAllForClientInRange(clientID, getYear(), 0, 10);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void getAllForClientInRangeClientIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void getAllForClientInRangeClientIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		creditNoteService.getAllForClientInRange(null, getYear(), 0, 10);
 	}
 	
 	@Test
-	public void removeAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, JsonParseException, JsonMappingException, IOException{
+	public void removeAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, IOException, FreeUserAccessForbiddenException {
 		Long clientID = new Long(testProps.get("clientWithCreditNotesID"));
 		Long creditNoteID = Client.findClient(clientID).getCreditNotes().iterator().next().getId();
 		creditNoteService.remove(authenticatedPrincipal.getBusiness().getId(), clientID, creditNoteID);
@@ -171,34 +164,34 @@ public class CreditNoteServiceTest extends ServiceTest {
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void removeUnauthorized() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void removeUnauthorized() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		Long clientID = new Long(testProps.get("clientWithCreditNotesID"));
 		Long creditNoteID = Client.findClient(clientID).getCreditNotes().iterator().next().getId();
 		creditNoteService.remove(getUnathorizedBusinessID(), clientID, creditNoteID);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void removeUnauthorizedBusinessIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void removeUnauthorizedBusinessIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		Long clientID = new Long(testProps.get("clientWithCreditNotesID"));
 		Long creditNoteID = Client.findClient(clientID).getCreditNotes().iterator().next().getId();
 		creditNoteService.remove(null, clientID, creditNoteID);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void removeAuthorizedClientIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void removeAuthorizedClientIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		Long clientID = new Long(testProps.get("clientWithCreditNotesID"));
 		Long creditNoteID = Client.findClient(clientID).getCreditNotes().iterator().next().getId();
 		creditNoteService.remove(authenticatedPrincipal.getBusiness().getId(), null, creditNoteID);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void removeUnauthorizedCreditNoteIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void removeUnauthorizedCreditNoteIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		Long clientID = new Long(testProps.get("clientWithCreditNotesID"));
 		creditNoteService.remove(authenticatedPrincipal.getBusiness().getId(), clientID, null);
 	}
 	
 	@Test
-	public void addAuthorizedTest() throws NotAuthenticatedException, DataAccessException, ValidationException, FreeUserAccessForbiddenException, InstantiationException, IllegalAccessException, JsonParseException, JsonMappingException, IOException{
+	public void addAuthorizedTest() throws NotAuthenticatedException, DataAccessException, ValidationException, FreeUserAccessForbiddenException, InstantiationException, IllegalAccessException, IOException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
 		CreditNoteDTO creditNoteDTO = CreditNoteDTOTransformer.toDTO(TestUtils.createInvOrCredNote(authenticatedPrincipal.getBusiness().getNextCreditNoteDocumentID(), CreditNote.class), true);
 		creditNoteDTO.setClient(ClientDTOTransformer.toDTO(client));
@@ -254,7 +247,7 @@ public class CreditNoteServiceTest extends ServiceTest {
 	}
 	
 	@Test
-	public void updateAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, JsonParseException, JsonMappingException, IOException{
+	public void updateAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, IOException, FreeUserAccessForbiddenException {
 		CreditNote expectedCreditNote = authenticatedPrincipal.getBusiness().getCreditNotes().iterator().next();
 		expectedCreditNote.setNote("Temporary note for this credit note");
 		creditNoteService.update(CreditNoteDTOTransformer.toDTO(expectedCreditNote, true));
@@ -272,12 +265,12 @@ public class CreditNoteServiceTest extends ServiceTest {
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void updateAuthorizedCreditNoteNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException{
+	public void updateAuthorizedCreditNoteNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, FreeUserAccessForbiddenException {
 		creditNoteService.update(null);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void updateAuthorizedIDNull() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException{
+	public void updateAuthorizedIDNull() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, FreeUserAccessForbiddenException {
 		CreditNote creditNote = authenticatedPrincipal.getBusiness().getCreditNotes().iterator().next();
 		CreditNoteDTO credNoteDTO = CreditNoteDTOTransformer.toDTO(creditNote, true);
 		credNoteDTO.setId(null);
@@ -292,13 +285,13 @@ public class CreditNoteServiceTest extends ServiceTest {
 			creditNoteDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 			creditNoteService.add(creditNoteDTO);
 		}catch(ValidationException e){
-			Set<Field> expected = new HashSet<Field>(TestUtils.abstractInvoiceValidationFieldsMap.values());
+			Set<Field> expected = new HashSet<>(TestUtils.abstractInvoiceValidationFieldsMap.values());
 			expected.remove(Field.accountingDocumentYear);
 			expected.remove(Field.accountingDocumentDate);
 			expected.remove(Field.documentID);
 			expected.remove(Field.payed);
 			expected.remove(Field.paymentDueDate);
-			Set<Field> actual= new HashSet<Field>();
+			Set<Field> actual= new HashSet<>();
 			for(ErrorObject error: e.getErrors())
 				actual.add(error.getField());
 			assertEquals(expected, actual);

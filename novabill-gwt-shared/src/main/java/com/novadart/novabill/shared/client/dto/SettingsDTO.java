@@ -3,6 +3,8 @@ package com.novadart.novabill.shared.client.dto;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.novadart.novabill.shared.client.data.LayoutType;
 
+import java.math.BigDecimal;
+
 public class SettingsDTO implements IsSerializable {
 	
 	private LayoutType defaultLayoutType;
@@ -28,6 +30,12 @@ public class SettingsDTO implements IsSerializable {
     private String emailReplyTo;
     
     private Long nonFreeAccountExpirationTime;
+
+	private BigDecimal witholdTaxPercentFirstLevel;
+
+	private BigDecimal witholdTaxPercentSecondLevel;
+
+	private BigDecimal pensionContributionPercent;
 
 	public LayoutType getDefaultLayoutType() {
 		return defaultLayoutType;
@@ -124,5 +132,29 @@ public class SettingsDTO implements IsSerializable {
 
 	public void setNonFreeAccountExpirationTime(Long nonFreeAccountExpirationTime) {
 		this.nonFreeAccountExpirationTime = nonFreeAccountExpirationTime;
+	}
+
+	public BigDecimal getWitholdTaxPercentFirstLevel() {
+		return witholdTaxPercentFirstLevel;
+	}
+
+	public void setWitholdTaxPercentFirstLevel(BigDecimal witholdTaxPercentFirstLevel) {
+		this.witholdTaxPercentFirstLevel = witholdTaxPercentFirstLevel;
+	}
+
+	public BigDecimal getWitholdTaxPercentSecondLevel() {
+		return witholdTaxPercentSecondLevel;
+	}
+
+	public void setWitholdTaxPercentSecondLevel(BigDecimal witholdTaxPercentSecondLevel) {
+		this.witholdTaxPercentSecondLevel = witholdTaxPercentSecondLevel;
+	}
+
+	public BigDecimal getPensionContributionPercent() {
+		return pensionContributionPercent;
+	}
+
+	public void setPensionContributionPercent(BigDecimal pensionContributionPercent) {
+		this.pensionContributionPercent = pensionContributionPercent;
 	}
 }

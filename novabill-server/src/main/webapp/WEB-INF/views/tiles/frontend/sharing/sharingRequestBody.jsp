@@ -43,7 +43,7 @@
 					</div>
 				</div>
 				<div class="form-actions" style="text-align: center;">
-					<button type="submit" class="btn btn-lg blue">Invia</button>
+					<button type="submit" class="btn btn-primary">Invia</button>
 				</div>
 
 			</form:form>

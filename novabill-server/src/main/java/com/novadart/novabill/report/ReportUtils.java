@@ -24,6 +24,8 @@ import com.novadart.novabill.domain.TransportDocument;
 public class ReportUtils {
 	
 	public static final int FILENAME_MAX_LENGTH = 120;
+
+	private static final BigDecimal HUNDRED_PERCENT = new BigDecimal(100);
 	
 	public static String removeTrailingZeros(BigDecimal decimal, Locale locale){
 		DecimalFormat format = (DecimalFormat)NumberFormat.getNumberInstance(locale);
@@ -86,6 +88,20 @@ public class ReportUtils {
 	public static boolean isFreeUser(Business business) {
 		Long premiumExpirationTime = business.getSettings().getNonFreeAccountExpirationTime();
 		return premiumExpirationTime == null || premiumExpirationTime < new Date().getTime();
+	}
+
+	public static String formatPensionContributionLabel(String pattern, BigDecimal percent, Locale locale){
+		return String.format(pattern, removeTrailingZeros(percent, locale));
+	}
+
+	public static String formatWitholdTaxLabel(String patternBothLevels, String patternSecondLevel,
+											   BigDecimal percentFirstLevel, BigDecimal percentSecondLevel,
+											   Locale locale){
+		if(HUNDRED_PERCENT.compareTo(percentFirstLevel) == 0)
+			return String.format(patternSecondLevel, removeTrailingZeros(percentSecondLevel, locale));
+		else
+			return String.format(patternBothLevels, removeTrailingZeros(percentSecondLevel, locale),
+					removeTrailingZeros(percentFirstLevel, locale));
 	}
 
 }

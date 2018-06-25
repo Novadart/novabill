@@ -33,14 +33,14 @@ public class TransporterController {
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
-	public List<TransporterDTO> getAll(@PathVariable Long businessID) throws NotAuthenticatedException, DataAccessException {
+	public List<TransporterDTO> getAll(@PathVariable Long businessID) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		return transporterService.getAll(businessID);
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
-	public TransporterDTO get(@PathVariable Long id) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException{
+	public TransporterDTO get(@PathVariable Long id) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, FreeUserAccessForbiddenException {
 		return transporterService.get(id);
 	}
 	
@@ -65,7 +65,7 @@ public class TransporterController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
-	public void remove(@PathVariable Long businessID, @PathVariable Long id) throws NotAuthenticatedException, DataAccessException, DataIntegrityException{
+	public void remove(@PathVariable Long businessID, @PathVariable Long id) throws NotAuthenticatedException, DataAccessException, DataIntegrityException, FreeUserAccessForbiddenException {
 		transporterService.remove(businessID, id);
 	}
 	

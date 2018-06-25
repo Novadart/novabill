@@ -23,19 +23,19 @@ public class CreditNoteGwtController extends AbstractGwtController implements Cr
 	@Autowired
 	private CreditNoteService creditNoteService;
 
-	public CreditNoteDTO get(Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+	public CreditNoteDTO get(Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		return creditNoteService.get(id);
 	}
 
-	public PageDTO<CreditNoteDTO> getAllInRange(Long businessID, Integer year, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException {
+	public PageDTO<CreditNoteDTO> getAllInRange(Long businessID, Integer year, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		return creditNoteService.getAllInRange(businessID, year, start, length);
 	}
 
-	public List<CreditNoteDTO> getAllForClient(Long clientID, Integer year) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+	public List<CreditNoteDTO> getAllForClient(Long clientID, Integer year) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		return creditNoteService.getAllForClient(clientID, year);
 	}
 
-	public PageDTO<CreditNoteDTO> getAllForClientInRange(Long id, Integer year, int start, int length) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+	public PageDTO<CreditNoteDTO> getAllForClientInRange(Long id, Integer year, int start, int length) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		return creditNoteService.getAllForClientInRange(id, year, start, length);
 	}
 
@@ -43,11 +43,11 @@ public class CreditNoteGwtController extends AbstractGwtController implements Cr
 		return creditNoteService.add(creditNoteDTO);
 	}
 
-	public void remove(Long businessID, Long clientID, Long creditNoteID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+	public void remove(Long businessID, Long clientID, Long creditNoteID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		creditNoteService.remove(businessID, clientID, creditNoteID);
 	}
 
-	public void update(CreditNoteDTO creditNoteDTO) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException {
+	public void update(CreditNoteDTO creditNoteDTO) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, FreeUserAccessForbiddenException {
 		creditNoteService.update(creditNoteDTO);
 	}
 

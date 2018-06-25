@@ -10,7 +10,7 @@
        <div class="alert alert-info" style="text-align: center;">
             <h2>Questo indirizzo non è più attivo</h2>
             <br>
-            <a href="${shareUrl}" class="btn btn-lg blue">Attiva un nuovo indirizzo di accesso</a>
+            <a href="${shareUrl}" class="btn btn-primary">Attiva un nuovo indirizzo di accesso</a>
        </div>
     </div>
   </div>

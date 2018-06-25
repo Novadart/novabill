@@ -3,10 +3,7 @@ package com.novadart.novabill.frontend.client.util;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.datepicker.client.CalendarUtil;
-import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
-import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
-import com.novadart.novabill.shared.client.dto.PaymentDateType;
-import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
+import com.novadart.novabill.shared.client.dto.*;
 import com.novadart.novabill.shared.client.util.AccountingCalcUtils;
 
 import java.math.BigDecimal;
@@ -184,8 +181,7 @@ public class CalcUtils {
 	}
 
 
-	public static void calculateTotals(List<AccountingDocumentItemDTO> accountingDocumentItems, Label totalTax,
-			Label totalBeforeTaxes, Label totalAfterTaxes){
+	public static void calculateTotals(List<AccountingDocumentItemDTO> accountingDocumentItems, Label totalTax, Label totalBeforeTaxes, Label totalAfterTaxes){
 
 		AccountingCalcUtils.AccountingDocumentTotals totals = AccountingCalcUtils.calculateTotals(accountingDocumentItems);
 
@@ -203,5 +199,12 @@ public class CalcUtils {
 		doc.setTotal(totals.getTotalAfterTaxes());
 	}
 
+	public static void calculateTotals(List<AccountingDocumentItemDTO> accountingDocumentItems, InvoiceDTO invoice) {
+		AccountingCalcUtils.AccountingDocumentTotals totals = AccountingCalcUtils.calculateTotals(accountingDocumentItems);
+
+		invoice.setTotalBeforeTax(totals.getTotalBeforeTaxes());
+		invoice.setTotalTax(totals.getTotalTaxes());
+		invoice.setTotal(totals.getTotalAfterTaxes());
+	}
 
 }

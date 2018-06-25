@@ -23,13 +23,13 @@ public class PaymentTypeGwtController extends AbstractGwtController implements P
 	private PaymentTypeService paymentTypeService;
 	
 	@Override
-	public List<PaymentTypeDTO> getAll(Long businessID) throws NotAuthenticatedException, DataAccessException {
+	public List<PaymentTypeDTO> getAll(Long businessID) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		return paymentTypeService.getAll(businessID);
 	}
 
 	@Override
 	public PaymentTypeDTO get(Long id) throws NotAuthenticatedException,
-			NoSuchObjectException, DataAccessException {
+			NoSuchObjectException, DataAccessException, FreeUserAccessForbiddenException {
 		return paymentTypeService.get(id);
 	}
 
@@ -44,7 +44,7 @@ public class PaymentTypeGwtController extends AbstractGwtController implements P
 	}
 
 	@Override
-	public void remove(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException {
+	public void remove(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		paymentTypeService.remove(businessID, id);
 	}
 

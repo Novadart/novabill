@@ -1,15 +1,14 @@
 package com.novadart.novabill.service.web;
 
+import com.novadart.novabill.annotation.Restrictions;
+import com.novadart.novabill.authorization.TrialOrPremiumChecker;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.DocumentIDClass;
 import com.novadart.novabill.domain.dto.transformer.DocumentIDClassDTOTransformer;
 import com.novadart.novabill.service.validator.DocumentIDClassValidator;
 import com.novadart.novabill.shared.client.dto.DocumentIDClassDTO;
-import com.novadart.novabill.shared.client.exception.DataAccessException;
-import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
-import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
-import com.novadart.novabill.shared.client.exception.ValidationException;
+import com.novadart.novabill.shared.client.exception.*;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -27,14 +26,16 @@ public class DocumentIDClassService {
     @Autowired
     private BusinessService businessService;
 
+    @Restrictions(checkers = {TrialOrPremiumChecker.class})
     @PreAuthorize("#businessID == principal.business.id")
-    public List<DocumentIDClassDTO> getAll(Long businessID) throws NotAuthenticatedException, DataAccessException {
+    public List<DocumentIDClassDTO> getAll(Long businessID) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
         return businessService.getDocumentIdClasses(businessID);
     }
 
 
+    @Restrictions(checkers = {TrialOrPremiumChecker.class})
     @PreAuthorize("T(com.novadart.novabill.domain.DocumentIDClass).findDocumentIDClass(#id)?.business?.id == principal.business.id")
-    public DocumentIDClassDTO get(Long businessID, Long id) throws NoSuchObjectException, NotAuthenticatedException, DataAccessException {
+    public DocumentIDClassDTO get(Long businessID, Long id) throws NoSuchObjectException, NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
         List<DocumentIDClassDTO> documentIDClassesDTOs = businessService.getDocumentIdClasses(businessID);
         for(DocumentIDClassDTO documentIDClassDTO : documentIDClassesDTOs){
             if(documentIDClassDTO.getId().equals(id))
@@ -43,10 +44,11 @@ public class DocumentIDClassService {
         throw new NoSuchObjectException();
     }
 
+    @Restrictions(checkers = {TrialOrPremiumChecker.class})
     @Transactional(readOnly = false, rollbackFor = {ValidationException.class})
     @PreAuthorize("#docIDClassDTO?.business?.id == principal.business.id and " +
             "#docIDClassDTO != null and #docIDClassDTO.id == null")
-    public Long add(Long businessID, DocumentIDClassDTO docIDClassDTO) throws ValidationException {
+    public Long add(Long businessID, DocumentIDClassDTO docIDClassDTO) throws ValidationException, NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
         DocumentIDClass docIDClass = new DocumentIDClass();
         DocumentIDClassDTOTransformer.copyFromDTO(docIDClass, docIDClassDTO);
         Business business = Business.findBusiness(docIDClassDTO.getBusiness().getId());
@@ -59,10 +61,11 @@ public class DocumentIDClassService {
         return docIDClass.getId();
     }
 
+    @Restrictions(checkers = {TrialOrPremiumChecker.class})
     @Transactional(readOnly = false)
     @PreAuthorize("#businessID == principal.business.id and " +
             "T(com.novadart.novabill.domain.DocumentIDClass).findDocumentIDClass(#id)?.business?.id == #businessID")
-    public boolean remove(Long businessID, Long id) {
+    public boolean remove(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException{
         DocumentIDClass docIDClass = DocumentIDClass.findDocumentIDClass(id);
         if(docIDClass.hasInvoices())
             return false;
@@ -74,10 +77,11 @@ public class DocumentIDClassService {
         return true;
     }
 
+    @Restrictions(checkers = {TrialOrPremiumChecker.class})
     @Transactional(readOnly = false, rollbackFor = {ValidationException.class})
     @PreAuthorize("principal.business.id == #businessID and #documentIDClassDTO?.id != null and " +
             "T(com.novadart.novabill.domain.DocumentIDClass).findDocumentIDClass(#documentIDClassDTO?.id)?.business?.id == principal.business.id")
-    public void update(Long businessID, DocumentIDClassDTO documentIDClassDTO) throws NoSuchObjectException, ValidationException {
+    public void update(Long businessID, DocumentIDClassDTO documentIDClassDTO) throws NoSuchObjectException, ValidationException, DataAccessException, FreeUserAccessForbiddenException, NotAuthenticatedException {
         DocumentIDClass persistedDocumentIDClass = DocumentIDClass.findDocumentIDClass(documentIDClassDTO.getId());
         if(persistedDocumentIDClass == null)
             throw new NoSuchObjectException();
