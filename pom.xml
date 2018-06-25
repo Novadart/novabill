@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.novadart.novabill</groupId>
 	<artifactId>novabill</artifactId>
-	<version>4.6</version>
+	<version>4.7</version>
 	<packaging>pom</packaging>
 
 	<name>Novabill</name>
@@ -301,16 +301,6 @@
 				<groupId>net.sf.jasperreports</groupId>
 				<artifactId>jasperreports</artifactId>
 				<version>6.0.3</version>
-			</dependency>
-			<dependency>
-				<groupId>com.novadart.jasperreports.fonts</groupId>
-				<artifactId>fonts-arial</artifactId>
-				<version>1.0</version>
-			</dependency>
-			<dependency>
-				<groupId>com.novadart.jasperreports.fonts</groupId>
-				<artifactId>fonts-open-sans</artifactId>
-				<version>1.0</version>
 			</dependency>
 			<dependency>
 				<groupId>com.lowagie</groupId>
