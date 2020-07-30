@@ -20,18 +20,18 @@ import com.novadart.novabill.shared.client.tuple.Pair;
 @RemoteServiceRelativePath("pricelist.rpc")
 public interface PriceListGwtService extends RemoteService {
 	
-	public List<PriceListDTO> getAll(Long businessID) throws NotAuthenticatedException, DataAccessException;
+	public List<PriceListDTO> getAll(Long businessID) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException;
 	
-	public PriceListDTO get(Long id) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException;
+	public PriceListDTO get(Long id) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, FreeUserAccessForbiddenException;
 	
 	public Long add(PriceListDTO priceListDTO) throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException;
 	
 	public void update(PriceListDTO priceListDTO) throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException;
 	
-	public void remove(Long businessID, Long id)  throws NotAuthenticatedException, DataAccessException, DataIntegrityException;
+	public void remove(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException, DataIntegrityException, FreeUserAccessForbiddenException;
 	
-	public Map<String, Pair<String, PriceDTO>> getPrices(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException;
+	public Map<String, Pair<String, PriceDTO>> getPrices(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException;
 	
-	public Long clonePriceList(Long businessID, Long id, String priceListName) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, ValidationException;
+	public Long clonePriceList(Long businessID, Long id, String priceListName) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, ValidationException, FreeUserAccessForbiddenException;
 
 }

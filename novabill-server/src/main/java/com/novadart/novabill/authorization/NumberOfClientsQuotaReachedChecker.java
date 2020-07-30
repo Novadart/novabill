@@ -24,7 +24,7 @@ public class NumberOfClientsQuotaReachedChecker implements RestricionChecker {
 	@Override
 	public void check(Principal principal) throws FreeUserAccessForbiddenException {
 		LOGGER.debug("Number of clients quota check - quota: {}, roles: {}", new Object[]{numberOfClientsQuota, principal.getGrantedRoles()});
-		if(principal.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_FREE) && principal.getBusiness().getClients().size() >= numberOfClientsQuota)
+		if(principal.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_TRIAL) && principal.getBusiness().getClients().size() >= numberOfClientsQuota)
 			throw new FreeUserAccessForbiddenException(FreeUserAccessErrorType.NUMBER_OF_CLIENTS_QUOTA_REACHED);
 	}
 

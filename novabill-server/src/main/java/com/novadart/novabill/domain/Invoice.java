@@ -67,6 +67,20 @@ public class Invoice extends AbstractInvoice implements Serializable {
 	@Column(columnDefinition = "boolean default false")
 	private boolean splitPayment = false;
 
+	private boolean witholdTax;
+
+	private BigDecimal witholdTaxPercentFirstLevel;
+
+	private BigDecimal witholdTaxPercentSecondLevel;
+
+	private boolean pensionContribution;
+
+	private BigDecimal pensionContributionPercent;
+
+	private BigDecimal witholdTaxTotal;
+
+	private BigDecimal pensionContributionTotal;
+
     @ManyToOne
     @JoinColumn(name = "business")
     protected Business business;
@@ -234,6 +248,62 @@ public class Invoice extends AbstractInvoice implements Serializable {
 
 	public void setSplitPayment(boolean splitPayment) {
 		this.splitPayment = splitPayment;
+	}
+
+	public boolean isWitholdTax() {
+		return witholdTax;
+	}
+
+	public void setWitholdTax(boolean witholdTax) {
+		this.witholdTax = witholdTax;
+	}
+
+	public BigDecimal getWitholdTaxPercentFirstLevel() {
+		return witholdTaxPercentFirstLevel;
+	}
+
+	public void setWitholdTaxPercentFirstLevel(BigDecimal witholdTaxPercentFirstLevel) {
+		this.witholdTaxPercentFirstLevel = witholdTaxPercentFirstLevel;
+	}
+
+	public BigDecimal getWitholdTaxPercentSecondLevel() {
+		return witholdTaxPercentSecondLevel;
+	}
+
+	public void setWitholdTaxPercentSecondLevel(BigDecimal witholdTaxRate) {
+		this.witholdTaxPercentSecondLevel = witholdTaxRate;
+	}
+
+	public boolean isPensionContribution() {
+		return pensionContribution;
+	}
+
+	public void setPensionContribution(boolean pensionContribution) {
+		this.pensionContribution = pensionContribution;
+	}
+
+	public BigDecimal getPensionContributionPercent() {
+		return pensionContributionPercent;
+	}
+
+	public void setPensionContributionPercent(BigDecimal pensionContribution) {
+		this.pensionContributionPercent = pensionContribution;
+	}
+
+	public BigDecimal getWitholdTaxTotal() {
+		return witholdTaxTotal;
+	}
+
+	public void setWitholdTaxTotal(BigDecimal witholdTaxRateTotal) {
+		this.witholdTaxTotal = witholdTaxRateTotal;
+	}
+
+	public BigDecimal getPensionContributionTotal() {
+		return pensionContributionTotal;
+	}
+
+	public void setPensionContributionTotal(BigDecimal pensionContributionTotal) {
+		this.pensionContributionTotal = pensionContributionTotal;
 	}
 
 	public Business getBusiness() {

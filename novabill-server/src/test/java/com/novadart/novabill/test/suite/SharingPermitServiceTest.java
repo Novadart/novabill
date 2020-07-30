@@ -1,26 +1,5 @@
 package com.novadart.novabill.test.suite;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.novadart.novabill.aspect.logging.DBLoggerAspect;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.LogRecord;
@@ -37,6 +16,22 @@ import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
@@ -64,7 +59,7 @@ public class SharingPermitServiceTest extends ServiceTest {
 	}
 	
 	@Test
-	public void addAuthorizedTest() throws ValidationException, JsonParseException, JsonMappingException, IOException, FreeUserAccessForbiddenException, DataAccessException, NotAuthenticatedException{
+	public void addAuthorizedTest() throws ValidationException, IOException, FreeUserAccessForbiddenException, DataAccessException, NotAuthenticatedException{
 		SharingPermitDTO sharingPermitDTO = SharingPermitDTOTransformer.toDTO(TestUtils.createSharingPermit());
 		sharingPermitDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
@@ -104,7 +99,7 @@ public class SharingPermitServiceTest extends ServiceTest {
 	}
 	
 	@Test
-	public void removeAutorizedTest() throws JsonParseException, JsonMappingException, IOException{
+	public void removeAutorizedTest() throws IOException, FreeUserAccessForbiddenException, NotAuthenticatedException, DataAccessException {
 		Business business = Business.findBusiness(authenticatedPrincipal.getBusiness().getId());
 		SharingPermit sharingPermit = business.getSharingPermits().iterator().next();
 		sharingPermitService.remove(business.getId(), sharingPermit.getId());
@@ -119,24 +114,24 @@ public class SharingPermitServiceTest extends ServiceTest {
 	}
 	
 	@Test(expected = AccessDeniedException.class)
-	public void removeIdNullTest(){
+	public void removeIdNullTest() throws FreeUserAccessForbiddenException, NotAuthenticatedException, DataAccessException {
 		sharingPermitService.remove(authenticatedPrincipal.getBusiness().getId(), null);
 	}
 	
 	@Test(expected = AccessDeniedException.class)
-	public void removeBusinessIDNullTest(){
+	public void removeBusinessIDNullTest() throws FreeUserAccessForbiddenException, NotAuthenticatedException, DataAccessException {
 		Long id = Business.findBusiness(authenticatedPrincipal.getBusiness().getId()).getSharingPermits().iterator().next().getId();
 		sharingPermitService.remove(null, id);
 	}
 	
 	@Test(expected = AccessDeniedException.class)
-	public void removeUnauthorizedTest(){
+	public void removeUnauthorizedTest() throws FreeUserAccessForbiddenException, NotAuthenticatedException, DataAccessException {
 		Long id = Business.findBusiness(authenticatedPrincipal.getBusiness().getId()).getSharingPermits().iterator().next().getId();
 		sharingPermitService.remove(getUnathorizedBusinessID(), id);
 	}
 	
 	@Test
-	public void getAllAuthorizedTest() throws NotAuthenticatedException, DataAccessException{
+	public void getAllAuthorizedTest() throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		Business business = Business.findBusiness(authenticatedPrincipal.getBusiness().getId());
 		SharingPermit sharingPermit = business.getSharingPermits().iterator().next();
 		List<SharingPermitDTO> all = sharingPermitService.getAll(business.getId());
@@ -144,12 +139,12 @@ public class SharingPermitServiceTest extends ServiceTest {
 	}
 	
 	@Test(expected = AccessDeniedException.class)
-	public void getAllNullTest() throws NotAuthenticatedException, DataAccessException{
+	public void getAllNullTest() throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		sharingPermitService.getAll(null);
 	}
 	
 	@Test(expected = AccessDeniedException.class)
-	public void getAllUnauthorizedTest() throws NotAuthenticatedException, DataAccessException{
+	public void getAllUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		sharingPermitService.getAll(getUnathorizedBusinessID());
 	}
 	
@@ -165,7 +160,7 @@ public class SharingPermitServiceTest extends ServiceTest {
 	@Test
 	public void updateSharingPermitEmailTest() throws ValidationException{
 		SharingPermit persistedSharingPermit = Business.findBusiness(authenticatedPrincipal.getBusiness().getId()).getSharingPermits().iterator().next();
-		persistedSharingPermit.setDescription("new desctiption");
+		persistedSharingPermit.setDescription("new description");
 		validator.validate(persistedSharingPermit);
 		persistedSharingPermit.flush();
 	}

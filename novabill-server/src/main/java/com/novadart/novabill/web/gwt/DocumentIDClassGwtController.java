@@ -2,12 +2,11 @@ package com.novadart.novabill.web.gwt;
 
 import com.novadart.novabill.annotation.HandleGWTServiceAccessDenied;
 import com.novadart.novabill.service.web.DocumentIDClassService;
-import com.novadart.novabill.service.web.TransporterService;
 import com.novadart.novabill.shared.client.dto.DocumentIDClassDTO;
-import com.novadart.novabill.shared.client.dto.TransporterDTO;
-import com.novadart.novabill.shared.client.exception.*;
+import com.novadart.novabill.shared.client.exception.DataAccessException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
+import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.facade.DocumentIDClassGwtService;
-import com.novadart.novabill.shared.client.facade.TransporterGwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -22,7 +21,7 @@ public class DocumentIDClassGwtController extends AbstractGwtController implemen
 
 
 	@Override
-	public List<DocumentIDClassDTO> getAll(Long businessID) throws NotAuthenticatedException, DataAccessException {
+	public List<DocumentIDClassDTO> getAll(Long businessID) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		return documentIDClassService.getAll(businessID);
 	}
 }

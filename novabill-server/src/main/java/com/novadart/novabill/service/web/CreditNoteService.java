@@ -3,6 +3,8 @@ package com.novadart.novabill.service.web;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.novadart.novabill.annotation.Restrictions;
+import com.novadart.novabill.authorization.TrialOrPremiumChecker;
 import com.novadart.novabill.report.DocumentType;
 import com.novadart.novabill.service.PDFStorageService;
 import org.hibernate.Hibernate;
@@ -49,19 +51,21 @@ public class CreditNoteService {
 
 	@Autowired
 	private PDFStorageService pdfStorageService;
-	
+
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@PreAuthorize("T(com.novadart.novabill.domain.CreditNote).findCreditNote(#id)?.business?.id == principal.business.id")
-	public CreditNoteDTO get(Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+	public CreditNoteDTO get(Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		CreditNote creditNote = CreditNote.findCreditNote(id);
 		if(creditNote == null)
 			throw new NoSuchObjectException();
 		return CreditNoteDTOTransformer.toDTO(creditNote, true);
 	}
 
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@PreAuthorize("#businessID == principal.business.id")
-	public PageDTO<CreditNoteDTO> getAllInRange(Long businessID, Integer year, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException {
+	public PageDTO<CreditNoteDTO> getAllInRange(Long businessID, Integer year, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		List<CreditNoteDTO> allCreditNotes = businessService.getCreditNotes(businessID, year);
-		return new PageDTO<CreditNoteDTO>(DTOUtils.range(allCreditNotes, start, length), start, length, new Long(allCreditNotes.size()));
+		return new PageDTO<>(DTOUtils.range(allCreditNotes, start, length), start, length, new Long(allCreditNotes.size()));
 	}
 	
 	private static class EqualsClientIDPredicate implements Predicate<CreditNoteDTO>{
@@ -78,13 +82,14 @@ public class CreditNoteService {
 		}
 		
 	}
-	
+
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#clientID)?.business?.id == principal.business.id")
-	public List<CreditNoteDTO> getAllForClient(Long clientID, Integer year) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
-		return new ArrayList<CreditNoteDTO>(DTOUtils.filter(businessService.getCreditNotes(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId(), year), new EqualsClientIDPredicate(clientID)));
+	public List<CreditNoteDTO> getAllForClient(Long clientID, Integer year) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
+		return new ArrayList<>(DTOUtils.filter(businessService.getCreditNotes(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId(), year), new EqualsClientIDPredicate(clientID)));
 	}
-	
-	//@Restrictions(checkers = {NumberOfCreditNotesPerYearQuotaReachedChecker.class})
+
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@PreAuthorize("#creditNoteDTO?.business?.id == principal.business.id and " +
 				  "T(com.novadart.novabill.domain.Client).findClient(#creditNoteDTO?.client?.id)?.business?.id == principal.business.id and " +
 				  "#creditNoteDTO != null and #creditNoteDTO.id == null")
@@ -105,12 +110,13 @@ public class CreditNoteService {
 		creditNote.flush();
 		return creditNote.getId();
 	}
-	
+
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@Transactional(readOnly = false)
 	@PreAuthorize("#businessID == principal.business.id and " +
 				  "T(com.novadart.novabill.domain.CreditNote).findCreditNote(#id)?.business?.id == #businessID and " +
 				  "T(com.novadart.novabill.domain.CreditNote).findCreditNote(#id)?.client?.id == #clientID")
-	public void remove(Long businessID, Long clientID, Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+	public void remove(Long businessID, Long clientID, Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		CreditNote creditNote = CreditNote.findCreditNote(id);
 		creditNote.remove(); //removing credit note
 		if(Hibernate.isInitialized(creditNote.getBusiness().getCreditNotes()))
@@ -118,12 +124,13 @@ public class CreditNoteService {
 		if(Hibernate.isInitialized(creditNote.getClient().getCreditNotes()))
 			creditNote.getClient().getCreditNotes().remove(creditNote);
 	}
-	
+
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	@PreAuthorize("#creditNoteDTO?.business?.id == principal.business.id and " +
 			  	  "T(com.novadart.novabill.domain.Client).findClient(#creditNoteDTO?.client?.id)?.business?.id == principal.business.id and " +
 			  	  "#creditNoteDTO?.id != null")
-	public void update(CreditNoteDTO creditNoteDTO) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException {
+	public void update(CreditNoteDTO creditNoteDTO) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, FreeUserAccessForbiddenException {
 		CreditNote persistedCreditNote = CreditNote.findCreditNote(creditNoteDTO.getId());
 		if(persistedCreditNote == null)
 			throw new NoSuchObjectException();
@@ -144,10 +151,11 @@ public class CreditNoteService {
 		return utilsService.getAuthenticatedPrincipalDetails().getBusiness().getNextCreditNoteDocumentID();
 	}
 
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#clientID)?.business?.id == principal.business.id")
-	public PageDTO<CreditNoteDTO> getAllForClientInRange(Long clientID, Integer year, int start, int length) throws NotAuthenticatedException, DataAccessException,	NoSuchObjectException {
+	public PageDTO<CreditNoteDTO> getAllForClientInRange(Long clientID, Integer year, int start, int length) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		List<CreditNoteDTO> allCreditNotes = getAllForClient(clientID, year);
-		return new PageDTO<CreditNoteDTO>(DTOUtils.range(allCreditNotes, start, length), start, length, new Long(allCreditNotes.size()));
+		return new PageDTO<>(DTOUtils.range(allCreditNotes, start, length), start, length, new Long(allCreditNotes.size()));
 	}
 
 }

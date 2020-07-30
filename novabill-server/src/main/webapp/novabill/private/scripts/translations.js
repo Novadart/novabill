@@ -238,17 +238,14 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 			PAYMENTS_STATUS_FILTERING_PAYMENT_DUEDATE : 'Data di Scadenza',
 			PAYMENTS_STATUS_PRINT : 'Stampa',
 			PAYMENTS_STATUS_START_DATE : 'Da data',
+			PENSION_CONTRIBUTION : 'Contributo Previdenziale',
+            PENSION_CONTRIBUTION_ENABLE : 'Abilita Contributo Previdenziale',
+			PENSION_CONTRIBUTION_LABEL : 'Percentuale di Contributo Previdenziale',
+			PENSION_CONTRIBUTION_PLACEHOLDER: 'esempio: 4',
 			PLAN_PREMIUM : 'Premium',
 			PLAN_STANDARD : 'Standard',
 			POSTCODE : 'C.A.P.',
 			POSTCODE_PLACEHOLDER : 'esempio: 35010',
-			PREMIUM_ALERT : 'Questa funzionalità è disponibile solo agli utenti <b>Premium</b>',
-			PREMIUM_BUTTON : 'Diventa Premium',
-			PREMIUM_SUGGESTION_GO : 'Informazioni su Premium',
-			PREMIUM_SUGGESTION_MESSAGE : 'Aggiornare a Novabill Premium è semplice ed economico e ti permette di ottenere tutte le funzionalità aggiuntive non disponibili in Novabill Standard.',
-			PREMIUM_SUGGESTION_MESSAGE_2 : 'Cliccando sul pulsante sottostante potrai conoscere i vantaggi di Premium senza alcun impegno.',
-			PREMIUM_SUGGESTION_SKIP : 'No grazie, voglio continuare subito con Novabill Standard',
-			PREMIUM_SUGGESTION_TITLE : 'Vuoi passare a Premium?',
 			PRICE : 'Prezzo',
 			PRICE_DISCOUNT_PERCENT : 'Sconto %',
 			PRICE_DISCOUNT_FIXED : 'Sconto €',
@@ -323,6 +320,7 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 			TITLE_DELETE_ACCOUNT : 'Elimina Account',
 			TITLE_EMAIL_SETTINGS : 'Impostazioni E-Mail',
 			TITLE_EXPORT_DATA : 'Esporta i tuoi dati',
+			TITLE_INVOICE_SETTINGS : 'Impostazioni di Fatturazione',
 			TITLE_LAYOUT_SETTINGS : 'Impostazioni di Stampa',
 			TITLE_OTHER_SETTINGS : 'Altre impostazioni',
 			TITLE_SET_LOGO : 'Imposta il tuo logo',
@@ -349,6 +347,7 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 			VALIDATION_EMAIL_TAKEN : 'Email già utilizzata in un\'altra condivisione',
 			VALIDATION_NAME_TAKEN : 'Nome già utilizzato per un altro listino',
 			VALIDATION_INVALID_VALUE : 'Valore non valido',
+			VALIDATION_PERCENT : 'Il valore deve essere compreso tra 0 e 100',
 			VALIDATION_REQUIRED : 'Obbligatorio',
 			VALIDATION_SKU_TAKEN : 'Codice già utilizzato per un altro articolo',
 			VAT : 'IVA',
@@ -360,8 +359,13 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 			WEBSITE : 'Sito Web',
 			WEBSITE_PLACEHOLDER : 'esempio: www.example.com',
 			WEIGHT : 'Peso (kg)',
-			WEIGHT_PLACEHOLDER : 'esempio: 2'
-
+			WEIGHT_PLACEHOLDER : 'esempio: 2',
+			WITHOLD_TAX : 'Ritenuta d\'acconto',
+            WITHOLD_TAX_ENABLE : 'Abilita Ritenuta d\'acconto',
+			WITHOLD_TAX_FIRST_LEVEL : 'Percentuale di imponibile su cui calcolare la ritenuta d\'acconto',
+			WITHOLD_TAX_FIRST_LEVEL_PLACEHOLDER : 'Esempio: 100',
+			WITHOLD_TAX_SECOND_LEVEL : 'Percentuale di ritenuta d\'acconto',
+			WITHOLD_TAX_SECOND_LEVEL_PLACEHOLDER : 'esempio: 20'
 		});
 
 		$translateProvider.preferredLanguage('it_IT');

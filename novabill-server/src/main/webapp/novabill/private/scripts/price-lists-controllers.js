@@ -8,13 +8,20 @@ angular.module('novabill.priceLists.controllers',
 /**
  * PRICE LISTS PAGE CONTROLLER
  */
-.controller('PriceListsCtrl', ['$scope', 'nConstants', 'nSorting', 'nEditPriceListDialog', 'nAjax', '$filter', 'nRegExp',
-                               function($scope, nConstants, nSorting, nEditPriceListDialog, nAjax, $filter, nRegExp){
+.controller('PriceListsCtrl', ['$scope', '$location', 'nConstants', 'nSorting', 'nEditPriceListDialog', 'nAjax', '$filter', 'nRegExp',
+                               function($scope, $location, nConstants, nSorting, nEditPriceListDialog, nAjax, $filter, nRegExp){
 	
 	$scope.DEFAULT_PRICELIST_NAME = nConstants.conf.defaultPriceListName;
-	$scope.PREMIUM = nConstants.conf.premium;
-	var PriceList = nAjax.PriceList(); 
-	
+	var PriceList = nAjax.PriceList();
+
+	var FILTER_QUERY_PARAM = 'filter';
+	$scope.query = $location.search()[FILTER_QUERY_PARAM] ? $location.search()[[FILTER_QUERY_PARAM]] : '';
+
+	$scope.$watch('query', function(newValue, oldValue){
+		$location.search(FILTER_QUERY_PARAM, newValue == ''? null : newValue);
+	});
+
+
 	$scope.loadPriceLists = function(){
 		PriceList.query(function(priceLists){
 			$scope.priceLists = priceLists.sort(nSorting.priceListsComparator);

@@ -33,9 +33,9 @@
 									   placeholder="{{'FILTER' | translate}}..." ng-model="uiBootstrap.query">
 							</div>
 
-							<n-year-selector class="pull-right" document-type="invoices" callback="loadInvoicesByYear(year)"></n-year-selector>
+							<n-year-selector class="pull-right" document-type="invoices" selected-year="{{selectedYear}}" callback="loadInvoicesByYear(year)"></n-year-selector>
 
-							<n-suffix-selector class="pull-right suffix-selector" callback="loadInvoicesForClass(documentIdClass)"></n-suffix-selector>
+							<n-suffix-selector class="pull-right suffix-selector" selected-class="{{selectedClass}}" callback="loadInvoicesForClass(documentIdClass)"></n-suffix-selector>
 
 							<div class="clearfix"></div>
 

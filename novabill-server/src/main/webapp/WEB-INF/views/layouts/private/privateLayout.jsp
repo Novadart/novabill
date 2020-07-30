@@ -75,7 +75,6 @@
 		<link href="${privateAssetsUrl}/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 		<link href="${privateAssetsUrl}/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 		<link href="${privateAssetsUrl}/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css" />
-		<link href="${frontendAssetsUrl}/plugins/iealert/css/style.css" rel="stylesheet" type="text/css"/>
 		<!-- END GLOBAL MANDATORY STYLES -->
 
 		<!-- BEGIN THEME STYLES -->
@@ -97,8 +96,8 @@
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 		<script>window.jQuery || document.write('<script src="${privateAssetsUrl}/plugins/jquery-1.10.2.min.js"><\/script>');</script>
 
-		<link href="${frontendAssetsUrl}/plugins/jquery.cookiebar/jquery.cookiebar.css" rel="stylesheet" type="text/css"/>
-		<script src="${frontendAssetsUrl}/plugins/jquery.cookiebar/jquery.cookiebar.js" type="text/javascript"></script>
+		<link href="${frontendAssetsUrl}/components/jquery.cookiebar/jquery.cookiebar.css" rel="stylesheet" type="text/css"/>
+		<script src="${frontendAssetsUrl}/components/jquery.cookiebar/jquery.cookiebar.js" type="text/javascript"></script>
 
 		<script type="text/javascript">
 			window.onerror = function(message, source, line, column) {
@@ -124,20 +123,6 @@
 			};
 
 		</script>
-
-		<style type="text/css">
-			.premium-label {
-				display: none;
-			}
-
-			li:HOVER .premium-only .premium-label {
-				display: inline;
-			}
-
-			.premium-only {
-				color: #999;
-			}
-		</style>
 
 	</head>
 	<!-- END HEAD -->
@@ -256,13 +241,13 @@
 				</li>
 
 				<li class="<%=PAGES.COMMODITIES.equals(activePage) ? "active" : ""%>"><a href="${commoditiesUrl}"> <i
-						class="fa fa-th"></i> <span class="title <%=!isPremium ? "premium-only" : ""%>">Articoli <span class="label label-primary premium-label">Premium</span></span> <%
+						class="fa fa-th"></i> <span class="title">Articoli</span> <%
 					if(PAGES.COMMODITIES.equals(activePage)) {
 				%> <span class="selected"></span> <%} %>
 				</a></li>
 
 				<li class="<%=PAGES.PRICE_LISTS.equals(activePage) ? "active" : ""%>"><a href="${priceListsUrl}"> <i
-						class="fa fa-dollar"></i> <span class="title <%=!isPremium ? "premium-only" : ""%>">Listini <span class="label label-primary premium-label">Premium</span></span> <%
+						class="fa fa-dollar"></i> <span class="title">Listini</span> <%
 					if(PAGES.PRICE_LISTS.equals(activePage)) {
 				%> <span class="selected"></span> <%} %>
 				</a></li>
@@ -281,18 +266,18 @@
 				<li class="<%=PAGES.STATISTICS_GENERAL.equals(activePage) || PAGES.STATISTICS_CLIENTS.equals(activePage) || PAGES.STATISTICS_COMMODITIES.equals(activePage)? "active" : "" %>">
 					<a href="javascript:;">
 						<i class="fa fa-bar-chart-o"></i>
-						<span class="title <%=!isPremium ? "premium-only" : ""%>">Statistiche <span class="label label-primary premium-label">Premium</span></span>
+						<span class="title">Statistiche</span>
 						<span class="arrow "></span>
 					</a>
 					<ul class="sub-menu">
-						<li class="<%=PAGES.STATISTICS_GENERAL.equals(activePage) ? "active" : "" %> <%=!isPremium ? " premium-only" : ""%>" >
-							<a href="${statisticsGeneralUrl}"><i class="fa fa-dashboard"></i> Generali <span class="label label-primary premium-label">Premium</span></a>
+						<li class="<%=PAGES.STATISTICS_GENERAL.equals(activePage) ? "active" : "" %>" >
+							<a href="${statisticsGeneralUrl}"><i class="fa fa-dashboard"></i> Generali</a>
 						</li>
-						<li class="<%=PAGES.STATISTICS_CLIENTS.equals(activePage) ? "active" : "" %> <%=!isPremium ? " premium-only" : ""%>">
-							<a href="${statisticsClientsUrl}"><i class="fa fa-user"></i> Clienti <span class="label label-primary premium-label">Premium</span></a>
+						<li class="<%=PAGES.STATISTICS_CLIENTS.equals(activePage) ? "active" : "" %>">
+							<a href="${statisticsClientsUrl}"><i class="fa fa-user"></i> Clienti</a>
 						</li>
-						<li class="<%=PAGES.STATISTICS_COMMODITIES.equals(activePage) ? "active" : "" %> <%=!isPremium ? " premium-only" : ""%>">
-							<a href="${statisticsCommoditiesUrl}"><i class="fa fa-th"></i> Articoli <span class="label label-primary premium-label">Premium</span></a>
+						<li class="<%=PAGES.STATISTICS_COMMODITIES.equals(activePage) ? "active" : "" %>">
+							<a href="${statisticsCommoditiesUrl}"><i class="fa fa-th"></i> Articoli</a>
 						</li>
 					</ul>
 				</li>
@@ -303,8 +288,8 @@
 				</li>
 
 				<li class="<%=PAGES.SHARE.equals(activePage) ? "active last" : "last" %> "><a href="${shareUrl}"> <i
-						class="fa fa-group"></i> <span class="title <%=!isPremium ? "premium-only" : ""%>">
-                            Condivisione <span class="label label-primary premium-label">Premium</span></span> <% if(PAGES.SHARE.equals(activePage)) { %> <span
+						class="fa fa-group"></i> <span class="title">
+                            Condivisione <% if(PAGES.SHARE.equals(activePage)) { %> <span
 						class="selected"></span> <%} %>
 				</a></li>
 
@@ -337,6 +322,7 @@
 			principalEmail : '<%=principal.getUsername()%>',
 			principalCreationDate : <%=principal.getCreationTime()%>,
 			premium : <%=isPremium%>,
+			role : '<%=principal.getGrantedRoles().iterator().next()%>',
 			defaultPriceListName : '<%=PriceListConstants.DEFAULT%>',
 			basePath : '${basePath}',
 			version : '<tiles:insertAttribute name="novabill.version" />'
@@ -382,29 +368,12 @@
 
 	<script src="${gwtUrl}" type="text/javascript"></script>
 	<script src="${privateAssetsUrl}/scripts/app.js" type="text/javascript"></script>
-	<script src="${frontendAssetsUrl}/plugins/iealert/iealert.min.js" type="text/javascript"></script>
 
 	<tiles:insertAttribute name="javascript" />
 
 
 	<script type="text/javascript">
-		$(function(){
-			if(!$.cookie('ie_alert_shown')){
-				$("body").iealert({
-					support:"ie8",
-					title:"Il tuo browser è vecchio e insicuro e non è supportato da Novabill",
-					text:"Non è sicuro utilizzare questo browser per lavorare su dati sensibili.<br>Per favore premi sul pulsante 'Aggiorna' qui sotto e installa una versione più recente di Internet Explorer o uno dei browser alternativi suggeriti.<br><br><span style='font-weight:bold;'>Se utilizzi questo browser Novabill non funzionerà correttamente</span><br><br>Grazie",
-					upgradeTitle:"Aggiorna",
-					upgradeLink:"http://browsehappy.com/",
-					overlayClose:false,
-					closeBtn: true
-				});
-
-				$.cookie('ie_alert_shown', 'true', { path: '/' });
-			}
-			App.init();
-		});
-
+		$(App.init);
 		$('#logoutLi').click(function(){
 			$('#logoutForm').submit();
 		});

@@ -257,12 +257,12 @@ public class TransporterServiceTest extends ServiceTest{
 	
 	
 	@Test(expected = DataAccessException.class)
-	public void getIdNullTest() throws NotAuthenticatedException, NoSuchObjectException, DataAccessException{
+	public void getIdNullTest() throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, FreeUserAccessForbiddenException {
 		transporterService.get(null);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void getUnauthorizedTest() throws NotAuthenticatedException, NoSuchObjectException, DataAccessException{
+	public void getUnauthorizedTest() throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, FreeUserAccessForbiddenException {
 		Business unauthbiz = Business.findBusiness(getUnathorizedBusinessID());
 		Transporter trans = new Transporter();
 		trans.setDescription("test transporter");

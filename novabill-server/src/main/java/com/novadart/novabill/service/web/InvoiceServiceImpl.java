@@ -1,5 +1,7 @@
 package com.novadart.novabill.service.web;
 
+import com.novadart.novabill.annotation.Restrictions;
+import com.novadart.novabill.authorization.TrialOrPremiumChecker;
 import com.novadart.novabill.domain.*;
 import com.novadart.novabill.domain.dto.DTOUtils;
 import com.novadart.novabill.domain.dto.DTOUtils.Predicate;
@@ -70,8 +72,9 @@ public class InvoiceServiceImpl implements InvoiceService {
 	private PDFStorageService pdfStorageService;
 	
 	@Override
+	@Restrictions(checkers = TrialOrPremiumChecker.class)
 	@PreAuthorize("T(com.novadart.novabill.domain.Invoice).findInvoice(#id)?.business?.id == principal.business.id")
-	public InvoiceDTO get(Long id) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException {
+	public InvoiceDTO get(Long id) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException, FreeUserAccessForbiddenException {
 		Invoice invoice = Invoice.findInvoice(id);
 		if(invoice == null)
 			throw new NoSuchElementException();
@@ -79,19 +82,21 @@ public class InvoiceServiceImpl implements InvoiceService {
 	}
 
 	@Override
+	@Restrictions(checkers = TrialOrPremiumChecker.class)
 	@Transactional(readOnly = true)
 	@PreAuthorize("#businessID == principal.business.id")
-	public PageDTO<InvoiceDTO> getAllInRange(Long businessID, Integer year, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException {
+	public PageDTO<InvoiceDTO> getAllInRange(Long businessID, Integer year, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		List<InvoiceDTO> allInvoices = businessService.getInvoices(businessID, year);
-		return new PageDTO<InvoiceDTO>(DTOUtils.range(allInvoices, start, length), start, length, new Long(allInvoices.size()));
+		return new PageDTO<>(DTOUtils.range(allInvoices, start, length), start, length, new Long(allInvoices.size()));
 	}
 
 	@Override
+	@Restrictions(checkers = TrialOrPremiumChecker.class)
 	@Transactional(readOnly = true)
 	@PreAuthorize("#businessID == principal.business.id")
-	public PageDTO<InvoiceDTO> getAllInRange(Long businessID, Integer year, String docIDSuffix, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException {
+	public PageDTO<InvoiceDTO> getAllInRange(Long businessID, Integer year, String docIDSuffix, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		List<InvoiceDTO> allInvoices = businessService.getInvoices(businessID, year, docIDSuffix);
-		return new PageDTO<InvoiceDTO>(DTOUtils.range(allInvoices, start, length), start, length, new Long(allInvoices.size()));
+		return new PageDTO<>(DTOUtils.range(allInvoices, start, length), start, length, new Long(allInvoices.size()));
 	}
 
 	private static class EqualsClientIDPredicate implements Predicate<InvoiceDTO>{
@@ -110,25 +115,28 @@ public class InvoiceServiceImpl implements InvoiceService {
 	}
 	
 	@Override
+	@Restrictions(checkers = TrialOrPremiumChecker.class)
 	@Transactional(readOnly = true)
 	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#clientID)?.business?.id == principal.business.id")
-	public List<InvoiceDTO> getAllForClient(Long clientID, Integer year) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException {
-		return new ArrayList<InvoiceDTO>(DTOUtils.filter(businessService.getInvoices(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId(), year), new EqualsClientIDPredicate(clientID)));
+	public List<InvoiceDTO> getAllForClient(Long clientID, Integer year) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException, FreeUserAccessForbiddenException {
+		return new ArrayList<>(DTOUtils.filter(businessService.getInvoices(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId(), year), new EqualsClientIDPredicate(clientID)));
 	}
 
 	@Override
+	@Restrictions(checkers = TrialOrPremiumChecker.class)
 	@Transactional(readOnly = true)
 	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#clientID)?.business?.id == principal.business.id")
-	public List<InvoiceDTO> getAllForClient(Long clientID, Integer year, String docIDSuffix) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException {
-		return new ArrayList<InvoiceDTO>(DTOUtils.filter(businessService.getInvoices(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId(), year, docIDSuffix), new EqualsClientIDPredicate(clientID)));
+	public List<InvoiceDTO> getAllForClient(Long clientID, Integer year, String docIDSuffix) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException, FreeUserAccessForbiddenException {
+		return new ArrayList<>(DTOUtils.filter(businessService.getInvoices(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId(), year, docIDSuffix), new EqualsClientIDPredicate(clientID)));
 	}
 
 	@Override
+	@Restrictions(checkers = TrialOrPremiumChecker.class)
 	@Transactional(readOnly = false, rollbackFor = {Exception.class})
 	@PreAuthorize("#businessID == principal.business.id and " +
 		  	  	  "T(com.novadart.novabill.domain.Invoice).findInvoice(#id)?.business?.id == #businessID and " +
 		  	  	  "T(com.novadart.novabill.domain.Invoice).findInvoice(#id)?.client?.id == #clientID")
-	public void remove(Long businessID, Long clientID, Long id) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException, DataIntegrityException {
+	public void remove(Long businessID, Long clientID, Long id) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException, DataIntegrityException, FreeUserAccessForbiddenException {
 		Invoice invoice = Invoice.findInvoice(id);
 		invoice.getTransportDocuments().size(); //force fetching all docs at once
 		for(TransportDocument transDoc: new ArrayList<>(invoice.getTransportDocuments()))
@@ -142,7 +150,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
 	@Override
 	@Transactional(readOnly = false, rollbackFor = {Exception.class})
-	//@Restrictions(checkers = {NumberOfInvoicesPerYearQuotaReachedChecker.class})
+	@Restrictions(checkers = TrialOrPremiumChecker.class)
 	@PreAuthorize("#invoiceDTO?.business?.id == principal.business.id and " +
 		  	  	 "T(com.novadart.novabill.domain.Client).findClient(#invoiceDTO?.client?.id)?.business?.id == principal.business.id and " +
 		  	  	 "#invoiceDTO != null and #invoiceDTO.id == null")
@@ -170,11 +178,12 @@ public class InvoiceServiceImpl implements InvoiceService {
 	}
 
 	@Override
+	@Restrictions(checkers = TrialOrPremiumChecker.class)
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	@PreAuthorize("#invoiceDTO?.business?.id == principal.business.id and " +
 	  	  	  	 "T(com.novadart.novabill.domain.Client).findClient(#invoiceDTO?.client?.id)?.business?.id == principal.business.id and " +
 	  	  	  	 "#invoiceDTO?.id != null")
-	public void update(InvoiceDTO invoiceDTO) throws DataAccessException, NoSuchObjectException, ValidationException, DataIntegrityException {
+	public void update(InvoiceDTO invoiceDTO) throws DataAccessException, NoSuchObjectException, ValidationException, DataIntegrityException, FreeUserAccessForbiddenException, NotAuthenticatedException {
 		Invoice persistedInvoice = Invoice.findInvoice(invoiceDTO.getId());
 		if(persistedInvoice == null)
 			throw new NoSuchObjectException();
@@ -198,20 +207,22 @@ public class InvoiceServiceImpl implements InvoiceService {
 	}
 	
 	@Override
-	public Long getNextInvoiceDocumentID(String suffix) {
+	@Restrictions(checkers = TrialOrPremiumChecker.class)
+	public Long getNextInvoiceDocumentID(String suffix) throws FreeUserAccessForbiddenException, NotAuthenticatedException, DataAccessException{
 		return utilsService.getAuthenticatedPrincipalDetails().getBusiness().getNextInvoiceDocumentID(suffix);
 	}
 
 	@Override
+	@Restrictions(checkers = TrialOrPremiumChecker.class)
 	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#clientID)?.business?.id == principal.business.id")
-	public PageDTO<InvoiceDTO> getAllForClientInRange(Long clientID, Integer year, Integer start, Integer length) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException {
+	public PageDTO<InvoiceDTO> getAllForClientInRange(Long clientID, Integer year, Integer start, Integer length) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException, FreeUserAccessForbiddenException {
 		List<InvoiceDTO> allInvoices = getAllForClient(clientID, year);
-		return new PageDTO<InvoiceDTO>(DTOUtils.range(allInvoices, start, length), start, length, new Long(allInvoices.size()));
+		return new PageDTO<>(DTOUtils.range(allInvoices, start, length), start, length, new Long(allInvoices.size()));
 	}
 	
 	@Override
 	@Transactional(readOnly = false)
-	//@Restrictions(checkers = {PremiumChecker.class})
+	@Restrictions(checkers = TrialOrPremiumChecker.class)
 	@PreAuthorize("principal.business.id == #businessID and " +
 	  	  	  	  "T(com.novadart.novabill.domain.Invoice).findInvoice(#id)?.business?.id == #businessID and " +
 	  	  	  	  "T(com.novadart.novabill.domain.Invoice).findInvoice(#id)?.client?.id == #clientID")
@@ -220,7 +231,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 	}
 	
 	@Override
-	//@Restrictions(checkers = {PremiumChecker.class})
+	@Restrictions(checkers = TrialOrPremiumChecker.class)
 	public List<InvoiceDTO> getAllUnpaidInDateRange(FilteringDateType filteringDateType, Date startDate, Date endDate) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		Business business = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId());
 		List<Invoice> invoices = business.getAllUnpaidInvoicesInDateRange(filteringDateType, startDate, endDate);
@@ -231,9 +242,10 @@ public class InvoiceServiceImpl implements InvoiceService {
 	}
 	
 	@Override
+	@Restrictions(checkers = TrialOrPremiumChecker.class)
 	@PreAuthorize("principal.business.id == #businessID and " +
 			      "T(com.novadart.novabill.domain.Invoice).findInvoice(#id)?.business?.id == #businessID")
-	public boolean email(Long businessID, Long id, EmailDTO emailDTO) throws NoSuchAlgorithmException, UnsupportedEncodingException, ValidationException {
+	public boolean email(Long businessID, Long id, EmailDTO emailDTO) throws NoSuchAlgorithmException, UnsupportedEncodingException, ValidationException, FreeUserAccessForbiddenException, NotAuthenticatedException, DataAccessException {
 		simpleValidator.validate(emailDTO);
 		String token = tokenGenerator.generateToken();
 		String url = String.format(invoicePdfUrl, id, URLEncoder.encode(token, "UTF-8"));

@@ -3,6 +3,8 @@ package com.novadart.novabill.service.web;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.novadart.novabill.annotation.Restrictions;
+import com.novadart.novabill.authorization.TrialOrPremiumChecker;
 import com.novadart.novabill.domain.*;
 import com.novadart.novabill.shared.client.dto.DocumentIDClassDTO;
 import org.hibernate.Hibernate;
@@ -37,11 +39,12 @@ public class ClientService {
 	
 	@Autowired
 	private UtilsService utilsService;
-	
+
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@Transactional(readOnly = false)
 	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#id)?.business?.id == principal.business.id and " +
 				  "principal.business.id == #businessID")
-	public boolean remove(Long businessID, Long id) throws NoSuchObjectException {
+	public boolean remove(Long businessID, Long id) throws NoSuchObjectException, DataAccessException, NotAuthenticatedException, FreeUserAccessForbiddenException {
 		Client client = Client.findClient(id);
 		if(client.hasAccountingDocs())
 			return false;
@@ -52,9 +55,9 @@ public class ClientService {
 	}
 
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
-	//@Restrictions(checkers = {NumberOfClientsQuotaReachedChecker.class})
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@PreAuthorize("#businessID == principal.business.id and #clientDTO != null and #clientDTO.id == null")
-	public Long add(Long businessID, ClientDTO clientDTO) throws FreeUserAccessForbiddenException, ValidationException {
+	public Long add(Long businessID, ClientDTO clientDTO) throws FreeUserAccessForbiddenException, ValidationException, NotAuthenticatedException, DataAccessException {
 		Client client = new Client(); 
 		ClientDTOTransformer.copyFromDTO(client, clientDTO);
 		if(clientDTO.getDefaultPriceListID() == null)
@@ -136,10 +139,11 @@ public class ClientService {
 	}
 
 
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	@PreAuthorize("principal.business.id == #businessID and #clientDTO?.id != null and " + 
 				  "T(com.novadart.novabill.domain.Client).findClient(#clientDTO?.id)?.business?.id == principal.business.id")
-	public void update(Long businessID, ClientDTO clientDTO) throws NoSuchObjectException, ValidationException {
+	public void update(Long businessID, ClientDTO clientDTO) throws NoSuchObjectException, ValidationException, FreeUserAccessForbiddenException, NotAuthenticatedException, DataAccessException {
 		Client client = Client.findClient(clientDTO.getId());
 		ClientDTOTransformer.copyFromDTO(client, clientDTO);
 		updateDefaultPaymentType(clientDTO, client);
@@ -148,9 +152,10 @@ public class ClientService {
 		validator.validate(client, HeavyClient.class);
 	}
 
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@Transactional(readOnly = true)
 	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#id)?.business?.id == principal.business.id")
-	public ClientDTO get(Long id) throws NoSuchObjectException, NotAuthenticatedException, DataAccessException {
+	public ClientDTO get(Long id) throws NoSuchObjectException, NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		for(ClientDTO clientDTO: businessService.getClients(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()))
 			if(clientDTO.getId().equals(id))
 				return clientDTO;
@@ -171,7 +176,8 @@ public class ClientService {
 			clientDTOs.add(ClientDTOTransformer.toDTO(client));
 		return new PageDTO<ClientDTO>(clientDTOs, start, length, clients.getTotal());
 	}
-	
+
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#clientAddressDTO?.client?.id)?.business?.id == principal.business.id and " +
 				  "#clientAddressDTO != null and #clientAddressDTO.id == null")
@@ -187,27 +193,30 @@ public class ClientService {
 		clientAddress.flush();
 		return clientAddress.getId();
 	}
-	
+
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#clientID)?.business?.id == principal.business.id")
-	public List<ClientAddressDTO> getClientAddresses(Long clientID) throws NotAuthenticatedException, DataAccessException {
+	public List<ClientAddressDTO> getClientAddresses(Long clientID) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		Client client = Client.findClient(clientID);
 		List<ClientAddressDTO> clientAddressDTOs = new ArrayList<>(client.getAddresses().size());
 		for(ClientAddress clientAddress: client.getAddresses())
 			clientAddressDTOs.add(ClientAddressDTOTransformer.toDTO(clientAddress));
 		return clientAddressDTOs;
 	}
-	
+
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@Transactional(readOnly = false)
 	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#clientID)?.business?.id == principal.business.id and " +
 				  "T(com.novadart.novabill.domain.ClientAddress).findClientAddress(#id)?.client?.id == #clientID")
-	public void removeClientAddress(Long clientID, Long id) throws NotAuthenticatedException, DataAccessException {
+	public void removeClientAddress(Long clientID, Long id) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		ClientAddress clientAddress = ClientAddress.findClientAddress(id);
 		clientAddress.remove();
 		Client client = Client.findClient(clientID);
 		if(Hibernate.isInitialized(client.getAddresses()))
 			client.getAddresses().remove(clientAddress);
 	}
-	
+
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#clientAddressDTO?.client?.id)?.business?.id == principal.business.id and " +
 			      "#clientAddressDTO != null and #clientAddressDTO.id != null")

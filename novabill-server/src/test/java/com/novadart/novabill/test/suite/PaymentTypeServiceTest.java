@@ -246,19 +246,19 @@ public class PaymentTypeServiceTest extends ServiceTest {
 	}
 	
 	@Test
-	public void getAllAuthorizedTest() throws NotAuthenticatedException, DataAccessException{
+	public void getAllAuthorizedTest() throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		List<PaymentTypeDTO> paymentTypeDTOs = paymentTypeService.getAll(authenticatedPrincipal.getBusiness().getId());
 		assertTrue(paymentTypeDTOs.size() == authenticatedPrincipal.getBusiness().getPaymentTypes().size());
 	}
 	
 	
 	@Test(expected = DataAccessException.class)
-	public void getAllUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void getAllUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		paymentTypeService.getAll(getUnathorizedBusinessID());
 	}
 
 	@Test(expected = DataAccessException.class)
-	public void getAllIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void getAllIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		paymentTypeService.getAll(null);
 	}
 	
@@ -273,12 +273,12 @@ public class PaymentTypeServiceTest extends ServiceTest {
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void getIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void getIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		paymentTypeService.get(null);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void getUnauthorizedTest() throws NotAuthenticatedException, NoSuchObjectException, DataAccessException{
+	public void getUnauthorizedTest() throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, FreeUserAccessForbiddenException {
 		PaymentType paymentType = TestUtils.createPaymentType();
 		Business business = Business.findBusiness(getUnathorizedBusinessID());
 		paymentType.setBusiness(business);

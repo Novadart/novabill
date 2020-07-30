@@ -21,6 +21,13 @@ public class InvoiceDTOTransformer extends AbstractInvoiceDTOTransformer {
 		invoiceDTO.setSeenByClientTime(invoice.getSeenByClientTime());
 		invoiceDTO.setEmailedToClient(invoice.getEmailedToClient());
 		invoiceDTO.setSplitPayment(invoice.isSplitPayment());
+		invoiceDTO.setWitholdTax(invoice.isWitholdTax());
+		invoiceDTO.setWitholdTaxPercentFirstLevel(invoice.getWitholdTaxPercentFirstLevel());
+		invoiceDTO.setWitholdTaxPercentSecondLevel(invoice.getWitholdTaxPercentSecondLevel());
+		invoiceDTO.setPensionContribution(invoice.isPensionContribution());
+		invoiceDTO.setPensionContributionPercent(invoice.getPensionContributionPercent());
+		invoiceDTO.setWitholdTaxTotal(invoice.getWitholdTaxTotal());
+		invoiceDTO.setPensionContributionTotal(invoice.getPensionContributionTotal());
 		return invoiceDTO;
 	}
 	
@@ -33,6 +40,13 @@ public class InvoiceDTOTransformer extends AbstractInvoiceDTOTransformer {
 		invoice.setSecondaryPaymentDateDelta(invoiceDTO.getSecondaryPaymentDateDelta());
 		invoice.setCreatedFromTransportDocuments(invoiceDTO.isCreatedFromTransportDocuments());
 		invoice.setSplitPayment(invoiceDTO.isSplitPayment());
+		invoice.setWitholdTax(invoiceDTO.isWitholdTax());
+		invoice.setWitholdTaxPercentFirstLevel(invoiceDTO.getWitholdTaxPercentFirstLevel());
+		invoice.setWitholdTaxPercentSecondLevel(invoiceDTO.getWitholdTaxPercentSecondLevel());
+		invoice.setPensionContribution(invoiceDTO.isPensionContribution());
+		invoice.setPensionContributionPercent(invoiceDTO.getPensionContributionPercent());
+		invoice.setWitholdTaxTotal(invoiceDTO.getWitholdTaxTotal());
+		invoice.setPensionContributionTotal(invoiceDTO.getPensionContributionTotal());
 	}
 	
 }

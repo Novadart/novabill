@@ -10,17 +10,18 @@ angular.module("novabill.priceLists", ['novabill.priceLists.controllers', 'novab
 	
 	$routeProvider
 
-	.when('/', {
-		templateUrl: nConstantsProvider.url.htmlFragmentUrl('/price-lists.html'),
-		controller: 'PriceListsCtrl'
-	})
+		.when('/', {
+			templateUrl: nConstantsProvider.url.htmlFragmentUrl('/price-lists.html'),
+			controller: 'PriceListsCtrl',
+			reloadOnSearch: false
+		})
 
-	.when('/details/:priceListId', {
-		templateUrl: nConstantsProvider.url.htmlFragmentUrl('/price-lists-detail.html'),
-		controller: 'PriceListsDetailsCtrl'
-	})
+		.when('/details/:priceListId', {
+			templateUrl: nConstantsProvider.url.htmlFragmentUrl('/price-lists-detail.html'),
+			controller: 'PriceListsDetailsCtrl'
+		})
 
-	.otherwise ({
+		.otherwise({
 		redirectTo: '/'
 	});
 

@@ -116,7 +116,7 @@ public class DocumentIDClassServiceTest extends ServiceTest{
     }
 
     @Test
-    public void removeAutorizedTest() throws JsonParseException, JsonMappingException, IOException{
+    public void removeAutorizedTest() throws JsonParseException, JsonMappingException, IOException, FreeUserAccessForbiddenException, NotAuthenticatedException, DataAccessException {
         Business business = Business.findBusiness(authenticatedPrincipal.getBusiness().getId());
         DocumentIDClass docIDClass = business.getDocumentIDClasses().iterator().next();
         docIDClassesService.remove(business.getId(), docIDClass.getId());
@@ -131,7 +131,7 @@ public class DocumentIDClassServiceTest extends ServiceTest{
     }
 
     @Test
-    public void removeAutorizedNullAssociatedClientsTest() throws JsonParseException, JsonMappingException, IOException{
+    public void removeAutorizedNullAssociatedClientsTest() throws JsonParseException, JsonMappingException, IOException, FreeUserAccessForbiddenException, NotAuthenticatedException, DataAccessException {
         Business business = Business.findBusiness(authenticatedPrincipal.getBusiness().getId());
         DocumentIDClass docIDClass = business.getDocumentIDClasses().iterator().next();
         Long clientID = authenticatedPrincipal.getBusiness().getClients().iterator().next().getId();
@@ -152,18 +152,18 @@ public class DocumentIDClassServiceTest extends ServiceTest{
     }
 
     @Test(expected = AccessDeniedException.class)
-    public void removeIdNullTest(){
+    public void removeIdNullTest() throws FreeUserAccessForbiddenException, NotAuthenticatedException, DataAccessException {
         docIDClassesService.remove(authenticatedPrincipal.getBusiness().getId(), null);
     }
 
     @Test(expected = AccessDeniedException.class)
-    public void removeBusinessIDNullTest(){
+    public void removeBusinessIDNullTest() throws FreeUserAccessForbiddenException, NotAuthenticatedException, DataAccessException {
         Long id = Business.findBusiness(authenticatedPrincipal.getBusiness().getId()).getDocumentIDClasses().iterator().next().getId();
         docIDClassesService.remove(null, id);
     }
 
     @Test(expected = AccessDeniedException.class)
-    public void removeUnauthorizedTest(){
+    public void removeUnauthorizedTest() throws FreeUserAccessForbiddenException, NotAuthenticatedException, DataAccessException {
         Long id = Business.findBusiness(authenticatedPrincipal.getBusiness().getId()).getDocumentIDClasses().iterator().next().getId();
         docIDClassesService.remove(getUnathorizedBusinessID(), id);
     }
@@ -186,13 +186,13 @@ public class DocumentIDClassServiceTest extends ServiceTest{
     }
 
     @Test
-    public void getAllTest() throws NotAuthenticatedException, DataAccessException {
+    public void getAllTest() throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
         List<DocumentIDClassDTO> dtos = docIDClassesService.getAll(authenticatedPrincipal.getBusiness().getId());
         assertEquals(1, dtos.size());
     }
 
     @Test
-    public void updateAuthenticatedTest() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ValidationException, JsonParseException, JsonMappingException, IOException{
+    public void updateAuthenticatedTest() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ValidationException, JsonParseException, JsonMappingException, IOException, FreeUserAccessForbiddenException {
         Long docIDClassID = authenticatedPrincipal.getBusiness().getDocumentIDClasses().iterator().next().getId();
         DocumentIDClass expectedDocIDClass = DocumentIDClass.findDocumentIDClass(docIDClassID);
         expectedDocIDClass.setSuffix("bbis");
@@ -209,17 +209,17 @@ public class DocumentIDClassServiceTest extends ServiceTest{
     }
 
     @Test(expected = AccessDeniedException.class)
-    public void updateAuthenticatedClientIDNull() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ValidationException{
+    public void updateAuthenticatedClientIDNull() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ValidationException, FreeUserAccessForbiddenException {
         docIDClassesService.update(authenticatedPrincipal.getBusiness().getId(), DocumentIDClassDTOTransformer.toDTO(TestUtils.createDocumentIDClass()));
     }
 
     @Test(expected = AccessDeniedException.class)
-    public void updateAuthenticatedClientNull() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ValidationException{
+    public void updateAuthenticatedClientNull() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ValidationException, FreeUserAccessForbiddenException {
         docIDClassesService.update(authenticatedPrincipal.getBusiness().getId(), null);
     }
 
     @Test(expected = AccessDeniedException.class)
-    public void updateUnauthenticatedClient() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ValidationException{
+    public void updateUnauthenticatedClient() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ValidationException, FreeUserAccessForbiddenException {
         DocumentIDClass docIDClass = authenticatedPrincipal.getBusiness().getDocumentIDClasses().iterator().next();
         docIDClass.setSuffix("bbis");
         docIDClassesService.update(getUnathorizedBusinessID(), DocumentIDClassDTOTransformer.toDTO(docIDClass));
@@ -251,7 +251,7 @@ public class DocumentIDClassServiceTest extends ServiceTest{
     }
 
     @Test(expected = Exception.class)
-    public void caseInsensitiveSuffixTest() throws ValidationException {
+    public void caseInsensitiveSuffixTest() throws ValidationException, FreeUserAccessForbiddenException, NotAuthenticatedException, DataAccessException {
         DocumentIDClassDTO docIDClassDTO = DocumentIDClassDTOTransformer.toDTO(TestUtils.createDocumentIDClass());
         docIDClassDTO.setSuffix("bis");
         docIDClassDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));

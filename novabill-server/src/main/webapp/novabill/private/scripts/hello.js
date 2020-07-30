@@ -6,8 +6,8 @@ angular.module('novabill.hello', ['novabill.ajax', 'novabill.directives.dialogs'
 /**
  * HELLO PAGE CONTROLLER
  */
-.controller('HelloCtrl', ['$scope', 'nHelloDialog', 'nAjax', 'nUpgradeSuggestionDialog',
-                          function($scope, nHelloDialog, nAjax, nUpgradeSuggestionDialog){
+.controller('HelloCtrl', ['$scope', 'nHelloDialog', 'nAjax','$location','nConstants',
+                          function($scope, nHelloDialog, nAjax, $location, nConstants){
 
 	var Business = nAjax.Business();
 	
@@ -17,7 +17,7 @@ angular.module('novabill.hello', ['novabill.ajax', 'novabill.directives.dialogs'
 	var instance = null;
 	instance = nHelloDialog.open( business, function(){
 		instance.close();
-		nUpgradeSuggestionDialog.open();
+		$location.path(nConstants.url.dashboard());
 	} );
 	
 }]);

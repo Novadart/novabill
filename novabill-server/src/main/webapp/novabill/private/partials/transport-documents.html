@@ -33,7 +33,7 @@
                                        placeholder="{{'FILTER' | translate}}..." ng-model="uiBootstrap.query">
                             </div>
 
-                            <n-year-selector class="pull-right" document-type="transportDocuments" callback="loadTransportDocuments(year)"></n-year-selector>
+                            <n-year-selector class="pull-right" document-type="transportDocuments" selected-year="{{selectedYear}}" callback="loadTransportDocuments(year)"></n-year-selector>
 
                             <div class="clearfix"></div>
 
@@ -56,9 +56,8 @@
                     </tab-heading>
                     <div class="container-fluid">
                         <div class="row">
-                            <n-premium-alert></n-premium-alert>
 
-                            <button type="button" n-premium-check class="btn green new-transporter" ng-click="newTransporter()">{{'NEW_TRANSPORTER' | translate}}</button>
+                            <button type="button" class="btn green new-transporter" ng-click="newTransporter()">{{'NEW_TRANSPORTER' | translate}}</button>
 
                             <div class="clearfix"></div>
 

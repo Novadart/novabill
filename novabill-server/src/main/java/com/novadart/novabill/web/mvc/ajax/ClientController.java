@@ -26,35 +26,35 @@ public class ClientController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
-    public ClientDTO get(@PathVariable Long id) throws NoSuchObjectException, NotAuthenticatedException, DataAccessException {
+    public ClientDTO get(@PathVariable Long id) throws NoSuchObjectException, NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
         return clientService.get(id);
     }
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
-    public Map<String, Object> add(@PathVariable Long businessID, @RequestBody ClientDTO clientDTO) throws FreeUserAccessForbiddenException, ValidationException {
+    public Map<String, Object> add(@PathVariable Long businessID, @RequestBody ClientDTO clientDTO) throws FreeUserAccessForbiddenException, ValidationException, NotAuthenticatedException, DataAccessException {
         return ImmutableMap.of(JsonConst.VALUE, clientService.add(businessID, clientDTO));
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
-    public Map<String, Object> remove(@PathVariable Long businessID, @PathVariable Long id) throws NoSuchObjectException {
+    public Map<String, Object> remove(@PathVariable Long businessID, @PathVariable Long id) throws NoSuchObjectException, FreeUserAccessForbiddenException, DataAccessException, NotAuthenticatedException {
         return ImmutableMap.of(JsonConst.VALUE, clientService.remove(businessID, id));
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
-    public void update(@PathVariable Long businessID, @RequestBody ClientDTO clientDTO) throws NoSuchObjectException, ValidationException {
+    public void update(@PathVariable Long businessID, @RequestBody ClientDTO clientDTO) throws NoSuchObjectException, ValidationException, FreeUserAccessForbiddenException, NotAuthenticatedException, DataAccessException {
         clientService.update(businessID, clientDTO);
     }
 
     @RequestMapping(value = "/{id}/addresses", method = RequestMethod.GET)
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
-    public List<ClientAddressDTO> getClientAddresses(@PathVariable Long id) throws NotAuthenticatedException, DataAccessException {
+    public List<ClientAddressDTO> getClientAddresses(@PathVariable Long id) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
         return clientService.getClientAddresses(id);
     }
 
@@ -68,7 +68,7 @@ public class ClientController {
     @RequestMapping(value = "/{clientID}/addresses/{id}", method = RequestMethod.DELETE)
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
-    public void removeClientAddress(@PathVariable Long clientID, @PathVariable Long id) throws NotAuthenticatedException, DataAccessException {
+    public void removeClientAddress(@PathVariable Long clientID, @PathVariable Long id) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
         clientService.removeClientAddress(clientID, id);
     }
 

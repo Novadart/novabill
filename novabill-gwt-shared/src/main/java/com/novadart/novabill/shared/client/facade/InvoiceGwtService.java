@@ -20,25 +20,25 @@ import com.novadart.novabill.shared.client.exception.ValidationException;
 @RemoteServiceRelativePath("invoice.rpc")
 public interface InvoiceGwtService extends RemoteService {
 
-	InvoiceDTO get(Long id) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException;
+	InvoiceDTO get(Long id) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, FreeUserAccessForbiddenException;
 
-	PageDTO<InvoiceDTO> getAllInRange(Long businessID, Integer year, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException;
+	PageDTO<InvoiceDTO> getAllInRange(Long businessID, Integer year, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException;
 
-	PageDTO<InvoiceDTO> getAllInRange(Long businessID, Integer year, String suffix, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException;
+	PageDTO<InvoiceDTO> getAllInRange(Long businessID, Integer year, String suffix, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException;
 
-	List<InvoiceDTO> getAllForClient(Long clientID, Integer year) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException;
+	List<InvoiceDTO> getAllForClient(Long clientID, Integer year) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, FreeUserAccessForbiddenException;
 
-	List<InvoiceDTO> getAllForClient(Long clientID, Integer year, String suffix) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException;
+	List<InvoiceDTO> getAllForClient(Long clientID, Integer year, String suffix) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, FreeUserAccessForbiddenException;
 
 	Long add(InvoiceDTO invoiceDTO) throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, DataIntegrityException;
 
-	void update(InvoiceDTO invoiceDTO) throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException, DataIntegrityException;
+	void update(InvoiceDTO invoiceDTO) throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException, DataIntegrityException, FreeUserAccessForbiddenException;
 
-	Long getNextInvoiceDocumentID(String suffix) throws NotAuthenticatedException, DataAccessException;
+	Long getNextInvoiceDocumentID(String suffix) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException;
 
-	void remove(Long businessID, Long clientID, Long id) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, DataIntegrityException;
+	void remove(Long businessID, Long clientID, Long id) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, DataIntegrityException, FreeUserAccessForbiddenException;
 
-	PageDTO<InvoiceDTO> getAllForClientInRange(Long clientID, Integer year, Integer start, Integer length) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException;
+	PageDTO<InvoiceDTO> getAllForClientInRange(Long clientID, Integer year, Integer start, Integer length) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, FreeUserAccessForbiddenException;
 	
 	void setPayed(Long businessID, Long clientID, Long id, Boolean value) throws NotAuthenticatedException, NoSuchObjectException, FreeUserAccessForbiddenException, DataAccessException;
 	

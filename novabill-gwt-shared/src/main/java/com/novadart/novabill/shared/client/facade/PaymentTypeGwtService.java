@@ -16,14 +16,14 @@ import com.novadart.novabill.shared.client.exception.ValidationException;
 @RemoteServiceRelativePath("paymenttype.rpc")
 public interface PaymentTypeGwtService extends RemoteService {
 	
-	public List<PaymentTypeDTO> getAll(Long businessID) throws NotAuthenticatedException, DataAccessException;
+	public List<PaymentTypeDTO> getAll(Long businessID) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException;
 	
-	public PaymentTypeDTO get(Long id) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException;
+	public PaymentTypeDTO get(Long id) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, FreeUserAccessForbiddenException;
 	
 	public Long add(PaymentTypeDTO paymentTypeDTO) throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException;
 	
 	public void update(PaymentTypeDTO paymentTypeDTO) throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException;
 	
-	public void remove(Long businessID, Long id)  throws NotAuthenticatedException, DataAccessException;
+	public void remove(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException;
 
 }

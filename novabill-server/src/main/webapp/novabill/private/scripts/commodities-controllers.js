@@ -13,17 +13,21 @@ angular.module('novabill.commodities.controllers',
 
 	$scope.commodities = null;
 	var Commodity = nAjax.Commodity();
-	
+
+	var FILTER_QUERY_PARAM = 'filter';
 	var loadedCommodities = [];
 	var filteredCommodities = [];
-	var PARTITION = 30;
-	
+	var PARTITION = 30
+
+	$scope.query = $location.search()[FILTER_QUERY_PARAM] ? $location.search()[[FILTER_QUERY_PARAM]] : '';
+
 	function updateFilteredCommodities(){
 		filteredCommodities = $filter('filter')(loadedCommodities, $scope.query);
 		$scope.commodities = filteredCommodities.slice(0, 15);
 	}
 	
 	$scope.$watch('query', function(newValue, oldValue){
+		$location.search(FILTER_QUERY_PARAM, newValue == ''? null : newValue);
 		updateFilteredCommodities();
 	});
 

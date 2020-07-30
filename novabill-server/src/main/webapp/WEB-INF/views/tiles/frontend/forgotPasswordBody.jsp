@@ -6,47 +6,43 @@
 <spring:url var="homeUrl" value="/" />
 <spring:url var="forgotPasswordUrl" value="/forgot-password" />
 
-<div class="page-container">
-  
-        <!-- BEGIN BREADCRUMBS -->   
-        <div class="row breadcrumbs margin-bottom-40">
-            <div class="container">
-                <div class="col-md-4 col-sm-4">
-                    <h1>Password Reset</h1>
-                </div>
-                <div class="col-md-8 col-sm-8">
-                    <ul class="pull-right breadcrumb">
-                        <li><a href="${homeUrl}">Home</a></li>
-                        <li class="active">Password Reset</li>
-                    </ul>
-                </div>
-            </div>
+
+<!-- BEGIN CONTAINER -->
+<div class="container"> <!-- margin-bottom-40 -->
+    <div class="row">
+
+
+        <div class="col-md-8 col-md-offset-2 text-center">
+
+            <h2>Creazione Nuova Password</h2>
+            <p>Inserisci la tua email. Ti invieremo le istruzioni per creare una nuova password.</p>
+            <br><br>
+
         </div>
-        <!-- END BREADCRUMBS -->
 
-        <!-- BEGIN CONTAINER -->   
-        <div class="container " style="margin-bottom: 150px;"> <!-- margin-bottom-40 -->
-          <div class="row">
-            <div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 login-signup-page">
-                <form:form modelAttribute="forgotPassword" action="${forgotPasswordUrl}" method="post" >           
-                    <h2>Creazione Nuova Password</h2>
-                    <p>Inserisci la tua email. Ti invieremo le istruzioni per creare una nuova password.</p>
+        <div class="col-md-8 col-md-offset-2">
 
-                    <div class="input-group">
-                        <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                        <form:input path="email" type="text" class="form-control" name="email" placeholder="E-mail"></form:input>
+            <form:form modelAttribute="forgotPassword" cssClass="form-horizontal" action="${forgotPasswordUrl}" method="post" >
+
+
+                <div class="form-group">
+                    <label for="email" class="col-sm-4 control-label">Email</label>
+                    <div class="col-sm-8">
+                        <form:input path="email" cssClass="form-control" type="email" placeholder="La tua e-mail" />
+                        <span class="text-danger"><form:errors path="email" /></span>
                     </div>
-                    <span class="text-danger"><form:errors path="email" /> </span>        
+                </div>
 
-                    <div class="row margin-top-20">
-                        <div class="col-md-12 col-sm-12 text-center">
-                            <button type="submit" class="btn theme-btn">Invia</button>                        
-                        </div>
+                <div class="form-group">
+                    <div class="col-md-12 text-center">
+                        <form:button class="btn btn-success">
+                            Invia
+                        </form:button>
                     </div>
+                </div>
 
-                </form:form>
-            </div>
-          </div>
+            </form:form>
         </div>
-        
+
+    </div>
 </div>

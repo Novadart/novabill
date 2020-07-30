@@ -21,8 +21,8 @@ privileged aspect CheckRestrictionsAspect {
 	@Autowired
 	private UtilsService utilsService;
 	
-	pointcut quotaRestrictedMethod(Restrictions checkQuotas):
-		execution(@Restrictions * *(..)) && @annotation(checkQuotas);
+	pointcut restrictedMethod(Restrictions restrictions):
+		execution(@Restrictions * *(..)) && @annotation(restrictions);
 
 	private Principal getPrincipal(MethodSignature signature, String businessParamName, Object[] parameterValues){
 		String[] parameterNames = signature.getParameterNames();
@@ -33,17 +33,17 @@ privileged aspect CheckRestrictionsAspect {
 	}
 	
 	@Transactional(readOnly = true)
-	before(Restrictions checkQuotas) throws FreeUserAccessForbiddenException, NotAuthenticatedException, DataAccessException : quotaRestrictedMethod(checkQuotas) {
+	before(Restrictions restrictions) throws FreeUserAccessForbiddenException, NotAuthenticatedException, DataAccessException : restrictedMethod(restrictions) {
 		MethodSignature signature = (MethodSignature)thisJoinPoint.getSignature();
-		LOGGER.debug("Checking quotas for method {}", new Object[]{signature.toShortString()});
+		LOGGER.debug("Checking restrictions for method {}", new Object[]{signature.toShortString()});
 		Principal principal = null;
 		if(utilsService.isAuthenticated())
 			principal = Principal.findPrincipal(utilsService.getAuthenticatedPrincipalDetails().getId());
-		else if(!checkQuotas.equals("[unassigned]"))
-			principal = getPrincipal(signature, checkQuotas.businessParamName(), thisJoinPoint.getArgs());
+		else if(!restrictions.equals("[unassigned]"))
+			principal = getPrincipal(signature, restrictions.businessParamName(), thisJoinPoint.getArgs());
 		if(principal == null)
 			throw new NotAuthenticatedException();
-		for(Class<? extends RestricionChecker> checkerClass: checkQuotas.checkers())
+		for(Class<? extends RestricionChecker> checkerClass: restrictions.checkers())
 			try {
 				checkerClass.newInstance().check(principal);
 			} catch (InstantiationException e) {

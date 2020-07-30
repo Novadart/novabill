@@ -9,25 +9,33 @@ angular.module('novabill.estimations.controllers', ['novabill.utils', 'novabill.
  */
 .controller('EstimationCtrl', ['$scope', '$location', 'nConstants', 'nSelectClientDialog', '$filter',
                                function($scope, $location, nConstants, nSelectClientDialog, $filter){
-	var selectedYear = String(new Date().getFullYear());
+	var YEAR_PARAM = 'year';
+	var FILTER_QUERY_PARAM = 'filter';
 	var loadedEstimations = [];
 	var filteredEstimations = [];
 	var PARTITION = 50;
+
+
+	$scope.selectedYear = $location.search()[YEAR_PARAM]? $location.search()[[YEAR_PARAM]]: String(new Date().getFullYear());
+
+	$scope.query = $location.search()[FILTER_QUERY_PARAM]? $location.search()[[FILTER_QUERY_PARAM]]: '';
 
 	function updateFilteredEstimations(){
 		filteredEstimations = $filter('filter')(loadedEstimations, $scope.query);
 		$scope.estimations = filteredEstimations.slice(0, 15);
 	}
-	
+
 	$scope.$watch('query', function(newValue, oldValue){
+        $location.search(FILTER_QUERY_PARAM, newValue == ''? null : newValue);
 		updateFilteredEstimations();
 	});
-	
+
 	$scope.loadEstimations = function(year) {
-		selectedYear = year;
+		$scope.selectedYear = year;
+		$location.search(YEAR_PARAM, year);
 		$scope.estimations = null;
 
-		GWT_Server.estimation.getAllInRange(nConstants.conf.businessId, selectedYear, '0', '1000000', {
+		GWT_Server.estimation.getAllInRange(nConstants.conf.businessId, $scope.selectedYear, '0', '1000000', {
 			onSuccess : function(page){
 				$scope.$apply(function(){
 					loadedEstimations = page.items;
@@ -64,7 +72,7 @@ angular.module('novabill.estimations.controllers', ['novabill.utils', 'novabill.
 		$scope.$apply(function(){
 			$scope.estimations= null;
 		});
-		$scope.loadEstimations(selectedYear);
+		$scope.loadEstimations($scope.selectedYear);
 	});
 
 }])
@@ -75,16 +83,16 @@ angular.module('novabill.estimations.controllers', ['novabill.utils', 'novabill.
 /**
  * ESTIMATION MODIFY PAGE CONTROLLER
  */
-.controller('EstimationDetailsCtrl', ['$scope', '$routeParams', '$location', '$translate',
-                                      function($scope, $routeParams, $location, $translate) {
+.controller('EstimationDetailsCtrl', ['$scope', '$routeParams', '$location', '$translate', 'nSafeHistoryBack',
+                                      function($scope, $routeParams, $location, $translate, nSafeHistoryBack) {
 	$scope.pageTitle = $translate('MODIFY_ESTIMATION');
 
 	GWT_UI.showModifyEstimationPage('estimation-details', $routeParams.estimationId, {
 		onSuccess : function(bool){
-			$location.path('/');	
+			nSafeHistoryBack.safeBack();
 		},
 		onFailure : function(){
-			$location.path('/');	
+			nSafeHistoryBack.safeBack();
 		}
 	});
 
@@ -101,10 +109,10 @@ angular.module('novabill.estimations.controllers', ['novabill.utils', 'novabill.
 
 	GWT_UI.showNewEstimationPage('estimation-details', $routeParams.clientId, {
 		onSuccess : function(bool){
-			$location.path('/');	
+			$location.path('/');
 		},
 		onFailure : function(){
-			$location.path('/');	
+			$location.path('/');
 		}
 	});
 
@@ -121,10 +129,10 @@ angular.module('novabill.estimations.controllers', ['novabill.utils', 'novabill.
 
 	GWT_UI.showCloneEstimationPage('estimation-details', $routeParams.clientId, $routeParams.sourceId, {
 		onSuccess : function(bool){
-			$location.path('/');	
+			$location.path('/');
 		},
 		onFailure : function(){
-			$location.path('/');	
+			$location.path('/');
 		}
 	});
 

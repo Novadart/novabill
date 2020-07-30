@@ -25,7 +25,7 @@ public class NumberOfCreditNotesPerYearQuotaReachedChecker implements Restricion
 	@Override
 	public void check(Principal principal) throws FreeUserAccessForbiddenException {
 		LOGGER.debug("Number of credit notes per year quota check - quota: {}, roles: {}", new Object[]{numberOfCreditNotesPerYearQuota, principal.getGrantedRoles()});
-		if(principal.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_FREE) && 
+		if(principal.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_TRIAL) &&
 				principal.getBusiness().getCreditNotesForYear(Calendar.getInstance().get(Calendar.YEAR)).size() >= numberOfCreditNotesPerYearQuota)
 			throw new FreeUserAccessForbiddenException(FreeUserAccessErrorType.NUMBER_OF_CREDIT_NOTES_QUOTA_REACHED);
 	}

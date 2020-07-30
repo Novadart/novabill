@@ -23,11 +23,11 @@ public class EstimationGwtController extends AbstractGwtController implements Es
 	@Autowired
 	private EstimationService estimationService;
 	
-	public EstimationDTO get(Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+	public EstimationDTO get(Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		return estimationService.get(id);
 	}
 
-	public List<EstimationDTO> getAllForClient(Long clientID, Integer year) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+	public List<EstimationDTO> getAllForClient(Long clientID, Integer year) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		return estimationService.getAllForClient(clientID, year);
 	}
 
@@ -35,23 +35,23 @@ public class EstimationGwtController extends AbstractGwtController implements Es
 		return estimationService.add(estimationDTO);
 	}
 
-	public void remove(Long businessID, Long clientID, Long id) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException {
+	public void remove(Long businessID, Long clientID, Long id) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		estimationService.remove(businessID, clientID, id);
 	}
 
-	public void update(EstimationDTO estimationDTO) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ValidationException {
+	public void update(EstimationDTO estimationDTO) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ValidationException, FreeUserAccessForbiddenException {
 		estimationService.update(estimationDTO);
 	}
 
-	public Long getNextEstimationId() throws NotAuthenticatedException, DataAccessException {
+	public Long getNextEstimationId() throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		return estimationService.getNextEstimationId();
 	}
 
-	public PageDTO<EstimationDTO> getAllForClientInRange(Long clientID, Integer year, int start, int length) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+	public PageDTO<EstimationDTO> getAllForClientInRange(Long clientID, Integer year, int start, int length) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		return estimationService.getAllForClientInRange(clientID, year, start, length);
 	}
 
-	public PageDTO<EstimationDTO> getAllInRange(Long businessID, Integer year, int start, int length) throws NotAuthenticatedException, DataAccessException {
+	public PageDTO<EstimationDTO> getAllInRange(Long businessID, Integer year, int start, int length) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		return estimationService.getAllInRange(businessID, year, start, length);
 	}
 

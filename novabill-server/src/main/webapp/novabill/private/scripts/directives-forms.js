@@ -22,7 +22,6 @@ angular.module('novabill.directives.forms',
 		              function($scope, nAjax, $element, nSelectCommodityDialog, $window, 
 		            		  nSorting, nRegExp, nCalc, $filter, nConstants){
 			var BatchDataFetcherUtils = nAjax.BatchDataFetcherUtils();
-			$scope.PREMIUM = nConstants.conf.premium;
 			$scope.pricelist = null;
 			$scope.commodities = null;
 			$scope.selectedCommodity = null;
@@ -31,13 +30,11 @@ angular.module('novabill.directives.forms',
 			};
 			$scope.explicitDiscountCheck = $scope.explicitDiscount !== 'false';
 			
-			if($scope.PREMIUM) {
-				BatchDataFetcherUtils.fetchSelectCommodityForDocItemOpData({clientID : $scope.clientId}, function(result){
-					$scope.pricelist = result.first;
-					$scope.commodities = $scope.pricelist.commodities.sort( nSorting.descriptionComparator );
-				});
-			}
-			
+			BatchDataFetcherUtils.fetchSelectCommodityForDocItemOpData({clientID : $scope.clientId}, function(result){
+				$scope.pricelist = result.first;
+				$scope.commodities = $scope.pricelist.commodities.sort( nSorting.descriptionComparator );
+			});
+
 			$scope.isReservedWord = function(str){
 				return nRegExp.reserved_word.test(str);
 			};

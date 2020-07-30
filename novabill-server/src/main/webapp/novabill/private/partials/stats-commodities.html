@@ -17,14 +17,13 @@
 
     <div class="row">
         <div class="col-md-12">
-            <n-premium-alert></n-premium-alert>
 
             <n-stats-year-selector
                     class="pull-right"
                     selected-year="year"
                     callback="loadYear(year)"></n-stats-year-selector>
 
-            <select n-premium-check class="form-control pull-right input-large"
+            <select class="form-control pull-right input-large"
                     style="margin-right: 10px"
                     ng-change="commodityChanged()"
                     ng-model="selectedCommodityID"

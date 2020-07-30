@@ -27,7 +27,7 @@ public class CommodityGwtController extends AbstractGwtController implements Com
 	private CommodityService commodityService;
 
 	@Override
-	public List<CommodityDTO> getAll(Long businessID) throws NotAuthenticatedException, DataAccessException {
+	public List<CommodityDTO> getAll(Long businessID) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		return commodityService.getAll(businessID);
 	}
 
@@ -42,7 +42,7 @@ public class CommodityGwtController extends AbstractGwtController implements Com
 	}
 
 	@Override
-	public void remove(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException {
+	public void remove(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		commodityService.remove(businessID, id);
 	}
 
@@ -51,7 +51,7 @@ public class CommodityGwtController extends AbstractGwtController implements Com
 	}
 
 	@Override
-	public CommodityDTO get(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+	public CommodityDTO get(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		CommodityDTO commodityDTO = commodityService.get(businessID, id);
 		commodityDTO.setPrices(commodityService.getPrices(businessID, id));
 		return commodityDTO;
@@ -63,7 +63,7 @@ public class CommodityGwtController extends AbstractGwtController implements Com
 	}
 
 	@Override
-	public void removePrice(Long businessID, Long priceListID, Long commodityID) throws NotAuthenticatedException, DataAccessException, UnsupportedOperationException {
+	public void removePrice(Long businessID, Long priceListID, Long commodityID) throws NotAuthenticatedException, DataAccessException, UnsupportedOperationException, FreeUserAccessForbiddenException {
 		commodityService.removePrice(businessID, priceListID, commodityID);
 	}
 	

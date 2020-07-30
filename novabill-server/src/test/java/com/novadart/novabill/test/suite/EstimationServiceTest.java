@@ -1,7 +1,5 @@
 package com.novadart.novabill.test.suite;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.novadart.novabill.aspect.logging.DBLoggerAspect;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
@@ -66,7 +64,7 @@ public class EstimationServiceTest extends ServiceTest {
 	}
 	
 	@Test
-	public void getAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void getAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		Long estimationID = authenticatedPrincipal.getBusiness().getEstimations().iterator().next().getId();
 		EstimationDTO expectedDTO = EstimationDTOTransformer.toDTO(Estimation.findEstimation(estimationID), true);
 		EstimationDTO actualDTO = estimationService.get(estimationID);
@@ -74,36 +72,36 @@ public class EstimationServiceTest extends ServiceTest {
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void getUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void getUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		Long estimationID = Business.findBusiness(getUnathorizedBusinessID()).getEstimations().iterator().next().getId();
 		estimationService.get(estimationID);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void getAuthorizedEstimationIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void getAuthorizedEstimationIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		estimationService.get(null);
 	}
 	
 	@Test
-	public void getAllInRangeAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void getAllInRangeAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		PageDTO<EstimationDTO> results = estimationService.getAllInRange(authenticatedPrincipal.getBusiness().getId(), getYear(), 0, 10);
 		assertTrue(10 == results.getLength() && 0 == results.getOffset() && results.getItems().size() <= 10);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void getAllInRangeUnauthorizedTest() throws NotAuthenticatedException, DataAccessException{
+	public void getAllInRangeUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		estimationService.getAllInRange(getUnathorizedBusinessID(), getYear(), 0, 10);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void getAllInRangeUnauthorizedBusinessIDNullTest() throws NotAuthenticatedException, DataAccessException{
+	public void getAllInRangeUnauthorizedBusinessIDNullTest() throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		estimationService.getAllInRange(null, getYear(), 0, 10);
 	}
 	
 	@Test
-	public void getAllForClientAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void getAllForClientAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		Long clientID = new Long(testProps.get("clientWithEstimationsID"));
-		List<AccountingDocumentDTO> actual = new ArrayList<AccountingDocumentDTO>(estimationService.getAllForClient(clientID, getYear()));
+		List<AccountingDocumentDTO> actual = new ArrayList<>(estimationService.getAllForClient(clientID, getYear()));
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		List<AccountingDocumentDTO> expected = DTOUtils.toDTOList(new ArrayList(Client.findClient(clientID).getEstimations()), DTOUtils.estimationDTOConverter, false); 
 		assertTrue(TestUtils.equal(expected, actual, TestUtils.accountingDocumentComparator));
@@ -111,23 +109,23 @@ public class EstimationServiceTest extends ServiceTest {
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void getAllForClientUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void getAllForClientUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		Long clientID = Business.findBusiness(getUnathorizedBusinessID()).getClients().iterator().next().getId();
 		estimationService.getAllForClient(clientID, getYear());
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void getAllForClientAuthorizedClientIDNotExistTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void getAllForClientAuthorizedClientIDNotExistTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		estimationService.getAllForClient(-1l, getYear());
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void getAllForClientAuthorizedClientIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void getAllForClientAuthorizedClientIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		estimationService.getAllForClient(null, getYear());
 	}
 
 //	@Test
-	public void removeAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, JsonParseException, JsonMappingException, IOException{
+	public void removeAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, IOException, FreeUserAccessForbiddenException {
 		Long clientID = new Long(testProps.get("clientWithEstimationsID"));
 		Long estimationID = Client.findClient(clientID).getEstimations().iterator().next().getId();
 		estimationService.remove(authenticatedPrincipal.getBusiness().getId(), clientID, estimationID);
@@ -143,51 +141,51 @@ public class EstimationServiceTest extends ServiceTest {
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void removeUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void removeUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		Long clientID = new Long(testProps.get("clientWithEstimationsID"));
 		Long estimationID = Client.findClient(clientID).getEstimations().iterator().next().getId();
 		estimationService.remove(getUnathorizedBusinessID(), clientID, estimationID);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void removeUnauthorizedBusinessIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void removeUnauthorizedBusinessIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		Long clientID = new Long(testProps.get("clientWithEstimationsID"));
 		Long estimationID = Client.findClient(clientID).getEstimations().iterator().next().getId();
 		estimationService.remove(null, clientID, estimationID);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void removeAuthorizedClientIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void removeAuthorizedClientIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		Long estimationID = authenticatedPrincipal.getBusiness().getEstimations().iterator().next().getId();
 		estimationService.remove(authenticatedPrincipal.getBusiness().getId(), null, estimationID);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void removeAauthorizedEstimationIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void removeAauthorizedEstimationIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		Long clientID = new Long(testProps.get("clientWithEstimationsID"));
 		estimationService.remove(authenticatedPrincipal.getBusiness().getId(), clientID, null);
 	}
 	
 	@Test
-	public void getAllForClientInRangeAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void getAllForClientInRangeAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		Long clientID = new Long(testProps.get("clientWithEstimationsID"));
 		PageDTO<EstimationDTO> results = estimationService.getAllForClientInRange(clientID, getYear(), 0, 10);
 		assertTrue(10 == results.getLength() && 0 == results.getOffset() && results.getItems().size() <= 10);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void getAllForClientInRangeUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void getAllForClientInRangeUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		Long clientID = Business.findBusiness(getUnathorizedBusinessID()).getClients().iterator().next().getId();
 		estimationService.getAllForClientInRange(clientID, getYear(), 0, 10);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void getAllForClientInRangeClientIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void getAllForClientInRangeClientIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		estimationService.getAllForClientInRange(null, getYear(), 0, 10);
 	}
 	
 	@Test
-	public void updateAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, JsonParseException, JsonMappingException, IOException{
+	public void updateAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, IOException, FreeUserAccessForbiddenException {
 		Estimation expectedEstimation = authenticatedPrincipal.getBusiness().getEstimations().iterator().next();
 		expectedEstimation.setNote("Temporary note for this estimation");
 		estimationService.update(EstimationDTOTransformer.toDTO(expectedEstimation, true));
@@ -205,12 +203,12 @@ public class EstimationServiceTest extends ServiceTest {
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void updateAuthorizedEstimationNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException{
+	public void updateAuthorizedEstimationNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, FreeUserAccessForbiddenException {
 		estimationService.update(null);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void updateAuthorizedIDNull() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException{
+	public void updateAuthorizedIDNull() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, FreeUserAccessForbiddenException {
 		Estimation estimation = authenticatedPrincipal.getBusiness().getEstimations().iterator().next();
 		EstimationDTO estDTO = EstimationDTOTransformer.toDTO(estimation, true);
 		estDTO.setId(null);
@@ -218,7 +216,7 @@ public class EstimationServiceTest extends ServiceTest {
 	}
 	
 	@Test
-	public void addAuthorizedTest() throws NotAuthenticatedException, DataAccessException, ValidationException, FreeUserAccessForbiddenException, InstantiationException, IllegalAccessException, JsonParseException, JsonMappingException, IOException{
+	public void addAuthorizedTest() throws NotAuthenticatedException, DataAccessException, ValidationException, FreeUserAccessForbiddenException, InstantiationException, IllegalAccessException, IOException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
 		EstimationDTO estDTO = EstimationDTOTransformer.toDTO(TestUtils.createEstimation(authenticatedPrincipal.getBusiness().getNextEstimationDocumentID()), true);
 		estDTO.setClient(ClientDTOTransformer.toDTO(client));
@@ -268,12 +266,12 @@ public class EstimationServiceTest extends ServiceTest {
 			estDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 			estimationService.add(estDTO);
 		}catch(ValidationException e){
-			Set<Field> expected = new HashSet<Field>(TestUtils.estimationValidationFieldsMap.values());
+			Set<Field> expected = new HashSet<>(TestUtils.estimationValidationFieldsMap.values());
 			expected.remove(Field.accountingDocumentYear);
 			expected.remove(Field.accountingDocumentDate);
 			expected.remove(Field.documentID);
 			expected.remove(Field.validTill);
-			Set<Field> actual= new HashSet<Field>();
+			Set<Field> actual= new HashSet<>();
 			for(ErrorObject error: e.getErrors())
 				actual.add(error.getField());
 			assertEquals(expected, actual);

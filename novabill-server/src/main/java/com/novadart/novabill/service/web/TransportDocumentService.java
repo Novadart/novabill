@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.novadart.novabill.annotation.Restrictions;
+import com.novadart.novabill.authorization.TrialOrPremiumChecker;
 import com.novadart.novabill.report.DocumentType;
 import com.novadart.novabill.service.PDFStorageService;
 import org.hibernate.Hibernate;
@@ -54,9 +56,10 @@ public class TransportDocumentService {
 
 	@Autowired
 	private PDFStorageService pdfStorageService;
-	
+
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@PreAuthorize("T(com.novadart.novabill.domain.TransportDocument).findTransportDocument(#id)?.business?.id == principal.business.id")
-	public TransportDocumentDTO get(Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+	public TransportDocumentDTO get(Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		TransportDocument transDoc = TransportDocument.findTransportDocument(id);
 		if(transDoc == null)
 			throw new NoSuchObjectException();
@@ -78,13 +81,14 @@ public class TransportDocumentService {
 		
 	}
 
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#clientID)?.business?.id == principal.business.id")
-	public List<TransportDocumentDTO> getAllForClient(Long clientID, Integer year) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
-		return new ArrayList<TransportDocumentDTO>(DTOUtils.filter(businessService.getTransportDocuments(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId(), year), new EqualsClientIDPredicate(clientID)));
+	public List<TransportDocumentDTO> getAllForClient(Long clientID, Integer year) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
+		return new ArrayList<>(DTOUtils.filter(businessService.getTransportDocuments(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId(), year), new EqualsClientIDPredicate(clientID)));
 	}
 
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
-	//@Restrictions(checkers = {NumberOfTransportDocsPerYearQuotaReachedChecker.class})
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@PreAuthorize("#transportDocDTO?.business?.id == principal.business.id and " +
 		  	  	  "T(com.novadart.novabill.domain.Client).findClient(#transportDocDTO?.client?.id)?.business?.id == principal.business.id and " +
 		  	  	  "#transportDocDTO != null and #transportDocDTO.id == null")
@@ -106,11 +110,12 @@ public class TransportDocumentService {
 		return transportDoc.getId();
 	}
 
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@Transactional(readOnly = false)
 	@PreAuthorize("#businessID == principal.business.id and " +
 		  	  	 "T(com.novadart.novabill.domain.TransportDocument).findTransportDocument(#id)?.business?.id == #businessID and " +
 		  	  	 "T(com.novadart.novabill.domain.TransportDocument).findTransportDocument(#id)?.client?.id == #clientID")
-	public void remove(Long businessID, Long clientID, Long id) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException {
+	public void remove(Long businessID, Long clientID, Long id) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		TransportDocument transportDoc = TransportDocument.findTransportDocument(id);
 		transportDoc.remove();
 		if(Hibernate.isInitialized(transportDoc.getBusiness().getTransportDocuments()))
@@ -119,13 +124,14 @@ public class TransportDocumentService {
 			transportDoc.getClient().getTransportDocuments().remove(transportDoc);
 		
 	}
-	
+
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	@PreAuthorize("#transportDocDTO?.business?.id == principal.business.id and " +
 	  	  	  	  "T(com.novadart.novabill.domain.Client).findClient(#transportDocDTO?.client?.id)?.business?.id == principal.business.id and " +
 	  	  	  	  "#transportDocDTO?.id != null")
 	public void update(TransportDocumentDTO transportDocDTO) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException,
-			ValidationException, DataIntegrityException {
+			ValidationException, DataIntegrityException, FreeUserAccessForbiddenException {
 		TransportDocument persistedTransportDoc = TransportDocument.findTransportDocument(transportDocDTO.getId());
 		if(persistedTransportDoc == null)
 			throw new NoSuchObjectException();
@@ -144,23 +150,27 @@ public class TransportDocumentService {
 		persistedTransportDoc.setDocumentPath(docPath);
 	}
 
-	public Long getNextTransportDocId() throws NotAuthenticatedException {
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
+	public Long getNextTransportDocId() throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		return utilsService.getAuthenticatedPrincipalDetails().getBusiness().getNextTransportDocDocumentID();
 	}
 
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#clientID)?.business?.id == principal.business.id")
-	public PageDTO<TransportDocumentDTO> getAllForClientInRange(Long clientID, Integer year, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+	public PageDTO<TransportDocumentDTO> getAllForClientInRange(Long clientID, Integer year, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException {
 		List<TransportDocumentDTO> allTransportDocs = getAllForClient(clientID, year);
-		return new PageDTO<TransportDocumentDTO>(DTOUtils.range(allTransportDocs, start, length), start, length, new Long(allTransportDocs.size()));
+		return new PageDTO<>(DTOUtils.range(allTransportDocs, start, length), start, length, new Long(allTransportDocs.size()));
 	}
 
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@PreAuthorize("#businessID == principal.business.id")
-	public PageDTO<TransportDocumentDTO> getAllInRange(Long businessID, Integer year, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException {
+	public PageDTO<TransportDocumentDTO> getAllInRange(Long businessID, Integer year, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		List<TransportDocumentDTO> allTransportDocs = businessService.getTransportDocuments(businessID, year);
-		return new PageDTO<TransportDocumentDTO>(DTOUtils.range(allTransportDocs, start, length), start, length, new Long(allTransportDocs.size()));
+		return new PageDTO<>(DTOUtils.range(allTransportDocs, start, length), start, length, new Long(allTransportDocs.size()));
 	}
-	
-	public List<TransportDocumentDTO>  getAllWithIDs(List<Long> ids) throws DataAccessException, NoSuchObjectException{
+
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
+	public List<TransportDocumentDTO>  getAllWithIDs(List<Long> ids) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException, FreeUserAccessForbiddenException{
 		Long businessID = utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId();
 		Set<Long> idsSet = new HashSet<>(ids);
 		List<TransportDocument> transportDocs = TransportDocument.getTransportDocumentsWithIDs(ids);
@@ -171,12 +181,13 @@ public class TransportDocumentService {
 		if(transportDocs.size() < ids.size()) throw new NoSuchObjectException(); //cardinality check
 		return DTOUtils.toDTOList(transportDocs, DTOUtils.transportDocDTOConverter, true);
 	}
-	
+
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@Transactional(readOnly = false)
 	@PreAuthorize("#businessID == principal.business.id and " +
 				  "T(com.novadart.novabill.domain.Invoice).findInvoice(#invoiceID)?.business?.id == #businessID and " +
 				  "T(com.novadart.novabill.domain.TransportDocument).findTransportDocument(#transportDocID)?.business?.id == #businessID")
-	public void setInvoice(Long businessID, Long invoiceID, Long transportDocID) throws DataAccessException, NotAuthenticatedException, DataIntegrityException {
+	public void setInvoice(Long businessID, Long invoiceID, Long transportDocID) throws DataAccessException, NotAuthenticatedException, DataIntegrityException, FreeUserAccessForbiddenException {
 		TransportDocument transDoc = TransportDocument.findTransportDocument(transportDocID);
 		if(transDoc.getInvoice() != null)
 			throw new DataIntegrityException();
@@ -186,10 +197,11 @@ public class TransportDocumentService {
 			invoice.getTransportDocuments().add(transDoc);
 	}
 
+	@Restrictions(checkers = {TrialOrPremiumChecker.class})
 	@Transactional(readOnly = false)
 	@PreAuthorize("#businessID == principal.business.id and " +
 				  "T(com.novadart.novabill.domain.TransportDocument).findTransportDocument(#transportDocID)?.business?.id == #businessID")
-	public void clearInvoice(Long businessID, Long transportDocID) throws DataAccessException, NotAuthenticatedException, DataIntegrityException {
+	public void clearInvoice(Long businessID, Long transportDocID) throws DataAccessException, NotAuthenticatedException, DataIntegrityException, FreeUserAccessForbiddenException {
 		TransportDocument transDoc = TransportDocument.findTransportDocument(transportDocID);
 		Invoice invoice = transDoc.getInvoice();
 		if(invoice == null)

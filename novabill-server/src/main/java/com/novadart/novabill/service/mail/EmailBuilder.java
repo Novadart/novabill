@@ -32,7 +32,7 @@ public class EmailBuilder {
 
     private String template;
 
-    private Map<String, Object> model = new HashMap();
+    private Map<String, Object> model = new HashMap<>();
 
     private String attachmentName;
 
