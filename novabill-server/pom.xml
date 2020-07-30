@@ -5,7 +5,7 @@
     <parent>
         <artifactId>novabill</artifactId>
         <groupId>com.novadart.novabill</groupId>
-        <version>4.6</version>
+        <version>4.7</version>
     </parent>
     <artifactId>novabill-server</artifactId>
     <packaging>war</packaging>
@@ -293,10 +293,6 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>com.novadart.jasperreports.fonts</groupId>
-            <artifactId>fonts-arial</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.lowagie</groupId>
             <artifactId>itext</artifactId>
             <!-- Both already included as version 1.38 -->
@@ -314,7 +310,17 @@
 
         <dependency>
             <groupId>com.novadart.jasperreports.fonts</groupId>
+            <artifactId>fonts-arial</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/../repo/fonts-arial-1.0.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.novadart.jasperreports.fonts</groupId>
             <artifactId>fonts-open-sans</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/../repo/fonts-open-sans-1.0.jar</systemPath>
         </dependency>
 
         <!-- Jackson -->
